@@ -1,0 +1,531 @@
+/*\
+ * Maitreya.css, the styling behind SCP-4000
+ * Written by Croquembouche, released under MIT
+\*/
+
+/* WIKIDOT SIMULATOR */
+a, button, li.selector {
+	word-break: normal;
+	cursor: pointer;
+}
+
+/* TEMPORARY WIKIDOT SIMULATOR */
+/* Make the page width the same as wikidot's display */
+#container {
+	max-width: 700px;
+	margin: auto;
+}
+body {
+	padding: 20vh 0; 
+}
+/* Add the interface background which should eventually be moved to the wiki page */
+html, body {
+	overflow-x: hidden;
+}
+#interface { /* change this to refer to iframe */
+	margin: 0 -999rem;
+	padding: 0 999rem;
+	background: black; /* maybe like a stripe image? */
+	
+	height: 700px;
+	
+	color: white;
+}
+
+/* MAITREYA INTERFACE */
+#app-selector {
+	height: 70px;
+	background: linear-gradient(to right,#1488cc,#2b32b2);
+	position: relative;
+	transition: all 1s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+	box-shadow: inset 0 -3px 1px -2px rgba(0,0,0,0.12), inset 0 -1px 5px 0 rgba(0,0,0,0.2);
+}
+#app-selector .title {
+	display: block;
+	height: 70px;
+	margin: 0 5%;
+	position: relative;
+	transition: all 2s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+	top: 0;
+	transform: translate(0,0);
+}
+#app-selector .title img {
+	height: 100%;
+	transition: all 1s linear 0.0s;
+	position: absolute;
+	top: 0;
+	left: 0;
+	transform: translate(0,0)
+}
+
+#app-selector ul {
+	position: absolute;
+	height: 100%;
+	margin: 0;
+	margin-right: -5px;
+	top: -50%;
+	transform: translate(0,50%);
+	right: 0;
+	padding: 0;
+	transition: opacity 0.3s ease-in-out 1.2s;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	list-style: none;
+	width: auto;
+	opacity: 1;
+}
+#app-selector ul li.selector {
+	position: relative;
+	list-style: none;
+	height: 100%;
+	width: 60px;
+	margin: 0 5px;
+}
+#app-selector ul li.selector.selected {
+	background-color: white;
+	/*box-shadow: 3px 0 1px -2px rgba(0,0,0,0.12), 1px 0 5px 0 rgba(0,0,0,0.2), -3px 0 1px -2px rgba(0,0,0,0.12), -1px 0 5px rgba(0,0,0,0.2);*/
+}
+#app-selector ul li.selector.selected:before {
+	box-shadow: inset -3px 0 2px -2px rgba(0,0,0,0.28), inset -4px 0 1px -2px rgba(0,0,0,0.14), inset -2px 0 5px -5px rgba(0,0,0,0.2);
+	content: " ";
+	height: 100%;
+	left: -10px;
+	position: absolute;
+	top: 0;
+	width: 10px;
+}
+#app-selector ul li.selector.selected:after {
+	box-shadow: inset 3px 0 2px -2px rgba(0,0,0,0.28), inset 4px 0 1px -2px rgba(0,0,0,0.14), inset 2px 0 5px -5px rgba(0,0,0,0.2);
+	content: " ";
+	height: 100%;
+	position: absolute;
+	right: -10px;
+	width: 10px;
+}
+#app-selector ul li.selector a {
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	background-color: white;
+	display: inline-block;
+	position: absolute;
+	color: #205dbf;
+	border: 1px white solid;
+	transition-duration: 0.2s;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%,-50%);
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+}
+#app-selector ul li.selector.selected a {
+	box-shadow: none;
+}
+#app-selector ul li.selector:not(.selected):hover a {
+	background-color: transparent;
+	color: white;
+}
+#app-selector ul li.selector.selected:hover a {
+	border: 1px #205dbf solid;
+	color: #205dbf;
+}
+#app-selector ul li.selector a i {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%,-50%);
+}
+
+.app-title {
+	z-index: 1;
+}
+#app-selector ul, #app-selector ul li, #app-selector ul li a {
+	z-index: 2;
+}
+
+.app-title {
+	color: #000;
+	background-color: white;
+	position: relative;
+	display: flex;
+	justify-content: flex-end;
+	height: 30px; /* I'm so sorry */
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+}
+.app-title p {
+	font-family: Nunito, Verdana, sans-serif;
+	margin: 0 5%;
+	margin-top: 2px;
+	font-size: 20px;
+	display: inline-block;
+}
+
+#app-body {
+	height: calc(100% - 70px);
+}
+#app-body .container {
+	height: 100%;
+	display: block;
+}
+#app-body .container:not(.selected) {
+	display: none;
+}
+#app-body .app-main {
+	height: calc(100% - 30px);
+}
+
+/* TERMINAL */
+#app-body #terminal-app .terminal-body {
+	height: 350px;
+	background-image: url(grey_stripe.png);
+}
+#app-body #terminal-app .terminal-log {
+	height: 100%;
+	margin: 0 100px;
+	box-shadow: 3px 0 1px -2px rgba(0,0,0,0.12), 1px 0 5px 0 rgba(0,0,0,0.2), -3px 0 1px -2px rgba(0,0,0,0.12), -1px 0 5px rgba(0,0,0,0.2);
+	overflow:	 auto;
+	display: flex;
+	flex-direction: column-reverse;
+	background-color: #ddd;
+}
+#app-body #terminal-app .terminal-log p {
+	margin: 0;
+	padding: 3px 10px;
+	font-family: Courier,monospace;
+	color: #333;
+	background-color: #ddd;
+	border-top: 1px #ccc solid;
+	border-bottom: 1px #ccc solid;
+}
+#app-body #terminal-app .terminal-log p.info {
+	color: #6b4c25;
+	background-color: #fffae8;
+	border-top: 1px #fff3c7 solid;
+	border-bottom: 1px #fff3c7 solid;
+}
+#app-body #terminal-app .terminal-log p.info::before {
+	content: "Info";
+	color: white;
+	background-color: #6b4c25;
+	font-weight: bold;
+	padding: 2px 4px;
+	margin-left: -7px;
+	margin-right: 4px;
+}
+#app-body #terminal-app .terminal-log p.error {
+	color: red;
+	background-color: #fff0f0;
+	border-top: 1px #ffd6d6 solid;
+	border-bottom: 1px #ffd6d6 solid;
+}
+#app-body #terminal-app .terminal-log p.error::before {
+	content: "WARNING";
+	color: white;
+	background-color: red;
+	font-weight: bold;
+	padding: 2px 4px;
+	margin-left: -7px;
+	margin-right: 4px;
+}
+#app-body #terminal-app .middle-bar {
+	background: linear-gradient(to right,#1488cc,#2b32b2);
+	display: flex;
+	width: 100%;
+	height: 30px;
+	justify-content: space-around;
+	align-items: center;
+}
+#app-body #terminal-app .middle-bar p, #app-body #terminal-app .middle-bar button {
+	margin: 0 20px;
+	display: inline-block;
+}
+#app-body #terminal-app .middle-bar input {
+	font-family: Courier,monospace;
+	display: inline-block;
+	width: auto;
+	border: none;
+	padding: 2px 4px;
+	flex-grow: 1;
+	background-color: rgba(0,0,0,0.5);
+	color: white;
+}
+
+
+
+/* LOADING SCREEN */
+/* displays before the introduction - remove .preload fro#interface to proceed */
+.preload #app-body {
+	display: none;
+}
+.preload #app-selector {
+	height: 100%;
+}
+.preload #app-selector .title {
+	top: 45%;
+	transform: translate(0,-50%);
+	height: 20%;
+}
+#app-selector .title div {
+	display: none;
+}
+.preload #app-selector .title div {
+	display: block;
+	position: absolute;
+	top: 85%;
+	width: 100%;
+}
+.preload #app-selector .title div p {
+	text-align: center;
+}
+.preload #app-selector .title div button {
+	margin: 0 auto;
+}
+.preload #app-selector .title img {
+	left: 50%;
+	transform: translate(-50%,0);
+	height: 100%;
+}
+.preload #app-selector ul {
+	opacity: 0;
+	top: -999rem;
+}
+
+/* TRUE/FALSE STATEMENTS */
+.statement {
+	box-sizing: border-box;
+	display: inline-block;
+	z-index: 1;
+}
+
+.statement:hover {
+	border: 3px #205dbf solid;
+	border-bottom-width: 12px;
+	padding: 1px 3px 1px 3px;
+	margin: -4px -6px -13px -6px;
+	border-radius: 6px;
+	z-index: 5;
+	position: relative;
+}
+.statement:hover::after {
+	content: "";
+	width: 100%;
+	height: 10px;
+	position: absolute;
+	background-image: url(loading.gif);
+	background-size: 10px 10px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	text-align: center;
+	top: 21px;
+	margin-left: calc(-100% + 4px);
+	z-index: 10;
+	color: white;
+	font-weight: bold;
+	font-size: 10px;
+	line-height: 10px;
+}
+
+@keyframes false-color {
+	0% {
+		border-color: #205dbf;
+	}
+	100% {
+		border-color: #ff4136;
+	}
+}
+@keyframes false-after {
+	0% {
+		content: "";
+		background-image: url(loading.gif);
+	}
+	100% {
+		content: "FALSE";
+		background-image: none;
+	}
+}
+@keyframes correct-color {
+	0% {
+		border-color: #205dbf;
+	}
+	100% {
+		border-color: #2ecc40;
+	}
+}
+@keyframes correct-after {
+	0% {
+		content: "";
+		background-image: url(loading.gif);
+	}
+	100% {
+		content: "TRUE";
+		background-image: none;
+	}
+}
+
+.statement.true:hover {
+	animation: correct-color 0.1s linear 2s 1;
+	animation-fill-mode: forwards;
+}
+.statement.true:hover::after {
+	animation: correct-after 0s linear 1.95s 1;
+	animation-fill-mode: forwards;
+}
+.statement.false:hover {
+	animation: false-color 0.1s linear 2s 1;
+	animation-fill-mode: forwards;
+}
+.statement.false:hover::after {
+	animation: false-after 0s linear 1.95s 1;
+	animation-fill-mode: forwards;
+}
+
+/* OPTION BUTTONS */
+.option {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	display: block;
+	margin-bottom: 4px;
+	box-sizing: border-box;
+	font-family: Verdana,Arial,sans-serif;
+	font-size: inherit;
+	position: relative;
+}
+.option.action {
+	color: #b01;
+	text-decoration: none;
+	transition-duration: 0.2s;
+	padding: 4px 15px;
+	background: transparent;
+	border: none;
+	z-index: 0;
+	transform: translateX(5px);
+}
+.option.action::after {
+	background-color: transparent;
+	border: 1px solid #b01;
+	transition-duration: 0.2s;
+	transform: skewX(-20deg);
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	width: 100%;
+	height: calc(100% - 2px);
+	content: "";
+	padding-bottom: -1px;
+}
+.option.action:hover {
+	color: white;
+	transition-duration: 0.2s;
+	margin-left: calc(23px - 5px); /*account for translateX*/
+}
+.option.action:hover::after {
+	background-color: #b01;
+	transition-duration: 0.2s;
+}
+.option.speech {
+	color: #205dbf;
+	background-color: transparent;
+	border: 1px solid #205dbf;
+	text-decoration: none;
+	border-radius: 20px;
+	transition-duration: 0.2s;
+	padding: 4px 15px;
+}
+.option.speech:hover {
+	color: white;
+	background-color: #205dbf;
+	transition-duration: 0.2s;
+	margin-left: 30px;
+}
+.option.speech::before {
+	content: "SAY";
+	position: absolute;
+	font-weight: bold;
+	color: rgba(0,0,0,0.5);
+	left: 0;
+	margin-left: 20px;
+	top: 50%;
+	transform: translate(0,-50%);
+	transition-duration: 0.2s;
+	z-index: 0;
+	opacity: 0;
+}
+.option.speech:hover::before {
+	margin-left: -30px;
+	opacity: 1;
+}
+.option.action::before {
+	content: "DO";
+	position: absolute;
+	font-weight: bold;
+	color: rgba(0,0,0,0.5);
+	left: 0;
+	margin-left: 12px;
+	top: 50%;
+	transform: translate(0,-50%);
+	transition-duration: 0.2s;
+	z-index: 0;
+	opacity: 0;
+}
+.option.action:hover::before {
+	margin-left: -23px;
+	opacity: 1;
+}
+.option.speech#boot-up {
+	color: white;
+	border-color: white;
+	margin-left: 0;
+}
+.option.speech#boot-up:hover {
+	color: #205dbf;
+	background-color: white;
+}
+.option.speech#boot-up::before, .option.speech#boot-up:hover::before {
+	content: none;
+}
+.option.action#terminal-send {
+	color: white;
+	margin-left: 0;
+}
+.option.action#terminal-send:hover {
+	color: #205dbf;
+	margin-left: 0;
+	transform: none;
+}
+.option.action#terminal-send::after {
+	border-color: white;
+}
+.option.action#terminal-send::before, .option.action#terminal-send:hover::before {
+	content: none;
+}
+.option.action#terminal-send:hover::after {
+	background-color: white;
+	margin-left: 0;
+}
+
+@media only screen and (max-width: 700px) {
+	/* at less than 700px probably a mobile device */
+	#app-selector .title img {
+		top: 0;
+		left: 50%;
+		transform: translate(-50%,0);
+	}
+	#app-selector {
+		height: 140px;
+	}
+	#app-selector ul {
+		height: 50%;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,0);
+	}
+	.app-title {
+		justify-content: center;
+	}
+	#app-body {
+		height: calc(100% - 140px);
+	}
+}
