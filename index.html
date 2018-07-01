@@ -10,14 +10,16 @@ Loading icon CC0 from loading.io
 	
 	<link href="https://fonts.googleapis.com/css?family=Nunito:600" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<!--<link href="http://d3g0gp89917ko0.cloudfront.net/v--edac79f846ba/common--theme/base/css/style.css" rel="stylesheet">
-	<link href="http://www.scp-wiki.net/component:theme/code/1" rel="stylesheet">-->
+	<!-- <link href="http://d3g0gp89917ko0.cloudfront.net/v--edac79f846ba/common--theme/base/css/style.css" rel="stylesheet">
+	<link href="http://www.scp-wiki.net/component:theme/code/1" rel="stylesheet"> -->
 	<link href="style.css" rel="stylesheet">
 	<link href="1.css" rel="stylesheet">
 	<link href="maitreya.css" rel="stylesheet">
 	
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.0/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-sanitize.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
 	<script src="maitreya.js" type="text/javascript"></script>
 </head>
 	<body>
@@ -31,12 +33,14 @@ Loading icon CC0 from loading.io
 			<p>Hello there. <span class="statement true">My name is Tom</span>. How are you?</p>
 			<p>My grandfather is <span class="statement false">out there</span>, somewhere.</p>
 			
-			<div id="interface" class="preload">
+			<div id="interface" ng-class="aic.preoad" class="preload"><!-- THIS SHOULDN'T WORK BUT IT DOES-->
 				<div id="app-selector">
 					<div class="title">
 						<img src="maitreya.png">
 						<div>
 							<p>{{aic.lang.version}}</p>
+							<p ng-hide="true">This text should not be visible - if you can see this text, please contact the author.</p>
+							<p ng-show="aic.onMobile">{{aic.lang.mobileWarning}}</p>
 							<button id="boot-up" class="option speech">{{aic.lang.bootUp}}</button>
 						</div>
 					</div>
@@ -66,12 +70,18 @@ Loading icon CC0 from loading.io
 						<div class="app-main">
 							
 							<div class="terminal-body">
+								<div ng-show="aic.isSpeaking.terminal" class="working">
+									<img src="loading.gif">
+								</div>
 								<div class="terminal-log">
-									<p ng-repeat="line in aic.chatLog.terminal | orderBy:'+':true" ng-class="[line.speaker, line.class]">{{line.text}}</p>
+									<p ng-repeat="line in aic.chatLog.terminal" ng-class="[line.speaker, line.cssClass]">
+										<span ng-bind-html="line.text"></span>
+									</p>
+									<p class="title"><img src="maitreya_terminal.png"></p>
 								</div>
 							</div>
 							<form ng-submit="aic.terminalType()" class="middle-bar">
-								<p>MANUAL COMMAND INPUT</p>
+								<p>{{aic.lang.commandInput}}</p>
 								<input>
 								<button id="terminal-send" class="option action" type="submit">SEND</button>
 							</form>
@@ -79,7 +89,7 @@ Loading icon CC0 from loading.io
 								<div class="options" style="background-color: white;">
 								
 			<button class="option action">Fuck Bilbo Baggins in his tiny baby butt with my pixie dick</button>
-			<button class="option action">Waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka waka</button>
+			<button class="option action">Slap him in the face to wake him the fuck up</button>
 			<button class="option speech">Hello, my name is Maitreya.</button>
 			<button class="option speech">Who the fucking fuck are you and where the fuck am I</button>
 								</div>
@@ -132,7 +142,7 @@ Loading icon CC0 from loading.io
 			
 			<p>4000 can't change anything until its cell is opened. In order to protect it from CI, it must first be released then later re-contained by the Foundation in order for the cull to propagate. Cull of what?</p>
 			
-			<p>aaaa</p>
+			<p>move loading animations to left and right!</p>
 			
 			<p>aaaa</p>
 			

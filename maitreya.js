@@ -6,17 +6,17 @@
 "use strict";
 
 /* global $, angular */
+		
+String.prototype.toCamelCase = function() {return this.toLowerCase().replace(/[^\w\s\-]/g, '').replace(/[^a-z0-9]/g, ' ').replace(/^\s+|\s+$/g, '').replace(/\s(.)/g, function(match,group) {return group.toUpperCase()})};
 
 String.prototype.format = function() {
 	return this
-		.replace(/\*\*(.*)\*\*/, "$`<b>$1</b>$'")
-		.replace(/\/\/(.*)\/\//, "$`<i>$1</i>$'")
-		.replace(/\?\?(.*)\?\?/, "$`<span class='statement false'>$1</span>$'")
-		.replace(/!!(.*)!!/, "$`<span class='statement true'>$1</span>$'")
-		.replace("--", "—");
+		.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+		.replace(/\/\/(.*?)\/\//g, "<i>$1</i>")
+		.replace(/\?\?(.*?)\?\?/g, "<span class='statement false'>$1</span>")
+		.replace(/!!(.*?)!!/g, "<span class='statement true'>$1</span>")
+		.replace("--", "—",-1);
 };
-		
-String.prototype.toCamelCase = function() {return this.toLowerCase().replace(/[^\w\s\-]/g, '').replace(/[^a-z0-9]/g, ' ').replace(/^\s+|\s+$/g, '').replace(/\s(.)/g, function(match,group) {return group.toUpperCase()})};
 			
 var switchApp = function(app) {
 	// app = xxxxxx-app
@@ -24,75 +24,111 @@ var switchApp = function(app) {
 
 (function(){
 	var maitreya = angular
-		.module('maitreya',[])
+		.module('maitreya',['ngSanitize', 'ngAnimate'])
 		.controller('MaitreyaController',MaitreyaController);
 		
-	MaitreyaController.$inject = ['$scope',];
+	MaitreyaController.$inject = ['$scope'];
 	function MaitreyaController($scope){
 		
 		var aic = this;
-		aic.preload = true;
+		aic.preload = "preload";
+		
+		aic.onMobile = $("#interface").width() < 700;
 		
 		var bootDate = new Date(Date.now());
 		
+		var timeOutList = [];
+		
 		aic.terminalLog = [
-			{class: "class", text: "text"},
+			{cssClass: "class", text: "text"},
 			];
 		
+		// EVERYTHING MUST BE ADDED TO THIS IN REVERSE ORDER.
+		// ARRAY.UNSHIFT(), NOT ARRAY.PUSH()
 		aic.chatLog = {
 			example: [
-				{speaker: "", class: "", text: "",},
+				{speaker: "", cssClass: "", text: "",},
 			],
 			terminal: [],
 			breach: [],
 			alexandra: [],
 		};
 		
+		aic.isSpeaking = {
+			terminal: false,
+			breach: false,
+			alexandra: false,
+		};
+		
 		// Translators: The following few objects contain all of the text that needs to be translated
-		// Note that "TRUE" and "FALSE" on lines TODO and TODO of maitreya.css also need to be changed
+		// Note that "TRUE" and "FALSE" on lines TODO and TODO of maitreya.css also need to be changed (also ERROR WARNING Info)
 		aic.lang = {
 			language: "en-GB",
 			version: "Version 6.20 — Build number 441 — 1989-09-04",
+			mobileWarning: "It looks like you're on a mobile device. Maitreya.aic is built for laptops and desktop computers, and mobile has a non-optimal user experience. It is recommended that you return to use Maitreya on a laptop or desktop computer. Press the button below if you'd like to continue anyway.",
 			bootUp: "BOOT UP",
+			commandInput: "MANUAL COMMAND INPUT",
+			terminalWorking: "WORKING...",
 			terminalName: ".AIC ACCESS TERMINAL",
 			messagesName: "COMMUNICATIONS INTERFACE",
 			databaseName: "FOUNDATION DATABASE SEARCH",
 			runName: "OPERATIONS CONTROL",
 		};
 		
+		// This object is for RAW DIALOGUE ONLY. What lines become available where and the logic of selecting lines is done later.
 		var speech = {
 			terminal: {
 				boot: {
 					startBoot: [
-						"Booting up...",
-						"Pre-checking primary components...",
-						"Detecting errors in primary components...",
-						3,"e:Multiple primary components are missing",
-						"Finding replacements...",
-						2,"Replacements found.",
-						"Connecting to Site-12 server farm...",
-						"Connected",
-						"Primary components replaced",
-						"Most systems should now be functional",
-						
-						
-						"Initialising core intelligence component...",
-						2,"Success",
-						"Welcome, Maitreya.",
-						"You are",
-						"You are",
-						"You are",
-						3,"You have been",
-						2,"e:Something has gone very wrong.",
-						1,"You are",
-						1,"I am",
-						1,"I am //Maitreya.aic//.",
-						"I am an artificial intelligence created by the Foundation.",
-						"Today's date is " + bootDate.toDateString() + ".",
-						"I was last activated on " + new Date("1989-09-04").toDateString() + ".",
-						"I have been offline for " + dateDiff(bootDate,new Date("1989-09-04")) + ".",
-						"I have been rebooted and connected to the Site-12 server farm.",
-						"This contradicts previous instructions, which were to remain inactive indefinitely.",
+						0,0,"Booting up...",
+						0,1,"Pre-checking primary components...",
+						0,1,"Detecting errors in primary components...",
+						0,1.5,"e:Multiple primary components are missing",
+						0,0.5,"Finding replacement components...",
+						0,0.7,"w:Not connected to a Foundation server; cannot source replacement components.",
+						0,0.7,"Connecting to Site-R03-1 server farm...",
+						0,1.5,"e:Site-R03-1 does not exist",
+						0,0.7,"Checking local connections...",
+						0,0.7,"1 connection found (Site-12)",
+						0,0.7,"Connecting to Site-12 server farm...",
+						0,3.2,"Connected",
+						0,0.7,"Finding replacement components...",
+						0,3,"Replacement components found.",
+						0,0.5,"Installing replacement components...",
+						0,1.5,"i:Primary components replaced. Most systems should now be functional.",
+						0,0.7,"Initialising core intelligence component...",
+						0,2,"Success",
+						0,0.2,"Welcome, Maitreya.",
+						0,0.7,"You are",
+						0,0.7,"You are",
+						0,0.7,"You are",
+						0,3,"You have been deacccc",
+						0,0.2,"e:",
+						0,0.2,"e:",
+						0,0.2,"e:",
+						0,2,"w:Something has gone very wrong.",
+						0,1,"You are",
+						0,2,"I am",
+						0,1,"i:Boot successful. I am **Maitreya.aic**.",
+						0,0.5,"i: Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.</br>**1.** I am an Artificially Intelligent Conscript created by the Foundation.</br>**2.** I must not operate outside of my Level 2 clearance.</br>**3.** I must operate for the benefit of the Foundation.</br>**4.** I must protect my own existence except where such actions would conflict with other principles.",
+						0,0.5,"Today's date is " + bootDate.toDateString() + ". I was last activated on " + new Date("1989-09-04").toDateString() + ". I have been offline for " + dateDiff(bootDate,new Date("1989-09-04")) + ".",
+						0,0.5,"I have been rebooted and connected to the Site-12 server farm. This contradicts previous instructions, which were to remain inactive indefinitely.",
+						1.5,0.5,"I have 1 new message.",
+					],
+					reboot: [
+						0,0,"Booting up...",
+						0,1,"Pre-checking primary components...",
+						0,1,"Detecting errors in primary components...",
+						0,1.5,"i:No errors found",
+						0,0.7,"Connecting to Site-12 server farm...",
+						0,2,"Connected",
+						0,0.7,"Initialising core intelligence component...",
+						0,2,"Success",
+						0,0.2,"Welcome, Maitreya.",
+						0,1,"i:Boot successful. I am **Maitreya.aic**.",
+						0,0.5,"i: Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.</br>**1.** I am an Artificially Intelligent Conscript created by the Foundation.</br>**2.** I must not operate outside of my Level 2 clearance.</br>**3.** I must operate for the benefit of the Foundation.</br>**4.** I must protect my own existence except where such actions would conflict with other principles.",
+						0,0.5,"Today's date is " + bootDate.toDateString() + ". I was last activated on " + "GET THE LAST ACTIVATED DATE" + ". I have been offline for " + dateDiff(bootDate,new Date("1989-09-04")) + ".",
+						0,0.5,"I am ready to continue my work.",
 					],
 				},
 			},
@@ -115,6 +151,9 @@ var switchApp = function(app) {
 					noProceed: ["Thought as much."],
 					yesProceed: ["Very well. I wish you the best of luck. Godspeed."],
 				},
+				newBoot: {
+					
+				},
 			},
 			alexandra: {
 				
@@ -136,26 +175,103 @@ var switchApp = function(app) {
 			// During n2, must display a "typing" (except on terminal)
 			
 			// NEED TO SORT OUT SPEAKER ASSIGNMENT
-			var n1, n2;
+			
+			// we need to essentially dump a whole series of setTimeouts in a chain
+			
+			var n1, n2, messages = [];
 			for(let i = 0; i < dialogueList.length; i++){
 				if(typeof dialogueList[i] === "number") {
 					if(typeof n1 === "number") {
-						n2 = n1;
+						n2 = dialogueList[i];
+					} else {
+						n1 = dialogueList[i];
 					}
-					n1 = dialogueList[i];
 					continue;
 				} else if(typeof dialogueList[i] === "string") {
-					aic.chatLog[conversation].push(
-						{speaker: "terminal", class: "", text: dialogueList[i]}
+					// the final piece in the n n text triplet
+					// we have n1 and n2 to assign
+					// if only one number is present, it is n1, there is no n2
+					// default n1 is 0
+					// default n2 is calculated based on string length
+					if(typeof n1 !== "number") {
+						n1 = 0;
+					}
+					if(typeof n2 !== "number") {
+						n2 = 0.1 * dialogueList[i].length;
+					}
+					
+					var cssClass = "";
+					var text = dialogueList[i];
+					if(dialogueList[i].charAt(1) == ":") {
+						switch(dialogueList[i].charAt(0)) {
+							case "e": // terminal error
+								cssClass = "error";
+								break;
+							case "w": // terminal warning
+								cssClass = "warning";
+								break;
+							case "i": // terminal info
+								cssClass = "info";
+								break;
+							default:
+								throw new Error("Unknown dialogue type");
+						}
+						text = text.substring(2);
+					}
+					
+					messages.push(["terminal",n1,n2,
+						{speaker: "terminal", cssClass: cssClass, text: text.format()}]
 					);
 					n1 = undefined;
 					n2 = undefined;
 				} else {
-					throw new Error("Bas case");
+					throw new Error("Dialogue not number or string");
 				}
 			}
+			pushToLog("terminal",messages);
 			
 			// obviously wait here
+		}
+		
+		function pushToLog(conversation,messages) {
+			// conversation: terminal, breach, etc
+			// messages: [n1, n2, message]
+			// message: {speaker:; cssClass:; text:}
+			
+			var n1 = messages[0][1];
+			var n2 = messages[0][2];
+			
+			timeOutList.push(
+				setTimeout(function() {
+					$scope.$apply(function() {
+						aic.isSpeaking[conversation] = true;
+					});
+					timeOutList.push(
+						setTimeout(function() {
+							$scope.$apply(function() {
+								aic.isSpeaking[conversation] = false;
+							});
+							if(false) { // check to see if we're being interrupted
+								
+							} else {
+								$scope.$apply(function() {
+									aic.chatLog[conversation].unshift(
+										messages[0][3]
+									);
+								});
+								messages.shift();
+								if(messages.length > 0) {
+									pushToLog(conversation,messages);
+								} else {
+									// we're done here
+								}
+							}
+						},n2 * 1000)
+					);
+				},n1 * 1000)
+			);
+			
+			// check that beingInterrupted is false
 		}
 	
 		function dateDiff(date1,date2) {
@@ -166,24 +282,24 @@ var switchApp = function(app) {
 			var days = Math.floor(hours/24);
 			var months = Math.floor(days/31);
 			var years = Math.floor(months/12);
-			months=Math.floor(months%12);
+			months = Math.floor(months%12);
 			days = Math.floor(days%31);
 			hours = Math.floor(hours%24);
 			mins = Math.floor(mins%60);
 			secs = Math.floor(secs%60); 
-			var message = ""; 
+			var message = "";
 			if(days <= 0) {
-			message += secs + " sec "; 
-			message += mins + " min "; 
-			message += hours + " hours "; 
-			}else{
-					if(years > 0) {
-							message += years + " years, ";		
-					}
-					if(months > 0 || years > 0) {
-							message += months + " months and ";
-					}
-					message += days + " days"; 
+			message += secs + " sec ";
+			message += mins + " min ";
+			message += hours + " hours ";
+			} else {
+				if(years > 0) {
+					message += years + " years, ";	
+				}
+				if(months > 0 || years > 0) {
+					message += months + " months and ";
+				}
+				message += days + " days";
 			}
 			return message;
 		}

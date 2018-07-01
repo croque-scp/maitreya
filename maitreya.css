@@ -84,7 +84,7 @@ html, body {
 }
 #app-selector ul li.selector.selected {
 	background-color: white;
-	/*box-shadow: 3px 0 1px -2px rgba(0,0,0,0.12), 1px 0 5px 0 rgba(0,0,0,0.2), -3px 0 1px -2px rgba(0,0,0,0.12), -1px 0 5px rgba(0,0,0,0.2);*/
+	transition: background-color 0.2s ease-in-out;
 }
 #app-selector ul li.selector.selected:before {
 	box-shadow: inset -3px 0 2px -2px rgba(0,0,0,0.28), inset -4px 0 1px -2px rgba(0,0,0,0.14), inset -2px 0 5px -5px rgba(0,0,0,0.2);
@@ -180,24 +180,34 @@ html, body {
 #app-body #terminal-app .terminal-body {
 	height: 350px;
 	background-image: url(grey_stripe.png);
+	position: relative;
+}
+#app-body #terminal-app .working {
+	position: absolute;
+	width: 15px;
+	height: 15px;
+	left: 100px;
+	bottom: 0;
+	transform: translate(-20px,-5px);
 }
 #app-body #terminal-app .terminal-log {
 	height: 100%;
 	margin: 0 100px;
 	box-shadow: 3px 0 1px -2px rgba(0,0,0,0.12), 1px 0 5px 0 rgba(0,0,0,0.2), -3px 0 1px -2px rgba(0,0,0,0.12), -1px 0 5px rgba(0,0,0,0.2);
-	overflow:	 auto;
+	overflow:	auto;
 	display: flex;
 	flex-direction: column-reverse;
 	background-color: #ddd;
 }
 #app-body #terminal-app .terminal-log p {
 	margin: 0;
-	padding: 3px 10px;
+	padding: 3px 10px 3px 25px;
 	font-family: Courier,monospace;
 	color: #333;
-	background-color: #ddd;
-	border-top: 1px #ccc solid;
-	border-bottom: 1px #ccc solid;
+	background-color: #eee;
+	border-top: 1px #ddd solid;
+	border-bottom: 1px #ddd solid;
+	text-indent: -15px;
 }
 #app-body #terminal-app .terminal-log p.info {
 	color: #6b4c25;
@@ -214,20 +224,39 @@ html, body {
 	margin-left: -7px;
 	margin-right: 4px;
 }
-#app-body #terminal-app .terminal-log p.error {
+#app-body #terminal-app .terminal-log p.error, #app-body #terminal-app .terminal-log p.warning {
 	color: red;
 	background-color: #fff0f0;
 	border-top: 1px #ffd6d6 solid;
 	border-bottom: 1px #ffd6d6 solid;
 }
-#app-body #terminal-app .terminal-log p.error::before {
-	content: "WARNING";
+#app-body #terminal-app .terminal-log p.error::before, #app-body #terminal-app .terminal-log p.warning::before {
+	content: "ERROR";
 	color: white;
 	background-color: red;
 	font-weight: bold;
 	padding: 2px 4px;
 	margin-left: -7px;
 	margin-right: 4px;
+}
+#app-body #terminal-app .terminal-log p.warning::before {
+	content: "WARNING";
+}
+#app-body #terminal-app .terminal-log p.title {
+	background-color: transparent;
+}
+#app-body #terminal-app .terminal-log p.title img {
+	height: 50px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+#app-body #terminal-app .terminal-log p.ng-enter {
+	max-height: 0;
+	transition: all 0.5s ease-in-out;
+}
+#app-body #terminal-app .terminal-log p.ng-enter-active {
+	max-height: 300px;
 }
 #app-body #terminal-app .middle-bar {
 	background: linear-gradient(to right,#1488cc,#2b32b2);
@@ -255,12 +284,13 @@ html, body {
 
 
 /* LOADING SCREEN */
-/* displays before the introduction - remove .preload fro#interface to proceed */
+/* displays before the introduction - remove .preload from #interface to proceed */
 .preload #app-body {
 	display: none;
 }
 .preload #app-selector {
 	height: 100%;
+	transition-duration: 0s;
 }
 .preload #app-selector .title {
 	top: 45%;
@@ -290,6 +320,9 @@ html, body {
 .preload #app-selector ul {
 	opacity: 0;
 	top: -999rem;
+}
+.preload #app-selector * {
+	transition-duration: 0s;
 }
 
 /* TRUE/FALSE STATEMENTS */
@@ -493,7 +526,6 @@ html, body {
 .option.action#terminal-send:hover {
 	color: #205dbf;
 	margin-left: 0;
-	transform: none;
 }
 .option.action#terminal-send::after {
 	border-color: white;
