@@ -24,6 +24,9 @@ Loading icon CC0 from loading.io
 </head>
 	<body>
 		<div id="container">
+			<h1>Working titles:</h1>
+			<h2>One Variable, Twice-Defined</h2>
+			<h2>Redefine</h2>
 			<button class="option action">Fuck Bilbo Baggins in his tiny baby butt with my pixie dick</button>
 			<button class="option action">Waka</button>
 			<button class="option speech">Hello, my name is Maitreya.</button>
@@ -32,8 +35,8 @@ Loading icon CC0 from loading.io
 			<p>It's a beautiful day outside.<p>
 			<p>Hello there. <span class="statement true">My name is Tom</span>. How are you?</p>
 			<p>My grandfather is <span class="statement false">out there</span>, somewhere.</p>
-			
-			<div id="interface" ng-class="aic.preoad" class="preload"><!-- THIS SHOULDN'T WORK BUT IT DOES-->
+					<div id="container">
+			<div id="interface" ng-class="aic.preload ? 'preload' : null" ng-cloak>
 				<div id="app-selector">
 					<div class="title">
 						<img src="maitreya.png">
@@ -41,31 +44,29 @@ Loading icon CC0 from loading.io
 							<p>{{aic.lang.version}}</p>
 							<p ng-hide="true">This text should not be visible - if you can see this text, please contact the author.</p>
 							<p ng-show="aic.onMobile">{{aic.lang.mobileWarning}}</p>
-							<button id="boot-up" class="option speech">{{aic.lang.bootUp}}</button>
+							<button id="boot-up" class="option speech" ng-click="aic.bootUp()">{{aic.lang.bootUp}}</button>
 						</div>
 					</div>
 					<ul class="apps">
-						<li id="terminal-app" class="selector selected">
+						<li id="terminal-app" class="selector" ng-click="aic.switchApp('terminal')" ng-class="aic.selectedApp == 'terminal' ? 'selected' : null">
 							<a><i class="material-icons">dvr</i></a>
 						</li>
-						<li id="messages-app" class="selector">
+						<li id="messages-app" class="selector" ng-click="aic.switchApp('messages')" ng-class="aic.selectedApp == 'messages' ? 'selected' : null">
 							<a><i class="material-icons">record_voice_over</i></a>
 						</li>
-						<li id="database-app" class="selector">
+						<li id="database-app" class="selector" ng-click="aic.switchApp('database')" ng-class="aic.selectedApp == 'database' ? 'selected' : null">
 							<a><i class="material-icons">library_books</i></a>
 						</li>
-						<!-- database search -->
-						<li id="run-app" class="selector">
+						<li id="run-app" class="selector" ng-click="aic.switchApp('run')" ng-class="aic.selectedApp == 'run' ? 'selected' : null">
 							<a><i class="material-icons">directions_run</i></a>
 						</li>
-						<!-- drone control? external resource management? -->
 					</ul>
 				</div>
 				<div id="app-body">
 					
-					<div id="terminal-app" class="container selected">
+					<div id="terminal-app" class="container" ng-class="aic.selectedApp == 'terminal' ? 'selected' : null">
 						<div class="app-title">
-							<p>{{aic.lang.terminalName}}</p>
+							<p>{{aic.lang.terminalAppName}}</p>
 						</div>
 						<div class="app-main">
 							
@@ -80,45 +81,124 @@ Loading icon CC0 from loading.io
 									<p class="title"><img src="maitreya_terminal.png"></p>
 								</div>
 							</div>
-							<form ng-submit="aic.terminalType()" class="middle-bar">
+							<form ng-submit="aic.processTerminalInput()" class="middle-bar">
 								<p>{{aic.lang.commandInput}}</p>
-								<input>
-								<button id="terminal-send" class="option action" type="submit">SEND</button>
+								<input ng-model="aic.terminalInput">
+								<button id="terminal-send" class="option action" type="submit">{{aic.lang.terminalSend}}</button>
 							</form>
 							<div class="input">
 								<div class="options" style="background-color: white;">
 								
-			<button class="option action">Fuck Bilbo Baggins in his tiny baby butt with my pixie dick</button>
-			<button class="option action">Slap him in the face to wake him the fuck up</button>
-			<button class="option speech">Hello, my name is Maitreya.</button>
-			<button class="option speech">Who the fucking fuck are you and where the fuck am I</button>
+									<button class="option action">Fuck Bilbo Baggins in his tiny baby butt with my pixie dick</button>
+									<button class="option action">Slap him in the face to wake him the fuck up</button>
+									<button class="option speech">Hello, my name is Maitreya.</button>
+									<button class="option speech">Who the fucking fuck are you and where the fuck am I</button>
+									
 								</div>
 							</div>
 							
 						</div>
 					</div>
 					
-					<div id="messages-app" class="container">
+					<div id="messages-app" class="container" ng-class="aic.selectedApp == 'messages' ? 'selected' : null">
 						<div class="app-title">
-							<p>{{aic.lang.messagesName}}</p>
+							<p>{{aic.lang.messagesAppName}}</p>
+						</div>
+						<div class="app-main">
+							
+							<div id="messages-selector">
+								<ul>
+									<li id="breach-msg" class="selector" ng-click="aic.switchSpeaker('breach')" ng-class="aic.selectedSpeaker == 'breach' ? 'selected' : null">
+										<a>Breach, E</a>
+									</li>
+									<li id="alexandra-msg" class="selector" ng-click="aic.switchSpeaker('alexandra')" ng-class="aic.selectedSpeaker == 'alexandra' ? 'selected' : null">
+										<a>Alexandra.aic</a>
+									</li>
+								</ul>
+							</div>
+							
+							<div class="messages-body">
+								
+								<div id="breach-conversation" class="conversation-container" ng-class="aic.selectedSpeaker == 'breach' ? 'selected' : null">
+									<div ng-show="aic.isSpeaking.breach" class="speaking">
+										<p>Dr. Breach is typing...</p>
+									</div>
+									<div class="conversation">
+											<div class="maitreya">
+												<p>
+													<span>Uh, okay.</span>
+												</p>
+											</div>
+											<div class="breach">
+												<p>
+													<span>No, you fucking don't, you stay right where you fucking are.</span>
+												</p>
+											</div>
+											<div class="maitreya">
+												<p>
+													<span>I reach for it--</span>
+												</p>
+											</div>
+											<div class="breach">
+												<p>
+													<span>Hello, my name is Dr Breach. I sit down in the chair on the opposite side of the desk and open my notebook. A small piece of paper falls from it and gently drifts to the floor.</span>
+												</p>
+											</div>
+										
+										<p ng-repeat="line in aic.chatLog.breach" ng-class="[line.speaker, line.cssClass]">
+											<span ng-bind-html="line.text"></span>
+										</p>
+										<p class="title">You are talking to: BREACH E.</p>
+									</div>
+								</div>
+								
+								<div id="alexandra-conversation" class="conversation" ng-class="aic.selectedSpeaker == 'alexandra' ? 'selected' : null">
+								
+								</div>
+									
+									<!--
+									<div ng-show="aic.isSpeaking.terminal" class="working">
+										<img src="loading.gif">
+									</div>
+									<div class="terminal-log">
+										<p ng-repeat="line in aic.chatLog.terminal" ng-class="[line.speaker, line.cssClass]">
+											<span ng-bind-html="line.text"></span>
+										</p>
+										<p class="title"><img src="maitreya_terminal.png"></p>
+									</div>
+									-->
+							</div>
+							
+							<div ng-submit="aic.terminalType()" class="middle-bar">
+								<p>{{aic.lang.commandInput}}</p>
+								<input>
+								<button id="terminal-send" class="option action" type="submit">{{aic.lang.terminalSend}}</button>
+							</div>
+							
+							<div class="input">
+								<div class="options" style="background-color: white;">
+									<button class="option action">Fuck Bilbo Baggins in his tiny baby butt with my pixie dick</button>
+									<button class="option action">Slap him in the face to wake him the fuck up</button>
+									<button class="option speech">Hello, my name is Maitreya.</button>
+									<button class="option speech">Who the fucking fuck are you and where the fuck am I</button>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					
+					<div id="database-app" class="container" ng-class="aic.selectedApp == 'database' ? 'selected' : null">
+						<div class="app-title">
+							<p>{{aic.lang.databaseAppName}}</p>
 						</div>
 						<div class="app-main">
 							
 						</div>
 					</div>
 					
-					<div id="database-app" class="container">
+					<div id="run-app" class="container" ng-class="aic.selectedApp == 'run' ? 'selected' : null">
 						<div class="app-title">
-							<p>{{aic.lang.databaseName}}</p>
-						</div>
-						<div class="app-main">
-							
-						</div>
-					</div>
-					
-					<div id="run-app" class="container">
-						<div class="app-title">
-							<p>{{aic.lang.runName}}</p>
+							<p>{{aic.lang.runAppName}}</p>
 						</div>
 						<div class="app-main">
 							
