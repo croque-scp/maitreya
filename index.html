@@ -1,32 +1,46 @@
 <!DOCTYPE html>
 <!--
 Loading icon CC0 from loading.io
+Typing icon CC-BY from loading.io
 -->
+
+<!-- AUTHOR COMMENT
+
+Author Post - {{TITLE}}
+
+Many thanks to the following:
+* [[*user A Random Day]] for Maitreya's name
+* [[*user GrimmCreeper]] for technical help
+* [[*user LurkD]] for insight into AIAD's existing lore
+
+-->
+
 <html ng-app="maitreya" ng-controller="MaitreyaController as aic">
-<head>
-	<meta charset="UTF-8">
-	<meta name=viewport content="width=device-width, initial-scale=1">
-	<title>Maitreya</title>
-	
-	<link href="https://fonts.googleapis.com/css?family=Nunito:600" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<!-- <link href="http://d3g0gp89917ko0.cloudfront.net/v--edac79f846ba/common--theme/base/css/style.css" rel="stylesheet">
-	<link href="http://www.scp-wiki.net/component:theme/code/1" rel="stylesheet"> -->
-	<link href="style.css" rel="stylesheet">
-	<link href="1.css" rel="stylesheet">
-	<link href="maitreya.css" rel="stylesheet">
-	
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-sanitize.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
-	<script src="maitreya.js" type="text/javascript"></script>
-</head>
+	<head>
+		<title>Maitreya</title>
+		<meta charset="UTF-8">
+		<meta name=viewport content="width=device-width, initial-scale=1">
+		
+		<link href="https://fonts.googleapis.com/css?family=Nunito:600" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!-- <link href="http://d3g0gp89917ko0.cloudfront.net/v--edac79f846ba/common--theme/base/css/style.css" rel="stylesheet">
+		<link href="http://www.scp-wiki.net/component:theme/code/1" rel="stylesheet"> -->
+		<link href="style.css" rel="stylesheet">
+		<link href="1.css" rel="stylesheet">
+		<link href="maitreya.css" rel="stylesheet">
+		
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-sanitize.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
+		<script src="maitreya.js" type="text/javascript"></script>
+	</head>
 	<body>
 		<div id="container">
 			<h1>Working titles:</h1>
 			<h2>One Variable, Twice-Defined</h2>
 			<h2>Redefine</h2>
+			<h2>Redefine Me</h2>
 			<button class="option action">Fuck Bilbo Baggins in his tiny baby butt with my pixie dick</button>
 			<button class="option action">Waka</button>
 			<button class="option speech">Hello, my name is Maitreya.</button>
@@ -35,7 +49,6 @@ Loading icon CC0 from loading.io
 			<p>It's a beautiful day outside.<p>
 			<p>Hello there. <span class="statement true">My name is Tom</span>. How are you?</p>
 			<p>My grandfather is <span class="statement false">out there</span>, somewhere.</p>
-					<div id="container">
 			<div id="interface" ng-class="aic.preload ? 'preload' : null" ng-cloak>
 				<div id="app-selector">
 					<div class="title">
@@ -50,15 +63,19 @@ Loading icon CC0 from loading.io
 					<ul class="apps">
 						<li id="terminal-app" class="selector" ng-click="aic.switchApp('terminal')" ng-class="aic.selectedApp == 'terminal' ? 'selected' : null">
 							<a><i class="material-icons">dvr</i></a>
+							<div class="notification" ng-show="aic.notifications.terminal > 0"><p>{{aic.notifications.terminal}}</p></div>
 						</li>
 						<li id="messages-app" class="selector" ng-click="aic.switchApp('messages')" ng-class="aic.selectedApp == 'messages' ? 'selected' : null">
 							<a><i class="material-icons">record_voice_over</i></a>
+							<div class="notification" ng-show="(aic.notifications.breach + aic.notificatons.alexandra) > 0"><p>{{aic.notifications.breach + aic.notifications.alexandra}}</p></div>
 						</li>
 						<li id="database-app" class="selector" ng-click="aic.switchApp('database')" ng-class="aic.selectedApp == 'database' ? 'selected' : null">
 							<a><i class="material-icons">library_books</i></a>
+							<div class="notification" ng-show="aic.notifications.database > 0"><p>{{aic.notifications.database}}</p></div>
 						</li>
 						<li id="run-app" class="selector" ng-click="aic.switchApp('run')" ng-class="aic.selectedApp == 'run' ? 'selected' : null">
 							<a><i class="material-icons">directions_run</i></a>
+							<div class="notification" ng-show="aic.notifications.run > 0"><p>{{aic.notifications.run}}</p></div>
 						</li>
 					</ul>
 				</div>
@@ -83,7 +100,7 @@ Loading icon CC0 from loading.io
 							</div>
 							<form ng-submit="aic.processTerminalInput()" class="middle-bar">
 								<p>{{aic.lang.commandInput}}</p>
-								<input ng-model="aic.terminalInput">
+								<input ng-model="aic.terminalInput" ng-keydown="aic.previousCommand($event)">
 								<button id="terminal-send" class="option action" type="submit">{{aic.lang.terminalSend}}</button>
 							</form>
 							<div class="input">
@@ -109,7 +126,7 @@ Loading icon CC0 from loading.io
 							<div id="messages-selector">
 								<ul>
 									<li id="breach-msg" class="selector" ng-click="aic.switchSpeaker('breach')" ng-class="aic.selectedSpeaker == 'breach' ? 'selected' : null">
-										<a>Breach, E</a>
+										<a>Breach E.</a>
 									</li>
 									<li id="alexandra-msg" class="selector" ng-click="aic.switchSpeaker('alexandra')" ng-class="aic.selectedSpeaker == 'alexandra' ? 'selected' : null">
 										<a>Alexandra.aic</a>
@@ -120,34 +137,17 @@ Loading icon CC0 from loading.io
 							<div class="messages-body">
 								
 								<div id="breach-conversation" class="conversation-container" ng-class="aic.selectedSpeaker == 'breach' ? 'selected' : null">
-									<div ng-show="aic.isSpeaking.breach" class="speaking">
-										<p>Dr. Breach is typing...</p>
-									</div>
 									<div class="conversation">
-											<div class="maitreya">
-												<p>
-													<span>Uh, okay.</span>
-												</p>
+										<div ang-show="aic.isSpeaking.breach" class="speaking">
+											<p><img src="typing.gif">Dr. Breach is typing...</p>
+										</div>
+										<div class="wrapper" ng-repeat="line in aic.chatLog.breach" ng-class="[line.speaker, aic.chatLog.breach[$index-1].speaker == line.speaker ? 'collapsed' : null]">
+											<img ng-src="{{aic.chatLog.breach[$index-1].speaker != line.speaker ? (line.speaker == 'breach' ? 'breach_icon2.png' : (line.speaker == 'maitreya' ? 'maitreya_icon.png' : null)) : null}}" ng-class="line.speaker" class="logo">
+											<div ng-class="[line.speaker, line.cssClass]">
+												<p><span ng-bind-html="line.text"></span></p>
 											</div>
-											<div class="breach">
-												<p>
-													<span>No, you fucking don't, you stay right where you fucking are.</span>
-												</p>
-											</div>
-											<div class="maitreya">
-												<p>
-													<span>I reach for it--</span>
-												</p>
-											</div>
-											<div class="breach">
-												<p>
-													<span>Hello, my name is Dr Breach. I sit down in the chair on the opposite side of the desk and open my notebook. A small piece of paper falls from it and gently drifts to the floor.</span>
-												</p>
-											</div>
-										
-										<p ng-repeat="line in aic.chatLog.breach" ng-class="[line.speaker, line.cssClass]">
-											<span ng-bind-html="line.text"></span>
-										</p>
+											<!-- <div class="logo maitreya">M</div> -->
+										</div>
 										<p class="title">You are talking to: BREACH E.</p>
 									</div>
 								</div>
@@ -243,4 +243,4 @@ Loading icon CC0 from loading.io
  
  <!-- Last commit was a major reversion -->
  
- <!-- alexandra: It's just that... (what) Well, you don't have a face. -->
+ <!-- alexandra: It's just that... (what) Well, you don't have a face. (option to compliment her) -->

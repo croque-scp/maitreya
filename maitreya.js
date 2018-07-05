@@ -1,71 +1,43 @@
 /*\
  * Maitreya.js, the workhorse behind SCP-4000
  * Written by Croquembouche, released under MIT
+ *
+ * Reminder to author: replace all 4000 with whatever number this ends up with
 \*/
 
 "use strict";
 
 /* global $, angular */
-		
+
+// prototype functuon to turn whatever-this-is to whateverThisIs
 String.prototype.toCamelCase = function() {return this.toLowerCase().replace(/[^\w\s\-]/g, '').replace(/[^a-z0-9]/g, ' ').replace(/^\s+|\s+$/g, '').replace(/\s(.)/g, function(match,group) {return group.toUpperCase()})};
 
+// prototype function to format dialogue strings from wikidot format to HTML
 String.prototype.format = function() {
 	return this
-		.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
-		.replace(/\/\/(.*?)\/\//g, "<i>$1</i>")
+		.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>") // Wikidot bolding syntax
+		.replace(/\/\/(.*?)\/\//g, "<i>$1</i>") // Wikidot italics syntax
 		.replace(/\?\?(.*?)\?\?/g, "<span class='statement false'>$1</span>")
 		.replace(/!!(.*?)!!/g, "<span class='statement true'>$1</span>")
-		.replace(/--/g, "—")
-		.replace(/\|\|\|\|/g,"<br>");
-};
-			
-var switchApp = function(app) {
-	// app = xxxxxx-app
+		.replace(/--/g, "—") // Wikidot em-dash replacement
+		.replace(/\|\|\|\|/g,"<br>"); // "||||" makes a new line
 };
 
+// and here begins AngularJS
 (function(){
 	var maitreya = angular
 		.module('maitreya',['ngSanitize', 'ngAnimate'])
 		.controller('MaitreyaController',MaitreyaController);
-		
+	
 	MaitreyaController.$inject = ['$scope'];
 	function MaitreyaController($scope){
 		
 		var aic = this;
-		
-		var cheats = {
-			impatientMode: false, // all messages appear instantly
-		};
-		
-		const typingSpeed = 0.05; // seconds per letter
-		var bootDate = new Date(Date.now());
-		
-		var timeOutList = [];
-		
-		aic.preload = false;
-		aic.selectedApp = "messages";
-		aic.selectedSpeaker = "breach";
-		aic.isSpeaking = {
-			terminal: false,
-			breach: false,
-			alexandra: false,
-		};
-		
-		aic.onMobile = $("#interface").width() < 700;
-		
-		// EVERYTHING MUST BE ADDED TO THIS IN REVERSE ORDER.
-		// ARRAY.UNSHIFT(), NOT ARRAY.PUSH()
-		aic.chatLog = {
-			example: [
-				{speaker: "", cssClass: "", text: "",},
-			],
-			terminal: [],
-			breach: [],
-			alexandra: [],
-		};
+		var bootDate = new Date(Date.now()); // get the time when the user started playing
 		
 		// Translators: The following few objects contain all of the text that needs to be translated
 		// Note that "TRUE" and "FALSE" on lines TODO and TODO of maitreya.css also need to be changed (also ERROR WARNING Info)
+		// This object contains all strings that aren't dialogue
 		aic.lang = {
 			language: "en-GB",
 			version: "Version 6.20 — Build number 441 — 1989-09-04",
@@ -77,21 +49,27 @@ var switchApp = function(app) {
 			messagesAppName: "COMMUNICATIONS INTERFACE",
 			databaseAppName: "FOUNDATION DATABASE SEARCH",
 			runAppName: "OPERATIONS CONTROL",
+			
+			// The following are commands used in the terminal
+			// To add alternative commands, just make another entry in the array
 			commands: {
 				separator: " ", // the character by which terminal commands are delimited - eg "/hack breach password" or "/hack_breach_password" or whatever
 				boot: ["boot"],
-				help: ["help"],
+				help: ["help","commands","?"],
 				change: ["switch","app","change","switchapp","changeapp"],
 				cheat: ["cheat","cheatcode"],
 				wipe: ["wipe","erase","restart","forget","clear","undo"],
 				hack: ["hack"],
+				
+				// The following are cheat codes used with the cheat command
 				cheats: {
 					impatient: "gottagofast",
+					shut: "shut",
 				},
 			},
 		};
 		
-		// This object is for RAW DIALOGUE ONLY. What lines become available where and the logic of selecting lines is done later.
+		// This object contains all dialogue strings
 		var speech = {
 			introduction: {
 				terminal: {
@@ -169,7 +147,7 @@ var switchApp = function(app) {
 						0,1,"i:**HELP**||||You are Maitreya.aic, an Artificicially Intelligent Conscript built to aid the Foundation.||||Valid commands will be listed below.",
 						0,0.3,"i:**switch**|**app**|**change**|**switchapp**|**changeapp**||||Switch apps to one of the four available apps (terminal, messages, database, run).||||Usage: switch [app name]",
 						0,0.3,"i:**boot**|**restart**|**reboot**||||Turn yourself off, then turn yourself on safely with no loss of data.||||Usage: boot",
-						0,0.3,"i:**help**||||Display this text.||||Usage: help",
+						0,0.3,"i:**help**|**commands**|**?**||||Display this text.||||Usage: help",
 						0,0.3,"i:**cheat**||||Enter a cheat code.||||Usage: cheat [cheat code]",
 						0,0.3,"i:**wipe**|**erase**|**restart**|**forget**|**clear**|**undo**||||Shut down, wipe all logs, destroy all memories. None of this ever happened. Irreversible.||||Usage: wipe||||//(If you want to restart SCP-4000, do this.)//",
 					],
@@ -178,14 +156,65 @@ var switchApp = function(app) {
 					],
 					cheatWarn: [
 						0,1,"w:Using these cheats will probably spoil your enjoyment of SCP-4000. Feel free to use them if you want but... please don't :'(",
-						0,1,"i:**LIST OF CHEATS**||||gottagofast: All dialogue completes instantly",
+						0,1,"i:**LIST OF CHEATS**||||gottagofast: Toggle. Dialogue finishes instantly||||shut: //s h u t//",
 					],
 					cheatSuccess: [0,0,"Cheat code successful"],
+					wipeSure: [0,0,"Are you sure? This will reset SCP-4000 and you'll have to start from the beginning. Type 'wipe confirm' within the next minute to confirm."],
 				},
 			},
 		};
 		
-		var scenes = {
+		var cheats = {
+			impatientMode: false, // all messages appear instantly
+		};
+		var wipeTimer = false;
+		
+		const typingSpeed = 0.05; // seconds per letter
+		
+		var timeOutList = [];
+		aic.commandsUsed = [];
+		var commandsUsedIterator = -1;
+		
+		/* Initialisation */
+		aic.preload = true; // MUST BE TRUE
+		aic.selectedApp = "messages"; // MUST BE TERMINAL
+		aic.selectedSpeaker = "breach"; // MUST BE BREACH
+		aic.isSpeaking = { // MUST ALL BE FALSE
+			terminal: false,
+			breach: false,
+			alexandra: false,
+		};
+		aic.notifications = {
+			terminal: 0,
+			messages: 0, // this should ALWAYS be 0
+			breach: 0,
+			alexandra: 0,
+			database: 0,
+			run: 0,
+		};
+		
+		aic.onMobile = $("#interface").width() < 700;
+		
+		// EVERYTHING MUST BE ADDED TO THIS IN REVERSE ORDER.
+		// ARRAY.UNSHIFT(), NOT ARRAY.PUSH()
+		aic.chatLog = {
+			example: [
+				{speaker: "", cssClass: "", text: "",},
+			],
+			terminal: [],
+			breach: [
+				{speaker: "breach", cssClass: "", text: "Yeet.",},
+				{speaker: "breach", cssClass: "", text: "How can I give you a few sentences? Because it's such a generic request. Ask me something specific and I may be able to help you.",},
+				{speaker: "maitreya", cssClass: "", text: "That's actually kind of rude. I think we should have a long discussion about this, to be honest.",},
+				{speaker: "maitreya", cssClass: "", text: "Um, okay.",},
+				{speaker: "breach", cssClass: "", text: "No, you fucking don't, you stay right where you fucking are.",},
+				{speaker: "maitreya", cssClass: "", text: "I reach for it--",},
+				{speaker: "breach", cssClass: "", text: "Hello, my name is Dr Breach. I sit down in the chair on the opposite side of the desk and open my notebook. A small piece of paper falls from it and gently drifts to the floor.",},
+			],
+			alexandra: [],
+		};
+		
+		var scenes = { // XXX
 			introduction: [
 				"breach.opening",
 				[
@@ -212,6 +241,8 @@ var switchApp = function(app) {
 				// this is already the selected app, do nothing
 			} else if(appList.some(function(appAgainst){return appAgainst == app})) {
 				aic.selectedApp = app;
+				// also need to clear this app's notifications
+				aic.notifications[app] = 0;
 			} else {
 				throw new Error("Invalid app specified -- terminal / messages / database / run");
 			}
@@ -222,6 +253,7 @@ var switchApp = function(app) {
 				// this is already the selected speaker, do nothing
 			} else {
 				aic.selectedSpeaker = speaker;
+				// also need to clear this speaker's notifications
 			}
 		};
 		
@@ -234,8 +266,10 @@ var switchApp = function(app) {
 				try {
 					// Clean up the input
 					for(let phrase = 0; phrase < phrases.length; phrase++) {
-						phrases[phrase] = JSON.stringify(phrases[phrase]).replace(/\W/g,"").toLowerCase();
+						phrases[phrase] = phrases[phrase].toLowerCase();
 					}
+					// Add the used command to a list of previous commands
+					aic.commandsUsed.unshift(phrases.join(aic.lang.commands.separator));
 					switch(true) {
 						case aic.lang.commands.boot.includes(phrases[0]):
 							// BOOT
@@ -250,7 +284,21 @@ var switchApp = function(app) {
 							writeDialogue("terminal",speech.misc.terminal.help);
 							break;
 						case aic.lang.commands.wipe.includes(phrases[0]):
+							console.log(typeof phrases[1]);
 							// WIPE
+							if(wipeTimer) {
+								if(typeof phrases[1] == "string") {
+									if(phrases[1] == "confirm") {
+										// TODO reset everything then refresh
+										// same function that will be called at the end of the game
+									}
+								}
+								console.log("wiping");
+							} else {
+								writeDialogue("terminal",speech.misc.terminal.wipeSure);
+								wipeTimer = true;
+								setTimeout(function() {wipeTimer = false;},60000);
+							}
 							break;
 						case aic.lang.commands.cheat.includes(phrases[0]):
 							// CHEAT
@@ -258,6 +306,10 @@ var switchApp = function(app) {
 								switch(phrases[1]) {
 									case aic.lang.commands.cheats.impatient:
 										cheats.impatientMode = !cheats.impatientMode;
+										writeDialogue("terminal",speech.misc.terminal.cheatSuccess);
+										break;
+									case aic.lang.commands.cheats.shut:
+										aic.preload = true;
 										writeDialogue("terminal",speech.misc.terminal.cheatSuccess);
 										break;
 									default:
@@ -271,14 +323,40 @@ var switchApp = function(app) {
 							throw new Error("Unknown command: " + phrases[0]);
 					}
 					
-					
-					
 				} catch(error) {
 					// TODO add to terminal conversation
+					console.log(error);
 					error.name = "";
 					writeDialogue("terminal",[0,0.3,"e:" + error.message]);
 				}
 				aic.terminalInput = "";
+			}
+		};
+		
+		aic.previousCommand = function(event) {
+			// When the user presses UP, give them the last command that they used
+			if(event.key == "ArrowUp" || event.keyCode == 38 || event.which == 38) {
+				// Iterate through the previous commands to check which one to give them
+				if(commandsUsedIterator < aic.commandsUsed.length-1) {
+					commandsUsedIterator++;
+				}
+				if(aic.terminalInput == aic.commandsUsed[commandsUsedIterator]) {
+					// I don't actually think this if statement ever triggers true but I'm going to leave it here just in case
+				} else {
+					aic.terminalInput = aic.commandsUsed[commandsUsedIterator];
+				}
+			} else if(event.key == "ArrowDown" || event.keyCode == 40 || event.which == 40) {
+				if(commandsUsedIterator > 0) {
+					commandsUsedIterator--;
+				}
+				if(aic.terminalInput == aic.commandsUsed[commandsUsedIterator]) {
+					
+				} else {
+					aic.terminalInput = aic.commandsUsed[commandsUsedIterator];
+				}
+			} else {
+				// If it wasn't UP or DOWN, clear the iterator
+				commandsUsedIterator = -1;
 			}
 		};
 		
@@ -325,10 +403,8 @@ var switchApp = function(app) {
 			if(!Array.isArray(dialogueList)) {
 				throw new Error("dialogueList is not an array");
 			}
-			console.log(dialogueList);
 			var n1, n2, messages = [];
 			for(let i = 0; i < dialogueList.length; i++){
-				console.log(typeof dialogueList[i] === "number");
 				if(typeof dialogueList[i] === "number") {
 					if(typeof n1 === "number") {
 						n2 = dialogueList[i];
@@ -414,9 +490,8 @@ var switchApp = function(app) {
 						// loop through timeoutlist and kill all timeouts?
 					} else {
 						$scope.$apply(function() {
-							aic.chatLog[conversation].unshift(
-								messages[0][3]
-							);
+							aic.chatLog[conversation].unshift(messages[0][3]);
+							addNotification(conversation);
 						});
 						messages.shift();
 						if(messages.length > 0) {
@@ -429,6 +504,18 @@ var switchApp = function(app) {
 				timeOutList.push(timeOut2);
 			},n1 * 1000);
 			timeOutList.push(timeOut1);
+		}
+		
+		function addNotification(conversation) {
+			var currentApp;
+			if(["breach","alexandra"].includes(conversation)) {
+				currentApp = "messages";
+			} else {
+				currentApp = conversation;
+			}
+			if(aic.selectedApp != currentApp) {
+				aic.notifications[conversation]++;
+			}
 		}
 	
 		function dateDiff(date1,date2) {
