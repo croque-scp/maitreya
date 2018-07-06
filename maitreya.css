@@ -104,11 +104,11 @@ html, body, #interface {
 	margin: 0 5px;
 }
 #app-selector ul li.selector.selected {
-	background-color: white;
+	/*background-color: white;*/
 	transition: background-color 0.2s ease-in-out;
 }
-#app-selector ul li.selector.selected:before {
-	box-shadow: inset -3px 0 2px -2px rgba(0,0,0,0.28), inset -4px 0 1px -2px rgba(0,0,0,0.14), inset -2px 0 5px -5px rgba(0,0,0,0.2);
+#app-selector ul li.selector a::before {
+	box-shadow: none;
 	content: " ";
 	height: 100%;
 	left: -10px;
@@ -116,7 +116,24 @@ html, body, #interface {
 	top: 0;
 	width: 10px;
 }
-#app-selector ul li.selector.selected:after {
+#app-selector ul li.selector a::after {
+	box-shadow: none;
+	content: "";
+	height: 100%;
+	position: absolute;
+	right: -10px;
+	width: 10px;
+}
+#app-selector ul li.selector.selected a::before {
+	box-shadow: inset -3px 0 2px -2px rgba(0,0,0,0.28), inset -4px 0 1px -2px rgba(0,0,0,0.14), inset -2px 0 5px -5px rgba(0,0,0,0.2);
+	content: "";
+	height: 100%;
+	left: -10px;
+	position: absolute;
+	top: 0;
+	width: 10px;
+}
+#app-selector ul li.selector.selected a::after {
 	box-shadow: inset 3px 0 2px -2px rgba(0,0,0,0.28), inset 4px 0 1px -2px rgba(0,0,0,0.14), inset 2px 0 5px -5px rgba(0,0,0,0.2);
 	content: " ";
 	height: 100%;
@@ -133,7 +150,11 @@ html, body, #interface {
 	position: absolute;
 	color: #205dbf;
 	border: 1px white solid;
-	transition-duration: 0.2s;
+	transition: box-shadow 0.2s ease-in-out 0s,
+	            border-radius 0.2s ease-in-out 0s,
+	            height 0.2s ease-in-out 0s,
+	            width 0.1s ease-in-out 0s,
+	            border-width 0s;
 	top: 50%;
 	left: 50%;
 	margin-right: -50%;
@@ -142,6 +163,15 @@ html, body, #interface {
 }
 #app-selector ul li.selector.selected a {
 	box-shadow: none;
+	border-radius: 0;
+	height: 100%;
+	width: 100%;
+	border-width: 0;
+	transition: box-shadow 0.1s ease-in-out 0s,
+	            border-radius 0.1s ease-in-out 0s,
+	            height 0.1s ease-in-out 0s,
+	            width 0.2s ease-in-out 0.2s,
+	            border-width 0s;
 }
 #app-selector ul li.selector:not(.selected):hover a {
 	background-color: transparent;
@@ -152,6 +182,12 @@ html, body, #interface {
 	cursor: default;
 	color: #205dbf;
 }
+/*#messages-selector ul li.selector.selected a {
+	border-radius: 0;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	box-shadow: none;
+}*/
 #app-selector ul li.selector a i {
 	position: absolute;
 	top: 50%;
@@ -160,10 +196,10 @@ html, body, #interface {
 	transform: translate(-50%,-50%);
 }
 #app-selector ul, #app-selector ul li, #app-selector ul li a {
-	z-index: 2;
+	z-index: 20;
 }
 #app-selector ul li.selector .notification {
-	z-index: 3;
+	z-index: 30;
 	position: absolute;
 	top: 50%;
 	left: 75%;
@@ -178,7 +214,7 @@ html, body, #interface {
 #app-selector ul li.selector .notification p {
 	margin: 0;
 	text-align: center;
-	font-family: Nunito,Verdana,sans-serif;
+	font-family: Nunito,Verdana,Arial,Helvetica,sans-serif;
 	font-size: 0.9em;
 	position: absolute;
 	top: 50%;
@@ -195,10 +231,10 @@ html, body, #interface {
 	justify-content: flex-end;
 	height: 30px; /* I'm so sorry */
 	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
-	z-index: 1;
+	z-index: 10;
 }
 .app-title p {
-	font-family: Nunito, Verdana, sans-serif;
+	font-family: Nunito,Verdana,Arial,Helvetica,sans-serif;
 	margin: 0 5%;
 	margin-top: 2px;
 	font-size: 20px;
@@ -337,12 +373,6 @@ html, body, #interface {
  *  / /  / /  __(__  |__  ) /_/ / /_/ /  __(__  )
  * /_/  /_/\___/____/____/\__,_/\__, /\___/____/
  *                             /____/          */
-#app-body #messages-app #messages-selector ul {
-	height: 20px;
-	position: relative;
-	background-color: #ddd;
-	margin: 0;
-}
 #app-body #messages-app .conversation-container {
 	height: 350px;
 	position: relative;
@@ -358,7 +388,7 @@ html, body, #interface {
 	margin: 0 40px;
 	font-size: 1em;
 	display: inline-block;
-	font-family: Nunito,Verdana,sans-serif;
+	font-family: Nunito,Verdana,Arial,Helvetica,sans-serif;
 }
 #app-body #messages-app .speaking img {
 	position: absolute;
@@ -373,6 +403,15 @@ html, body, #interface {
 	display: flex;
 	flex-direction: column-reverse;
 	overflow:	auto;
+}
+#app-body #messages-app .conversation::before {
+	content: "";
+	width: 90%; /*this is so it doesn't go over the scrollbar*/
+	height: 10px;
+	position: absolute;
+	background: linear-gradient(to bottom,white,transparent);
+	top: 0;
+	left: 5%; /*help*/
 }
 #app-body #messages-app .conversation .wrapper {
 	margin: 0 130px 1em 130px;
@@ -433,10 +472,10 @@ html, body, #interface {
 #app-body #messages-app .conversation p.title {
 	background-color: transparent;
 	font-size: 1.2em;
-	font-family: Nunito,Verdana;
+	font-family: Nunito,Verdana,Arial,Helvetica,sans-serif;
 	display: block;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 0 auto;
+	padding: 1em;
 	color: black;
 }
 #app-body #messages-app .conversation p.ng-enter {
@@ -467,6 +506,118 @@ html, body, #interface {
 	flex-grow: 1;
 	background-color: rgba(0,0,0,0.5);
 	color: white;
+}
+#messages-app .messages-body {
+	position: relative;
+	z-index: 20;
+}
+
+#messages-selector {
+	height: 55px;
+	font-family: Nunito,Verdana,Arial,Helvetica,sans-serif;
+	position: relative;
+	z-index: 5;
+}
+#messages-selector ul {
+	height: 55px;
+	position: relative;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	transition: opacity 0.3s ease-in-out 1.2s;
+	background-color: #ddd;
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	justify-content: flex-start;
+	list-style: none;
+	opacity: 1;
+	z-index: 20 !important; /*this doesn't actually work*/
+	box-shadow: inset 0 -3px 1px -2px rgba(0,0,0,0.12), inset 0 -1px 5px 0 rgba(0,0,0,0.2);
+}
+#messages-selector ul li.selector {
+	position: relative;
+	list-style: none;
+	margin: 0 5px;
+	display: inline-block;
+}
+#messages-selector ul li.selector a {
+	border-radius: 20px;
+	background-color: white;
+	display: inline-block;
+	color: #205dbf;
+	border: 1px white solid;
+	transition-duration: 0.2s;
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+	text-decoration: none;
+	padding: 5px 15px;
+	position: relative;
+	top: 50%;
+	transform: translate(0,-50%);
+	font-size: 1.4em;
+}
+#messages-selector ul li.selector.selected a {
+	/*border-radius: 20px 20px 0 0;
+	padding-bottom: 10px;
+	transform: translate(0,-50%) translate(0,2.5px);*/
+	border-radius: 0;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	box-shadow: none;
+}
+#messages-selector ul li.selector:not(.selected):hover a {
+	background-color: #205dbf;
+	color: white;
+}
+#messages-selector ul li.selector.selected:hover a {
+	/* border: 1px #205dbf solid; */
+	cursor: default;
+	color: #205dbf;
+}
+#messages-selector ul li.selector.selected {
+	background-color: white;
+	transition: background-color 0.2s ease-in-out;
+}
+#messages-selector ul li.selector.selected:before {
+	box-shadow: inset -3px 0 2px -2px rgba(0,0,0,0.28), inset -4px 0 1px -2px rgba(0,0,0,0.14), inset -2px 0 5px -5px rgba(0,0,0,0.2);
+	content: " ";
+	height: 100%;
+	left: -10px;
+	position: absolute;
+	top: 0;
+	width: 10px;
+}
+#messages-selector ul li.selector.selected:after {
+	box-shadow: inset 3px 0 2px -2px rgba(0,0,0,0.28), inset 4px 0 1px -2px rgba(0,0,0,0.14), inset 2px 0 5px -5px rgba(0,0,0,0.2);
+	content: " ";
+	height: 100%;
+	position: absolute;
+	right: -10px;
+	top: 0;
+	width: 10px;
+}
+#messages-selector ul li.selector .notification {
+	z-index: 30;
+	position: absolute;
+	top: 40%;
+	left: 97%;
+	transform: translate(-50%,50%);
+	background: linear-gradient(to bottom,#e23,#d02);
+	min-width: 1.41em;
+	height: 1.41em;
+	border-radius: 1.41em;
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+}
+#messages-selector ul li.selector .notification p {
+	margin: 0;
+	text-align: center;
+	font-family: Nunito,Verdana,Arial,Helvetica,sans-serif;
+	font-size: 0.9em;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
 }
 
 /*     ____        __        __                             
@@ -543,7 +694,8 @@ html, body, #interface {
 .statement {
 	box-sizing: border-box;
 	display: inline-block;
-	z-index: 1;
+	position: relative;
+	z-index: 10;
 }
 
 .statement:hover {
@@ -552,7 +704,7 @@ html, body, #interface {
 	padding: 1px 3px 1px 3px;
 	margin: -4px -6px -13px -6px;
 	border-radius: 6px;
-	z-index: 5;
+	z-index: 50;
 	position: relative;
 }
 .statement:hover::after {
@@ -567,7 +719,7 @@ html, body, #interface {
 	text-align: center;
 	top: 21px;
 	margin-left: calc(-100% + 4px);
-	z-index: 10;
+	z-index: 100;
 	color: white;
 	font-weight: bold;
 	font-size: 10px;
@@ -637,10 +789,11 @@ html, body, #interface {
 .option {
 	-webkit-appearance: none;
 	-moz-appearance: none;
+	appearance: none;
 	display: block;
 	margin-bottom: 4px;
 	box-sizing: border-box;
-	font-family: Verdana,Arial,sans-serif;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
 	font-size: inherit;
 	position: relative;
 }
@@ -651,7 +804,6 @@ html, body, #interface {
 	padding: 4px 15px;
 	background: transparent;
 	border: none;
-	z-index: 0;
 	transform: translateX(5px);
 }
 .option.action::after {
@@ -662,7 +814,7 @@ html, body, #interface {
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: -1;
+	z-index: -10;
 	width: 100%;
 	height: calc(100% - 2px);
 	content: "";

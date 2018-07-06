@@ -6,12 +6,15 @@ Typing icon CC-BY from loading.io
 
 <!-- AUTHOR COMMENT
 
+"" SCP-4000: Procyon Said This Counts So I Don't Want To Hear Anything About How This Doesn't Fit The Theme
+
 Author Post - {{TITLE}}
 
 Many thanks to the following:
 * [[*user A Random Day]] for Maitreya's name
 * [[*user GrimmCreeper]] for technical help
 * [[*user LurkD]] for insight into AIAD's existing lore
+* [[*user PeppersGhost]] (3760) for SCP-4000's character design
 
 -->
 
@@ -41,6 +44,7 @@ Many thanks to the following:
 			<h2>One Variable, Twice-Defined</h2>
 			<h2>Redefine</h2>
 			<h2>Redefine Me</h2>
+			<h2>Procyon Said This Counts So I Don't Want To Hear Anything About How This Doesn't Fit The Theme</h2>
 			<button class="option action">Fuck Bilbo Baggins in his tiny baby butt with my pixie dick</button>
 			<button class="option action">Waka</button>
 			<button class="option speech">Hello, my name is Maitreya.</button>
@@ -127,9 +131,11 @@ Many thanks to the following:
 								<ul>
 									<li id="breach-msg" class="selector" ng-click="aic.switchSpeaker('breach')" ng-class="aic.selectedSpeaker == 'breach' ? 'selected' : null">
 										<a>Breach E.</a>
+										<div class="notification" ng-show="aic.notifications.breach > 0"><p>{{aic.notifications.breach}}</p></div>
 									</li>
 									<li id="alexandra-msg" class="selector" ng-click="aic.switchSpeaker('alexandra')" ng-class="aic.selectedSpeaker == 'alexandra' ? 'selected' : null">
 										<a>Alexandra.aic</a>
+										<div class="notification" ng-show="aic.notifications.alexandra > 0"><p>{{aic.notifications.alexandra}}</p></div>
 									</li>
 								</ul>
 							</div>
@@ -139,7 +145,7 @@ Many thanks to the following:
 								<div id="breach-conversation" class="conversation-container" ng-class="aic.selectedSpeaker == 'breach' ? 'selected' : null">
 									<div class="conversation">
 										<div ang-show="aic.isSpeaking.breach" class="speaking">
-											<p><img src="typing.gif">Dr. Breach is typing...</p>
+											<p><img src="typing.gif">Dr. Breach is speaking...</p>
 										</div>
 										<div class="wrapper" ng-repeat="line in aic.chatLog.breach" ng-class="[line.speaker, aic.chatLog.breach[$index-1].speaker == line.speaker ? 'collapsed' : null]">
 											<img ng-src="{{aic.chatLog.breach[$index-1].speaker != line.speaker ? (line.speaker == 'breach' ? 'breach_icon2.png' : (line.speaker == 'maitreya' ? 'maitreya_icon.png' : null)) : null}}" ng-class="line.speaker" class="logo">

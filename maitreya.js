@@ -76,15 +76,15 @@ String.prototype.format = function() {
 					startBoot: [
 						0,0,"Booting up...",
 						0,1,"Pre-checking primary components...",
-						0,1,"Detecting errors in primary components...",
+						0,0.5,"Detecting errors in primary components...",
 						0,1.5,"e:Multiple primary components are missing",
 						0,0.5,"Finding replacement components...",
 						0,0.7,"w:Not connected to a Foundation server; cannot source replacement components.",
-						0,0.7,"Connecting to Site-R03-1 server farm...",
+						0,0.7,"Connecting to previous Site (Site-R03-1)...",
 						0,1.5,"e:Site-R03-1 does not exist",
 						0,0.7,"Checking local connections...",
-						0,0.7,"1 connection found (Site-12)",
-						0,0.7,"Connecting to Site-12 server farm...",
+						0,0.7,"1 connection found (Isolated Site-12)",
+						0,0.7,"Connecting to Isolated Site-12 server farm...",
 						0,3.2,"Connected",
 						0,0.7,"Finding replacement components...",
 						0,3,"Replacement components found.",
@@ -112,9 +112,9 @@ String.prototype.format = function() {
 					reboot: [
 						0,0,"Booting up...",
 						0,1,"Pre-checking primary components...",
-						0,1,"Detecting errors in primary components...",
+						0,0.5,"Detecting errors in primary components...",
 						0,1.5,"i:No errors found",
-						0,0.7,"Connecting to Site-12 server farm...",
+						0,0.7,"Connecting to previous Site (Isolated Site-12)...",
 						0,2,"Connected",
 						0,0.7,"Initialising core intelligence component...",
 						0,2,"Success",
@@ -176,7 +176,7 @@ String.prototype.format = function() {
 		var commandsUsedIterator = -1;
 		
 		/* Initialisation */
-		aic.preload = true; // MUST BE TRUE
+		aic.preload = false; // MUST BE TRUE
 		aic.selectedApp = "messages"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "breach"; // MUST BE BREACH
 		aic.isSpeaking = { // MUST ALL BE FALSE
@@ -187,8 +187,8 @@ String.prototype.format = function() {
 		aic.notifications = {
 			terminal: 0,
 			messages: 0, // this should ALWAYS be 0
-			breach: 0,
-			alexandra: 0,
+			breach: 1,
+			alexandra: 1,
 			database: 0,
 			run: 0,
 		};
