@@ -174,8 +174,7 @@ html, body, #interface {
 	            border-width 0s;
 }
 #app-selector ul li.selector:not(.selected):hover a {
-	background-color: transparent;
-	color: white;
+	animation: bounce 0.2s 1 ease-in;
 }
 #app-selector ul li.selector.selected:hover a {
 	/* border: 1px #205dbf solid; */
@@ -245,16 +244,31 @@ html, body, #interface {
 
 #app-body {
 	height: calc(100% - 70px);
-}
-#app-body .container {
-	height: 100%;
-	display: block;
-}
-#app-body .container:not(.selected) {
-	display: none;
+	position: relative;
 }
 #app-body .app-main {
 	height: calc(100% - 30px);
+}
+#app-body .container {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	opacity: 1;
+	transition: visibility 0s linear 0s,
+	            height 0s linear 0s,
+	            opacity 0.2s ease-in-out;
+}
+#app-body .container:not(.selected) {
+	height: 0;
+	overflow: hidden;
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0s linear 0.2s,
+	            height 0s linear 0.2s,
+	            opacity 0.2s ease-in-out;
+}
+#app-body .container:not(.selected) .app-title p {
+	margin-bottom: 2em;
 }
 
 /*   ______                    _             __
@@ -412,6 +426,7 @@ html, body, #interface {
 	background: linear-gradient(to bottom,white,transparent);
 	top: 0;
 	left: 5%; /*help*/
+	z-index: 20;
 }
 #app-body #messages-app .conversation .wrapper {
 	margin: 0 130px 1em 130px;
@@ -423,6 +438,10 @@ html, body, #interface {
 }
 #app-body #messages-app .conversation .wrapper.maitreya {
 	margin-left: 133px; /* Literally no one else but me will notice this or even care about it if they did. I spent like 10 minutes deciding between 132 and 133px. You know what? If I could, I'd go for 132.5. But no. You can't have half a pixel. Fuck */
+}
+#app-body #messages-app .conversation .wrapper.narrator {
+	margin-left: 200px;
+	margin-right: 200px;
 }
 #app-body #messages-app .conversation .wrapper div {
 	color: #222;
@@ -436,9 +455,21 @@ html, body, #interface {
 	background-color: white;
 	float: left;
 }
+#app-body #messages-app .conversation .wrapper div.alexandra {
+	float: left;
+	background: linear-gradient(to bottom,#0cc,#009494);
+	border-radius: 30px / 70px;
+	padding: 2px 20px;
+	max-width: 60%;
+}
 #app-body #messages-app .conversation .wrapper div.maitreya {
 	background: linear-gradient(to bottom,#1488cc,#1a73c6);
 	float: right;
+}
+#app-body #messages-app .conversation .wrapper div.narrator {
+	background: #e9e9e9;
+	border-radius: 0;
+	border: 1px #999 dashed;
 }
 #app-body #messages-app .conversation .wrapper div p {
 	display: inline-block;
@@ -447,6 +478,9 @@ html, body, #interface {
 #app-body #messages-app .conversation .wrapper div.breach p {
 	color: #222;
 	margin: calc(1em + 2px);
+}
+#app-body #messages-app .conversation .wrapper div.alexandra p {
+	color: #f5e9e9;
 }
 #app-body #messages-app .conversation .wrapper div.maitreya p {
 	color: white;
@@ -458,8 +492,20 @@ html, body, #interface {
 	top: 50%;
 	transform: translate(-50%,-50%);
 }
+#app-body #messages-app .conversation .wrapper .triangle {
+	width: 20px;
+	position: absolute;
+	left: -5px;
+	top: 65%;
+	transform: translate(-50%,-50%);
+}
 #app-body #messages-app .conversation .wrapper .logo.breach {
 	top: calc(50% + 5px);
+}
+#app-body #messages-app .conversation .wrapper .logo.alexandra {
+	width: 50px;
+	top: 60%;
+	transform: translate(-50%,-60%);
 }
 #app-body #messages-app .conversation .wrapper .logo.maitreya {
 	width: 60px;
@@ -557,17 +603,15 @@ html, body, #interface {
 	font-size: 1.4em;
 }
 #messages-selector ul li.selector.selected a {
-	/*border-radius: 20px 20px 0 0;
-	padding-bottom: 10px;
-	transform: translate(0,-50%) translate(0,2.5px);*/
 	border-radius: 0;
-	padding-top: 10px;
-	padding-bottom: 10px;
+	padding-top: 20px;
+	padding-bottom: 20px;
 	box-shadow: none;
 }
 #messages-selector ul li.selector:not(.selected):hover a {
-	background-color: #205dbf;
-	color: white;
+	/*background-color: #205dbf;
+	color: white;*/
+	animation: bounce 0.2s 1 ease-in;
 }
 #messages-selector ul li.selector.selected:hover a {
 	/* border: 1px #205dbf solid; */
@@ -575,7 +619,7 @@ html, body, #interface {
 	color: #205dbf;
 }
 #messages-selector ul li.selector.selected {
-	background-color: white;
+	/*background-color: white;*/
 	transition: background-color 0.2s ease-in-out;
 }
 #messages-selector ul li.selector.selected:before {
@@ -724,43 +768,6 @@ html, body, #interface {
 	font-weight: bold;
 	font-size: 10px;
 	line-height: 10px;
-}
-
-@keyframes false-color {
-	0% {
-		border-color: #205dbf;
-	}
-	100% {
-		border-color: #ff4136;
-	}
-}
-@keyframes false-after {
-	0% {
-		content: "";
-		background-image: url(loading.gif);
-	}
-	100% {
-		content: "FALSE";
-		background-image: none;
-	}
-}
-@keyframes correct-color {
-	0% {
-		border-color: #205dbf;
-	}
-	100% {
-		border-color: #2ecc40;
-	}
-}
-@keyframes correct-after {
-	0% {
-		content: "";
-		background-image: url(loading.gif);
-	}
-	100% {
-		content: "TRUE";
-		background-image: none;
-	}
 }
 
 .statement.true:hover {
@@ -948,3 +955,56 @@ html, body, #interface {
  *
  *
  */
+ 
+
+@keyframes false-color {
+	0% {
+		border-color: #205dbf;
+	}
+	100% {
+		border-color: #ff4136;
+	}
+}
+@keyframes false-after {
+	0% {
+		content: "";
+		background-image: url(loading.gif);
+	}
+	100% {
+		content: "FALSE";
+		background-image: none;
+	}
+}
+@keyframes correct-color {
+	0% {
+		border-color: #205dbf;
+	}
+	100% {
+		border-color: #2ecc40;
+	}
+}
+@keyframes correct-after {
+	0% {
+		content: "";
+		background-image: url(loading.gif);
+	}
+	100% {
+		content: "TRUE";
+		background-image: none;
+	}
+}
+
+@keyframes bounce {
+	0% {
+		top: 50%;
+	}
+	30% {
+		top: calc(50% - 3px);
+	}
+	50% {
+		top: calc(50% - 3px);
+	}
+	100% {
+		top: 50%;
+	}
+}

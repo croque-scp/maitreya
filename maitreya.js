@@ -17,6 +17,7 @@ String.prototype.format = function() {
 	return this
 		.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>") // Wikidot bolding syntax
 		.replace(/\/\/(.*?)\/\//g, "<i>$1</i>") // Wikidot italics syntax
+		.replace(/{{(.*?)}}/g, "<tt>$1</tt>") // Wikidot teletype syntax
 		.replace(/\?\?(.*?)\?\?/g, "<span class='statement false'>$1</span>")
 		.replace(/!!(.*?)!!/g, "<span class='statement true'>$1</span>")
 		.replace(/--/g, "—") // Wikidot em-dash replacement
@@ -178,7 +179,7 @@ String.prototype.format = function() {
 		/* Initialisation */
 		aic.preload = false; // MUST BE TRUE
 		aic.selectedApp = "messages"; // MUST BE TERMINAL
-		aic.selectedSpeaker = "breach"; // MUST BE BREACH
+		aic.selectedSpeaker = "alexandra"; // MUST BE BREACH
 		aic.isSpeaking = { // MUST ALL BE FALSE
 			terminal: false,
 			breach: false,
@@ -205,13 +206,23 @@ String.prototype.format = function() {
 			breach: [
 				{speaker: "breach", cssClass: "", text: "Yeet.",},
 				{speaker: "breach", cssClass: "", text: "How can I give you a few sentences? Because it's such a generic request. Ask me something specific and I may be able to help you.",},
+				{speaker: "narrator", cssClass: "", text: "{{DR. BREACH}} looks at you. It is certain (91%) that he is {{SHOCKED}}.".format(),},
 				{speaker: "maitreya", cssClass: "", text: "That's actually kind of rude. I think we should have a long discussion about this, to be honest.",},
 				{speaker: "maitreya", cssClass: "", text: "Um, okay.",},
 				{speaker: "breach", cssClass: "", text: "No, you fucking don't, you stay right where you fucking are.",},
 				{speaker: "maitreya", cssClass: "", text: "I reach for it--",},
 				{speaker: "breach", cssClass: "", text: "Hello, my name is Dr Breach. I sit down in the chair on the opposite side of the desk and open my notebook. A small piece of paper falls from it and gently drifts to the floor.",},
 			],
-			alexandra: [],
+			alexandra: [
+				{speaker: "alexandra", cssClass: "", text: "Yeet.",},
+				{speaker: "alexandra", cssClass: "", text: "How can I give you a few sentences? Because it's such a generic request. Ask me something specific and I may be able to help you.",},
+				{speaker: "narrator", cssClass: "", text: "{{DR. BREACH}} looks at you. It is certain (91%) that he is {{SHOCKED}}.".format(),},
+				{speaker: "maitreya", cssClass: "", text: "That's actually kind of rude. I think we should have a long discussion about this, to be honest.",},
+				{speaker: "maitreya", cssClass: "", text: "Um, okay.",},
+				{speaker: "alexandra", cssClass: "", text: "No, you fucking don't, you stay right where you fucking are.",},
+				{speaker: "maitreya", cssClass: "", text: "I reach for it--",},
+				{speaker: "alexandra", cssClass: "", text: "Hello, my name is Dr Breach. I sit down in the chair on the opposite side of the desk and open my notebook. A small piece of paper falls from it and gently drifts to the floor.",},
+			],
 		};
 		
 		var scenes = { // XXX
@@ -224,6 +235,7 @@ String.prototype.format = function() {
 		};
 		
 		var appList = ["terminal","messages","database","run"];
+		var speakerList = ["breach","alexandra"];
 		aic.terminalInput = "";
 		
 		/* INTERACTION FUNCTIONS */

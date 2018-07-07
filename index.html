@@ -142,7 +142,7 @@ Many thanks to the following:
 							
 							<div class="messages-body">
 								
-								<div id="breach-conversation" class="conversation-container" ng-class="aic.selectedSpeaker == 'breach' ? 'selected' : null">
+								<div id="breach-conversation" class="conversation-container" ng-show="aic.selectedSpeaker == 'breach'">
 									<div class="conversation">
 										<div ang-show="aic.isSpeaking.breach" class="speaking">
 											<p><img src="typing.gif">Dr. Breach is speaking...</p>
@@ -158,8 +158,21 @@ Many thanks to the following:
 									</div>
 								</div>
 								
-								<div id="alexandra-conversation" class="conversation" ng-class="aic.selectedSpeaker == 'alexandra' ? 'selected' : null">
-								
+								<div id="alexandra-conversation" class="conversation-container" ng-show="aic.selectedSpeaker == 'alexandra'">
+									<div class="conversation">
+										<div ang-show="aic.isSpeaking.alexandra" class="speaking">
+											<p><img src="typing.gif">Alexandra is thinking...</p>
+										</div>
+										<div class="wrapper" ng-repeat="line in aic.chatLog.alexandra" ng-class="[line.speaker, aic.chatLog.alexandra[$index-1].speaker == line.speaker ? 'collapsed' : null]">
+											<img ng-src="{{line.speaker == 'alexandra' ? 'alex_sad.png' : (line.speaker == 'maitreya' ? 'maitreya_icon.png' : null)}}" ng-class="line.speaker" class="logo">
+											<img ng-src="{{line.speaker == 'alexandra' ? 'alex_triangle.png' : null}}" ng-class="line.speaker" class="triangle">
+											<div ng-class="[line.speaker, line.cssClass]">
+												<p><span ng-bind-html="line.text"></span></p>
+											</div>
+											<!-- <div class="logo maitreya">M</div> -->
+										</div>
+										<p class="title">You are talking to: ALEXANDRA.AIC</p>
+									</div>
 								</div>
 									
 									<!--
