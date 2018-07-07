@@ -173,20 +173,18 @@ html, body, #interface {
 	            width 0.2s ease-in-out 0.2s,
 	            border-width 0s;
 }
-#app-selector ul li.selector:not(.selected):hover a {
+#app-selector ul li.selector:not(.selected):not(.disabled):hover a {
 	animation: bounce 0.2s 1 ease-in;
 }
-#app-selector ul li.selector.selected:hover a {
-	/* border: 1px #205dbf solid; */
-	cursor: default;
-	color: #205dbf;
-}
-/*#messages-selector ul li.selector.selected a {
-	border-radius: 0;
-	padding-top: 10px;
-	padding-bottom: 10px;
+#app-selector ul li.selector.disabled a {
+	border: 1px #205dbf solid;
+	background-color: transparent;
+	color: transparent;
 	box-shadow: none;
-}*/
+}
+#app-selector ul li.selector.selected, #app-selector ul li.selector.disabled, #app-selector ul li.selector.selected a, #app-selector ul li.selector.disabled a {
+	cursor: default;
+}
 #app-selector ul li.selector a i {
 	position: absolute;
 	top: 50%;

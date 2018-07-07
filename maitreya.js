@@ -185,13 +185,24 @@ String.prototype.format = function() {
 			breach: false,
 			alexandra: false,
 		};
-		aic.notifications = {
+		aic.notifications = { // MUST ALL BE -
 			terminal: 0,
-			messages: 0, // this should ALWAYS be 0
+			messages: 0,
 			breach: 1,
 			alexandra: 1,
 			database: 0,
 			run: 0,
+		};
+		aic.ready = {
+			// MUST BOTH BE TRUE
+			terminal: true,
+			breach: true,
+			// MUST ALL BE FALSE
+			messages: false,
+			alexandra: false,
+			dclass: false,
+			database: false,
+			run: false,
 		};
 		
 		aic.onMobile = $("#interface").width() < 700;
@@ -251,6 +262,8 @@ String.prototype.format = function() {
 		aic.switchApp = function(app) {
 			if(app == aic.selectedApp) {
 				// this is already the selected app, do nothing
+			} else if(aic.ready[app] === false){
+				// this app is disabled, do nothing
 			} else if(appList.some(function(appAgainst){return appAgainst == app})) {
 				aic.selectedApp = app;
 				// also need to clear this app's notifications
@@ -263,6 +276,8 @@ String.prototype.format = function() {
 		aic.switchSpeaker = function(speaker) {
 			if(speaker == aic.selectedSpeaker) {
 				// this is already the selected speaker, do nothing
+			} else if(aic.ready[speaker] === false){
+				// this speaker is disabled, do nothing
 			} else {
 				aic.selectedSpeaker = speaker;
 				// also need to clear this speaker's notifications

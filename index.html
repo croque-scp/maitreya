@@ -10,11 +10,30 @@ Typing icon CC-BY from loading.io
 
 Author Post - {{TITLE}}
 
+[[>]]
+//Everyone's putting a quote//
+//in their author posts but//
+//I don't know any good ones//
+-- Croquembouche
+[[/>]]
+
+A quick little 4K entry about something the Foundation knows nothing about.
+
 Many thanks to the following:
 * [[*user A Random Day]] for Maitreya's name
 * [[*user GrimmCreeper]] for technical help
 * [[*user LurkD]] for insight into AIAD's existing lore
 * [[*user PeppersGhost]] (3760) for SCP-4000's character design
+
+[[[cone|I hope you enjoy.]]]
+
+Just going to put it out there that I'd really, really like the 4004 slot for this, and if you put your 4K entry in that slot I'll hate you forever. No pressure tho
+
+[[collapsible show="+ For those who want to know 'How the hell is this historical'"]]
+It's historical for the [[[AIAD Homescreen|AIAD]]] canon. Beyond that, I don't really want to say anything else on account of spoiler. It is true that SCP-4000 itself is not inherently historical.
+
+If you don't feel that's enough to qualify this for the 4K contest, fair enough -- withhold any upvotes until after the contest.
+[[/collapsible]]
 
 -->
 
@@ -65,19 +84,19 @@ Many thanks to the following:
 						</div>
 					</div>
 					<ul class="apps">
-						<li id="terminal-app" class="selector" ng-click="aic.switchApp('terminal')" ng-class="aic.selectedApp == 'terminal' ? 'selected' : null">
+						<li id="terminal-app" class="selector" ng-click="aic.switchApp('terminal')" ng-class="[aic.selectedApp == 'terminal' ? 'selected' : null, aic.ready.terminal ? null : 'disabled']" ng-disabled="">
 							<a><i class="material-icons">dvr</i></a>
 							<div class="notification" ng-show="aic.notifications.terminal > 0"><p>{{aic.notifications.terminal}}</p></div>
 						</li>
-						<li id="messages-app" class="selector" ng-click="aic.switchApp('messages')" ng-class="aic.selectedApp == 'messages' ? 'selected' : null">
+						<li id="messages-app" class="selector" ng-click="aic.switchApp('messages')" ng-class="[aic.selectedApp == 'messages' ? 'selected' : null, aic.ready.messages ? null : 'disabled']" ng-disabled="">
 							<a><i class="material-icons">record_voice_over</i></a>
 							<div class="notification" ng-show="(aic.notifications.breach + aic.notificatons.alexandra) > 0"><p>{{aic.notifications.breach + aic.notifications.alexandra}}</p></div>
 						</li>
-						<li id="database-app" class="selector" ng-click="aic.switchApp('database')" ng-class="aic.selectedApp == 'database' ? 'selected' : null">
+						<li id="database-app" class="selector" ng-click="aic.switchApp('database')" ng-class="[aic.selectedApp == 'database' ? 'selected' : null, aic.ready.database ? null : 'disabled']" ng-disabled="">
 							<a><i class="material-icons">library_books</i></a>
 							<div class="notification" ng-show="aic.notifications.database > 0"><p>{{aic.notifications.database}}</p></div>
 						</li>
-						<li id="run-app" class="selector" ng-click="aic.switchApp('run')" ng-class="aic.selectedApp == 'run' ? 'selected' : null">
+						<li id="run-app" class="selector" ng-click="aic.switchApp('run')" ng-class="[aic.selectedApp == 'run' ? 'selected' : null, aic.ready.run ? null : 'disabled']" ng-disabled="">
 							<a><i class="material-icons">directions_run</i></a>
 							<div class="notification" ng-show="aic.notifications.run > 0"><p>{{aic.notifications.run}}</p></div>
 						</li>
