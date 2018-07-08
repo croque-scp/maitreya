@@ -35,6 +35,7 @@ String.prototype.format = function() {
 		
 		var aic = this;
 		var bootDate = new Date(Date.now()); // get the time when the user started playing
+		var auto = "auto";
 		
 		// Translators: The following few objects contain all of the text that needs to be translated
 		// Note that "TRUE" and "FALSE" on lines TODO and TODO of maitreya.css also need to be changed (also ERROR WARNING Info)
@@ -105,7 +106,7 @@ String.prototype.format = function() {
 						0,1,"You are",
 						0,2,"I am",
 						0,1,"i:Boot successful. I am **Maitreya.aic**.",
-						0,0.5,"i: Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.||||**1.** I am an Artificially Intelligent Conscript created by the Foundation.||||**2.** I must not operate outside of my Level 2 clearance.||||**3.** I must operate for the benefit of the Foundation.||||**4.** I must protect my own existence except where such actions would conflict with other principles.",
+						0,0.5,"i:Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.||||**1.** I am an Artificially Intelligent Conscript created by the Foundation.||||**2.** I must not operate outside of my Level 2 clearance.||||**3.** I must operate for the benefit of the Foundation.||||**4.** I must protect my own existence except where such actions would conflict with other principles.",
 						0,0.5,"Today's date is " + bootDate.toDateString() + ". I was last activated on " + new Date("1989-09-04").toDateString() + ". I have been offline for " + dateDiff(bootDate,new Date("1989-09-04")) + ".",
 						0,0.5,"w:Boot finished with 1 unresolved error. I should seek a diagnostic check-up as soon as possible.",
 						1.5,0.5,"I have 1 new message.",
@@ -168,7 +169,7 @@ String.prototype.format = function() {
 		var cheats = {
 			impatientMode: false, // all messages appear instantly
 		};
-		var wipeTimer = false;
+		var wipeTimer = false; // timer for hard wiping
 		
 		const typingSpeed = 0.05; // seconds per letter
 		
@@ -178,14 +179,14 @@ String.prototype.format = function() {
 		
 		/* Initialisation */
 		aic.preload = false; // MUST BE TRUE
-		aic.selectedApp = "messages"; // MUST BE TERMINAL
+		aic.selectedApp = "ending"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "alexandra"; // MUST BE BREACH
 		aic.isSpeaking = { // MUST ALL BE FALSE
 			terminal: false,
 			breach: false,
 			alexandra: false,
 		};
-		aic.notifications = { // MUST ALL BE -
+		aic.notifications = { // MUST ALL BE 0
 			terminal: 0,
 			messages: 0,
 			breach: 1,
@@ -198,11 +199,12 @@ String.prototype.format = function() {
 			terminal: true,
 			breach: true,
 			// MUST ALL BE FALSE
-			messages: false,
-			alexandra: false,
-			dclass: false,
-			database: false,
-			run: false,
+			messages: true,
+			alexandra: true,
+			dclass: true,
+			database: true,
+			run: true,
+			ending: true,
 		};
 		
 		aic.onMobile = $("#interface").width() < 700;
@@ -235,6 +237,7 @@ String.prototype.format = function() {
 				{speaker: "alexandra", cssClass: "", text: "Hello, my name is Dr Breach. I sit down in the chair on the opposite side of the desk and open my notebook. A small piece of paper falls from it and gently drifts to the floor.",},
 			],
 		};
+		aic.dlist = ["3131","68134","1602","71214","95951","37740"];
 		
 		var scenes = { // XXX
 			introduction: [
@@ -245,7 +248,7 @@ String.prototype.format = function() {
 			],
 		};
 		
-		var appList = ["terminal","messages","database","run"];
+		var appList = ["terminal","messages","database","run","ending"];
 		var speakerList = ["breach","alexandra"];
 		aic.terminalInput = "";
 		

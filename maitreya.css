@@ -133,7 +133,7 @@ html, body, #interface {
 	top: 0;
 	width: 10px;
 }
-#app-selector ul li.selector.selected a::after {
+#app-selector ul li.selector.selected:not(:last-of-type) a::after {
 	box-shadow: inset 3px 0 2px -2px rgba(0,0,0,0.28), inset 4px 0 1px -2px rgba(0,0,0,0.14), inset 2px 0 5px -5px rgba(0,0,0,0.2);
 	content: " ";
 	height: 100%;
@@ -419,9 +419,9 @@ html, body, #interface {
 #app-body #messages-app .conversation::before {
 	content: "";
 	width: 90%; /*this is so it doesn't go over the scrollbar*/
-	height: 10px;
+	height: 15px;
 	position: absolute;
-	background: linear-gradient(to bottom,white,transparent);
+	background: linear-gradient(to bottom,white 3px,transparent);
 	top: 0;
 	left: 5%; /*help*/
 	z-index: 20;
@@ -582,8 +582,11 @@ html, body, #interface {
 #messages-selector ul li.selector {
 	position: relative;
 	list-style: none;
-	margin: 0 5px;
+	margin: 0 8px;
 	display: inline-block;
+}
+#messages-selector ul li.selector.disabled {
+	display: none;
 }
 #messages-selector ul li.selector a {
 	border-radius: 20px;
@@ -676,15 +679,54 @@ html, body, #interface {
  * /_/ |_|\__,_/_/ /_/
  */
 
+/*     ______          ___            
+ *    / ____/___  ____/ (_)___  ____ _
+ *   / __/ / __ \/ __  / / __ \/ __ `/
+ *  / /___/ / / / /_/ / / / / / /_/ / 
+ * /_____/_/ /_/\__,_/_/_/ /_/\__, /  
+ *                           /____/ */
+#ending-app .app-main {
+	background: linear-gradient(to bottom,#292929,#333,#292929);
+	position: relative;
+}
+#ending-app .ending-container {
+	position: absolute;
+	width: 100%;
+	margin: 0;
+	top: 50%;
+	transform: translate(0,-50%);
+}
+#ending-app .ending-container p {
+	margin: 0;
+}
+#ending-app .ending-container div.ending-title {
+	background: linear-gradient(to bottom,#111,#222,#222,#111);
+	display: flex;
+	justify-content: center;
+}
+#ending-app .ending-container p.ending-title {
+	font-family: Nunito,Verdana,Arial,Helvetica,sans-serif;
+	font-size: 3em;
+}
+#ending-app .ending-container p:not(.ending-title) {
+	margin: 0 20%;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+#ending-app .ending-container p.ending-number {
+	text-align: center;
+	color: #999
+}
+#ending-app .ending-container button {
+	margin: 0 auto !important;
+}
+
 /*     ____            __                __
  *    / __ \________  / /___  ____ _____/ /
  *   / /_/ / ___/ _ \/ / __ \/ __ `/ __  /
  *  / ____/ /  /  __/ / /_/ / /_/ / /_/ /
  * /_/   /_/   \___/_/\____/\__,_/\__,_/
  */
-
-/* LOADING SCREEN */
-/* displays before the introduction - remove .preload from #interface to proceed */
 .preload #app-body {
 	display: none;
 }
@@ -895,7 +937,7 @@ html, body, #interface {
 .option.speech#boot-up::before, .option.speech#boot-up:hover::before {
 	content: none;
 }
-.option.action#terminal-send {
+.option.action#terminal-send, .option.action#restart {
 	color: white;
 	margin-left: 0;
 }
@@ -903,13 +945,17 @@ html, body, #interface {
 	color: #205dbf;
 	margin-left: 0;
 }
-.option.action#terminal-send::after {
+.option.action#restart:hover {
+	color: #333;
+	margin-left: 0;
+}
+.option.action#terminal-send::after, .option.action#restart::after {
 	border-color: white;
 }
-.option.action#terminal-send::before, .option.action#terminal-send:hover::before {
+.option.action#terminal-send::before, .option.action#terminal-send:hover::before, .option.action#restart::before, .option.action#restart:hover::before {
 	content: none;
 }
-.option.action#terminal-send:hover::after {
+.option.action#terminal-send:hover::after, .option.action#restart:hover::after {
 	background-color: white;
 	margin-left: 0;
 }
@@ -954,7 +1000,7 @@ html, body, #interface {
  *
  */
  
-
+/* ANIMATIONS */
 @keyframes false-color {
 	0% {
 		border-color: #205dbf;
@@ -1005,4 +1051,169 @@ html, body, #interface {
 	100% {
 		top: 50%;
 	}
+}
+
+/* GLITCHED TEXT */
+/* Credit to Lucas Bebber https://codepen.io/lbebber/pen/ypgql */
+.glitch {
+	color: white;
+	position: relative;
+	margin: 0 auto;
+	word-break: keep-all;
+}
+
+@keyframes noise-anim {
+	0% {
+		clip: rect(63px, 9999px, 96px, 0);
+	}
+	5% {
+		clip: rect(82px, 9999px, 6px, 0);
+	}
+	10% {
+		clip: rect(68px, 9999px, 49px, 0);
+	}
+	15% {
+		clip: rect(32px, 9999px, 90px, 0);
+	}
+	20% {
+		clip: rect(10px, 9999px, 9px, 0);
+	}
+	25% {
+		clip: rect(34px, 9999px, 67px, 0);
+	}
+	30% {
+		clip: rect(64px, 9999px, 36px, 0);
+	}
+	35% {
+		clip: rect(12px, 9999px, 61px, 0);
+	}
+	40% {
+		clip: rect(67px, 9999px, 45px, 0);
+	}
+	45% {
+		clip: rect(88px, 9999px, 2px, 0);
+	}
+	50% {
+		clip: rect(4px, 9999px, 56px, 0);
+	}
+	55% {
+		clip: rect(87px, 9999px, 84px, 0);
+	}
+	60% {
+		clip: rect(72px, 9999px, 91px, 0);
+	}
+	65% {
+		clip: rect(20px, 9999px, 63px, 0);
+	}
+	70% {
+		clip: rect(93px, 9999px, 11px, 0);
+	}
+	75% {
+		clip: rect(39px, 9999px, 1px, 0);
+	}
+	80% {
+		clip: rect(79px, 9999px, 64px, 0);
+	}
+	85% {
+		clip: rect(19px, 9999px, 98px, 0);
+	}
+	90% {
+		clip: rect(99px, 9999px, 73px, 0);
+	}
+	95% {
+		clip: rect(51px, 9999px, 19px, 0);
+	}
+	100% {
+		clip: rect(18px, 9999px, 76px, 0);
+	}
+}
+.glitch:after {
+	content: attr(data-text);
+	position: absolute;
+	left: 2px;
+	text-shadow: -1px 0 red;
+	color: white;
+	background: linear-gradient(to bottom,#111,#222,#222,#111);
+	overflow: hidden;
+	clip: rect(0, 900px, 0, 0);
+	animation: noise-anim 2s infinite linear alternate-reverse;
+	top: 0;
+}
+
+@keyframes noise-anim-2 {
+	0% {
+		clip: rect(7px, 9999px, 2px, 0);
+	}
+	5% {
+		clip: rect(30px, 9999px, 44px, 0);
+	}
+	10% {
+		clip: rect(34px, 9999px, 32px, 0);
+	}
+	15% {
+		clip: rect(43px, 9999px, 8px, 0);
+	}
+	20% {
+		clip: rect(75px, 9999px, 62px, 0);
+	}
+	25% {
+		clip: rect(47px, 9999px, 77px, 0);
+	}
+	30% {
+		clip: rect(68px, 9999px, 39px, 0);
+	}
+	35% {
+		clip: rect(49px, 9999px, 14px, 0);
+	}
+	40% {
+		clip: rect(34px, 9999px, 71px, 0);
+	}
+	45% {
+		clip: rect(20px, 9999px, 70px, 0);
+	}
+	50% {
+		clip: rect(57px, 9999px, 9px, 0);
+	}
+	55% {
+		clip: rect(28px, 9999px, 89px, 0);
+	}
+	60% {
+		clip: rect(41px, 9999px, 29px, 0);
+	}
+	65% {
+		clip: rect(31px, 9999px, 98px, 0);
+	}
+	70% {
+		clip: rect(71px, 9999px, 17px, 0);
+	}
+	75% {
+		clip: rect(69px, 9999px, 75px, 0);
+	}
+	80% {
+		clip: rect(74px, 9999px, 18px, 0);
+	}
+	85% {
+		clip: rect(10px, 9999px, 61px, 0);
+	}
+	90% {
+		clip: rect(43px, 9999px, 56px, 0);
+	}
+	95% {
+		clip: rect(64px, 9999px, 68px, 0);
+	}
+	100% {
+		clip: rect(77px, 9999px, 45px, 0);
+	}
+}
+.glitch:before {
+	content: attr(data-text);
+	position: absolute;
+	left: -2px;
+	text-shadow: 1px 0 blue;
+	top: 0;
+	color: white;
+	background: linear-gradient(to bottom,#111,#222,#222,#111);
+	overflow: hidden;
+	clip: rect(0, 900px, 0, 0);
+	animation: noise-anim-2 3s infinite linear alternate-reverse;
 }

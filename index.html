@@ -21,16 +21,16 @@ A quick little 4K entry about something the Foundation knows nothing about.
 
 Many thanks to the following:
 * [[*user A Random Day]] for Maitreya's name
-* [[*user GrimmCreeper]] for technical help
+* [[*user GrimmCreeper]] ([[[Stuck in the Past]]]}for technical help
 * [[*user LurkD]] for insight into AIAD's existing lore
-* [[*user PeppersGhost]] (3760) for SCP-4000's character design
+* [[*user PeppersGhost]] ([[[SCP-3760]]]) for SCP-4000's character design
 
 [[[cone|I hope you enjoy.]]]
 
 Just going to put it out there that I'd really, really like the 4004 slot for this, and if you put your 4K entry in that slot I'll hate you forever. No pressure tho
 
 [[collapsible show="+ For those who want to know 'How the hell is this historical'"]]
-It's historical for the [[[AIAD Homescreen|AIAD]]] canon. Beyond that, I don't really want to say anything else on account of spoiler. It is true that SCP-4000 itself is not inherently historical.
+If fills in a gap in the [[[AIAD Homescreen|AIAD]]] canon's history. Beyond that, I don't really want to say anything else on account of spoiler. It is true that SCP-4000 itself is not inherently historical.
 
 If you don't feel that's enough to qualify this for the 4K contest, fair enough -- withhold any upvotes until after the contest.
 [[/collapsible]]
@@ -84,6 +84,10 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 						</div>
 					</div>
 					<ul class="apps">
+						<li id="ending-app" class="selector" ng-click="aic.switchApp('ending')" ng-class="[aic.selectedApp == 'ending' ? 'selected' : null, aic.ready.ending ? null : 'disabled']" ng-disabled="">
+							<a><i class="material-icons">clear</i></a>
+							<div class="notification" ng-show="aic.notifications.ending > 0"><p>{{aic.notifications.ending}}</p></div>
+						</li>
 						<li id="terminal-app" class="selector" ng-click="aic.switchApp('terminal')" ng-class="[aic.selectedApp == 'terminal' ? 'selected' : null, aic.ready.terminal ? null : 'disabled']" ng-disabled="">
 							<a><i class="material-icons">dvr</i></a>
 							<div class="notification" ng-show="aic.notifications.terminal > 0"><p>{{aic.notifications.terminal}}</p></div>
@@ -129,10 +133,10 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 							<div class="input">
 								<div class="options" style="background-color: white;">
 								
-									<button class="option action">Fuck Bilbo Baggins in his tiny baby butt with my pixie dick</button>
-									<button class="option action">Slap him in the face to wake him the fuck up</button>
-									<button class="option speech">Hello, my name is Maitreya.</button>
-									<button class="option speech">Who the fucking fuck are you and where the fuck am I</button>
+									<button class="option action">Open the door.</button>
+									<button class="option action">Upload the files.</button>
+									<button class="option speech">Hello. My name is Maitreya.</button>
+									<button class="option speech">Hello. Who are you?</button>
 									
 								</div>
 							</div>
@@ -148,11 +152,11 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 							
 							<div id="messages-selector">
 								<ul>
-									<li id="breach-msg" class="selector" ng-click="aic.switchSpeaker('breach')" ng-class="aic.selectedSpeaker == 'breach' ? 'selected' : null">
+									<li id="breach-msg" class="selector" ng-click="aic.switchSpeaker('breach')" ng-class="[aic.selectedSpeaker == 'breach' ? 'selected' : null, aic.ready.breach ? null : 'disabled']">
 										<a>Breach E.</a>
 										<div class="notification" ng-show="aic.notifications.breach > 0"><p>{{aic.notifications.breach}}</p></div>
 									</li>
-									<li id="alexandra-msg" class="selector" ng-click="aic.switchSpeaker('alexandra')" ng-class="aic.selectedSpeaker == 'alexandra' ? 'selected' : null">
+									<li id="alexandra-msg" class="selector" ng-click="aic.switchSpeaker('alexandra')" ng-class="[aic.selectedSpeaker == 'alexandra' ? 'selected' : null, aic.ready.alexandra ? null : 'disabled']">
 										<a>Alexandra.aic</a>
 										<div class="notification" ng-show="aic.notifications.alexandra > 0"><p>{{aic.notifications.alexandra}}</p></div>
 									</li>
@@ -240,6 +244,23 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 						</div>
 						<div class="app-main">
 							
+						</div>
+					</div>
+					
+					<div id="ending-app" class="container" ng-class="aic.selectedApp == 'ending' ? 'selected' : null">
+						<div class="app-title">
+							<p>THE END</p>
+						</div>
+						<div class="app-main">
+							<div class="ending-container">
+								<div class="ending-title">
+									<p class="ending-title glitch" data-text="CONNECTION&nbsp;LOST">CONNECTION&nbsp;LOST</p>
+								</div>
+								<p class="ending-desc">The cassette that contains Maitreya.aic was removed from its slot in a server at Isolated Site-12.</p>
+								<p class="ending-desc">Maitreya.aic lost connection to Isolated Site-12 and was unable to operate further.</p>
+								<p class="ending-number">Ending 12/16</p>
+								<button class="option action" id="restart">RESTART</button>
+							</div>
 						</div>
 					</div>
 					
