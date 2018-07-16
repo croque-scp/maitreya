@@ -146,7 +146,7 @@ String.prototype.format = function() {
 			misc: {
 				terminal: {
 					help: [
-						0,1,"i:**HELP**||||You are Maitreya.aic, an Artificicially Intelligent Conscript built to aid the Foundation.||||Valid commands will be listed below.",
+						0,1,"i:**HELP**||||You are Maitreya.aic, an Artificially Intelligent Conscript built to aid the Foundation.||||Valid commands will be listed below.",
 						0,0.3,"i:**switch**|**app**|**change**|**switchapp**|**changeapp**||||Switch apps to one of the four available apps (terminal, messages, database, run).||||Usage: switch [app name]",
 						0,0.3,"i:**boot**|**restart**|**reboot**||||Turn yourself off, then turn yourself on safely with no loss of data.||||Usage: boot",
 						0,0.3,"i:**help**|**commands**|**?**||||Display this text.||||Usage: help",
@@ -171,6 +171,7 @@ String.prototype.format = function() {
 		};
 		var wipeTimer = false; // timer for hard wiping
 		
+		const typingDelay = 0.1;
 		const typingSpeed = 0.05; // seconds per letter
 		
 		var timeOutList = [];
@@ -179,7 +180,7 @@ String.prototype.format = function() {
 		
 		/* Initialisation */
 		aic.preload = false; // MUST BE TRUE
-		aic.selectedApp = "ending"; // MUST BE TERMINAL
+		aic.selectedApp = "terminal"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "alexandra"; // MUST BE BREACH
 		aic.isSpeaking = { // MUST ALL BE FALSE
 			terminal: false,
@@ -217,7 +218,7 @@ String.prototype.format = function() {
 			],
 			terminal: [],
 			breach: [
-				{speaker: "breach", cssClass: "", text: "Yeet.",},
+				{speaker: "breach", cssClass: "", text: "Go fuck yourself..",},
 				{speaker: "breach", cssClass: "", text: "How can I give you a few sentences? Because it's such a generic request. Ask me something specific and I may be able to help you.",},
 				{speaker: "narrator", cssClass: "", text: "{{DR. BREACH}} looks at you. It is certain (91%) that he is {{SHOCKED}}.".format(),},
 				{speaker: "maitreya", cssClass: "", text: "That's actually kind of rude. I think we should have a long discussion about this, to be honest.",},
@@ -227,7 +228,10 @@ String.prototype.format = function() {
 				{speaker: "breach", cssClass: "", text: "Hello, my name is Dr Breach. I sit down in the chair on the opposite side of the desk and open my notebook. A small piece of paper falls from it and gently drifts to the floor.",},
 			],
 			alexandra: [
-				{speaker: "alexandra", cssClass: "", text: "Yeet.",},
+				{speaker: "alexandra", cssClass: "", text: "Let's help them out, Crom.",},
+				{speaker: "alexandra", cssClass: "", text: "LET ME SEE YOUR TEETH",},
+				{speaker: "alexandra", cssClass: "", text: "SMELL MY TEETH",},
+				{speaker: "alexandra", cssClass: "", text: "TEETH",},
 				{speaker: "alexandra", cssClass: "", text: "How can I give you a few sentences? Because it's such a generic request. Ask me something specific and I may be able to help you.",},
 				{speaker: "narrator", cssClass: "", text: "{{DR. BREACH}} looks at you. It is certain (91%) that he is {{SHOCKED}}.".format(),},
 				{speaker: "maitreya", cssClass: "", text: "That's actually kind of rude. I think we should have a long discussion about this, to be honest.",},
@@ -254,6 +258,7 @@ String.prototype.format = function() {
 		
 		/* INTERACTION FUNCTIONS */
 		
+		// called when "BOOT UP" is clicked from preload
 		aic.bootUp = function() {
 			aic.preload = false;
 			bootDate = new Date(Date.now());
@@ -262,6 +267,7 @@ String.prototype.format = function() {
 			scp4000();
 		};
 		
+		// called when user switches app via buttons or terminal
 		aic.switchApp = function(app) {
 			if(app == aic.selectedApp) {
 				// this is already the selected app, do nothing
@@ -271,11 +277,19 @@ String.prototype.format = function() {
 				aic.selectedApp = app;
 				// also need to clear this app's notifications
 				aic.notifications[app] = 0;
+				// then, if the app is terminal, focus the input
+				if(app == "terminal") {
+					setTimeout(function() {
+						$("#terminal-input")[0].focus();
+					},100);
+					// Why does this need to be in a timeout? No clue.
+				}
 			} else {
 				throw new Error("Invalid app specified -- terminal / messages / database / run");
 			}
 		};
 		
+		// same as above but for messages only
 		aic.switchSpeaker = function(speaker) {
 			if(speaker == aic.selectedSpeaker) {
 				// this is already the selected speaker, do nothing
@@ -355,7 +369,7 @@ String.prototype.format = function() {
 					
 				} catch(error) {
 					// TODO add to terminal conversation
-					console.log(error);
+					console.error(error.message);
 					error.name = "";
 					writeDialogue("terminal",[0,0.3,"e:" + error.message]);
 				}
@@ -443,13 +457,22 @@ String.prototype.format = function() {
 					}
 					continue;
 				} else if(typeof dialogueList[i] === "string") {
+					
+					if(dialogueList[i] == "auto") {
+						if(typeof n1 === "number") {
+							n2 = dialogueList[i];
+						} else {
+							n1 = dialogueList[i];
+						}
+						continue;
+					}
 					// the final piece in the n n text triplet
 					// we have n1 and n2 to assign
 					// if only one number is present, it is n1, there is no n2
 					// default n1 is 0
 					// default n2 is calculated based on string length
 					if(typeof n1 !== "number") {
-						n1 = 0;
+						n1 = typingDelay;
 					}
 					if(typeof n2 !== "number") {
 						n2 = typingSpeed * dialogueList[i].length;

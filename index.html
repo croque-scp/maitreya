@@ -2,6 +2,7 @@
 <!--
 Loading icon CC0 from loading.io
 Typing icon CC-BY from loading.io
+Site-12 map made by me using Retro Computer font https://www.dafont.com/retro-computer.font
 -->
 
 <!-- AUTHOR COMMENT
@@ -20,8 +21,8 @@ Author Post - {{TITLE}}
 A quick little 4K entry about something the Foundation knows nothing about.
 
 Many thanks to the following:
-* [[*user A Random Day]] for Maitreya's name
-* [[*user GrimmCreeper]] ([[[Stuck in the Past]]]}for technical help
+* [[*user A Random Day]] ([[[SCP-2820]]])for Maitreya's name
+* [[*user GrimmCreeper]] ([[[Stuck in the Past]]]) for technical help
 * [[*user LurkD]] for insight into AIAD's existing lore
 * [[*user PeppersGhost]] ([[[SCP-3760]]]) for SCP-4000's character design
 
@@ -30,7 +31,7 @@ Many thanks to the following:
 Just going to put it out there that I'd really, really like the 4004 slot for this, and if you put your 4K entry in that slot I'll hate you forever. No pressure tho
 
 [[collapsible show="+ For those who want to know 'How the hell is this historical'"]]
-If fills in a gap in the [[[AIAD Homescreen|AIAD]]] canon's history. Beyond that, I don't really want to say anything else on account of spoiler. It is true that SCP-4000 itself is not inherently historical.
+If fills in a gap in the [[[AIAD Homescreen|AIAD]]] canon's history. Beyond that, I don't really want to say anything else on account of spoilers. It is true that SCP-4000 itself is not inherently historical.
 
 If you don't feel that's enough to qualify this for the 4K contest, fair enough -- withhold any upvotes until after the contest.
 [[/collapsible]]
@@ -63,7 +64,10 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 			<h2>One Variable, Twice-Defined</h2>
 			<h2>Redefine</h2>
 			<h2>Redefine Me</h2>
+			<h2>Define Me</h2>
+			<h2>=</h2>
 			<h2>Procyon Said This Counts So I Don't Want To Hear Anything About How This Doesn't Fit The Theme</h2>
+			<h2>Isolated Site-12</h2>
 			<button class="option action">Fuck Bilbo Baggins in his tiny baby butt with my pixie dick</button>
 			<button class="option action">Waka</button>
 			<button class="option speech">Hello, my name is Maitreya.</button>
@@ -106,6 +110,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 						</li>
 					</ul>
 				</div>
+				
 				<div id="app-body">
 					
 					<div id="terminal-app" class="container" ng-class="aic.selectedApp == 'terminal' ? 'selected' : null">
@@ -126,12 +131,12 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 								</div>
 							</div>
 							<form ng-submit="aic.processTerminalInput()" class="middle-bar">
-								<p>{{aic.lang.commandInput}}</p>
-								<input ng-model="aic.terminalInput" ng-keydown="aic.previousCommand($event)">
+								<!--<p>{{aic.lang.commandInput}}</p>-->
+								<input id="terminal-input" ng-model="aic.terminalInput" ng-keydown="aic.previousCommand($event)" placeholder="{{aic.lang.commandInput}}">
 								<button id="terminal-send" class="option action" type="submit">{{aic.lang.terminalSend}}</button>
 							</form>
-							<div class="input">
-								<div class="options" style="background-color: white;">
+							<div class="options-block">
+								<div class="options">
 								
 									<button class="option action">Open the door.</button>
 									<button class="option action">Upload the files.</button>
@@ -217,12 +222,12 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 								<button id="terminal-send" class="option action" type="submit">{{aic.lang.terminalSend}}</button>
 							</div>
 							
-							<div class="input">
+							<div class="options-block">
 								<div class="options" style="background-color: white;">
-									<button class="option action">Fuck Bilbo Baggins in his tiny baby butt with my pixie dick</button>
-									<button class="option action">Slap him in the face to wake him the fuck up</button>
-									<button class="option speech">Hello, my name is Maitreya.</button>
-									<button class="option speech">Who the fucking fuck are you and where the fuck am I</button>
+									<button class="option action">Open the door.</button>
+									<button class="option action">Upload the files.</button>
+									<button class="option speech">Hello. My name is Maitreya.</button>
+									<button class="option speech">Hello. Who are you?</button>
 								</div>
 							</div>
 							
@@ -243,7 +248,37 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 							<p>{{aic.lang.runAppName}}</p>
 						</div>
 						<div class="app-main">
-							
+							<div class="sitemap" style="background-image: url(site12.png);">
+								<div data-room="pantry" style="background-image: url(site_pantry.png); top: 66px; left: 267px; height:83px; width: 116px;"></div>
+								<div data-room="storage" style="background-image: url(site_storage.png); top: 324px; left: 345px; height:83px; width: 155px;"></div>
+								<div data-room="foyer" style="background-image: url(site_foyer.png); top: 81px; left: 498px; height:239px; width: 92px;"></div>
+								<div data-room="ring-east" style="background-image: url(site_ring-east.png); top: 153px; left: 480px; height:152px; width: 35px;"></div>
+								<div data-room="hangar" style="background-image: url(site_hangar.png); top: 9px; left: 9px; height:431px; width: 131px;"></div>
+								<div data-room="server" style="background-image: url(site_server.png); top: 9px; left: 144px; height:140px; width: 119px;"></div>
+								<div data-room="cafe" style="background-image: url(site_cafe.png); top: 102px; left: 330px; height:47px; width: 110px;"></div>
+								<div data-room="d1" style="background-image: url(site_d1.png); top: 174px; left: 147px; height:59px; width: 53px;"></div>
+								<div data-room="d2" style="background-image: url(site_d2.png); top: 174px; left: 207px; height:59px; width: 53px;"></div>
+								<div data-room="d3" style="background-image: url(site_d3.png); top: 174px; left: 267px; height:59px; width: 53px;"></div>
+								<div data-room="d4" style="background-image: url(site_d4.png); top: 261px; left: 147px; height:59px; width: 53px;"></div>
+								<div data-room="d5" style="background-image: url(site_d5.png); top: 261px; left: 207px; height:59px; width: 53px;"></div>
+								<div data-room="d6" style="background-image: url(site_d6.png); top: 261px; left: 267px; height:59px; width: 53px;"></div>
+								<div data-room="d-corridor" style="background-image: url(site_d-corridor.png); top: 240px; left: 147px; height:14px; width: 173px;"></div>
+								<div data-room="armoury" style="background-image: url(site_armoury.png); top: 330px; left: 150px; height:77px; width: 167px;"></div>
+								<div data-room="toilet" style="background-image: url(site_toilet.png); top: 381px; left: 345px; height:26px; width: 20px;"></div>
+								<div data-room="bay" style="background-image: url(site_bay.png); top: 324px; left: 504px; height:83px; width: 86px;"></div>
+								<div data-room="containment" style="background-image: url(site_containment.png); top: 219px; left: 393px; height:35px; width: 35px;"></div>
+								<div data-room="airlock" style="background-image: url(site_airlock.png); top: 231px; left: 348px; height:11px; width: 38px;"></div>
+								<div data-room="a4" style="background-image: url(site_a4.png); top: 93px; left: 462px; height:56px; width: 53px;"></div>
+								<div data-room="a2" style="background-image: url(site_a2.png); top: 21px; left: 462px; height:38px; width: 23px;"></div>
+								<div data-room="a3" style="background-image: url(site_a3.png); top: 63px; left: 462px; height:26px; width: 23px;"></div>
+								<div data-room="a1" style="background-image: url(site_a1.png); top: 21px; left: 387px; height:77px; width: 53px;"></div>
+								<div data-room="server-corridor" style="background-image: url(site_server-corridor.png); top: 153px; left: 144px; height:14px; width: 182px;"></div>
+								<div data-room="armoury-corridor" style="background-image: url(site_armoury-corridor.png); top: 321px; left: 327px; height:86px; width: 14px;"></div>
+								<div data-room="office-corridor" style="background-image: url(site_office-corridor.png); top: 21px; left: 444px; height:131px; width: 14px;"></div>
+								<div data-room="ring-north" style="background-image: url(site_ring-north.png); top: 153px; left: 342px; height:14px; width: 137px;"></div>
+								<div data-room="ring-south" style="background-image: url(site_ring-south.png); top: 306px; left: 342px; height:14px; width: 152px;"></div>
+								<div data-room="ring-west" style="background-image: url(site_ring-west.png); top: 153px; left: 327px; height:167px; width: 14px;"></div>
+							</div>
 						</div>
 					</div>
 					
@@ -258,8 +293,8 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 								</div>
 								<p class="ending-desc">The cassette that contains Maitreya.aic was removed from its slot in a server at Isolated Site-12.</p>
 								<p class="ending-desc">Maitreya.aic lost connection to Isolated Site-12 and was unable to operate further.</p>
-								<p class="ending-number">Ending 12/16</p>
 								<button class="option action" id="restart">RESTART</button>
+								<p class="ending-number">Ending 12/16</p>
 							</div>
 						</div>
 					</div>

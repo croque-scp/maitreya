@@ -16,7 +16,7 @@ make terminal input disabled while the terminal is doing something
 /*  _       ___ __   _     __      __
  * | |     / (_) /__(_)___/ /___  / /_
  * | | /| / / / //_/ / __  / __ \/ __/
- * | |/ |/ / / ,< / / /_/ / /_/ / /_
+ * | |/ |/ / / , </ / /_/ / /_/ / /_
  * |__/|__/_/_/|_/_/\__,_/\____/\__/
  */
 a, button, li.selector {
@@ -170,11 +170,11 @@ html, body, #interface {
 	transition: box-shadow 0.1s ease-in-out 0s,
 	            border-radius 0.1s ease-in-out 0s,
 	            height 0.1s ease-in-out 0s,
-	            width 0.2s ease-in-out 0.2s,
+	            width 0.2s ease-in 0.2s,
 	            border-width 0s;
 }
 #app-selector ul li.selector:not(.selected):not(.disabled):hover a {
-	animation: bounce 0.2s 1 ease-in;
+	animation: bounce-with-x-translate 1s linear 1 both;
 }
 #app-selector ul li.selector.disabled a {
 	border: 1px #205dbf solid;
@@ -275,12 +275,12 @@ html, body, #interface {
  *  / / /  __/ /  / / / / / / / / / / /_/ / /
  * /_/  \___/_/  /_/ /_/ /_/_/_/ /_/\__,_/_/
  */
-#app-body #terminal-app .terminal-body {
+#terminal-app .terminal-body {
 	height: 350px;
 	background-image: url(grey_stripe.png);
 	position: relative;
 }
-#app-body #terminal-app .working {
+#terminal-app .working {
 	position: absolute;
 	width: 15px;
 	height: 15px;
@@ -288,7 +288,7 @@ html, body, #interface {
 	bottom: 0;
 	transform: translate(-20px,-5px);
 }
-#app-body #terminal-app .terminal-log {
+#terminal-app .terminal-log {
 	height: 100%;
 	margin: 0 100px;
 	box-shadow: 3px 0 1px -2px rgba(0,0,0,0.12), 1px 0 5px 0 rgba(0,0,0,0.2), -3px 0 1px -2px rgba(0,0,0,0.12), -1px 0 5px rgba(0,0,0,0.2);
@@ -296,8 +296,9 @@ html, body, #interface {
 	display: flex;
 	flex-direction: column-reverse;
 	background-color: #ddd;
+	overflow-x: hidden;
 }
-#app-body #terminal-app .terminal-log p {
+#terminal-app .terminal-log p {
 	margin: 1px 0;
 	padding: 3px 10px 3px 25px;
 	font-family: Courier,monospace;
@@ -305,14 +306,14 @@ html, body, #interface {
 	background-color: #eee;
 	text-indent: -15px;
 }
-#app-body #terminal-app .terminal-log p.info {
+#terminal-app .terminal-log p.info {
 	margin: -1px 0;
 	color: #6b4c25;
 	background-color: #fffae8;
 	border-top: 2px #fff3c7 solid;
 	border-bottom: 2px #fff3c7 solid;
 }
-#app-body #terminal-app .terminal-log p.info::before {
+#terminal-app .terminal-log p.info::before {
 	content: "Info";
 	color: white;
 	background-color: #6b4c25;
@@ -321,14 +322,14 @@ html, body, #interface {
 	margin-left: -7px;
 	margin-right: 4px;
 }
-#app-body #terminal-app .terminal-log p.error, #app-body #terminal-app .terminal-log p.warning {
+#terminal-app .terminal-log p.error, #terminal-app .terminal-log p.warning {
 	margin: -1px 0;
 	color: red;
 	background-color: #fff0f0;
 	border-top: 2px #ffd6d6 solid;
 	border-bottom: 2px #ffd6d6 solid;
 }
-#app-body #terminal-app .terminal-log p.error::before, #app-body #terminal-app .terminal-log p.warning::before {
+#terminal-app .terminal-log p.error::before, #terminal-app .terminal-log p.warning::before {
 	content: "ERROR";
 	color: white;
 	background-color: red;
@@ -337,46 +338,59 @@ html, body, #interface {
 	margin-left: -7px;
 	margin-right: 4px;
 }
-#app-body #terminal-app .terminal-log p.warning::before {
+#terminal-app .terminal-log p.warning::before {
 	content: "WARNING";
 }
-#app-body #terminal-app .terminal-log p.title {
+#terminal-app .terminal-log p.title {
 	background-color: transparent;
 }
-#app-body #terminal-app .terminal-log p.title img {
+#terminal-app .terminal-log p.title img {
 	height: 50px;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 }
-#app-body #terminal-app .terminal-log p.ng-enter {
+#terminal-app .terminal-log p.ng-enter {
 	max-height: 0;
 	transition: all 0.5s ease-in-out;
 }
-#app-body #terminal-app .terminal-log p.ng-enter-active {
+#terminal-app .terminal-log p.ng-enter-active {
 	max-height: 300px;
 }
-#app-body #terminal-app .middle-bar {
+#terminal-app .middle-bar {
 	background: linear-gradient(to right,#1488cc,#2b32b2);
 	display: flex;
 	width: 100%;
 	height: 30px;
 	justify-content: space-around;
 	align-items: center;
+	position: relative;
+	z-index: 10;
+	font-family: Nunito;
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+	color: white;
 }
-#app-body #terminal-app .middle-bar p, #app-body #terminal-app .middle-bar button {
-	margin: 0 20px;
+#terminal-app .middle-bar button {
+	margin: 0 3em;
 	display: inline-block;
 }
-#app-body #terminal-app .middle-bar input {
+#terminal-app .middle-bar input {
+	margin: 0 2em;
 	font-family: Courier,monospace;
 	display: inline-block;
 	width: auto;
 	border: none;
 	padding: 2px 4px;
 	flex-grow: 1;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0,0,0,0.4);
+	box-shadow: inset 0 0 6px 6px rgba(0,0,0,0.12), inset 0 0 3px 1px rgba(0,0,0,0.2);
 	color: white;
+}
+#terminal-app .middle-bar ::placeholder {
+	text-align: center;
+	color: #1488cc;
+	font-family: Nunito,Verdana,Arial,Helvetica,sans-serif;
+	opacity: 1;
 }
 
 /*     __  ___
@@ -385,38 +399,38 @@ html, body, #interface {
  *  / /  / /  __(__  |__  ) /_/ / /_/ /  __(__  )
  * /_/  /_/\___/____/____/\__,_/\__, /\___/____/
  *                             /____/          */
-#app-body #messages-app .conversation-container {
-	height: 350px;
+#messages-app .conversation-container {
+	height: 345px;
 	position: relative;
 	background: linear-gradient(to top,#eee,#fff);
 	overflow:	auto;
 }
-#app-body #messages-app .speaking {
+#messages-app .speaking {
 	margin: -0.7em 130px 0.3em 130px;
 	position: relative;
 }
-#app-body #messages-app .speaking p {
+#messages-app .speaking p {
 	color: #1a73c6;
 	margin: 0 40px;
 	font-size: 1em;
 	display: inline-block;
 	font-family: Nunito,Verdana,Arial,Helvetica,sans-serif;
 }
-#app-body #messages-app .speaking img {
+#messages-app .speaking img {
 	position: absolute;
 	height: 30px;
 	width: 30px;
 	left: 5px;
 	transform: translate(0,-21%);
 }
-#app-body #messages-app .conversation {
+#messages-app .conversation {
 	height: 100%;
 	margin: 0;
 	display: flex;
 	flex-direction: column-reverse;
 	overflow:	auto;
 }
-#app-body #messages-app .conversation::before {
+#messages-app .conversation::before {
 	content: "";
 	width: 90%; /*this is so it doesn't go over the scrollbar*/
 	height: 15px;
@@ -426,86 +440,86 @@ html, body, #interface {
 	left: 5%; /*help*/
 	z-index: 20;
 }
-#app-body #messages-app .conversation .wrapper {
+#messages-app .conversation .wrapper {
 	margin: 0 130px 1em 130px;
 	zoom: 1;
 	position: relative;
 }
-#app-body #messages-app .conversation .wrapper.collapsed {
+#messages-app .conversation .wrapper.collapsed {
 	margin-bottom: 0.3em;
 }
-#app-body #messages-app .conversation .wrapper.maitreya {
+#messages-app .conversation .wrapper.maitreya {
 	margin-left: 133px; /* Literally no one else but me will notice this or even care about it if they did. I spent like 10 minutes deciding between 132 and 133px. You know what? If I could, I'd go for 132.5. But no. You can't have half a pixel. Fuck */
 }
-#app-body #messages-app .conversation .wrapper.narrator {
+#messages-app .conversation .wrapper.narrator {
 	margin-left: 200px;
 	margin-right: 200px;
 }
-#app-body #messages-app .conversation .wrapper div {
+#messages-app .conversation .wrapper div {
 	color: #222;
 	background-color: #ddd;
 	border-radius: 5px;
 	clear: both;
 	position: relative;
 }
-#app-body #messages-app .conversation .wrapper div.breach {
+#messages-app .conversation .wrapper div.breach {
 	border: 3px #ddd solid;
 	background-color: white;
 	float: left;
 }
-#app-body #messages-app .conversation .wrapper div.alexandra {
+#messages-app .conversation .wrapper div.alexandra {
 	float: left;
 	background: linear-gradient(to bottom,#0cc,#009494);
 	border-radius: 30px / 70px;
 	padding: 2px 20px;
 	max-width: 60%;
 }
-#app-body #messages-app .conversation .wrapper div.maitreya {
+#messages-app .conversation .wrapper div.maitreya {
 	background: linear-gradient(to bottom,#1488cc,#1a73c6);
 	float: right;
 }
-#app-body #messages-app .conversation .wrapper div.narrator {
+#messages-app .conversation .wrapper div.narrator {
 	background: #e9e9e9;
 	border-radius: 0;
 	border: 1px #999 dashed;
 }
-#app-body #messages-app .conversation .wrapper div p {
+#messages-app .conversation .wrapper div p {
 	display: inline-block;
 	margin: 1em;
 }
-#app-body #messages-app .conversation .wrapper div.breach p {
+#messages-app .conversation .wrapper div.breach p {
 	color: #222;
 	margin: calc(1em + 2px);
 }
-#app-body #messages-app .conversation .wrapper div.alexandra p {
+#messages-app .conversation .wrapper div.alexandra p {
 	color: #f5e9e9;
 }
-#app-body #messages-app .conversation .wrapper div.maitreya p {
+#messages-app .conversation .wrapper div.maitreya p {
 	color: white;
 }
-#app-body #messages-app .conversation .wrapper .logo {
+#messages-app .conversation .wrapper .logo {
 	width: 60px;
 	position: absolute;
 	left: -45px;
 	top: 50%;
 	transform: translate(-50%,-50%);
 }
-#app-body #messages-app .conversation .wrapper .triangle {
+#messages-app .conversation .wrapper .triangle {
 	width: 20px;
 	position: absolute;
 	left: -5px;
 	top: 65%;
 	transform: translate(-50%,-50%);
 }
-#app-body #messages-app .conversation .wrapper .logo.breach {
+#messages-app .conversation .wrapper .logo.breach {
 	top: calc(50% + 5px);
 }
-#app-body #messages-app .conversation .wrapper .logo.alexandra {
+#messages-app .conversation .wrapper .logo.alexandra {
 	width: 50px;
 	top: 60%;
 	transform: translate(-50%,-60%);
 }
-#app-body #messages-app .conversation .wrapper .logo.maitreya {
+#messages-app .conversation .wrapper .logo.maitreya {
 	width: 60px;
 	position: absolute;
 	right: -45px;
@@ -513,7 +527,7 @@ html, body, #interface {
 	top: calc(50%);
 	transform: translate(50%,-50%);
 }
-#app-body #messages-app .conversation p.title {
+#messages-app .conversation p.title {
 	background-color: transparent;
 	font-size: 1.2em;
 	font-family: Nunito,Verdana,Arial,Helvetica,sans-serif;
@@ -522,14 +536,14 @@ html, body, #interface {
 	padding: 1em;
 	color: black;
 }
-#app-body #messages-app .conversation p.ng-enter {
+#messages-app .conversation p.ng-enter {
 	max-height: 0;
 	transition: all 0.5s ease-in-out;
 }
-#app-body #messages-app .conversation p.ng-enter-active {
+#messages-app .conversation p.ng-enter-active {
 	max-height: 300px;
 }
-#app-body #messages-app .middle-bar {
+#messages-app .middle-bar {
 	background: linear-gradient(to right,#1488cc,#2b32b2);
 	display: flex;
 	width: 100%;
@@ -537,11 +551,11 @@ html, body, #interface {
 	justify-content: space-around;
 	align-items: center;
 }
-#app-body #messages-app .middle-bar p, #app-body #messages-app .middle-bar button {
+#messages-app .middle-bar p, #messages-app .middle-bar button {
 	margin: 0 20px;
 	display: inline-block;
 }
-#app-body #messages-app .middle-bar input {
+#messages-app .middle-bar input {
 	font-family: Courier,monospace;
 	display: inline-block;
 	width: auto;
@@ -612,7 +626,7 @@ html, body, #interface {
 #messages-selector ul li.selector:not(.selected):hover a {
 	/*background-color: #205dbf;
 	color: white;*/
-	animation: bounce 0.2s 1 ease-in;
+	animation: bounce-without-x-translate 1s linear 1 both;
 }
 #messages-selector ul li.selector.selected:hover a {
 	/* border: 1px #205dbf solid; */
@@ -625,7 +639,7 @@ html, body, #interface {
 }
 #messages-selector ul li.selector.selected:before {
 	box-shadow: inset -3px 0 2px -2px rgba(0,0,0,0.28), inset -4px 0 1px -2px rgba(0,0,0,0.14), inset -2px 0 5px -5px rgba(0,0,0,0.2);
-	content: " ";
+	content: "";
 	height: 100%;
 	left: -10px;
 	position: absolute;
@@ -634,7 +648,7 @@ html, body, #interface {
 }
 #messages-selector ul li.selector.selected:after {
 	box-shadow: inset 3px 0 2px -2px rgba(0,0,0,0.28), inset 4px 0 1px -2px rgba(0,0,0,0.14), inset 2px 0 5px -5px rgba(0,0,0,0.2);
-	content: " ";
+	content: "";
 	height: 100%;
 	position: absolute;
 	right: -10px;
@@ -678,6 +692,20 @@ html, body, #interface {
  *  / _, _/ /_/ / / / /
  * /_/ |_|\__,_/_/ /_/
  */
+#run-app .sitemap {
+	width: 600px;
+	height: 450px;
+	position: relative;
+	/* background-image set in HTML */
+}
+#run-app .sitemap div {
+	position: absolute;
+	opacity: 0;
+	/* most of the style is in the HTML */
+}
+#run-app .sitemap div:hover {
+	opacity: 1;
+}
 
 /*     ______          ___            
  *    / ____/___  ____/ (_)___  ____ _
@@ -688,6 +716,16 @@ html, body, #interface {
 #ending-app .app-main {
 	background: linear-gradient(to bottom,#292929,#333,#292929);
 	position: relative;
+}
+#ending-app .app-main::before {
+	/*background-image: url(https://media.giphy.com/media/dfJGXnjJfzYLS/giphy.gif);*/
+	background-size: cover;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	content: "";
+	opacity: 0.02;
+	
 }
 #ending-app .ending-container {
 	position: absolute;
@@ -765,7 +803,7 @@ html, body, #interface {
 .preload .app-title p {
 	opacity: 0;
 }
-.preload * {
+.preload *:not(button) {
 	transition: all 0s !important;
 }
 
@@ -833,12 +871,25 @@ html, body, #interface {
  * / /_/ / /_/ / /_/ / /_/ / / / (__  )
  * \____/ .___/\__/_/\____/_/ /_/____/
  *     /_/                           */
+.options-block {
+	height: 170px;
+}
+.options {
+	height: 100%;
+	max-width: 60%;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: baseline;
+	justify-content: center;
+}
+
 .option {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
 	display: block;
-	margin-bottom: 4px;
+	margin-bottom: 0.5em;
 	box-sizing: border-box;
 	font-family: Verdana,Arial,Helvetica,sans-serif;
 	font-size: inherit;
@@ -989,16 +1040,6 @@ html, body, #interface {
 		height: calc(100% - 140px);
 	}
 }
-
-/*
- * Theme colours:
- * 
- * Light #1488cc
- * Medium-Light #1a73c6
- * Medium #205dbf
- *
- *
- */
  
 /* ANIMATIONS */
 @keyframes false-color {
@@ -1038,19 +1079,48 @@ html, body, #interface {
 	}
 }
 
-@keyframes bounce {
-	0% {
-		top: 50%;
-	}
-	30% {
-		top: calc(50% - 3px);
-	}
-	50% {
-		top: calc(50% - 3px);
-	}
-	100% {
-		top: 50%;
-	}
+/*@keyframes bounce {
+	0%, 100% {top: 50%;}
+	10%, 90% {top: calc(50% - 1.08px);}
+	20%, 80% {top: calc(50% - 1.92px);}
+	30%, 70% {top: calc(50% - 2.52px);}
+	40%, 60% {top: calc(50% - 2.88px);}
+	50%, {top: calc(50% - 3px);}
+}*/
+
+/* MOUSEOVER BOUNCE */
+/* Generated with Bounce.js */
+
+@keyframes bounce-without-x-translate { 
+	0% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); }
+	2.1% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-1.335,0,1); }
+	4.1% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.166,0,1); }
+	8.21% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.759,0,1); }
+	11.41% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.497,0,1); }
+	14.51% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-1.928,0,1); }
+	20.72% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-0.636,0,1); }
+	27.03% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.194,0,1); }
+	33.23% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.413,0,1); }
+	45.75% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.094,0,1); }
+	58.26% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-0.062,0,1); }
+	83.28% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.009,0,1); }
+	100% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); } 
+}
+
+@keyframes bounce-with-x-translate { 
+	0% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); }
+	2.1% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-1.335,0,1); }
+	4.1% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.166,0,1); }
+	8.21% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.759,0,1); }
+	11.41% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.497,0,1); }
+	14.51% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-1.928,0,1); }
+	20.72% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-0.636,0,1); }
+	27.03% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.194,0,1); }
+	33.23% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.413,0,1); }
+	45.75% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.094,0,1); }
+	58.26% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-0.062,0,1); }
+	83.28% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.009,0,1); }
+	100% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); } 
 }
 
 /* GLITCHED TEXT */
@@ -1063,69 +1133,27 @@ html, body, #interface {
 }
 
 @keyframes noise-anim {
-	0% {
-		clip: rect(63px, 9999px, 96px, 0);
-	}
-	5% {
-		clip: rect(82px, 9999px, 6px, 0);
-	}
-	10% {
-		clip: rect(68px, 9999px, 49px, 0);
-	}
-	15% {
-		clip: rect(32px, 9999px, 90px, 0);
-	}
-	20% {
-		clip: rect(10px, 9999px, 9px, 0);
-	}
-	25% {
-		clip: rect(34px, 9999px, 67px, 0);
-	}
-	30% {
-		clip: rect(64px, 9999px, 36px, 0);
-	}
-	35% {
-		clip: rect(12px, 9999px, 61px, 0);
-	}
-	40% {
-		clip: rect(67px, 9999px, 45px, 0);
-	}
-	45% {
-		clip: rect(88px, 9999px, 2px, 0);
-	}
-	50% {
-		clip: rect(4px, 9999px, 56px, 0);
-	}
-	55% {
-		clip: rect(87px, 9999px, 84px, 0);
-	}
-	60% {
-		clip: rect(72px, 9999px, 91px, 0);
-	}
-	65% {
-		clip: rect(20px, 9999px, 63px, 0);
-	}
-	70% {
-		clip: rect(93px, 9999px, 11px, 0);
-	}
-	75% {
-		clip: rect(39px, 9999px, 1px, 0);
-	}
-	80% {
-		clip: rect(79px, 9999px, 64px, 0);
-	}
-	85% {
-		clip: rect(19px, 9999px, 98px, 0);
-	}
-	90% {
-		clip: rect(99px, 9999px, 73px, 0);
-	}
-	95% {
-		clip: rect(51px, 9999px, 19px, 0);
-	}
-	100% {
-		clip: rect(18px, 9999px, 76px, 0);
-	}
+	0% {clip: rect(0.63em, 9999px, 0.96em, 0);}
+	5% {clip: rect(0.82em, 9999px, 0.06em, 0);}
+	10% {clip: rect(0.68em, 9999px, 0.49em, 0);}
+	15% {clip: rect(0.32em, 9999px, 0.9em, 0);}
+	20% {clip: rect(0.1em, 9999px, 0.09em, 0);}
+	25% {clip: rect(0.34em, 9999px, 0.67em, 0);}
+	30% {clip: rect(0.64em, 9999px, 0.36em, 0);}
+	35% {clip: rect(0.12em, 9999px, 0.61em, 0);}
+	40% {clip: rect(0.67em, 9999px, 0.45em, 0);}
+	45% {clip: rect(1em, 9999px, 0.02em, 0);}
+	50% {clip: rect(0.04em, 9999px, 0.56em, 0);}
+	55% {clip: rect(0.87em, 9999px, 0.84em, 0);}
+	60% {clip: rect(0.72em, 9999px, 0.91em, 0);}
+	65% {clip: rect(0.2em, 9999px, 0.63em, 0);}
+	70% {clip: rect(0.93em, 9999px, 0em, 0);}
+	75% {clip: rect(0.39em, 9999px, 0.01em, 0);}
+	80% {clip: rect(0.79em, 9999px, 0.64em, 0);}
+	85% {clip: rect(0.19em, 9999px, 0.98em, 0);}
+	90% {clip: rect(0.99em, 9999px, 0.73em, 0);}
+	95% {clip: rect(0.51em, 9999px, 0.19em, 0);}
+	100% {clip: rect(0.29em, 9999px, 0.76em, 0);}
 }
 .glitch:after {
 	content: attr(data-text);
@@ -1141,69 +1169,27 @@ html, body, #interface {
 }
 
 @keyframes noise-anim-2 {
-	0% {
-		clip: rect(7px, 9999px, 2px, 0);
-	}
-	5% {
-		clip: rect(30px, 9999px, 44px, 0);
-	}
-	10% {
-		clip: rect(34px, 9999px, 32px, 0);
-	}
-	15% {
-		clip: rect(43px, 9999px, 8px, 0);
-	}
-	20% {
-		clip: rect(75px, 9999px, 62px, 0);
-	}
-	25% {
-		clip: rect(47px, 9999px, 77px, 0);
-	}
-	30% {
-		clip: rect(68px, 9999px, 39px, 0);
-	}
-	35% {
-		clip: rect(49px, 9999px, 14px, 0);
-	}
-	40% {
-		clip: rect(34px, 9999px, 71px, 0);
-	}
-	45% {
-		clip: rect(20px, 9999px, 70px, 0);
-	}
-	50% {
-		clip: rect(57px, 9999px, 9px, 0);
-	}
-	55% {
-		clip: rect(28px, 9999px, 89px, 0);
-	}
-	60% {
-		clip: rect(41px, 9999px, 29px, 0);
-	}
-	65% {
-		clip: rect(31px, 9999px, 98px, 0);
-	}
-	70% {
-		clip: rect(71px, 9999px, 17px, 0);
-	}
-	75% {
-		clip: rect(69px, 9999px, 75px, 0);
-	}
-	80% {
-		clip: rect(74px, 9999px, 18px, 0);
-	}
-	85% {
-		clip: rect(10px, 9999px, 61px, 0);
-	}
-	90% {
-		clip: rect(43px, 9999px, 56px, 0);
-	}
-	95% {
-		clip: rect(64px, 9999px, 68px, 0);
-	}
-	100% {
-		clip: rect(77px, 9999px, 45px, 0);
-	}
+	0% {clip: rect(0.07em, 9999px, 0.02em, 0);}
+	5% {clip: rect(0.3em, 9999px, 0.44em, 0);}
+	10% {clip: rect(0.95em, 9999px, 0.32em, 0);}
+	15% {clip: rect(0.43em, 9999px, 0.08em, 0);}
+	20% {clip: rect(0.75em, 9999px, 0.62em, 0);}
+	25% {clip: rect(0.47em, 9999px, 0.77em, 0);}
+	30% {clip: rect(0.68em, 9999px, 0.39em, 0);}
+	35% {clip: rect(0.49em, 9999px, 0.14em, 0);}
+	40% {clip: rect(0.34em, 9999px, 0.71em, 0);}
+	45% {clip: rect(0.2em, 9999px, 0.7em, 0);}
+	50% {clip: rect(0.57em, 9999px, 0.09em, 0);}
+	55% {clip: rect(0.28em, 9999px, 0.89em, 0);}
+	60% {clip: rect(0.41em, 9999px, 0.29em, 0);}
+	65% {clip: rect(0.31em, 9999px, 0.98em, 0);}
+	70% {clip: rect(0.71em, 9999px, 0.17em, 0);}
+	75% {clip: rect(0.69em, 9999px, 0.75em, 0);}
+	80% {clip: rect(0.74em, 9999px, 0.18em, 0);}
+	85% {clip: rect(0.01em, 9999px, 0.61em, 0);}
+	90% {clip: rect(0.43em, 9999px, 0.56em, 0);}
+	95% {clip: rect(0.64em, 9999px, 0.68em, 0);}
+	100% {clip: rect(0.77em, 9999px, 0.45em, 0);}
 }
 .glitch:before {
 	content: attr(data-text);
