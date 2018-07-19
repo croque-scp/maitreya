@@ -3,6 +3,7 @@
 Loading icon CC0 from loading.io
 Typing icon CC-BY from loading.io
 Site-12 map made by me using Retro Computer font https://www.dafont.com/retro-computer.font
+Isolated Site-12 CC BY 2.0 https://www.flickr.com/photos/rauckhaus/10996736375/
 -->
 
 <!-- AUTHOR COMMENT
@@ -124,7 +125,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									<img src="loading.gif">
 								</div>
 								<div class="terminal-log">
-									<p ng-repeat="line in aic.chatLog.terminal" ng-class="[line.speaker, line.cssClass]">
+									<p ng-repeat="line in aic.chatLog.terminal.log" ng-class="[line.speaker, line.cssClass]">
 										<span ng-bind-html="line.text"></span>
 									</p>
 									<p class="title"><img src="maitreya_terminal.png"></p>
@@ -138,7 +139,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 							<div class="options-block">
 								<div class="options">
 								
-									<button class="option action">Open the door.</button>
+									<button ng-repeat="option in aic.chatLog.terminal.options" class="option action">Open the door.</button>
 									<button class="option action">Upload the files.</button>
 									<button class="option speech">Hello. My name is Maitreya.</button>
 									<button class="option speech">Hello. Who are you?</button>
@@ -172,11 +173,11 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 								
 								<div id="breach-conversation" class="conversation-container" ng-show="aic.selectedSpeaker == 'breach'">
 									<div class="conversation">
-										<div ang-show="aic.isSpeaking.breach" class="speaking">
+										<div ng-class="aic.isSpeaking.breach ? null : 'notSpeaking'" class="speaking">
 											<p><img src="typing.gif">Dr. Breach is speaking...</p>
 										</div>
-										<div class="wrapper" ng-repeat="line in aic.chatLog.breach" ng-class="[line.speaker, aic.chatLog.breach[$index-1].speaker == line.speaker ? 'collapsed' : null]">
-											<img ng-src="{{aic.chatLog.breach[$index-1].speaker != line.speaker ? (line.speaker == 'breach' ? 'breach_icon2.png' : (line.speaker == 'maitreya' ? 'maitreya_icon.png' : null)) : null}}" ng-class="line.speaker" class="logo">
+										<div class="wrapper" ng-repeat="line in aic.chatLog.breach.log" ng-class="[line.speaker, aic.chatLog.breach.log[$index-1].speaker == line.speaker ? 'collapsed' : null]">
+											<img ng-show="aic.chatLog.breach.log[$index-1].speaker !== line.speaker" ng-src="{{line.speaker == 'breach' ? 'breach_icon2.png' : (line.speaker == 'maitreya' ? 'maitreya_icon.png' : null)}}" ng-class="line.speaker" class="logo">
 											<div ng-class="[line.speaker, line.cssClass]">
 												<p><span ng-bind-html="line.text"></span></p>
 											</div>
@@ -188,10 +189,10 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 								
 								<div id="alexandra-conversation" class="conversation-container" ng-show="aic.selectedSpeaker == 'alexandra'">
 									<div class="conversation">
-										<div ang-show="aic.isSpeaking.alexandra" class="speaking">
+										<div ng-show="aic.isSpeaking.alexandra" class="speaking">
 											<p><img src="typing.gif">Alexandra is thinking...</p>
 										</div>
-										<div class="wrapper" ng-repeat="line in aic.chatLog.alexandra" ng-class="[line.speaker, aic.chatLog.alexandra[$index-1].speaker == line.speaker ? 'collapsed' : null]">
+										<div class="wrapper" ng-repeat="line in aic.chatLog.alexandra.log" ng-class="[line.speaker, aic.chatLog.alexandra.log[$index-1].speaker == line.speaker ? 'collapsed' : null]">
 											<img ng-src="{{line.speaker == 'alexandra' ? 'alex_sad.png' : (line.speaker == 'maitreya' ? 'maitreya_icon.png' : null)}}" ng-class="line.speaker" class="logo">
 											<img ng-src="{{line.speaker == 'alexandra' ? 'alex_triangle.png' : null}}" ng-class="line.speaker" class="triangle">
 											<div ng-class="[line.speaker, line.cssClass]">
@@ -216,10 +217,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									-->
 							</div>
 							
-							<div ng-submit="aic.terminalType()" class="middle-bar">
-								<p>{{aic.lang.commandInput}}</p>
-								<input>
-								<button id="terminal-send" class="option action" type="submit">{{aic.lang.terminalSend}}</button>
+							<div class="middle-bar">
 							</div>
 							
 							<div class="options-block">
@@ -248,36 +246,66 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 							<p>{{aic.lang.runAppName}}</p>
 						</div>
 						<div class="app-main">
-							<div class="sitemap" style="background-image: url(site12.png);">
-								<div data-room="pantry" style="background-image: url(site_pantry.png); top: 66px; left: 267px; height:83px; width: 116px;"></div>
-								<div data-room="storage" style="background-image: url(site_storage.png); top: 324px; left: 345px; height:83px; width: 155px;"></div>
-								<div data-room="foyer" style="background-image: url(site_foyer.png); top: 81px; left: 498px; height:239px; width: 92px;"></div>
-								<div data-room="ring-east" style="background-image: url(site_ring-east.png); top: 153px; left: 480px; height:152px; width: 35px;"></div>
-								<div data-room="hangar" style="background-image: url(site_hangar.png); top: 9px; left: 9px; height:431px; width: 131px;"></div>
-								<div data-room="server" style="background-image: url(site_server.png); top: 9px; left: 144px; height:140px; width: 119px;"></div>
-								<div data-room="cafe" style="background-image: url(site_cafe.png); top: 102px; left: 330px; height:47px; width: 110px;"></div>
-								<div data-room="d1" style="background-image: url(site_d1.png); top: 174px; left: 147px; height:59px; width: 53px;"></div>
-								<div data-room="d2" style="background-image: url(site_d2.png); top: 174px; left: 207px; height:59px; width: 53px;"></div>
-								<div data-room="d3" style="background-image: url(site_d3.png); top: 174px; left: 267px; height:59px; width: 53px;"></div>
-								<div data-room="d4" style="background-image: url(site_d4.png); top: 261px; left: 147px; height:59px; width: 53px;"></div>
-								<div data-room="d5" style="background-image: url(site_d5.png); top: 261px; left: 207px; height:59px; width: 53px;"></div>
-								<div data-room="d6" style="background-image: url(site_d6.png); top: 261px; left: 267px; height:59px; width: 53px;"></div>
-								<div data-room="d-corridor" style="background-image: url(site_d-corridor.png); top: 240px; left: 147px; height:14px; width: 173px;"></div>
-								<div data-room="armoury" style="background-image: url(site_armoury.png); top: 330px; left: 150px; height:77px; width: 167px;"></div>
-								<div data-room="toilet" style="background-image: url(site_toilet.png); top: 381px; left: 345px; height:26px; width: 20px;"></div>
-								<div data-room="bay" style="background-image: url(site_bay.png); top: 324px; left: 504px; height:83px; width: 86px;"></div>
-								<div data-room="containment" style="background-image: url(site_containment.png); top: 219px; left: 393px; height:35px; width: 35px;"></div>
-								<div data-room="airlock" style="background-image: url(site_airlock.png); top: 231px; left: 348px; height:11px; width: 38px;"></div>
-								<div data-room="a4" style="background-image: url(site_a4.png); top: 93px; left: 462px; height:56px; width: 53px;"></div>
-								<div data-room="a2" style="background-image: url(site_a2.png); top: 21px; left: 462px; height:38px; width: 23px;"></div>
-								<div data-room="a3" style="background-image: url(site_a3.png); top: 63px; left: 462px; height:26px; width: 23px;"></div>
-								<div data-room="a1" style="background-image: url(site_a1.png); top: 21px; left: 387px; height:77px; width: 53px;"></div>
-								<div data-room="server-corridor" style="background-image: url(site_server-corridor.png); top: 153px; left: 144px; height:14px; width: 182px;"></div>
-								<div data-room="armoury-corridor" style="background-image: url(site_armoury-corridor.png); top: 321px; left: 327px; height:86px; width: 14px;"></div>
-								<div data-room="office-corridor" style="background-image: url(site_office-corridor.png); top: 21px; left: 444px; height:131px; width: 14px;"></div>
-								<div data-room="ring-north" style="background-image: url(site_ring-north.png); top: 153px; left: 342px; height:14px; width: 137px;"></div>
-								<div data-room="ring-south" style="background-image: url(site_ring-south.png); top: 306px; left: 342px; height:14px; width: 152px;"></div>
-								<div data-room="ring-west" style="background-image: url(site_ring-west.png); top: 153px; left: 327px; height:167px; width: 14px;"></div>
+							<div class="section menu-section selected">
+								<div class="menu-container">
+									<div class="menu-title">
+										Isolated Site-12 Operations Control
+									</div>
+									<ul>
+										<li>
+											<a>D-Class Requisition</a>
+										</li>
+										<li>
+											<a>Drone Control</a>
+										</li>
+										<li>
+											<a>Site Map & Individual Room Functions</a>
+										</li>
+										<li>
+											<a>Main Server Access</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="section map-section">
+								<div class="back">
+									<div class="parallelogram">
+										<a><i class="material-icons">arrow_back</i> Back to menu</a>
+									</div>
+								</div>
+								<div class="map-container">
+									<div class="sitemap" style="background-image: url(site12.png);">
+										<div data-room="ring-east" style="background-image: url(site_ring-east.png); top: 153px; left: 480px; height:153px; width: 36px;"></div>
+										<div data-room="pantry" style="background-image: url(site_pantry.png); top: 66px; left: 267px; height:84px; width: 117px;"></div>
+										<div data-room="storage" style="background-image: url(site_storage.png); top: 324px; left: 345px; height:84px; width: 156px;"></div>
+										<div data-room="foyer" style="background-image: url(site_foyer.png); top: 81px; left: 498px; height:240px; width: 93px;"></div>
+										<div data-room="hangar" style="background-image: url(site_hangar.png); top: 9px; left: 9px; height:432px; width: 132px;"></div>
+										<div data-room="server" style="background-image: url(site_server.png); top: 9px; left: 144px; height:141px; width: 120px;"></div>
+										<div data-room="cafe" style="background-image: url(site_cafe.png); top: 102px; left: 330px; height:48px; width: 111px;"></div>
+										<div data-room="d1" style="background-image: url(site_d1.png); top: 174px; left: 147px; height:60px; width: 54px;"></div>
+										<div data-room="d2" style="background-image: url(site_d2.png); top: 174px; left: 207px; height:60px; width: 54px;"></div>
+										<div data-room="d3" style="background-image: url(site_d3.png); top: 174px; left: 267px; height:60px; width: 54px;"></div>
+										<div data-room="d4" style="background-image: url(site_d4.png); top: 261px; left: 147px; height:60px; width: 54px;"></div>
+										<div data-room="d5" style="background-image: url(site_d5.png); top: 261px; left: 207px; height:60px; width: 54px;"></div>
+										<div data-room="d6" style="background-image: url(site_d6.png); top: 261px; left: 267px; height:60px; width: 54px;"></div>
+										<div data-room="d-corridor" style="background-image: url(site_d-corridor.png); top: 240px; left: 147px; height:15px; width: 174px;"></div>
+										<div data-room="armoury" style="background-image: url(site_armoury.png); top: 330px; left: 150px; height:78px; width: 168px;"></div>
+										<div data-room="toilet" style="background-image: url(site_toilet.png); top: 381px; left: 345px; height:27px; width: 21px;"></div>
+										<div data-room="bay" style="background-image: url(site_bay.png); top: 324px; left: 504px; height:84px; width: 87px;"></div>
+										<div data-room="containment" style="background-image: url(site_containment.png); top: 219px; left: 393px; height:36px; width: 36px;"></div>
+										<div data-room="airlock" style="background-image: url(site_airlock.png); top: 231px; left: 348px; height:12px; width: 39px;"></div>
+										<div data-room="a4" style="background-image: url(site_a4.png); top: 93px; left: 462px; height:57px; width: 54px;"></div>
+										<div data-room="a2" style="background-image: url(site_a2.png); top: 21px; left: 462px; height:39px; width: 24px;"></div>
+										<div data-room="a3" style="background-image: url(site_a3.png); top: 63px; left: 462px; height:27px; width: 24px;"></div>
+										<div data-room="a1" style="background-image: url(site_a1.png); top: 21px; left: 387px; height:78px; width: 54px;"></div>
+										<div data-room="server-corridor" style="background-image: url(site_server-corridor.png); top: 153px; left: 144px; height:15px; width: 183px;"></div>
+										<div data-room="armoury-corridor" style="background-image: url(site_armoury-corridor.png); top: 321px; left: 327px; height:87px; width: 15px;"></div>
+										<div data-room="office-corridor" style="background-image: url(site_office-corridor.png); top: 21px; left: 444px; height:132px; width: 15px;"></div>
+										<div data-room="ring-north" style="background-image: url(site_ring-north.png); top: 153px; left: 342px; height:15px; width: 138px;"></div>
+										<div data-room="ring-south" style="background-image: url(site_ring-south.png); top: 306px; left: 342px; height:15px; width: 153px;"></div>
+										<div data-room="ring-west" style="background-image: url(site_ring-west.png); top: 153px; left: 327px; height:168px; width: 15px;"></div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

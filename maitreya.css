@@ -243,6 +243,7 @@ html, body, #interface {
 #app-body {
 	height: calc(100% - 70px);
 	position: relative;
+	overflow: hidden;
 }
 #app-body .app-main {
 	height: calc(100% - 30px);
@@ -408,6 +409,11 @@ html, body, #interface {
 #messages-app .speaking {
 	margin: -0.7em 130px 0.3em 130px;
 	position: relative;
+	opacity: 1;
+	transition: opacity 0.1s ease-in-out;
+}
+#messages-app .speaking.notSpeaking {
+	opacity: 0;
 }
 #messages-app .speaking p {
 	color: #1a73c6;
@@ -442,7 +448,6 @@ html, body, #interface {
 }
 #messages-app .conversation .wrapper {
 	margin: 0 130px 1em 130px;
-	zoom: 1;
 	position: relative;
 }
 #messages-app .conversation .wrapper.collapsed {
@@ -455,6 +460,29 @@ html, body, #interface {
 	margin-left: 200px;
 	margin-right: 200px;
 }
+#messages-app .conversation .wrapper.ng-enter {
+	transform: translate(0,100px);
+	max-height: 0px;
+	transition: all 0.5s ease-in-out;
+	opacity: 0;
+}
+#messages-app .conversation .wrapper.maitreya.ng-enter {
+	opacity: 1;
+}
+#messages-app .conversation .wrapper.ng-enter-active {
+	transform: translate(0,0);
+	max-height: 200px;
+	opacity: 1;
+}
+/*#messages-app .conversation .wrapper.ng-move {
+	transform: translate(-500px,0);
+	margin-top: -100%;
+	transition: all 0.5s ease-in-out;
+}
+#messages-app .conversation .wrapper.ng-move-active {
+	transform: translate(0,0);
+	margin-top: 0;
+}*/
 #messages-app .conversation .wrapper div {
 	color: #222;
 	background-color: #ddd;
@@ -497,29 +525,37 @@ html, body, #interface {
 #messages-app .conversation .wrapper div.maitreya p {
 	color: white;
 }
-#messages-app .conversation .wrapper .logo {
+#messages-app .conversation .wrapper img.logo {
 	width: 60px;
 	position: absolute;
 	left: -45px;
 	top: 50%;
 	transform: translate(-50%,-50%);
+	opacity: 1;
 }
-#messages-app .conversation .wrapper .triangle {
+#messages-app .conversation .wrapper img.logo.ng-hide-add {
+	transition: all 0.5s ease-in-out;
+}
+#messages-app .conversation .wrapper img.logo.ng-hide {
+	opacity: 0;
+	transform: translate(-50%,-30%);
+}
+#messages-app .conversation .wrapper img.triangle {
 	width: 20px;
 	position: absolute;
 	left: -5px;
 	top: 65%;
 	transform: translate(-50%,-50%);
 }
-#messages-app .conversation .wrapper .logo.breach {
+#messages-app .conversation .wrapper img.logo.breach {
 	top: calc(50% + 5px);
 }
-#messages-app .conversation .wrapper .logo.alexandra {
+#messages-app .conversation .wrapper img.logo.alexandra {
 	width: 50px;
 	top: 60%;
 	transform: translate(-50%,-60%);
 }
-#messages-app .conversation .wrapper .logo.maitreya {
+#messages-app .conversation .wrapper img.logo.maitreya {
 	width: 60px;
 	position: absolute;
 	right: -45px;
@@ -692,19 +728,87 @@ html, body, #interface {
  *  / _, _/ /_/ / / / /
  * /_/ |_|\__,_/_/ /_/
  */
-#run-app .sitemap {
+#run-app .app-main {
+	background: linear-gradient(to bottom,#ddd,#eee);
+}
+#run-app .back {
+	overflow-x: hidden;
+	height: 50px;
+	transform: none;
+	position: relative;
+	z-index: 10;
+}
+#run-app .back .parallelogram {
+	height: 45px;
+	margin: 0 0 0 -13px;
+	transform: skew(-30deg);
+	display: inline-block;
+	background: white;
+	position: relative;
+	vertical-align: middle;
+	box-shadow: 1px 2px 2px 0 rgba(0,0,0,0.14), 2px 3px 1px -2px rgba(0,0,0,0.12), 1px 1px 5px 0 rgba(0,0,0,0.2);
+}
+#run-app .back .parallelogram:hover {
+	animation: bounce-left-with-skew 1s linear 1 both;
+}
+#run-app .back .parallelogram p {
+	position: relative;
+	margin: 0 1em 0 calc(2em + 13px);
+	transform: skew(30deg);
+	color: #205dbf;
+	font-family: Nunito,Verdana,Arial,Helvetica,sans-serif;
+	font-size: 18px;
+	line-height: 45px;
+}
+#run-app .back .parallelogram p i {
+	position: absolute;
+	top: 50%;
+	left: calc(-1.1em);
+	transform: translate(0,calc(-50% - 1px));
+}
+#run-app .section:not(.selected) {
+	height: 0;
+	overflow: hidden;
+	visibility: hidden;
+}
+#run-app .section.menu-section {
+}
+#run-app .section.menu-section .menu-container {
+}
+#run-app .section.menu-section .menu-title {
+}
+#run-app .section.map-section {
+}
+#run-app .section.map-section .map-container {
+	background: #8bac0f;
+	margin: 0 20px;
+	box-shadow: inset 0 0 40px 0 #000;
+	padding: 20px;
+	height: 450px;
+}
+#run-app .section.map-section .sitemap {
 	width: 600px;
 	height: 450px;
 	position: relative;
+	margin: 0 auto;
 	/* background-image set in HTML */
 }
-#run-app .sitemap div {
+#run-app .section.map-section .sitemap.ng-enter {
+	max-height: 0px;
+	transition: max-height 3s steps(6,start);
+	/* TODO test if this works */
+}
+#run-app .section.map-section .sitemap.ng-enter-active {
+	max-height: 450px;
+}
+#run-app .section.map-section .sitemap div {
 	position: absolute;
 	opacity: 0;
 	/* most of the style is in the HTML */
 }
-#run-app .sitemap div:hover {
+#run-app .section.map-section .sitemap div:hover {
 	opacity: 1;
+	animation: opacity-flicker 0.075s linear 0s 2;
 }
 
 /*     ______          ___            
@@ -1079,6 +1183,18 @@ html, body, #interface {
 	}
 }
 
+@keyframes opacity-flicker {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
 /*@keyframes bounce {
 	0%, 100% {top: 50%;}
 	10%, 90% {top: calc(50% - 1.08px);}
@@ -1091,7 +1207,7 @@ html, body, #interface {
 /* MOUSEOVER BOUNCE */
 /* Generated with Bounce.js */
 
-@keyframes bounce-without-x-translate { 
+@keyframes bounce-without-x-translate {
 	0% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); }
 	2.1% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-1.335,0,1); }
 	4.1% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.166,0,1); }
@@ -1107,7 +1223,7 @@ html, body, #interface {
 	100% { transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); } 
 }
 
-@keyframes bounce-with-x-translate { 
+@keyframes bounce-with-x-translate {
 	0% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); }
 	2.1% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-1.335,0,1); }
 	4.1% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.166,0,1); }
@@ -1121,6 +1237,22 @@ html, body, #interface {
 	58.26% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-0.062,0,1); }
 	83.28% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.009,0,1); }
 	100% { transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); } 
+}
+
+@keyframes bounce-left-with-skew {
+	0% { transform: skew(-30deg) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); }
+	2.1% { transform: skew(-30deg) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,-1.335,0,0,1); }
+	4.1% { transform: skew(-30deg) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,-2.166,0,0,1); }
+	8.21% { transform: skew(-30deg) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,-2.759,0,0,1); }
+	11.41% { transform: skew(-30deg) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,-2.497,0,0,1); }
+	14.51% { transform: skew(-30deg) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,-1.928,0,0,1); }
+	20.72% { transform: skew(-30deg) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,-0.636,0,0,1); }
+	27.03% { transform: skew(-30deg) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0.194,0,0,1); }
+	33.23% { transform: skew(-30deg) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0.413,0,0,1); }
+	45.75% { transform: skew(-30deg) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0.094,0,0,1); }
+	58.26% { transform: skew(-30deg) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,-0.062,0,0,1); }
+	83.28% { transform: skew(-30deg) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0.009,0,0,1); }
+	100% { transform: skew(-30deg) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,10,); } 
 }
 
 /* GLITCHED TEXT */

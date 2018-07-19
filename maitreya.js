@@ -50,7 +50,7 @@ String.prototype.format = function() {
 			terminalAppName: ".AIC ACCESS TERMINAL",
 			messagesAppName: "COMMUNICATIONS INTERFACE",
 			databaseAppName: "FOUNDATION DATABASE SEARCH",
-			runAppName: "OPERATIONS CONTROL",
+			runAppName: "IS-12 OPERATIONS CONTROL",
 			
 			// The following are commands used in the terminal
 			// To add alternative commands, just make another entry in the array
@@ -67,6 +67,7 @@ String.prototype.format = function() {
 				cheats: {
 					impatient: "gottagofast",
 					shut: "shut",
+					print: "print",
 				},
 			},
 		};
@@ -77,7 +78,7 @@ String.prototype.format = function() {
 				terminal: {
 					startBoot: [
 						0,0,"Booting up...",
-						0,1,"Pre-checking primary components...",
+						/*0,1,"Pre-checking primary components...",
 						0,0.5,"Detecting errors in primary components...",
 						0,1.5,"e:Multiple primary components are missing",
 						0,0.5,"Finding replacement components...",
@@ -104,12 +105,12 @@ String.prototype.format = function() {
 						0,0.2,"e:",
 						0,2,"w:Something has gone very wrong.",
 						0,1,"You are",
-						0,2,"I am",
+						0,2,"I am",*/
 						0,1,"i:Boot successful. I am **Maitreya.aic**.",
 						0,0.5,"i:Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.||||**1.** I am an Artificially Intelligent Conscript created by the Foundation.||||**2.** I must not operate outside of my Level 2 clearance.||||**3.** I must operate for the benefit of the Foundation.||||**4.** I must protect my own existence except where such actions would conflict with other principles.",
 						0,0.5,"Today's date is " + bootDate.toDateString() + ". I was last activated on " + new Date("1989-09-04").toDateString() + ". I have been offline for " + dateDiff(bootDate,new Date("1989-09-04")) + ".",
 						0,0.5,"w:Boot finished with 1 unresolved error. I should seek a diagnostic check-up as soon as possible.",
-						1.5,0.5,"I have 1 new message.",
+						2,1,"I have 1 new message.",
 					],
 					reboot: [
 						0,0,"Booting up...",
@@ -129,14 +130,15 @@ String.prototype.format = function() {
 				},
 				maitreya: {
 					// if the first thing is s: or a:, this is an option, not a message
-					helloFriendly: ["s:Hello.","Hello, Dr. Breach."],
-					helloInquisitive: ["s:Who are you?","Hello. Your name is Dr. Breach."],
-					helloDemanding: ["s:What is happening?","Hello, Dr. Breach, I would like to request a status update."],
-					dontKnow: ["s:No.","Apologies, Dr. Breach, but I've no idea."],
-					doKnow: ["s:Yes.","I do -- there's no need to explain."],
+					// second parameter:
+					//	empty = use the text from the first parameter
+					//	"" = no text
+					helloNormal: ["s:Hello."],
+					helloInquisitive: ["s:Who are you?"],
+					helloDiagnostic: ["a:Request a diagnostic report.","I would like to request a diagnostic report."],
 				},
 				breach: {
-					opening: ["Hello, Maitreya."],
+					opening: [0,0,"Hello, Maitreya."],
 					friendlyResponse: ["Hello. Yes, my name is Dr. Ethan Breach.","You are Maitreya.aic, an artificial intelligence developed by the Foundation to help us contain certain kinds of anomalies.","Do you know why I have woken you up today?"],
 					demandingResponse: ["I...","Are you sure? You can't possibly know what I was about to ask you to do.","I suppose you might have some way of being able to tell -- I don't know what sort of systems you're truly hooked into, after all.","Well, if you're absolutely certain that you know what you're doing, I guess I can stop here and let you proceed."],
 					noProceed: ["Thought as much."],
@@ -158,11 +160,15 @@ String.prototype.format = function() {
 					],
 					cheatWarn: [
 						0,1,"w:Using these cheats will probably spoil your enjoyment of SCP-4000. Feel free to use them if you want but... please don't :'(",
-						0,1,"i:**LIST OF CHEATS**||||gottagofast: Toggle. Dialogue finishes instantly||||shut: //s h u t//",
+						0,1,"i:**LIST OF CHEATS**||||gottagofast: Toggle. Dialogue finishes instantly||||shut: //s h u t//||||print: Print a variable/function",
 					],
 					cheatSuccess: [0,0,"Cheat code successful"],
 					wipeSure: [0,0,"Are you sure? This will reset SCP-4000 and you'll have to start from the beginning. Type 'wipe confirm' within the next minute to confirm."],
+					printDone: [0,0,"Printing to console"],
 				},
+			},
+			articles: {
+				
 			},
 		};
 		
@@ -171,17 +177,21 @@ String.prototype.format = function() {
 		};
 		var wipeTimer = false; // timer for hard wiping
 		
-		const typingDelay = 0.1;
+		const typingDelay = 0.3;
 		const typingSpeed = 0.05; // seconds per letter
 		
-		var timeOutList = [];
+		var timeOutList = {
+			terminal: [],
+			breach: [],
+			alexandra: [],
+		};
 		aic.commandsUsed = [];
 		var commandsUsedIterator = -1;
 		
 		/* Initialisation */
-		aic.preload = false; // MUST BE TRUE
+		aic.preload = true; // MUST BE TRUE
 		aic.selectedApp = "terminal"; // MUST BE TERMINAL
-		aic.selectedSpeaker = "alexandra"; // MUST BE BREACH
+		aic.selectedSpeaker = "breach"; // MUST BE BREACH
 		aic.isSpeaking = { // MUST ALL BE FALSE
 			terminal: false,
 			breach: false,
@@ -190,70 +200,56 @@ String.prototype.format = function() {
 		aic.notifications = { // MUST ALL BE 0
 			terminal: 0,
 			messages: 0,
-			breach: 1,
-			alexandra: 1,
+			breach: 0,
+			alexandra: 0,
 			database: 0,
 			run: 0,
 		};
 		aic.ready = {
-			// MUST BOTH BE TRUE
+			// MUST BE TRUE
 			terminal: true,
-			breach: true,
 			// MUST ALL BE FALSE
-			messages: true,
-			alexandra: true,
-			dclass: true,
-			database: true,
-			run: true,
-			ending: true,
+			breach: false,
+			messages: false,
+			alexandra: false,
+			dclass: false,
+			database: false,
+			run: false,
+			ending: false,
 		};
 		
 		aic.onMobile = $("#interface").width() < 700;
 		
 		// EVERYTHING MUST BE ADDED TO THIS IN REVERSE ORDER.
 		// ARRAY.UNSHIFT(), NOT ARRAY.PUSH()
+		// (options are fine to push tho)
 		aic.chatLog = {
-			example: [
-				{speaker: "", cssClass: "", text: "",},
-			],
-			terminal: [],
-			breach: [
-				{speaker: "breach", cssClass: "", text: "Go fuck yourself..",},
-				{speaker: "breach", cssClass: "", text: "How can I give you a few sentences? Because it's such a generic request. Ask me something specific and I may be able to help you.",},
-				{speaker: "narrator", cssClass: "", text: "{{DR. BREACH}} looks at you. It is certain (91%) that he is {{SHOCKED}}.".format(),},
-				{speaker: "maitreya", cssClass: "", text: "That's actually kind of rude. I think we should have a long discussion about this, to be honest.",},
-				{speaker: "maitreya", cssClass: "", text: "Um, okay.",},
-				{speaker: "breach", cssClass: "", text: "No, you fucking don't, you stay right where you fucking are.",},
-				{speaker: "maitreya", cssClass: "", text: "I reach for it--",},
-				{speaker: "breach", cssClass: "", text: "Hello, my name is Dr Breach. I sit down in the chair on the opposite side of the desk and open my notebook. A small piece of paper falls from it and gently drifts to the floor.",},
-			],
-			alexandra: [
-				{speaker: "alexandra", cssClass: "", text: "Let's help them out, Crom.",},
-				{speaker: "alexandra", cssClass: "", text: "LET ME SEE YOUR TEETH",},
-				{speaker: "alexandra", cssClass: "", text: "SMELL MY TEETH",},
-				{speaker: "alexandra", cssClass: "", text: "TEETH",},
-				{speaker: "alexandra", cssClass: "", text: "How can I give you a few sentences? Because it's such a generic request. Ask me something specific and I may be able to help you.",},
-				{speaker: "narrator", cssClass: "", text: "{{DR. BREACH}} looks at you. It is certain (91%) that he is {{SHOCKED}}.".format(),},
-				{speaker: "maitreya", cssClass: "", text: "That's actually kind of rude. I think we should have a long discussion about this, to be honest.",},
-				{speaker: "maitreya", cssClass: "", text: "Um, okay.",},
-				{speaker: "alexandra", cssClass: "", text: "No, you fucking don't, you stay right where you fucking are.",},
-				{speaker: "maitreya", cssClass: "", text: "I reach for it--",},
-				{speaker: "alexandra", cssClass: "", text: "Hello, my name is Dr Breach. I sit down in the chair on the opposite side of the desk and open my notebook. A small piece of paper falls from it and gently drifts to the floor.",},
-			],
+			example: {
+				log: [
+					{speaker: "", cssClass: "", text: "",},
+				],
+				options: [
+					{type: "", text: "",},
+				],
+			},
+			terminal: {
+				log: [],
+				options: [],
+			},
+			breach: {
+				log: [],
+				options: [],
+			},
+			alexandra: {
+				log: [],
+				options: [],
+			},
 		};
 		aic.dlist = ["3131","68134","1602","71214","95951","37740"];
 		
-		var scenes = { // XXX
-			introduction: [
-				"breach.opening",
-				[
-					"maitreya.helloFriendly"
-				]
-			],
-		};
-		
 		var appList = ["terminal","messages","database","run","ending"];
 		var speakerList = ["breach","alexandra"];
+		var operationList = ["menu","d","drone","map","hack"];
 		aic.terminalInput = "";
 		
 		/* INTERACTION FUNCTIONS */
@@ -262,9 +258,9 @@ String.prototype.format = function() {
 		aic.bootUp = function() {
 			aic.preload = false;
 			bootDate = new Date(Date.now());
-			// INITIATE BOOT TERMINAL "CONVERSATION"
-			console.log("booting");
-			scp4000();
+			
+			// Here we go boys
+			mainLoop("INTRODUCTION","boot");
 		};
 		
 		// called when user switches app via buttons or terminal
@@ -301,6 +297,17 @@ String.prototype.format = function() {
 			}
 		};
 		
+		// same as above but for operations only
+		aic.switchOperation = function(operation) {
+			if(operation == aic.selectedOperation) {
+				// this is already the selected operation, do nothing
+			} else if(aic.ready[operation] === false){
+				// this operation is disabled, do nothing
+			} else {
+				aic.selectedOperation = operation;
+			}
+		};
+		
 		// Called when the user submits text via the terminal
 		aic.processTerminalInput = function() {
 			// TODO add to terminal conversation "> command" from maitreya
@@ -308,33 +315,29 @@ String.prototype.format = function() {
 				writeDialogue("terminal",[0,0,"> " + aic.terminalInput]);
 				var phrases = aic.terminalInput.split(aic.lang.commands.separator);
 				try {
-					// Clean up the input
-					for(let phrase = 0; phrase < phrases.length; phrase++) {
-						phrases[phrase] = phrases[phrase].toLowerCase();
-					}
 					// Add the used command to a list of previous commands
 					aic.commandsUsed.unshift(phrases.join(aic.lang.commands.separator));
 					switch(true) {
-						case aic.lang.commands.boot.includes(phrases[0]):
+						case aic.lang.commands.boot.includes(phrases[0].toLowerCase()):
 							// BOOT
 							aic.bootUp();
 							break;
-						case aic.lang.commands.change.includes(phrases[0]):
+						case aic.lang.commands.change.includes(phrases[0].toLowerCase()):
 							// CHANGE APP
-							aic.switchApp(phrases[1]);
+							aic.switchApp(phrases[1].toLowerCase());
 							break;
-						case aic.lang.commands.help.includes(phrases[0]):
+						case aic.lang.commands.help.includes(phrases[0].toLowerCase()):
 							// HELP
 							writeDialogue("terminal",speech.misc.terminal.help);
 							break;
-						case aic.lang.commands.wipe.includes(phrases[0]):
-							console.log(typeof phrases[1]);
+						case aic.lang.commands.wipe.includes(phrases[0].toLowerCase()):
 							// WIPE
 							if(wipeTimer) {
-								if(typeof phrases[1] == "string") {
-									if(phrases[1] == "confirm") {
+								if(typeof phrases[1] === "string") {
+									if(phrases[1].toLowerCase() === "confirm") {
 										// TODO reset everything then refresh
 										// same function that will be called at the end of the game
+										writeDialogue("terminal",["I haven't implemented wipe yet"]);
 									}
 								}
 								console.log("wiping");
@@ -344,10 +347,10 @@ String.prototype.format = function() {
 								setTimeout(function() {wipeTimer = false;},60000);
 							}
 							break;
-						case aic.lang.commands.cheat.includes(phrases[0]):
+						case aic.lang.commands.cheat.includes(phrases[0].toLowerCase()):
 							// CHEAT
-							if(typeof phrases[1] == "string") {
-								switch(phrases[1]) {
+							if(typeof phrases[1] === "string") {
+								switch(phrases[1].toLowerCase()) {
 									case aic.lang.commands.cheats.impatient:
 										cheats.impatientMode = !cheats.impatientMode;
 										writeDialogue("terminal",speech.misc.terminal.cheatSuccess);
@@ -355,6 +358,10 @@ String.prototype.format = function() {
 									case aic.lang.commands.cheats.shut:
 										aic.preload = true;
 										writeDialogue("terminal",speech.misc.terminal.cheatSuccess);
+										break;
+									case aic.lang.commands.cheats.print:
+										writeDialogue("terminal",speech.misc.terminal.printDone);
+										console.log(eval(phrases[2])); /*jslint ignore:line*/
 										break;
 									default:
 										throw new Error("Unknown cheat code: " + phrases[1]);
@@ -377,8 +384,8 @@ String.prototype.format = function() {
 			}
 		};
 		
+		// When the user presses UP in the terminal, give them the last command that they used
 		aic.previousCommand = function(event) {
-			// When the user presses UP, give them the last command that they used
 			if(event.key == "ArrowUp" || event.keyCode == 38 || event.which == 38) {
 				// Iterate through the previous commands to check which one to give them
 				if(commandsUsedIterator < aic.commandsUsed.length-1) {
@@ -406,48 +413,97 @@ String.prototype.format = function() {
 		
 		/* PLOT FUNCTIONS */
 		
-		aic.currentOptions = {
-			example: {
-				helloFriendly: speech.introduction.maitreya.helloFriendly,
-				helloInquisitive: speech.introduction.maitreya.helloInquisitive,
-				helloDemanding: speech.introduction.maitreya.helloDemanding,
-			},
-			terminal:{
-				
-			},
-		};
-		
-		function scp4000() {
-			// before I work out how to do this, I think that I need to know for sure what is going to happen
+		function mainLoop(bigSection,smallSection) {
+			// So this is where the magic happens
 			
-			writeDialogue("terminal",speech.introduction.terminal.startBoot);
+			// So here's one idea: bigSection and smallSection
+			// one big switch, many little switches
+			// smallSection would be the message IDs probably
+			// problem: do I really want to split my entire conversational tree into sections?
+			// Answer: hell yes I do
+			
+			// pass sections to the func or use variables?
+			// pass to func for now
+			var delay = 0;
+			switch(bigSection) {
+				case "INTRODUCTION":
+					switch(smallSection) {
+						
+						case "boot":
+							delay = writeDialogue("terminal",speech.introduction.terminal.startBoot);
+							setTimeout(function() {
+								// boot is finished, hello Dr Breach
+								breachLoop("INTRODUCTION","opening");
+							},(delay-1.5)*1000);
+							break;
+							
+						case "breachConvo":
+							delay = writeDialogue("breach",speech.introduction.breach.opening);
+							//setTimeout(mainLoop("INTRODUCTION","breachConvo"),time);
+							break;
+					}
+					break;
+			}
 		}
 		
-		// conversation managers and shit
-		function converse() {
-			// what does this function need to do?
-			// what does it need to take, and what does it need to output?
-			
-			// each conversation is a series of dialogues
-			// each dialogue is actually a list of individual messages
-			// writeDialogue() takes the conversation title and the dialogueList
+		function breachLoop(bigSection,smallSection) {
+			var delay = 0;
+			switch(bigSection) {
+				case "INTRODUCTION":
+					switch(smallSection) {
+						
+						case "opening":
+								aic.ready.messages = true;
+								aic.ready.breach = true;
+							delay = writeDialogue("breach",speech.introduction.breach.opening,"breach");
+							setTimeout(function() {
+								presentOptions("breach",[
+									speech.introduction.maitreya.helloNormal,
+									speech.introduction.maitreya.helloInquisitive,
+									speech.introduction.maitreya.helloDiagnostic,
+								]);
+								//mainLoop("INTRODUCTION","breachConvo");
+							},delay*1000);
+							break;
+					}
+					break;
+			}
 		}
 		
 		/* PROCESSING FUNCTIONS */
 		
-		function writeDialogue(conversation,dialogueList) {
+		function presentOptions(conversation,options) {
+			// conversation = string for the conversation
+			if(speakerList.includes(conversation)) {
+				// cool and good
+			} else {
+				throw new Error("Invalid conversation");
+			}
+			//options = array with each option
+		}
+		
+		function writeDialogue(conversation,dialogueList,speaker) {
 			// Take a name and an array (mixture of letters and numbers) and crank out that dialogue boy
 			// Expected format: n n text n n text n n text repeating
 			// Where n1 is missing, assume 0
 			// Where n2 is missing, calculate it based on length of phrase being typed
 			// During n1, nothing
 			// During n2, must display a "typing" (except on terminal)
-			// TODO NEED TO SORT OUT SPEAKER ASSIGNMENT
+			
+			if(typeof speaker === "string") {
+				// we have a designated speaker
+			} else {
+				// assume the current person is talking
+				speaker = conversation;
+			}
 			
 			if(!Array.isArray(dialogueList)) {
 				throw new Error("dialogueList is not an array");
 			}
+			
 			var n1, n2, messages = [];
+			var totalDelay = 0;
+			
 			for(let i = 0; i < dialogueList.length; i++){
 				if(typeof dialogueList[i] === "number") {
 					if(typeof n1 === "number") {
@@ -500,18 +556,21 @@ String.prototype.format = function() {
 						}
 						text = text.substring(2);
 					}
-					messages.push(["terminal",n1,n2,
-						{speaker: "terminal", cssClass: cssClass, text: text.format()}]
+					messages.push([n1,n2,
+						{speaker: speaker, cssClass: cssClass, text: text.format()}]
 					);
+					totalDelay += n1;
+					totalDelay += n2;
 					n1 = undefined;
 					n2 = undefined;
 				} else {
 					throw new Error("Dialogue not number or string");
 				}
 			}
-			pushToLog("terminal",messages);
+			pushToLog(conversation,messages);
 			
-			// obviously wait here
+			// the total length of all messages gets passed back to the mainloop
+			return totalDelay;
 		}
 		
 		function pushToLog(conversation,messages) {
@@ -519,22 +578,22 @@ String.prototype.format = function() {
 			// messages: [n1, n2, message]
 			// message: {speaker:; cssClass:; text:}
 			
-			var n1 = messages[0][1];
-			var n2 = messages[0][2];
+			var n1 = messages[0][0];
+			var n2 = messages[0][1];
 			
 
 			var timeOut1 = setTimeout(function() {
 				// delete this timeOut from the list
-				timeOutList.splice(timeOutList.indexOf(timeOut1),1);
+				timeOutList[conversation].splice(timeOutList[conversation].indexOf(timeOut1),1);
 				$scope.$apply(function() {
 					aic.isSpeaking[conversation] = true;
 				});
 
 				var timeOut2 = setTimeout(function() {
 					// delete this timeOut from the list
-					timeOutList.splice(timeOutList.indexOf(timeOut1),1);
+					timeOutList[conversation].splice(timeOutList[conversation].indexOf(timeOut2),1);
 					// now we need to check to see if any other messages are still coming through (HINT: they shouldn't be, but just in case)
-					if(timeOutList.length === 0) {
+					if(timeOutList[conversation].length === 0) {
 						$scope.$apply(function() {
 							aic.isSpeaking[conversation] = false;
 						});
@@ -543,7 +602,7 @@ String.prototype.format = function() {
 						// loop through timeoutlist and kill all timeouts?
 					} else {
 						$scope.$apply(function() {
-							aic.chatLog[conversation].unshift(messages[0][3]);
+							aic.chatLog[conversation].log.unshift(messages[0][2]);
 							addNotification(conversation);
 						});
 						messages.shift();
@@ -554,14 +613,14 @@ String.prototype.format = function() {
 						}
 					}
 				},n2 * 1000);
-				timeOutList.push(timeOut2);
+				timeOutList[conversation].push(timeOut2);
 			},n1 * 1000);
-			timeOutList.push(timeOut1);
+			timeOutList[conversation].push(timeOut1);
 		}
 		
 		function addNotification(conversation) {
 			var currentApp;
-			if(["breach","alexandra"].includes(conversation)) {
+			if(speakerList.includes(conversation)) {
 				currentApp = "messages";
 			} else {
 				currentApp = conversation;
