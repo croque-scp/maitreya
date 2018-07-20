@@ -74,7 +74,7 @@ String.prototype.format = function() {
 		
 		// This object contains all dialogue strings
 		var speech = {
-			introduction: {
+			INTRODUCTION: {
 				terminal: {
 					startBoot: [
 						0,0,"Booting up...",
@@ -139,7 +139,7 @@ String.prototype.format = function() {
 				},
 				breach: {
 					opening: [0,0,"Hello, Maitreya."],
-					friendlyResponse: ["Hello. Yes, my name is Dr. Ethan Breach.","You are Maitreya.aic, an artificial intelligence developed by the Foundation to help us contain certain kinds of anomalies.","Do you know why I have woken you up today?"],
+					helloNormal: ["Hello. Yes, my name is Dr. Ethan Breach.","You are Maitreya.aic, an artificial intelligence developed by the Foundation to help us contain certain kinds of anomalies.","Do you know why I have woken you up today?"],
 					demandingResponse: ["I...","Are you sure? You can't possibly know what I was about to ask you to do.","I suppose you might have some way of being able to tell -- I don't know what sort of systems you're truly hooked into, after all.","Well, if you're absolutely certain that you know what you're doing, I guess I can stop here and let you proceed."],
 					noProceed: ["Thought as much."],
 					yesProceed: ["Very well. I wish you the best of luck. Godspeed."],
@@ -159,8 +159,8 @@ String.prototype.format = function() {
 						
 					],
 					cheatWarn: [
-						0,1,"w:Using these cheats will probably spoil your enjoyment of SCP-4000. Feel free to use them if you want but... please don't :'(",
-						0,1,"i:**LIST OF CHEATS**||||gottagofast: Toggle. Dialogue finishes instantly||||shut: //s h u t//||||print: Print a variable/function",
+						0,1,"w:Using these cheats and/or debug commands will probably spoil your enjoyment of SCP-4000. Feel free to use them if you want but... please don't :'(",
+						0,1,"i:**LIST OF CHEATS**||||gottagofast: Everyone talks lightning-fast (toggle)||||shut: //s h u t//||||print: Print a variable/function",
 					],
 					cheatSuccess: [0,0,"Cheat code successful"],
 					wipeSure: [0,0,"Are you sure? This will reset SCP-4000 and you'll have to start from the beginning. Type 'wipe confirm' within the next minute to confirm."],
@@ -199,9 +199,8 @@ String.prototype.format = function() {
 		};
 		aic.notifications = { // MUST ALL BE 0
 			terminal: 0,
-			messages: 0,
-			breach: 0,
-			alexandra: 0,
+			breach: 11,
+			alexandra: 22,
 			database: 0,
 			run: 0,
 		};
@@ -210,8 +209,8 @@ String.prototype.format = function() {
 			terminal: true,
 			// MUST ALL BE FALSE
 			breach: false,
-			messages: false,
-			alexandra: false,
+			messages: true,
+			alexandra: true,
 			dclass: false,
 			database: false,
 			run: false,
@@ -229,7 +228,7 @@ String.prototype.format = function() {
 					{speaker: "", cssClass: "", text: "",},
 				],
 				options: [
-					{type: "", text: "",},
+					{id: "", optionType: "", text: "", dialogue: [], bigSection: "",},
 				],
 			},
 			terminal: {
@@ -269,10 +268,14 @@ String.prototype.format = function() {
 				// this is already the selected app, do nothing
 			} else if(aic.ready[app] === false){
 				// this app is disabled, do nothing
-			} else if(appList.some(function(appAgainst){return appAgainst == app})) {
+			} else if(appList.includes(app)) {
 				aic.selectedApp = app;
 				// also need to clear this app's notifications
-				aic.notifications[app] = 0;
+				if(app === "messages") {
+					aic.notifications[aic.selectedSpeaker] = 0;
+				} else {
+					aic.notifications[app] = 0;
+				}
 				// then, if the app is terminal, focus the input
 				if(app == "terminal") {
 					setTimeout(function() {
@@ -294,6 +297,7 @@ String.prototype.format = function() {
 			} else {
 				aic.selectedSpeaker = speaker;
 				// also need to clear this speaker's notifications
+				aic.notifications[speaker] = 0;
 			}
 		};
 		
@@ -413,6 +417,31 @@ String.prototype.format = function() {
 		
 		/* PLOT FUNCTIONS */
 		
+		// event handler for option selection
+		// this is effectively maitreyaLoop()
+		aic.processOption = function(conversation,option) {
+			// takes the id of the selected option
+			console.log(option);
+			
+			var delay = 0;
+			switch(conversation) {
+				case "terminal":
+					// this shouldn't happen
+					mainLoop(option.bigSection,option.id); // I guess?
+					break;
+				case "breach":
+					delay = writeDialogue(conversation,option.dialogue,"maitreya");
+					setTimeout(function() {
+						breachLoop(option.bigSection,option.id);
+					},delay*1000);
+					break;
+				default:
+					throw new Error("How the fuck did you get this wrong");
+			}
+			// obviously we don't need the old options anymore
+			aic.chatLog[conversation].options = [];
+		};
+		
 		function mainLoop(bigSection,smallSection) {
 			// So this is where the magic happens
 			
@@ -430,19 +459,19 @@ String.prototype.format = function() {
 					switch(smallSection) {
 						
 						case "boot":
-							delay = writeDialogue("terminal",speech.introduction.terminal.startBoot);
+							delay = writeDialogue("terminal",speech.INTRODUCTION.terminal.startBoot);
 							setTimeout(function() {
-								// boot is finished, hello Dr Breach
 								breachLoop("INTRODUCTION","opening");
 							},(delay-1.5)*1000);
 							break;
-							
-						case "breachConvo":
-							delay = writeDialogue("breach",speech.introduction.breach.opening);
-							//setTimeout(mainLoop("INTRODUCTION","breachConvo"),time);
-							break;
+						
+						default:
+							throw new Error(smallSection + " is not an event in " + bigSection);
 					}
 					break;
+				
+				default:
+					throw new Error(bigSection + " is not an event");
 			}
 		}
 		
@@ -453,33 +482,113 @@ String.prototype.format = function() {
 					switch(smallSection) {
 						
 						case "opening":
-								aic.ready.messages = true;
-								aic.ready.breach = true;
-							delay = writeDialogue("breach",speech.introduction.breach.opening,"breach");
+							aic.ready.messages = true;
+							aic.ready.breach = true;
+							delay = writeDialogue("breach",speech.INTRODUCTION.breach[smallSection],"breach");
 							setTimeout(function() {
-								presentOptions("breach",[
-									speech.introduction.maitreya.helloNormal,
-									speech.introduction.maitreya.helloInquisitive,
-									speech.introduction.maitreya.helloDiagnostic,
+								presentOptions("breach",bigSection,[
+									"helloNormal",
+									"helloInquisitive",
+									"helloDiagnostic",
 								]);
-								//mainLoop("INTRODUCTION","breachConvo");
 							},delay*1000);
 							break;
+						
+						case "helloNormal":
+							delay = writeDialogue("breach",speech.INTRODUCTION.breach[smallSection],"breach");
+							setTimeout(function() {
+								presentOptions("breach",bigSection,[
+									"helloNormal",
+									"helloInquisitive",
+									"helloDiagnostic",
+								]);
+							},delay*1000);
+							break;
+						
+						default:
+							throw new Error(smallSection + " is not an event in " + bigSection);
 					}
 					break;
+				
+				default:
+					throw new Error(bigSection + " is not an event");
 			}
 		}
 		
 		/* PROCESSING FUNCTIONS */
 		
-		function presentOptions(conversation,options) {
+		function presentOptions(conversation,bigSection,ids) {
 			// conversation = string for the conversation
-			if(speakerList.includes(conversation)) {
-				// cool and good
-			} else {
+			if(!speakerList.includes(conversation)) {
 				throw new Error("Invalid conversation");
 			}
-			//options = array with each option
+				
+			// options = array with each option
+			// each option is also an array, of the format:
+			// ["s:OPTION TEXT","OUTPUT TEXT"]
+			if(!Array.isArray(ids)) {
+				throw new Error("options is not an array");
+			}
+			
+			// this function needs to put stuff into aic.chatLog[conversation].options
+			
+			// is is very possible that certain actions will need to do things other than output text. we'll cross that bridge when we come to it
+			var options = [];
+			for(let i = 0; i < ids.length; i++) {
+				// we're now looking at individual options.
+				
+				options[i] = speech[bigSection].maitreya[ids[i]];
+				
+				// first parameter (options[i][0]) is the control
+				
+				if(!Array.isArray(options[i])) {
+					throw new Error("options" + options[i] + " is not an array");
+				}
+				
+				// first we work out what sort of action this is
+				var optionType;
+				if(options[i][0].charAt(1) == ":") {
+					switch(options[i][0].charAt(0)) {
+						case "s":
+							optionType = "speech";
+							break;
+						case "a":
+							optionType = "action";
+							break;
+						default:
+							throw new Error("Unknown option type");
+					}
+					options[i][0] = options[i][0].substring(2);
+				} else {
+					// no option type was declared, assume speech
+					optionType = "speech";
+				}
+				
+				// we have the option type and the option text
+				// next job is to get the dialogue text
+				// we can probably let the event handler deal with that?
+				// still need to actually get that info to the handler tho
+				// fuck it we'll store it in chatLog
+				var dialogueList = [];
+				for(let j = 0; j < options[i].length; j++) {
+					// we need to skip over [0]
+					// this is because we've already handled the control statement
+					if(j === 0) {
+						if(typeof options[i][1] !== "string") {
+							// this is the only parameter
+							// set the first dialogue to the option text
+							dialogueList[0] = options[i][0];
+							continue;
+						}
+					} else {
+						dialogueList[j-1] = options[i][j];
+					}
+				}
+				// dialogueList now contains the list of dialogue to output FOR THIS ONE OPTION
+				aic.chatLog[conversation].options.push({id: ids[i], optionType: optionType, text: options[i][0], dialogue: dialogueList, bigSection: bigSection,});
+				// ok cool
+				// move onto the next option?
+			}
 		}
 		
 		function writeDialogue(conversation,dialogueList,speaker) {
@@ -498,6 +607,7 @@ String.prototype.format = function() {
 			}
 			
 			if(!Array.isArray(dialogueList)) {
+				console.log(dialogueList);
 				throw new Error("dialogueList is not an array");
 			}
 			

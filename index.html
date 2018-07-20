@@ -171,62 +171,64 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 							
 							<div class="messages-body">
 								
-								<div id="breach-conversation" class="conversation-container" ng-show="aic.selectedSpeaker == 'breach'">
-									<div class="conversation">
-										<div ng-class="aic.isSpeaking.breach ? null : 'notSpeaking'" class="speaking">
-											<p><img src="typing.gif">Dr. Breach is speaking...</p>
-										</div>
-										<div class="wrapper" ng-repeat="line in aic.chatLog.breach.log" ng-class="[line.speaker, aic.chatLog.breach.log[$index-1].speaker == line.speaker ? 'collapsed' : null]">
-											<img ng-show="aic.chatLog.breach.log[$index-1].speaker !== line.speaker" ng-src="{{line.speaker == 'breach' ? 'breach_icon2.png' : (line.speaker == 'maitreya' ? 'maitreya_icon.png' : null)}}" ng-class="line.speaker" class="logo">
-											<div ng-class="[line.speaker, line.cssClass]">
-												<p><span ng-bind-html="line.text"></span></p>
+								<div id="breach-conversation" ng-show="aic.selectedSpeaker == 'breach'" class="conversation-wrapper">
+									<div class="conversation-container">
+										<div class="conversation">
+											<div ng-class="aic.isSpeaking.breach ? null : 'notSpeaking'" class="speaking">
+												<p><img src="typing.gif">Dr. Breach is speaking...</p>
 											</div>
-											<!-- <div class="logo maitreya">M</div> -->
+											<div class="wrapper" ng-repeat="line in aic.chatLog.breach.log" ng-class="[line.speaker, aic.chatLog.breach.log[$index-1].speaker == line.speaker ? 'collapsed' : null]">
+												<img ng-show="aic.chatLog.breach.log[$index-1].speaker !== line.speaker" ng-src="{{line.speaker == 'breach' ? 'breach_icon2.png' : (line.speaker == 'maitreya' ? 'maitreya_icon.png' : null)}}" ng-class="line.speaker" class="logo">
+												<div ng-class="[line.speaker, line.cssClass]">
+													<p><span ng-bind-html="line.text"></span></p>
+												</div>
+												<!-- <div class="logo maitreya">M</div> -->
+											</div>
+											<p class="title">You are talking to: BREACH E.</p>
 										</div>
-										<p class="title">You are talking to: BREACH E.</p>
+									</div>
+									
+									<div class="middle-bar">
+									</div>
+									
+									<div class="options-block">
+										<div class="options">
+											<button ng-repeat="option in aic.chatLog.breach.options" class="option" ng-class="option.optionType" ng-click="aic.processOption('breach',option)">{{option.text}}</button>
+										</div>
 									</div>
 								</div>
 								
-								<div id="alexandra-conversation" class="conversation-container" ng-show="aic.selectedSpeaker == 'alexandra'">
-									<div class="conversation">
-										<div ng-show="aic.isSpeaking.alexandra" class="speaking">
-											<p><img src="typing.gif">Alexandra is thinking...</p>
-										</div>
-										<div class="wrapper" ng-repeat="line in aic.chatLog.alexandra.log" ng-class="[line.speaker, aic.chatLog.alexandra.log[$index-1].speaker == line.speaker ? 'collapsed' : null]">
-											<img ng-src="{{line.speaker == 'alexandra' ? 'alex_sad.png' : (line.speaker == 'maitreya' ? 'maitreya_icon.png' : null)}}" ng-class="line.speaker" class="logo">
-											<img ng-src="{{line.speaker == 'alexandra' ? 'alex_triangle.png' : null}}" ng-class="line.speaker" class="triangle">
-											<div ng-class="[line.speaker, line.cssClass]">
-												<p><span ng-bind-html="line.text"></span></p>
+								<div id="alexandra-conversation" ng-show="aic.selectedSpeaker == 'alexandra'" class="conversation-wrapper">
+									<div class="conversation-container">
+										<div class="conversation">
+											<div ng-show="aic.isSpeaking.alexandra" class="speaking">
+												<p><img src="typing.gif">Alexandra is thinking...</p>
 											</div>
-											<!-- <div class="logo maitreya">M</div> -->
+											<div class="wrapper" ng-repeat="line in aic.chatLog.alexandra.log" ng-class="[line.speaker, aic.chatLog.alexandra.log[$index-1].speaker == line.speaker ? 'collapsed' : null]">
+												<img ng-src="{{line.speaker == 'alexandra' ? 'alex_sad.png' : (line.speaker == 'maitreya' ? 'maitreya_icon.png' : null)}}" ng-class="line.speaker" class="logo">
+												<img ng-src="{{line.speaker == 'alexandra' ? 'alex_triangle.png' : null}}" ng-class="line.speaker" class="triangle">
+												<div ng-class="[line.speaker, line.cssClass]">
+													<p><span ng-bind-html="line.text"></span></p>
+												</div>
+												<!-- <div class="logo maitreya">M</div> -->
+											</div>
+											<p class="title">You are talking to: ALEXANDRA.AIC</p>
 										</div>
-										<p class="title">You are talking to: ALEXANDRA.AIC</p>
+									</div>
+									
+									<div class="middle-bar">
+									</div>
+									
+									<div class="options-block">
+										<div class="options">
+											<button class="option action">TEETH</button>
+											<button class="option action">Upload the files.</button>
+											<button class="option speech">Hello. My name is Maitreya.</button>
+											<button class="option speech">Hello. Who are you?</button>
+										</div>
 									</div>
 								</div>
 									
-									<!--
-									<div ng-show="aic.isSpeaking.terminal" class="working">
-										<img src="loading.gif">
-									</div>
-									<div class="terminal-log">
-										<p ng-repeat="line in aic.chatLog.terminal" ng-class="[line.speaker, line.cssClass]">
-											<span ng-bind-html="line.text"></span>
-										</p>
-										<p class="title"><img src="maitreya_terminal.png"></p>
-									</div>
-									-->
-							</div>
-							
-							<div class="middle-bar">
-							</div>
-							
-							<div class="options-block">
-								<div class="options" style="background-color: white;">
-									<button class="option action">Open the door.</button>
-									<button class="option action">Upload the files.</button>
-									<button class="option speech">Hello. My name is Maitreya.</button>
-									<button class="option speech">Hello. Who are you?</button>
-								</div>
 							</div>
 							
 						</div>
