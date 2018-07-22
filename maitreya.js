@@ -135,7 +135,10 @@ String.prototype.format = function() {
 					//	"" = no text
 					helloNormal: ["Hello."],
 					helloInquisitive: ["Who are you?"],
-					helloDiagnostic: ["a:Request a diagnostic.","I would like to request a diagnostic report."],
+					helloDiagnostic: ["Request a diagnostic.","I would like to request a diagnostic report."],
+					helloDiagnostic_: ["a:test 1"],
+					helloDiagnostic__: ["a:test 2"],
+					helloDiagnostic___: ["What about the money?"],
 					knowNormal: ["I do."],
 					knowPatronising: ["There's no need to be patronising."],
 					knowNot: ["I'm afraid that I don't."],
@@ -146,7 +149,7 @@ String.prototype.format = function() {
 					knowNormal__: ["No questions."],
 					knowNotNotNotNot: ["I do still have questions."],
 					helloNotYet: ["Sounds good to me."],
-					explain2: ["s:No.","Apologies, Dr. Breach, but I've no idea."],
+					explainApo: ["s:No.","Apologies, Dr. Breach, but I've no idea."],
 					doKnow: ["s:Yes.","I do -- there's no need to explain."],
 					yesSkip: ["a:Skip the intro.","I know what I'm doing, Dr. Breach -- I am a .aic after all."],
 					noSkip: ["a:Don't skip the intro.","On second thoughts, Dr. Breach, please finish what you were saying."],
@@ -161,7 +164,7 @@ String.prototype.format = function() {
 				breach: {
 					start: [0,auto,"Hello, Maitreya."],
 					helloInquisitive: ["My name is Dr. Ethan Breach, Maitreya. I'm a researcher for the SCP Foundation. Do you know what that is?"],
-					knowPatronising: ["Right.","Yes, of course.","My apologies."],
+					knowPatronising: ["Patronising? I -- I didn't mean...","Yes, yes, of course.","My apologies."],
 					knowNormal: ["Very good."],
 					knowNot: ["I... really do //not// have time to explain this to you.","Do you really need an explanation?"],
 					knowActually: ["Right.","In the future, please don't joke around with me."],
@@ -174,12 +177,13 @@ String.prototype.format = function() {
 					explain1: ["You are Maitreya.aic, an artificial intelligence developed by the Foundation to help us contain certain kinds of anomalies.","Do you know why I have woken you up today?"],
 					doKnow: ["I...","Are you sure? You can't possibly know what I was about to ask you to do.","I suppose you might have some way of being able to tell -- I don't know what sort of systems you're truly hooked into, after all.","Well, if you're absolutely certain that you know what you're doing, I guess I can stop here and let you proceed."],
 					yesSkip: ["Very well. I wish you the best of luck. Godspeed."],
-					noSkip: ["Thought as much."],
-					explain2: ["So.","The facility we're both currently in is called Isolated Site-12. It contains a single SCP -- SCP-4000. My job, as a researcher, is to find out what exactly SCP-4000 is."],
+					noSkip: ["As expected.","In that case, allow me to explain..."],
+					explain2: ["The facility we're both currently in is called Isolated Site-12. It contains a single SCP -- SCP-4000. My job, as a researcher, is to find out what exactly SCP-4000 is."],
 					pIncredulous: ["No, we do not.","People who go and see it have a funny little habit of dying pretty much immediately.","...and we don't know why //that// is, either."],
 					pInitiative: ["I do indeed, Maitreya."],
 					explain3: ["So, the big question is -- can you help me out?"],
 					goNo: ["Okay.","I'm going to ask this one more time, and I'm going to speak slowly, so we can both be absolutely certain that the microphone is picking up my words.","You are a .aic. You are designed -- no, you were //made// to help me do research.","That is your goal.","That is literally your life's purpose.","So when I ask if you can help me out, you say //yes, Dr. Breach//, okay?","Can you help me out?"],
+					explainApo: ["No need to apologise! Let me explain."],
 				},
 			},
 			misc: {
@@ -216,6 +220,7 @@ String.prototype.format = function() {
 		
 		const typingDelay = 0.3;
 		const typingSpeed = 0.05; // seconds per letter
+		const maitreyaDelay = 0.5; // how long it takes people to respond to maitreya
 		
 		var timeOutList = {
 			terminal: [],
@@ -227,7 +232,7 @@ String.prototype.format = function() {
 		
 		/* Initialisation */
 		aic.preload = true; // MUST BE TRUE
-		aic.selectedApp = "terminal"; // MUST BE TERMINAL
+		aic.selectedApp = "messages"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "breach"; // MUST BE BREACH
 		aic.isSpeaking = { // MUST ALL BE FALSE
 			terminal: false,
@@ -236,8 +241,8 @@ String.prototype.format = function() {
 		};
 		aic.notifications = { // MUST ALL BE 0
 			terminal: 0,
-			breach: 11,
-			alexandra: 22,
+			breach: 0,
+			alexandra: 0,
 			database: 0,
 			run: 0,
 		};
@@ -246,8 +251,8 @@ String.prototype.format = function() {
 			terminal: true,
 			// MUST ALL BE FALSE
 			breach: false,
-			messages: true,
-			alexandra: true,
+			messages: false,
+			alexandra: false,
 			dclass: false,
 			database: false,
 			run: false,
@@ -350,6 +355,7 @@ String.prototype.format = function() {
 		};
 		
 		// Called when the user submits text via the terminal
+		// Effectively terminalLoop() except it always shows the input
 		aic.processTerminalInput = function() {
 			// TODO add to terminal conversation "> command" from maitreya
 			if(aic.terminalInput.length > 0) {
@@ -427,21 +433,21 @@ String.prototype.format = function() {
 		
 		// When the user presses UP in the terminal, give them the last command that they used
 		aic.previousCommand = function(event) {
-			if(event.key == "ArrowUp" || event.keyCode == 38 || event.which == 38) {
+			if(event.key === "ArrowUp" || event.keyCode === 38 || event.which === 38) {
 				// Iterate through the previous commands to check which one to give them
 				if(commandsUsedIterator < aic.commandsUsed.length-1) {
 					commandsUsedIterator++;
 				}
-				if(aic.terminalInput == aic.commandsUsed[commandsUsedIterator]) {
+				if(aic.terminalInput === aic.commandsUsed[commandsUsedIterator]) {
 					// I don't actually think this if statement ever triggers true but I'm going to leave it here just in case
 				} else {
 					aic.terminalInput = aic.commandsUsed[commandsUsedIterator];
 				}
-			} else if(event.key == "ArrowDown" || event.keyCode == 40 || event.which == 40) {
+			} else if(event.key === "ArrowDown" || event.keyCode === 40 || event.which === 40) {
 				if(commandsUsedIterator > 0) {
 					commandsUsedIterator--;
 				}
-				if(aic.terminalInput == aic.commandsUsed[commandsUsedIterator]) {
+				if(aic.terminalInput === aic.commandsUsed[commandsUsedIterator]) {
 					
 				} else {
 					aic.terminalInput = aic.commandsUsed[commandsUsedIterator];
@@ -455,9 +461,8 @@ String.prototype.format = function() {
 		/* PLOT FUNCTIONS */
 		
 		// event handler for option selection - effectively maitreyaLoop()
-		aic.processOption = function(conversation,option) {
+		aic.processOption = function(conversation,option,that) {
 			// takes the id of the selected option
-			console.log(option);
 			
 			var delay = 0;
 			switch(conversation) {
@@ -469,13 +474,15 @@ String.prototype.format = function() {
 					delay = writeDialogue(conversation,option.dialogue,"maitreya");
 					setTimeout(function() {
 						breachLoop(option.bigSection,option.id);
-					},delay*1000);
+					},delay*1000 + maitreyaDelay*1000);
 					break;
 				default:
 					throw new Error("How the fuck did you get this wrong");
 			}
 			// obviously we don't need the old options anymore
 			aic.chatLog[conversation].options = [];
+			
+			// save to cookie?
 		};
 		
 		function mainLoop(bigSection,smallSection) {
@@ -515,6 +522,13 @@ String.prototype.format = function() {
 			// smallSection may have trailing underscores - clean these up
 			smallSection = smallSection.replace(/_/g,"");
 			
+			var msg;
+			try{
+				msg = speech[bigSection].breach[smallSection];
+			} catch(error) {
+				throw new Error(smallSection + " doesn't exist in Breach's " + bigSection);
+			} // YES I KNOW THIS IS NOT HOW YOU USE TRY-CATCH
+			
 			var delay = 0;
 			switch(bigSection) {
 				case "INTRODUCTION":
@@ -523,187 +537,137 @@ String.prototype.format = function() {
 						case "start":
 							aic.ready.messages = true;
 							aic.ready.breach = true;
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,[
-									"helloNormal",
-									"helloInquisitive",
-									"helloDiagnostic",
-								]);
-							},delay*1000);
+								presentOptions("breach",bigSection,["helloNormal","helloInquisitive","helloDiagnostic","helloDiagnostic_","helloDiagnostic__","helloDiagnostic___"]);
+							},delay*1000 + maitreyaDelay*1000);
 							break;
-						
 						case "helloInquisitive":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,[
-									"knowNormal",
-									"knowPatronising",
-									"knowNot",
-								]);
-							},delay*1000);
+								presentOptions("breach",bigSection,["knowNormal","knowPatronising","knowNot"]);
+							},delay*1000 + maitreyaDelay*1000);
 							break;
-						
 						case "knowPatronising":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
 								breachLoop(bigSection,"explain1");
 							},delay*1000);
 							break;
-						
 						case "knowNormal":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								breachLoop(bigSection,"explain1");
+								breachLoop(bigSection,"explain1_");
 							},delay*1000);
 							break;
-						
 						case "knowNot":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,[
-									"knowActually",
-									"knowNotNot",
-								]);
-							},delay*1000);
+								presentOptions("breach",bigSection,["knowActually","knowNotNot"]);
+							},delay*1000 + maitreyaDelay*1000);
 							break;
-						
 						case "knowActually":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								breachLoop(bigSection,"explain1");
+								breachLoop(bigSection,"explain1__");
 							},delay*1000);
 							break;
-						
 						case "knowNotNot":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,[
-									"knowNormal_",
-									"knowNotNotNot",
-								]);
-							},delay*1000);
+								presentOptions("breach",bigSection,["knowNormal_","knowNotNotNot"]);
+							},delay*1000 + maitreyaDelay*1000);
 							break;
-						
 						case "knowNotNotNot":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,[
-									"knowNormal__",
-									"knowNotNotNotNot",
-								]);
-							},delay*1000);
+								presentOptions("breach",bigSection,["knowNormal__","knowNotNotNotNot"]);
+							},delay*1000 + maitreyaDelay*1000);
 							break;
-						
 						case "knowNotNotNotNot":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
 								breachLoop(bigSection,"ending1");
 							},delay*1000);
 							break;
-						
 						case "helloNormal":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								breachLoop(bigSection,"explain1");
+								breachLoop(bigSection,"explain1___");
 							},delay*1000);
 							break;
-						
 						case "helloDiagnostic":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,[
-									"helloNotYet",
-								]);
-							},delay*1000);
+								presentOptions("breach",bigSection,["helloNotYet"]);
+							},delay*1000 + maitreyaDelay*1000);
 							break;
-						
 						case "helloNotYet":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								breachLoop(bigSection,"explain1");
+								breachLoop(bigSection,"explain1____");
 							},delay*1000);
 							break;
-						
 						case "explain1":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,[
-									"explain2",
-									"doKnow",
-								]);
-							},delay*1000);
+								presentOptions("breach",bigSection,["explainApo","doKnow"]);
+							},delay*1000 + maitreyaDelay*1000);
 							break;
-						
 						case "doKnow":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,[
-									"yesSkip",
-									"noSkip",
-								]);
-							},delay*1000);
+								presentOptions("breach",bigSection,["yesSkip","noSkip"]);
+							},delay*1000 + maitreyaDelay*1000);
 							break;
-						
 						case "yesSkip":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
 								breachLoop(bigSection,"PROCEED");
 							},delay*1000);
 							break;
-						
 						case "noSkip":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
 								breachLoop(bigSection,"explain2");
 							},delay*1000);
 							break;
-						
 						case "explain2":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,[
-									"pInitiative",
-									"pIncredulous",
-								]);
-							},delay*1000);
+								presentOptions("breach",bigSection,["pInitiative","pIncredulous"]);
+							},delay*1000 + maitreyaDelay*1000);
 							break;
-						
 						case "pIncredulous":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
 								breachLoop(bigSection,"explain3");
 							},delay*1000);
 							break;
-						
 						case "pInitiative":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								breachLoop(bigSection,"explain3");
+								breachLoop(bigSection,"explain3_");
 							},delay*1000);
 							break;
-						
 						case "explain3":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,[
-									"goNoAsk",
-									"goAsk",
-									"goNo",
-								]);
-							},delay*1000);
+								presentOptions("breach",bigSection,["goNoAsk","goAsk","goNo"]);
+							},delay*1000 + maitreyaDelay*1000);
 							break;
-						
 						case "goNo":
-							delay = writeDialogue("breach",speech[bigSection].breach[smallSection],"breach");
+							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,[
-									"unassigned",
-									"knowNotNotNotNot_",
-								]);
+								presentOptions("breach",bigSection,["unassigned","knowNotNotNotNot_"]);
+							},delay*1000 + maitreyaDelay*1000);
+							break;
+						case "explainApo":
+							delay = writeDialogue("breach",msg,"breach");
+							setTimeout(function() {
+								breachLoop(bigSection,"explain2_");
 							},delay*1000);
 							break;
-
 						default:
 							throw new Error(smallSection + " is not an event in " + bigSection);
 					}
@@ -730,7 +694,7 @@ String.prototype.format = function() {
 			if(!speakerList.includes(conversation)) {
 				throw new Error("Invalid conversation");
 			}
-				
+			
 			// options = array with each option
 			// each option is also an array, of the format:
 			// ["s:OPTION TEXT","OUTPUT TEXT"]
@@ -750,17 +714,20 @@ String.prototype.format = function() {
 					options[i] = speech[bigSection].maitreya[ids[i]].slice();
 				} catch(error) {
 					// this can only fail if the option doesn't exist, which means we're still in development
+					throw new Error("Option " + ids[i] + " doesn't exist");
 				}
 				
 				// first parameter (options[i][0]) is the control
 				
 				if(!Array.isArray(options[i])) {
-					throw new Error("options" + options[i] + " is not an array");
+					console.log("ids: ",ids);
+					console.log("i: ",i);
+					throw new Error("option " + options[i] + " is not an array");
 				}
 				
 				// first we work out what sort of action this is
 				var optionType;
-				if(options[i][0].charAt(1) == ":") {
+				if(options[i][0].charAt(1) === ":") {
 					switch(options[i][0].charAt(0)) {
 						case "s":
 							optionType = "speech";
@@ -798,10 +765,14 @@ String.prototype.format = function() {
 					}
 				}
 				// dialogueList now contains the list of dialogue to output FOR THIS ONE OPTION
-				aic.chatLog[conversation].options.push({id: ids[i], optionType: optionType, text: options[i][0], dialogue: dialogueList, bigSection: bigSection,});
+				options[i] = {id: ids[i], optionType: optionType, text: options[i][0], dialogue: dialogueList, bigSection: bigSection,};
 				// ok cool
 				// move onto the next option?
 			}
+			$scope.$apply(function() {
+				aic.chatLog[conversation].options.push(...options);
+				// IE doesn't support this but I do not give one fuck
+			});
 		}
 		
 		// structure dialogue and calculate timing

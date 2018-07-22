@@ -189,12 +189,22 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									</div>
 									
 									<div class="middle-bar">
+										<div class="top"></div>
+										<div class="middle"></div>
+										<div class="bottom"></div>
 									</div>
 									
-									<div class="options-block">
-										<div class="options">
-											<button ng-repeat="option in aic.chatLog.breach.options" class="option" ng-class="option.optionType" ng-click="aic.processOption('breach',option)">{{option.text}}</button>
+									<div class="options-block" ng-class="aic.chatLog.breach.options.length > 0 ? 'options-ready' : null">
+										<div class="hint-arrow left"></div>
+										<div class="hint-arrow right"></div>
+										<div class="options" ng-class="[5,6].includes(aic.chatLog.breach.options.length) ? 'balance' : null">
+											<div class="option-wrapper" ng-repeat="option in aic.chatLog.breach.options" ng-animate-children="true">
+												<button class="option" ng-class="option.optionType" ng-click="aic.processOption('breach',option,this)">{{option.text}}</button>
+											</div>
 										</div>
+									</div>
+									
+									<div class="bottom-bar">
 									</div>
 								</div>
 								
