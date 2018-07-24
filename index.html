@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!--
 Loading icon CC0 from loading.io
-Typing icon CC-BY from loading.io
+Typing icon CC BY from loading.io
 Site-12 map made by me using Retro Computer font https://www.dafont.com/retro-computer.font
 Isolated Site-12 CC BY 2.0 https://www.flickr.com/photos/rauckhaus/10996736375/
+MX1 Drone CC BY-SA 2.0 https://www.flickr.com/photos/deepfrozen/19793862459/
 -->
 
 <!-- AUTHOR COMMENT
@@ -77,7 +78,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 			<p>It's a beautiful day outside.<p>
 			<p>Hello there. <span class="statement true">My name is Tom</span>. How are you?</p>
 			<p>My grandfather is <span class="statement false">out there</span>, somewhere.</p>
-			<div id="interface" ng-class="aic.preload ? 'preload' : null" ng-cloak>
+			<div id="interface" ng-class="[aic.preload ? 'preload' : null, aic.ready.ending ? 'ended' : null]" ng-cloak>
 				<div id="app-selector">
 					<div class="title">
 						<img src="maitreya.png">
@@ -131,22 +132,26 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									<p class="title"><img src="maitreya_terminal.png"></p>
 								</div>
 							</div>
-							<form ng-submit="aic.processTerminalInput()" class="middle-bar">
-								<!--<p>{{aic.lang.commandInput}}</p>-->
-								<input id="terminal-input" ng-model="aic.terminalInput" ng-keydown="aic.previousCommand($event)" placeholder="{{aic.lang.commandInput}}">
-								<button id="terminal-send" class="option action" type="submit">{{aic.lang.terminalSend}}</button>
-							</form>
-							<div class="options-block">
-								<div class="options">
-								
-									<button ng-repeat="option in aic.chatLog.terminal.options" class="option action">Open the door.</button>
-									<button class="option action">Upload the files.</button>
-									<button class="option speech">Hello. My name is Maitreya.</button>
-									<button class="option speech">Hello. Who are you?</button>
-									
+								<div class="top-bar">
+									<div class="top"></div>
+									<div class="middle"></div>
+									<div class="bottom"></div>
 								</div>
+							<div class="input-section" ng-class="aic.terminalInput.length > 0 ? 'loaded' : null">
+										<div class="hint-arrow left"></div>
+										<div class="hint-arrow right"></div>
+								<form ng-submit="aic.processTerminalInput()" class="middle-bar">
+									<!--<p>{{aic.lang.commandInput}}</p>-->
+									<input id="terminal-input" ng-model="aic.terminalInput" ng-keydown="aic.previousCommand($event)" placeholder="{{aic.lang.commandInput}}">
+									<button id="terminal-send" class="option action" type="submit">{{aic.lang.terminalSend}}</button>
+								</form>
+								
 							</div>
-							
+								<div class="bottom-bar">
+									<div class="top"></div>
+									<div class="middle"></div>
+									<div class="bottom"></div>
+								</div>
 						</div>
 					</div>
 					
@@ -195,6 +200,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									</div>
 									
 									<div class="options-block" ng-class="aic.chatLog.breach.options.length > 0 ? 'options-ready' : null">
+										<!--<div class="disconnected-alert">DISCONNECTED</div>-->
 										<div class="hint-arrow left"></div>
 										<div class="hint-arrow right"></div>
 										<div class="options" ng-class="[5,6].includes(aic.chatLog.breach.options.length) ? 'balance' : null">
@@ -205,6 +211,8 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									</div>
 									
 									<div class="bottom-bar">
+										<div class="top"></div>
+										<div class="bottom"></div>
 									</div>
 								</div>
 								
@@ -249,6 +257,28 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 							<p>{{aic.lang.databaseAppName}}</p>
 						</div>
 						<div class="app-main">
+						
+							<div class="section menu-section selected">
+								<div class="menu-container">
+									<div class="menu-title">
+										Isolated Site-12 Operations Control
+									</div>
+									<ul>
+										<li>
+											<a ng-click="aic.switchOperation('d')">D-Class Requisition</a>
+										</li>
+										<li>
+											<a ng-click="aic.switchOperation('drone')">Drone Control</a>
+										</li>
+										<li>
+											<a ng-click="aic.switchOperation('map')">Site Map & Individual Room Functions</a>
+										</li>
+										<li>
+											<a ng-click="aic.switchOperation('hack')">Main Server Access</a>
+										</li>
+									</ul>
+								</div>
+							</div>
 							
 						</div>
 					</div>
@@ -258,64 +288,83 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 							<p>{{aic.lang.runAppName}}</p>
 						</div>
 						<div class="app-main">
-							<div class="section menu-section selected">
+							<div class="back">
+								<div class="parallelogram" ng-click="aic.switchOperation('menu')" ng-class="aic.selectedOperation === 'menu' ? 'hidden' : null">
+									<p><i class="material-icons">arrow_back</i> Back to menu</p>
+								</div>
+							</div>
+							<div class="section menu-section" ng-class="aic.selectedOperation === 'menu' ? 'selected' : null">
 								<div class="menu-container">
 									<div class="menu-title">
 										Isolated Site-12 Operations Control
 									</div>
 									<ul>
 										<li>
-											<a>D-Class Requisition</a>
+											<a ng-click="aic.switchOperation('d')">D-Class Requisition</a>
 										</li>
 										<li>
-											<a>Drone Control</a>
+											<a ng-click="aic.switchOperation('drone')">Drone Control</a>
 										</li>
 										<li>
-											<a>Site Map & Individual Room Functions</a>
+											<a ng-click="aic.switchOperation('map')">Site Map & Individual Room Functions</a>
 										</li>
 										<li>
-											<a>Main Server Access</a>
+											<a ng-click="aic.switchOperation('hack')">Main Server Access</a>
 										</li>
 									</ul>
 								</div>
 							</div>
-							<div class="section map-section">
-								<div class="back">
-									<div class="parallelogram">
-										<a><i class="material-icons">arrow_back</i> Back to menu</a>
-									</div>
+							
+							<div class="section map-section"  ng-class="aic.selectedOperation === 'map' ? 'selected' : null" ng-animate-children="true">
+								<div class="title">
+									<p>SITE MAP (LEGACY)</p>
 								</div>
-								<div class="map-container">
+								<div class="map-container" ng-class="aic.vars.minimiseMap ? 'minimise' : null">
 									<div class="sitemap" style="background-image: url(site12.png);">
-										<div data-room="ring-east" style="background-image: url(site_ring-east.png); top: 153px; left: 480px; height:153px; width: 36px;"></div>
-										<div data-room="pantry" style="background-image: url(site_pantry.png); top: 66px; left: 267px; height:84px; width: 117px;"></div>
-										<div data-room="storage" style="background-image: url(site_storage.png); top: 324px; left: 345px; height:84px; width: 156px;"></div>
-										<div data-room="foyer" style="background-image: url(site_foyer.png); top: 81px; left: 498px; height:240px; width: 93px;"></div>
-										<div data-room="hangar" style="background-image: url(site_hangar.png); top: 9px; left: 9px; height:432px; width: 132px;"></div>
-										<div data-room="server" style="background-image: url(site_server.png); top: 9px; left: 144px; height:141px; width: 120px;"></div>
-										<div data-room="cafe" style="background-image: url(site_cafe.png); top: 102px; left: 330px; height:48px; width: 111px;"></div>
-										<div data-room="d1" style="background-image: url(site_d1.png); top: 174px; left: 147px; height:60px; width: 54px;"></div>
-										<div data-room="d2" style="background-image: url(site_d2.png); top: 174px; left: 207px; height:60px; width: 54px;"></div>
-										<div data-room="d3" style="background-image: url(site_d3.png); top: 174px; left: 267px; height:60px; width: 54px;"></div>
-										<div data-room="d4" style="background-image: url(site_d4.png); top: 261px; left: 147px; height:60px; width: 54px;"></div>
-										<div data-room="d5" style="background-image: url(site_d5.png); top: 261px; left: 207px; height:60px; width: 54px;"></div>
-										<div data-room="d6" style="background-image: url(site_d6.png); top: 261px; left: 267px; height:60px; width: 54px;"></div>
-										<div data-room="d-corridor" style="background-image: url(site_d-corridor.png); top: 240px; left: 147px; height:15px; width: 174px;"></div>
-										<div data-room="armoury" style="background-image: url(site_armoury.png); top: 330px; left: 150px; height:78px; width: 168px;"></div>
-										<div data-room="toilet" style="background-image: url(site_toilet.png); top: 381px; left: 345px; height:27px; width: 21px;"></div>
-										<div data-room="bay" style="background-image: url(site_bay.png); top: 324px; left: 504px; height:84px; width: 87px;"></div>
-										<div data-room="containment" style="background-image: url(site_containment.png); top: 219px; left: 393px; height:36px; width: 36px;"></div>
-										<div data-room="airlock" style="background-image: url(site_airlock.png); top: 231px; left: 348px; height:12px; width: 39px;"></div>
-										<div data-room="a4" style="background-image: url(site_a4.png); top: 93px; left: 462px; height:57px; width: 54px;"></div>
-										<div data-room="a2" style="background-image: url(site_a2.png); top: 21px; left: 462px; height:39px; width: 24px;"></div>
-										<div data-room="a3" style="background-image: url(site_a3.png); top: 63px; left: 462px; height:27px; width: 24px;"></div>
-										<div data-room="a1" style="background-image: url(site_a1.png); top: 21px; left: 387px; height:78px; width: 54px;"></div>
-										<div data-room="server-corridor" style="background-image: url(site_server-corridor.png); top: 153px; left: 144px; height:15px; width: 183px;"></div>
-										<div data-room="armoury-corridor" style="background-image: url(site_armoury-corridor.png); top: 321px; left: 327px; height:87px; width: 15px;"></div>
-										<div data-room="office-corridor" style="background-image: url(site_office-corridor.png); top: 21px; left: 444px; height:132px; width: 15px;"></div>
-										<div data-room="ring-north" style="background-image: url(site_ring-north.png); top: 153px; left: 342px; height:15px; width: 138px;"></div>
-										<div data-room="ring-south" style="background-image: url(site_ring-south.png); top: 306px; left: 342px; height:15px; width: 153px;"></div>
-										<div data-room="ring-west" style="background-image: url(site_ring-west.png); top: 153px; left: 327px; height:168px; width: 15px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="ring-east" style="background-image: url(site_ring-east.png); top: 153px; left: 480px; height:153px; width: 36px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="pantry" style="background-image: url(site_pantry.png); top: 66px; left: 267px; height:84px; width: 117px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="storage" style="background-image: url(site_storage.png); top: 324px; left: 345px; height:84px; width: 156px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="foyer" style="background-image: url(site_foyer.png); top: 81px; left: 498px; height:240px; width: 93px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="hangar" style="background-image: url(site_hangar.png); top: 9px; left: 9px; height:432px; width: 132px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="server" style="background-image: url(site_server.png); top: 9px; left: 144px; height:141px; width: 120px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="cafe" style="background-image: url(site_cafe.png); top: 102px; left: 330px; height:48px; width: 111px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="s1" style="background-image: url(site_d1.png); top: 174px; left: 147px; height:60px; width: 54px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="s2" style="background-image: url(site_d2.png); top: 174px; left: 207px; height:60px; width: 54px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="s3" style="background-image: url(site_d3.png); top: 174px; left: 267px; height:60px; width: 54px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="s4" style="background-image: url(site_d4.png); top: 261px; left: 147px; height:60px; width: 54px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="s5" style="background-image: url(site_d5.png); top: 261px; left: 207px; height:60px; width: 54px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="s6" style="background-image: url(site_d6.png); top: 261px; left: 267px; height:60px; width: 54px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="d-corridor" style="background-image: url(site_d-corridor.png); top: 240px; left: 147px; height:15px; width: 174px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="armoury" style="background-image: url(site_armoury.png); top: 330px; left: 150px; height:78px; width: 168px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="toilet" style="background-image: url(site_toilet.png); top: 381px; left: 345px; height:27px; width: 21px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="bay" style="background-image: url(site_bay.png); top: 324px; left: 504px; height:84px; width: 87px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="containment" style="background-image: url(site_containment.png); top: 219px; left: 393px; height:36px; width: 36px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="airlock" style="background-image: url(site_airlock.png); top: 231px; left: 348px; height:12px; width: 39px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="a4" style="background-image: url(site_a4.png); top: 93px; left: 462px; height:57px; width: 54px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="a2" style="background-image: url(site_a2.png); top: 21px; left: 462px; height:39px; width: 24px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="a3" style="background-image: url(site_a3.png); top: 63px; left: 462px; height:27px; width: 24px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="a1" style="background-image: url(site_a1.png); top: 21px; left: 387px; height:78px; width: 54px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="server-corridor" style="background-image: url(site_server-corridor.png); top: 153px; left: 144px; height:15px; width: 183px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="armoury-corridor" style="background-image: url(site_armoury-corridor.png); top: 321px; left: 327px; height:87px; width: 15px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="office-corridor" style="background-image: url(site_office-corridor.png); top: 21px; left: 444px; height:132px; width: 15px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="ring-north" style="background-image: url(site_ring-north.png); top: 153px; left: 342px; height:15px; width: 138px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="ring-south" style="background-image: url(site_ring-south.png); top: 306px; left: 342px; height:15px; width: 153px;"></div>
+										<div class="room" ng-click="aic.selectRoom($event)" data-room="ring-west" style="background-image: url(site_ring-west.png); top: 153px; left: 327px; height:168px; width: 15px;"></div>
+									</div>
+									<div class="selection-info">
+										<p>Currently selected: {{aic.vars.hoveredRoom}}</p>
+										<p>{{aic.vars.hoveredRoom !== 'none' ? 'Click for details/functions' : 'Mouseover a room for info'}}</p>
+									</div>
+									
+									<div class="room-info">
+										<div class="back-button" ng-click="aic.vars.minimiseMap = false">BACK</div>
+										<h1 class="room-title">Hangar</h1>
+										<p class="room-description">The hangar is the place where the airplanes used for transport to and from Isolated Site-12 are kept. They are automated entirely by Alexandra.aic.</p>
+										<div class="room-camera-feed">
+											<h2>CAMERA FEED</h2>
+											<p></p>
+										</div>
+										<div class="room-options"></div>
 									</div>
 								</div>
 							</div>
@@ -331,10 +380,9 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 								<div class="ending-title">
 									<p class="ending-title glitch" data-text="CONNECTION&nbsp;LOST">CONNECTION&nbsp;LOST</p>
 								</div>
-								<p class="ending-desc">The cassette that contains Maitreya.aic was removed from its slot in a server at Isolated Site-12.</p>
-								<p class="ending-desc">Maitreya.aic lost connection to Isolated Site-12 and was unable to operate further.</p>
+								<p class="ending-desc" ng-repeat="line in aic.lang.endings[aic.currentEnding]">{{line}}</p>
 								<button class="option action" id="restart">RESTART</button>
-								<p class="ending-number">Ending 12/16</p>
+								<p class="ending-number">{{aic.lang.endingFraction}} {{aic.currentEnding + 1}}/{{aic.lang.endings.length}}</p>
 							</div>
 						</div>
 					</div>
