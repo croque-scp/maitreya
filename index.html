@@ -76,15 +76,15 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 			<button class="option speech">Who the fucking fuck are you and where the fuck am I</button>
 			
 			<p>It's a beautiful day outside.<p>
-			<p>Hello there. <span class="statement true">My name is Tom</span>. How are you?</p>
-			<p>My grandfather is <span class="statement false">out there</span>, somewhere.</p>
+			<p>Hello there. <span class="statement true" ng-attr-data-bool="{{aic.lang.true}}">My name is Tom</span>. How are you?</p>
+			<p>My grandfather is <span class="statement false" ng-attr-data-bool="{{aic.lang.false}}">out there</span>, somewhere.</p>
 			<div id="interface" ng-class="[aic.preload ? 'preload' : null, aic.ready.ending ? 'ended' : null]" ng-cloak>
 				<div id="app-selector">
 					<div class="title">
 						<img src="maitreya.png">
 						<div>
 							<p>{{aic.lang.version}}</p>
-							<p ng-hide="true">This text should not be visible - if you can see this text, please contact the author.</p>
+							<p ng-hide="true">This text should not be visible (unless you have javascript disabled) - if you can see this text, please contact the author.</p>
 							<p ng-show="aic.onMobile">{{aic.lang.mobileWarning}}</p>
 							<button id="boot-up" class="option speech" ng-click="aic.bootUp()">{{aic.lang.bootUp}}</button>
 						</div>
@@ -94,11 +94,11 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 							<a><i class="material-icons">clear</i></a>
 							<div class="notification" ng-show="aic.notifications.ending > 0"><p>{{aic.notifications.ending}}</p></div>
 						</li>
-						<li id="terminal-app" class="selector" ng-click="aic.switchApp('terminal')" ng-class="[aic.selectedApp == 'terminal' ? 'selected' : null, aic.ready.terminal ? null : 'disabled']" ng-disabled="">
+						<li id="terminal-app" class="selector" ng-click="aic.switchApp('terminal')" ng-class="[aic.selectedApp == 'terminal' ? 'selected' : null, aic.ready.terminal ? null : 'disabled', aic.emphasis.terminal ? 'emphasis' : null]" ng-disabled="">
 							<a><i class="material-icons">dvr</i></a>
 							<div class="notification" ng-show="aic.notifications.terminal > 0"><p>{{aic.notifications.terminal}}</p></div>
 						</li>
-						<li id="messages-app" class="selector" ng-click="aic.switchApp('messages')" ng-class="[aic.selectedApp == 'messages' ? 'selected' : null, aic.ready.messages ? null : 'disabled']" ng-disabled="">
+						<li id="messages-app" class="selector" ng-click="aic.switchApp('messages')" ng-class="[aic.selectedApp == 'messages' ? 'selected' : null, aic.ready.messages ? null : 'disabled', aic.emphasis.messages ? 'emphasis' : null]" ng-disabled="">
 							<a><i class="material-icons">record_voice_over</i></a>
 							<div class="notification" ng-show="(aic.notifications.breach + aic.notifications.alexandra) > 0"><p>{{aic.notifications.breach + aic.notifications.alexandra}}</p></div>
 						</li>
@@ -201,11 +201,11 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									
 									<div class="options-block" ng-class="aic.chatLog.breach.options.length > 0 ? 'options-ready' : null">
 										<!--<div class="disconnected-alert">DISCONNECTED</div>-->
-										<div class="hint-arrow left"></div>
-										<div class="hint-arrow right"></div>
+										<div class="hint-arrow left" ng-class="aic.vars.noob ? 'noob-emphasis' : null"></div>
+										<div class="hint-arrow right" ng-class="aic.vars.noob ? 'noob-emphasis' : null"></div>
 										<div class="options" ng-class="[5,6].includes(aic.chatLog.breach.options.length) ? 'balance' : null">
 											<div class="option-wrapper" ng-repeat="option in aic.chatLog.breach.options" ng-animate-children="true">
-												<button class="option" ng-class="option.optionType" ng-click="aic.processOption('breach',option,this)">{{option.text}}</button>
+												<button class="option" ng-class="option.optionType" ng-attr-data-action="{{aic.lang[option.optionType + 'Option']}}" ng-click="aic.maitreyaLoop('breach',option,this)">{{option.text}}</button>
 											</div>
 										</div>
 									</div>
@@ -261,23 +261,41 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 							<div class="section menu-section selected">
 								<div class="menu-container">
 									<div class="menu-title">
-										Isolated Site-12 Operations Control
+										<img src="database.png">
+										<p>Welcome, Maitreya.aic.</p>
+										<p>Your access to this database is limited by Isolated Site-12 Directive IS-12/088.61.M4. Documentation will only be made available when its subject matter is mentioned by any external source.</p>
 									</div>
 									<ul>
 										<li>
-											<a ng-click="aic.switchOperation('d')">D-Class Requisition</a>
+											<p class="heading">SCPs</p>
+											<div class="articles-list">
+												<a class="article-selector">SCP-4000</a>
+												<a class="article-selector">SCP-079</a>
+											</div>
 										</li>
 										<li>
-											<a ng-click="aic.switchOperation('drone')">Drone Control</a>
+											<p class="heading">Locations</p>
+											<div class="articles-list">
+												<a class="article-selector">Isolated Site-12</a>
+												<a class="article-selector">Quittinirpaaq</a>
+											</div>
 										</li>
 										<li>
-											<a ng-click="aic.switchOperation('map')">Site Map & Individual Room Functions</a>
-										</li>
-										<li>
-											<a ng-click="aic.switchOperation('hack')">Main Server Access</a>
+											<p class="heading">Personnel</p>
+											<div class="articles-list">
+												<a class="article-selector">Ethan Breach</a>
+												<a class="article-selector">Rebecca Carver</a>
+												<a class="article-selector">Alexandra.aic</a>
+												<a class="article-selector">Maitreya.aic</a>
+												<a class="article-selector">Glacon.aic</a>
+											</div>
 										</li>
 									</ul>
 								</div>
+							</div>
+							
+							<div>
+							
 							</div>
 							
 						</div>
@@ -290,7 +308,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 						<div class="app-main">
 							<div class="back">
 								<div class="parallelogram" ng-click="aic.switchOperation('menu')" ng-class="aic.selectedOperation === 'menu' ? 'hidden' : null">
-									<p><i class="material-icons">arrow_back</i> Back to menu</p>
+									<p><i class="material-icons">arrow_back</i> Back to operation list</p>
 								</div>
 							</div>
 							<div class="section menu-section" ng-class="aic.selectedOperation === 'menu' ? 'selected' : null">
@@ -320,7 +338,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									<p>SITE MAP (LEGACY)</p>
 								</div>
 								<div class="map-container" ng-class="aic.vars.minimiseMap ? 'minimise' : null">
-									<div class="sitemap" style="background-image: url(site12.png);">
+									<div detect class="sitemap" style="background-image: url(site12.png);">
 										<div class="room" ng-click="aic.selectRoom($event)" data-room="ring-east" style="background-image: url(site_ring-east.png); top: 153px; left: 480px; height:153px; width: 36px;"></div>
 										<div class="room" ng-click="aic.selectRoom($event)" data-room="pantry" style="background-image: url(site_pantry.png); top: 66px; left: 267px; height:84px; width: 117px;"></div>
 										<div class="room" ng-click="aic.selectRoom($event)" data-room="storage" style="background-image: url(site_storage.png); top: 324px; left: 345px; height:84px; width: 156px;"></div>

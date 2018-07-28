@@ -10,7 +10,15 @@
 /* global $, angular */
 
 // prototype functuon to turn whatever-this-is to whateverThisIs
-String.prototype.toCamelCase = function() {return this.toLowerCase().replace(/[^\w\s\-]/g, '').replace(/[^a-z0-9]/g, ' ').replace(/^\s+|\s+$/g, '').replace(/\s(.)/g, function(match,group) {return group.toUpperCase()})};
+String.prototype.toCamelCase = function() {
+	return this.toLowerCase()
+		.replace(/[^\w\s\-]/g, '')
+		.replace(/[^a-z0-9]/g, ' ')
+		.replace(/^\s+|\s+$/g, '')
+		.replace(/\s(.)/g, function(match,group) {
+			return group.toUpperCase();
+		});
+};
 
 // prototype function to format dialogue strings from wikidot format to HTML
 String.prototype.format = function() {
@@ -18,17 +26,21 @@ String.prototype.format = function() {
 		.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>") // Wikidot bolding syntax
 		.replace(/\/\/(.*?)\/\//g, "<i>$1</i>") // Wikidot italics syntax
 		.replace(/{{(.*?)}}/g, "<tt>$1</tt>") // Wikidot teletype syntax
-		.replace(/\?\?(.*?)\?\?/g, "<span class='statement false'>$1</span>")
-		.replace(/!!(.*?)!!/g, "<span class='statement true'>$1</span>")
+		.replace(/\?\?(.*?)\?\?/g, "<span dynamic class='statement false' data-bool='TRUE'>$1</span>")
+		.replace(/!!(.*?)!!/g, "<span class='statement true' data-bool='FALSE'>$1</span>")
 		.replace(/--/g, "—") // Wikidot em-dash replacement
-		.replace(/\|\|\|\|/g,"<br>"); // "||||" makes a new line
+		.replace(/\|\|\|\|/g, "<br>") // "||||" makes a new line
+		.replace(/\+(.*)$/g, "<h1>$1</h1>") // h1
+		.replace(/\+\+(.*)$/g, "<h2>$1</h2>") // h2
+		.replace(/-----/g, "<hr>"); // horizontal rule
 };
 
 // and here begins AngularJS
 (function(){
 	var maitreya = angular
 		.module('maitreya',['ngSanitize', 'ngAnimate'])
-		.controller('MaitreyaController',MaitreyaController);
+		.controller('MaitreyaController',MaitreyaController)
+		.directive('dynamic',DynamicDirective);
 	
 	MaitreyaController.$inject = ['$scope'];
 	function MaitreyaController($scope){
@@ -51,6 +63,12 @@ String.prototype.format = function() {
 			messagesAppName: "COMMUNICATIONS INTERFACE",
 			databaseAppName: "FOUNDATION DATABASE SEARCH",
 			runAppName: "IS-12 OPERATIONS CONTROL",
+			
+			statementTrue: "TRUE",
+			statementFalse: "FALSE",
+			
+			speechOption: "SAY",
+			actionOption: "DO",
 			
 			// The following are commands used in the terminal
 			// To add alternative commands, just make another entry in the array
@@ -152,16 +170,15 @@ String.prototype.format = function() {
 					helloNormal: ["Hello."],
 					helloInquisitive: ["Who are you?"],
 					helloDiagnostic: ["a:Request a diagnostic.","I would like to request a diagnostic report."],
-					pissOff____: ["Fucking end me"],
 					knowNormal: ["I do."],
 					knowPatronising: ["There's no need to be patronising."],
 					knowNot: ["I'm afraid that I don't."],
 					knowActually: ["No, it's okay. I know what it is."],
 					knowNotNot: ["I do."],
 					knowNormal_: ["No questions."],
-					knowNotNotNot: ["One or two, yeah."],
-					knowNormal__: ["No questions."],
-					pissOff: ["I do still have questions."],
+					knowNotNotNot: ["I do have some questions.","I do have some questions, actually. May I?"],
+					knowNormal__: ["I can deal with it, Dr. Breach."],
+					pissOff: ["I do still have questions.","My reams of questions remain unanswered, Dr. Breach."],
 					helloNotYet: ["Sounds good to me."],
 					explainApo: ["s:No.","Apologies, Dr. Breach, but I've no idea."],
 					doKnow: ["s:Yes.","I do -- there's no need to explain."],
@@ -172,24 +189,25 @@ String.prototype.format = function() {
 					goNoAsk: ["Of course I can."],
 					goAsk: ["I can, but I have a few questions."],
 					goNo: ["Nope."],
-					unassigned: ["Yes, Dr. Breach."],
+					comply: ["Yes, Dr. Breach."],
 					pissOff_: ["Nope."],
+					askName: ["s:Is \"Dr. Breach\" your real name?","Is \"Dr. Breach\" actually your real name?","Kind of unfortunate, don't you think?"],
 				},
 				breach: {
-					start: [0,auto,"Hello, Maitreya.","m:Howdy ho hi Mr Breach man","Haha yeet","m:Super yeet mcboots my dude bro"],
+					start: [0,auto,"Hello, Maitreya."],
 					helloInquisitive: ["My name is Dr. Ethan Breach, Maitreya. I'm a researcher for the SCP Foundation. Do you know what that is?"],
 					knowPatronising: ["Patronising? I -- I didn't mean...","Yes, yes, of course.","My apologies."],
 					knowNormal: ["Very good."],
-					knowNot: ["I... really do //not// have time to explain this to you.","Do you really need an explanation?"],
+					knowNot: ["Ah. That's a little inconvenient.","Do you really need an explanation?"],
 					knowActually: ["Right.","In the future, please don't joke around with me."],
 					knowNotNot: ["Right, in that case, here we go.","The Foundation is a worldwide organisation, operating under and over many governments, with the sole purpose of containing anomalies called SCPs.","You were made by the Foundation to help with that.","Any questions?"],
-					knowNotNotNot: ["Great. You can ask them never.","With due respect, you're a .aic, you don't get to go around asking questions.","You want to learn more about the Foundation? Tough shit. You know what you know and you don't know what you don't.","I'm not going to waste my time explaining //basic shit// to you. You're supposed to be articificially intelligent!","If you really don't know this stuff then you can look it up on the database later. At the minute you should be pretty much restricted to just talking to me. I'll give you access to the database in a few minutes.","For the last time. Are there any questions?"],
+					knowNotNotNot: ["No, no you may not.","With due respect, you're a .aic, you're... you're supposed to know this stuff already.","If you seriously don't know what the Foundation is... then I don't think you can be of much help to me.","And I'm not going to waste my time explaining fundamentals to you.","If you really don't know this stuff then you can look it up on the database later, I guess. Until then, you're just going to have to deal with it.","Do you think you can deal with it?"],
 					pissOff: ["Fucking useless AICs."],
 					helloNormal: ["Hello. My name is Dr. Ethan Breach."],
 					helloDiagnostic: ["A... diagnostic report?","Right.","Of course.","That'll be, uh, as soon as I work out how to do that. Give me a moment.",8,auto,"Yeah, sorry, I have no idea how to do that.","I can hook you up with another .aic if you want, and the two of you can maybe work it out together?"],
 					helloNotYet: ["Great. But I've got a few things to run through with you first.","From the top..."],
 					explain1: ["You are Maitreya.aic, an artificial intelligence developed by the Foundation to help us contain certain kinds of anomalies.","Do you know why I have woken you up today?"],
-					doKnow: ["I...","Are you sure? You can't possibly know what I was about to ask you to do.","I suppose you might have some way of being able to tell -- I don't know what sort of systems you're truly hooked into, after all.","Well, if you're absolutely certain that you know what you're doing, I guess I can stop here and let you proceed."],
+					doKnow: [3,auto,"I...","Are you sure? You can't possibly know what I need you for.","I suppose you might have some way of being able to tell -- meta-analysis is a big thing these days, and you //are// an AI...","Well, if you're absolutely certain that you know what you're doing, I guess I can stop here and let you proceed."],
 					yesSkip: ["Very well. I wish you the best of luck. Godspeed."],
 					noSkip: ["As expected.","In that case, allow me to explain..."],
 					explain2: ["The facility we're both currently in is called Isolated Site-12. It contains a single SCP -- SCP-4000. My job, as a researcher, is to find out what exactly SCP-4000 is."],
@@ -199,6 +217,8 @@ String.prototype.format = function() {
 					goNo: ["Okay.","I'm going to ask this one more time, and I'm going to speak slowly, so we can both be absolutely certain that the microphone is picking up my words.","You are a .aic. You are designed -- no, you were //made// to help me do research.","That is your goal.","That is literally your life's purpose.","So when I ask if you can help me out, you say //yes, Dr. Breach//, okay?","Can you help me out?"],
 					explainApo: ["No need to apologise! Let me explain."],
 					goNoAsk: ["Perfect! Exactly what I want to hear."],
+					goAsk: ["Very reasonable. What do you need to know?"],
+					askName: [2,3,"",2,auto,"Yes, Maitreya, that's my real name.","You are not the first to make that joke."],
 				},
 			},
 			misc: {
@@ -235,6 +255,7 @@ String.prototype.format = function() {
 		
 		var cheats = {
 			impatientMode: false, // all messages appear instantly
+			beingSkipped: false,
 		};
 		var wipeTimer = false; // timer for hard wiping
 		
@@ -249,6 +270,7 @@ String.prototype.format = function() {
 		};
 		aic.commandsUsed = [];
 		var commandsUsedIterator = -1;
+		var availableRooms = [1,2,3,4,5,6];
 		
 		aic.endingPositions = { // positions of each ending in aic.lang.endings
 			example: 0,
@@ -260,7 +282,7 @@ String.prototype.format = function() {
 		aic.selectedApp = "terminal"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "breach"; // MUST BE BREACH
 		aic.selectedArticle = "menu";
-		aic.selectedOperation = "map";
+		aic.selectedOperation = "menu";
 		aic.currentEnding = 0;
 		aic.isSpeaking = { // MUST ALL BE FALSE
 			terminal: false,
@@ -273,6 +295,14 @@ String.prototype.format = function() {
 			alexandra: 0,
 			database: 0,
 			run: 0,
+		};
+		aic.emphasis = { // MUST ALL BE FALSE
+			terminal: false,
+			messages: false,
+			breach: false,
+			alexandra: false,
+			database: false,
+			run: false,
 		};
 		aic.ready = {
 			// MUST BE TRUE
@@ -290,10 +320,46 @@ String.prototype.format = function() {
 		aic.onMobile = $("#interface").width() < 700;
 		
 		aic.vars = { // miscellaneous variables for stuff
-			hoveredRoom: "hangar", // which room is currently hovered
+			
+			/* MAP */
+			hoveredRoom: "none", // which room is currently hovered
 			selectedRoom: "none", // which room is selected
 			doingRoom: false,
 			minimiseMap: false,
+			
+			/* ENDING */
+			shuttingDown: false,
+			
+			/* CHARACTERS */
+			breach: {
+				status: "initial",
+				allegiance: "scp",
+				opinion: 0,
+				location: "a1",
+			},
+			alexandra: {
+				status: "initial",
+				allegiance: "scp",
+				opinion: 10,
+			},
+			d1: {
+				status: "initial",
+				allegiance: "scp",
+				opinion: -5,
+				location: assignRoom("d1"),
+			},
+			d2: {
+				status: "initial",
+				allegiance: "scp",
+				opinion: -5,
+				location: assignRoom("d2"),
+			},
+			d3: {
+				status: "initial",
+				allegiance: "scp",
+				opinion: -5,
+				location: assignRoom("d3"),
+			},
 		};
 		
 		// EVERYTHING MUST BE ADDED TO THIS IN REVERSE ORDER.
@@ -352,6 +418,7 @@ String.prototype.format = function() {
 				} else {
 					aic.notifications[app] = 0;
 				}
+				aic.emphasis[app] = false;
 				aic.selectedApp = app;
 				// then, if the app is terminal, focus the input
 				if(app === "terminal") {
@@ -445,6 +512,10 @@ String.prototype.format = function() {
 										writeDialogue("terminal",speech.misc.terminal.printDone);
 										console.log(eval(phrases[2])); /*jslint ignore:line*/
 										break;
+									case aic.lang.commands.cheats.interrupt:
+										writeDialogue("terminal",speech.misc.terminal.printDone);
+										cheats.beingSkipped = true;
+										break;
 									default:
 										throw new Error("Unknown cheat code: " + phrases[1]);
 								}
@@ -530,7 +601,7 @@ String.prototype.format = function() {
 		/* PLOT FUNCTIONS */
 		
 		// event handler for option selection - effectively maitreyaLoop()
-		aic.processOption = function(conversation,option) {
+		aic.maitreyaLoop = function(conversation,option) {
 			// takes the id of the selected option
 			
 			var delay = 0;
@@ -614,7 +685,8 @@ String.prototype.format = function() {
 							aic.ready.breach = true;
 							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,["helloNormal","helloInquisitive","helloDiagnostic","pissOff____"]);
+								presentOptions("breach",bigSection,["helloNormal","helloInquisitive","helloDiagnostic"]);
+								aic.emphasis.messages = true;
 							},delay*1000 + maitreyaDelay*1000);
 							break;
 						case "helloInquisitive":
@@ -732,9 +804,10 @@ String.prototype.format = function() {
 							},delay*1000 + maitreyaDelay*1000);
 							break;
 						case "goNo":
+							aic.vars.breachExplainedVoice = true;
 							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,["unassigned","pissOff_"]);
+								presentOptions("breach",bigSection,["comply","pissOff_"]);
 							},delay*1000 + maitreyaDelay*1000);
 							break;
 						case "explainApo":
@@ -776,6 +849,7 @@ String.prototype.format = function() {
 					setTimeout(function() {
 						$scope.$apply(function() {
 							aic.ready.ending = true;
+							aic.emphasis.terminal = false;
 							aic.switchApp("ending");
 						});
 					},delay*1000);
@@ -785,6 +859,7 @@ String.prototype.format = function() {
 					switch(smallSection) {
 						
 						case "pissOff":
+							aic.emphasis.terminal = true;
 							delay = writeDialogue("terminal",speech.misc.terminal.breachShutDown);
 							setTimeout(function() {
 								aic.currentEnding = aic.endingPositions[smallSection];
@@ -1046,6 +1121,9 @@ String.prototype.format = function() {
 						// don't push the message if it's empty
 						if(messages[0][2].text.length > 0) {
 							$scope.$apply(function() {
+								
+								console.log(messages[0][2]);
+								
 								aic.chatLog[conversation].log.unshift(messages[0][2]);
 								addNotification(conversation);
 							});
@@ -1077,6 +1155,7 @@ String.prototype.format = function() {
 		}
 		
 		// calculate the difference between two dates
+		// TODO: set year to 2018
 		function dateDiff(date1,date2) {
 			var diff = Math.floor(date1.getTime() - date2.getTime());
 			var secs = Math.floor(diff/1000);
@@ -1106,5 +1185,33 @@ String.prototype.format = function() {
 			}
 			return message;
 		}
+		
+		// assign a room to a d-class
+		function assignRoom(name) {
+			var room = availableRooms[Math.floor(Math.random() * availableRooms.length)];
+			var index = availableRooms.indexOf(room);
+			if (index > -1) {
+				availableRooms.splice(index, 1);
+			} else {
+				throw new Error("Bad room");
+			}
+			room = "s" + room;
+			// TODO tell the room which d class is now in it
+			return room;
+		}
+	}
+	
+	// TODO fix
+	function DynamicDirective($compile) {
+	return {
+		restrict: 'A',
+		replace: true,
+		link: function (scope, ele, attrs) {
+			scope.$watch(attrs.dynamic, function(html) {
+				ele.html(html);
+				$compile(ele.contents())(scope);
+			});
+		}
+	};
 	}
 })();
