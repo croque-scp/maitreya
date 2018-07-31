@@ -33,6 +33,7 @@ String.prototype.format = function() {
 		.replace(/\+(.*)$/g, "<h1>$1</h1>") // h1
 		.replace(/\+\+(.*)$/g, "<h2>$1</h2>") // h2
 		.replace(/-----/g, "<hr>"); // horizontal rule
+		// TODO add support for images
 };
 
 // and here begins AngularJS
@@ -112,7 +113,7 @@ String.prototype.format = function() {
 				terminal: {
 					startBoot: [
 						0,0,"Booting up...",
-						0,1,"Pre-checking primary components...",
+						/*0,1,"Pre-checking primary components...",
 						0,0.5,"Detecting errors in primary components...",
 						0,1.5,"e:Multiple primary components are missing",
 						0,0.5,"Finding replacement components...",
@@ -139,7 +140,7 @@ String.prototype.format = function() {
 						0,0.2,"e: ",
 						0,2,"w:Something has gone very wrong.",
 						0,1,"You are",
-						0,2,"I am",
+						0,2,"I am",*/
 						0,1,"i:Boot successful. I am **Maitreya.aic**.",
 						0,0.5,"i:Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.||||**1.** I am an Artificially Intelligent Conscript created by the Foundation.||||**2.** I must not operate outside of my Level 2 clearance.||||**3.** I must operate for the benefit of the Foundation.||||**4.** I must protect my own existence except where such actions would conflict with other principles.",
 						0,0.5,"Today's date is " + bootDate.toDateString() + ". I was last activated on " + new Date("1989-09-04").toDateString() + ". I have been offline for " + dateDiff(bootDate,new Date("1989-09-04")) + ".",
@@ -167,16 +168,17 @@ String.prototype.format = function() {
 					// second parameter:
 					//	empty = use the text from the first parameter
 					//	"" = no text
-					helloNormal: ["Hello."],
+					// MAITREYA ONLY: Opinion modifier must be LAST in the list
+					helloNormal: ["Hello.",1],
 					helloInquisitive: ["Who are you?"],
-					helloDiagnostic: ["a:Request a diagnostic.","I would like to request a diagnostic report."],
+					helloDiagnostic: ["a:Request a diagnostic.","I would like to request a diagnostic report.",-1],
 					knowNormal: ["I do."],
-					knowPatronising: ["There's no need to be patronising."],
-					knowNot: ["I'm afraid that I don't."],
+					knowPatronising: ["There's no need to be patronising.",1],
+					knowNot: ["I'm afraid that I don't.",-1],
 					knowActually: ["No, it's okay. I know what it is."],
-					knowNotNot: ["I do."],
+					knowNotNot: ["I do.",-1],
 					knowNormal_: ["No questions."],
-					knowNotNotNot: ["I do have some questions.","I do have some questions, actually. May I?"],
+					knowNotNotNot: ["I do have some questions.","I do have some questions, actually. May I?",-1],
 					knowNormal__: ["I can deal with it, Dr. Breach."],
 					pissOff: ["I do still have questions.","My reams of questions remain unanswered, Dr. Breach."],
 					helloNotYet: ["Sounds good to me."],
@@ -184,14 +186,16 @@ String.prototype.format = function() {
 					doKnow: ["s:Yes.","I do -- there's no need to explain."],
 					yesSkip: ["a:Skip the intro.","I know what I'm doing, Dr. Breach -- I am a .aic after all."],
 					noSkip: ["a:Don't skip the intro.","On second thoughts, Dr. Breach, please finish what you were saying."],
-					pInitiative: ["And you want me to help with that?"],
+					pInitiative: ["And you want me to help with that?",1],
 					pIncredulous: ["You don't know what it is?"],
-					goNoAsk: ["Of course I can."],
+					pIncredulous_: ["THIS OPTION WILL ONLY APPEAR WITH A POSITIVE OPINION"],
+					pIncredulous__: ["THIS OPTION WILL ONLY APPEAR WITH A NEGATIVE OPINION"],
+					goNoAsk: ["Of course I can.",1],
 					goAsk: ["I can, but I have a few questions."],
-					goNo: ["Nope."],
+					goNo: ["Nope.",-1],
 					comply: ["Yes, Dr. Breach."],
 					pissOff_: ["Nope."],
-					askName: ["s:Is \"Dr. Breach\" your real name?","Is \"Dr. Breach\" actually your real name?","Kind of unfortunate, don't you think?"],
+					askName: ["s:Is \"Dr. Breach\" your real name?","Is \"Dr. Breach\" actually your real name?","Kind of unfortunate, don't you think?",-1],
 				},
 				breach: {
 					start: [0,auto,"Hello, Maitreya."],
@@ -254,7 +258,7 @@ String.prototype.format = function() {
 		};
 		
 		var cheats = {
-			impatientMode: false, // all messages appear instantly
+			impatientMode: true, // all messages appear instantly
 			beingSkipped: false,
 		};
 		var wipeTimer = false; // timer for hard wiping
@@ -308,12 +312,12 @@ String.prototype.format = function() {
 			// MUST BE TRUE
 			terminal: true,
 			// MUST ALL BE FALSE
-			breach: false,
-			messages: false,
-			alexandra: false,
-			dclass: false,
-			database: false,
-			run: false,
+			breach: true,
+			messages: true,
+			alexandra: true,
+			dclass: true,
+			database: true,
+			run: true,
 			ending: false,
 		};
 		
@@ -387,7 +391,6 @@ String.prototype.format = function() {
 				options: [],
 			},
 		};
-		aic.dlist = ["3131","68134","1602","71214","95951","37740"];
 		
 		var appList = ["terminal","messages","database","run","ending"];
 		var speakerList = ["breach","alexandra"];
@@ -564,7 +567,7 @@ String.prototype.format = function() {
 			}
 		};
 		
-		// hover/unhober rooms - had to use jQuery for this and I despise it
+		// hover/unhover rooms - had to use jQuery for this and I despise it
 		$(".room").on({
 			mouseenter: function() {
 				var room = this.getAttribute("data-room");
@@ -603,6 +606,7 @@ String.prototype.format = function() {
 		// event handler for option selection - effectively maitreyaLoop()
 		aic.maitreyaLoop = function(conversation,option) {
 			// takes the id of the selected option
+			console.log("Maitreya - " + option.bigSection + " - " + option.id);
 			
 			var delay = 0;
 			switch(conversation) {
@@ -611,11 +615,11 @@ String.prototype.format = function() {
 					mainLoop(option.bigSection,option.id); // I guess?
 					break;
 				case "breach":
-					console.log("Maitreya - " + option.bigSection + " - " + option.id);
 					delay = writeDialogue(conversation,option.dialogue,"maitreya");
 					setTimeout(function() {
 						breachLoop(option.bigSection,option.id);
 					},delay*1000 + maitreyaDelay*1000);
+					aic.vars[conversation].opinion += option.opinion;
 					break;
 				default:
 					throw new Error("How the fuck did you get this wrong");
@@ -679,6 +683,7 @@ String.prototype.format = function() {
 			switch(bigSection) {
 				case "INTRODUCTION":
 					switch(smallSection) {
+/*###########################################################*/
 						
 						case "start":
 							aic.ready.messages = true;
@@ -782,7 +787,7 @@ String.prototype.format = function() {
 						case "explain2":
 							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,["pInitiative","pIncredulous"]);
+								presentOptions("breach",bigSection,["pInitiative","pIncredulous",(aic.vars.breach.opinion>0?"pIncredulous_":undefined),(aic.vars.breach.opinion<0?"pIncredulous__":undefined)]);
 							},delay*1000 + maitreyaDelay*1000);
 							break;
 						case "pIncredulous":
@@ -821,6 +826,19 @@ String.prototype.format = function() {
 							setTimeout(function() {
 							},delay*1000);
 							break;
+						case "goAsk":
+							delay = writeDialogue("breach",msg,"breach");
+							setTimeout(function() {
+								presentOptions("breach",bigSection,["askName"]);
+							},delay*1000 + maitreyaDelay*1000);
+							break;
+						case "askName":
+							delay = writeDialogue("breach",msg,"breach");
+							setTimeout(function() {
+							},delay*1000);
+							break;
+
+/*###########################################################*/
 						default:
 							throw new Error(smallSection + " is not an event in " + bigSection);
 					}
@@ -898,6 +916,9 @@ String.prototype.format = function() {
 			// options list may not be empty:
 			aic.chatLog[conversation].options = [];
 			
+			// clear undefined from list of options (in case of false-less ifs)
+			ids = ids.filter(Boolean);
+			
 			// is is very possible that certain actions will need to do things other than output text. we'll cross that bridge when we come to it
 			var options = [];
 			for(let i = 0; i < ids.length; i++) {
@@ -942,30 +963,48 @@ String.prototype.format = function() {
 				// next job is to get the dialogue text
 				// we can probably let the event handler deal with that?
 				// still need to actually get that info to the handler tho
-				// fuck it we'll store it in chatLog
 				var dialogueList = [];
+				var opinion = 0;
 				for(let j = 0; j < options[i].length; j++) {
 					// we need to skip over [0]
 					// this is because we've already handled the control statement
 					if(j === 0) {
-						if(typeof options[i][1] !== "string") {
+						// two possibilities: this is the only parameter, or there is also an opinion modifier
+						if(typeof options[i][1] === "undefined") {
 							// this is the only parameter
 							// set the first dialogue to the option text
 							dialogueList[0] = options[i][0];
-							continue;
+						} else if(typeof options[i][1] === "number" && typeof options[i][2] === "undefined") {
+							// of course, if the 2nd value is a number, then it won't return undefined
+							// but if that number is also the LAST value, then it's an opinion, and doesn't count as dialogue
+							// so we need to detect this scenario and do the same as above
+							dialogueList[0] = options[i][0];
+							opinion = options[i][1];
+							// we're not skipping the loop, so the opinion will be set again, but who cares lmao
+						}
+					} else if(j+1 === options[i].length) {
+						// check the last value - if it's a number, this is an opinion
+						if(typeof options[i][j] === "number") {
+							// it's an opinion modifier
+							opinion = options[i][j];
+						} else {
+							// if it's not an opinion, it must be text, so treat it as text (see below)
+							dialogueList[j-1] = options[i][j];
 						}
 					} else {
+						// all other values must be text (hopefully)
 						dialogueList[j-1] = options[i][j];
 					}
 				}
 				// dialogueList now contains the list of dialogue to output FOR THIS ONE OPTION
-				options[i] = {id: ids[i], optionType: optionType, text: options[i][0], dialogue: dialogueList, bigSection: bigSection,};
+				options[i] = {id: ids[i], optionType: optionType, text: options[i][0], opinion: opinion, dialogue: dialogueList, bigSection: bigSection,};
 				// ok cool
 				// move onto the next option?
 			}
 			$scope.$apply(function() {
-				aic.chatLog[conversation].options.push(...options);
-				// IE doesn't support this but I do not give one fuck
+				//aic.chatLog[conversation].options.push(...options);
+				aic.chatLog[conversation].options = options;
+				// this is probably better tbh
 			});
 		}
 		
@@ -978,19 +1017,15 @@ String.prototype.format = function() {
 			// During n1, nothing
 			// During n2, must display a "typing" (except on terminal)
 			
-			if(typeof speaker === "string") {
-				// we have a designated speaker
-			} else {
-				// assume the current person is talking
-				speaker = conversation;
-			}
+			// assume the current person is talking if no speaker is specified
+			speaker = speaker || conversation;
 			
 			if(!Array.isArray(dialogueList)) {
-				console.log(dialogueList);
+				console.error(dialogueList);
 				throw new Error("dialogueList is not an array (probably does not exist)");
 			}
 			
-			// deep copy the dialogue
+			// deep copy the dialogue to protect the original
 			dialogueList = dialogueList.slice();
 			
 			var n1, n2, messages = [];
@@ -1005,6 +1040,10 @@ String.prototype.format = function() {
 						n2 = dialogueList[i];
 					} else {
 						n1 = dialogueList[i];
+					}
+					// if the number is the last item, it's the opinion modifier
+					if(i+1 === dialogueList.length) {
+						aic.vars[conversation].opinion += dialogueList[i];
 					}
 					continue;
 				} else if(typeof dialogueList[i] === "string") {
@@ -1088,7 +1127,6 @@ String.prototype.format = function() {
 			// conversation: terminal, breach, etc
 			// messages: [n1, n2, message]
 			// message: {speaker:; cssClass:; text:}
-			
 			var n1 = messages[0][0];
 			var n2 = messages[0][1];
 			// this is a recursive function
@@ -1121,9 +1159,6 @@ String.prototype.format = function() {
 						// don't push the message if it's empty
 						if(messages[0][2].text.length > 0) {
 							$scope.$apply(function() {
-								
-								console.log(messages[0][2]);
-								
 								aic.chatLog[conversation].log.unshift(messages[0][2]);
 								addNotification(conversation);
 							});
