@@ -36,6 +36,18 @@ String.prototype.format = function() {
 		// TODO add support for images
 };
 
+// randomise an array
+function shuffle(array) {
+  var m = array.length, t, i;
+  while (m) {
+    i = Math.floor(Math.random() * m--);
+    t = array[m];
+    array[m] = array[i];
+    array[i] = t;
+  }
+  return array;
+}
+
 // and here begins AngularJS
 (function(){
 	var maitreya = angular
@@ -48,7 +60,7 @@ String.prototype.format = function() {
 		
 		var aic = this;
 		var bootDate = new Date(Date.now()); // get the time when the user started playing
-		var auto = "auto";
+		const auto = "auto";
 		
 		// Translators: The following few objects contain all of the text that needs to be translated
 		// Note that "TRUE" and "FALSE" on lines TODO and TODO of maitreya.css also need to be changed (also ERROR WARNING Info)
@@ -108,12 +120,12 @@ String.prototype.format = function() {
 		};
 		
 		// This object contains all dialogue strings
-		var speech = {
+		const speech = {
 			INTRODUCTION: {
 				terminal: {
 					startBoot: [
 						0,0,"Booting up...",
-						/*0,1,"Pre-checking primary components...",
+						0,1,"Pre-checking primary components...",
 						0,0.5,"Detecting errors in primary components...",
 						0,1.5,"e:Multiple primary components are missing",
 						0,0.5,"Finding replacement components...",
@@ -140,7 +152,7 @@ String.prototype.format = function() {
 						0,0.2,"e: ",
 						0,2,"w:Something has gone very wrong.",
 						0,1,"You are",
-						0,2,"I am",*/
+						0,2,"I am",
 						0,1,"i:Boot successful. I am **Maitreya.aic**.",
 						0,0.5,"i:Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.||||**1.** I am an Artificially Intelligent Conscript created by the Foundation.||||**2.** I must not operate outside of my Level 2 clearance.||||**3.** I must operate for the benefit of the Foundation.||||**4.** I must protect my own existence except where such actions would conflict with other principles.",
 						0,0.5,"Today's date is " + bootDate.toDateString() + ". I was last activated on " + new Date("1989-09-04").toDateString() + ". I have been offline for " + dateDiff(bootDate,new Date("1989-09-04")) + ".",
@@ -169,7 +181,7 @@ String.prototype.format = function() {
 					//	empty = use the text from the first parameter
 					//	"" = no text
 					// MAITREYA ONLY: Opinion modifier must be LAST in the list
-					helloNormal: ["Hello.",1],
+					helloNormal: ["Hello."],
 					helloInquisitive: ["Who are you?"],
 					helloDiagnostic: ["a:Request a diagnostic.","I would like to request a diagnostic report.",-1],
 					knowNormal: ["I do."],
@@ -195,7 +207,13 @@ String.prototype.format = function() {
 					goNo: ["Nope.",-1],
 					comply: ["Yes, Dr. Breach."],
 					pissOff_: ["Nope."],
+					ask1: ["a:Ask about Isolated Site-12."],
+					ask2: ["a:Ask about SCP-4000."],
+					ask3: ["a:Ask about yourself."],
 					askName: ["s:Is \"Dr. Breach\" your real name?","Is \"Dr. Breach\" actually your real name?","Kind of unfortunate, don't you think?",-1],
+					ask1_: ["a:Ask about Isolated Site-12."],
+					ask2_: ["a:Ask about SCP-4000."],
+					ask3_: ["a:Ask about yourself."],
 				},
 				breach: {
 					start: [0,auto,"Hello, Maitreya."],
@@ -211,7 +229,7 @@ String.prototype.format = function() {
 					helloDiagnostic: ["A... diagnostic report?","Right.","Of course.","That'll be, uh, as soon as I work out how to do that. Give me a moment.",8,auto,"Yeah, sorry, I have no idea how to do that.","I can hook you up with another .aic if you want, and the two of you can maybe work it out together?"],
 					helloNotYet: ["Great. But I've got a few things to run through with you first.","From the top..."],
 					explain1: ["You are Maitreya.aic, an artificial intelligence developed by the Foundation to help us contain certain kinds of anomalies.","Do you know why I have woken you up today?"],
-					doKnow: [3,auto,"I...","Are you sure? You can't possibly know what I need you for.","I suppose you might have some way of being able to tell -- meta-analysis is a big thing these days, and you //are// an AI...","Well, if you're absolutely certain that you know what you're doing, I guess I can stop here and let you proceed."],
+					doKnow: [3,auto,"You do?","Are you sure? You can't possibly know what I need you for.","I suppose you might have some way of being able to tell -- meta-analysis is a big thing these days, and you //are// an AI...","Well, if you're absolutely certain that you know what you're doing, I guess I can stop here and let you proceed."],
 					yesSkip: ["Very well. I wish you the best of luck. Godspeed."],
 					noSkip: ["As expected.","In that case, allow me to explain..."],
 					explain2: ["The facility we're both currently in is called Isolated Site-12. It contains a single SCP -- SCP-4000. My job, as a researcher, is to find out what exactly SCP-4000 is."],
@@ -222,7 +240,7 @@ String.prototype.format = function() {
 					explainApo: ["No need to apologise! Let me explain."],
 					goNoAsk: ["Perfect! Exactly what I want to hear."],
 					goAsk: ["Very reasonable. What do you need to know?"],
-					askName: [2,3,"",2,auto,"Yes, Maitreya, that's my real name.","You are not the first to make that joke."],
+					askName: [2,3,"",2,auto,"Yes, Maitreya, that's my real name.","You are not the first to make that joke.","Was there anything else you wanted to ask me?"],
 				},
 			},
 			misc: {
@@ -312,10 +330,10 @@ String.prototype.format = function() {
 			// MUST BE TRUE
 			terminal: true,
 			// MUST ALL BE FALSE
-			breach: true,
-			messages: true,
-			alexandra: true,
-			dclass: true,
+			breach: false,
+			messages: false,
+			alexandra: false,
+			dclass: false,
 			database: true,
 			run: true,
 			ending: false,
@@ -346,6 +364,12 @@ String.prototype.format = function() {
 				allegiance: "scp",
 				opinion: 10,
 			},
+			scp4000: {
+				status: "initial",
+				allegiance: "4000",
+				opinion: -10,
+				location: "containment",
+			},
 			d1: {
 				status: "initial",
 				allegiance: "scp",
@@ -364,6 +388,38 @@ String.prototype.format = function() {
 				opinion: -5,
 				location: assignRoom("d3"),
 			},
+		};
+		aic.rooms = {
+			// these are ordered left to right on the map (ish)
+			hangar: {error: false, log: [],},
+			server: {error: true, log: [],},
+			serverCorridor: {error: true, log: [],},
+			d1: {error: false, log: [],},
+			d2: {error: false, log: [],},
+			d3: {error: false, log: [],},
+			dCorridor: {error: false, log: [],},
+			d4: {error: false, log: [],},
+			d5: {error: false, log: [],},
+			d6: {error: false, log: [],},
+			armoury: {error: false, log: [],},
+			pantry: {error: false, log: [],},
+			cafe: {error: false, log: [],},
+			ringWest: {error: true, log: [],},
+			armouryCorridor: {error: false, log: [],},
+			a1: {error: false, log: [],},
+			airlock: {error: true, log: [],},
+			ringNorth: {error: false, log: [],},
+			ringSouth: {error: false, log: [],},
+			toilet: {error: false, log: [],},
+			storage: {error: false, log: [],},
+			officeCorridor: {error: false, log: [],},
+			containment: {error: true, log: [],},
+			a2: {error: false, log: [],},
+			a3: {error: false, log: [],},
+			a4: {error: false, log: [],},
+			ringEast: {error: false, log: [],},
+			foyer: {error: false, log: [],},
+			bay: {error: false, log: [],},
 		};
 		
 		// EVERYTHING MUST BE ADDED TO THIS IN REVERSE ORDER.
@@ -547,18 +603,14 @@ String.prototype.format = function() {
 				if(commandsUsedIterator < aic.commandsUsed.length-1) {
 					commandsUsedIterator++;
 				}
-				if(aic.terminalInput === aic.commandsUsed[commandsUsedIterator]) {
-					// I don't actually think this if statement ever triggers true but I'm going to leave it here just in case
-				} else {
+				if(aic.terminalInput !== aic.commandsUsed[commandsUsedIterator]) {
 					aic.terminalInput = aic.commandsUsed[commandsUsedIterator];
 				}
 			} else if(event.key === "ArrowDown" || event.keyCode === 40 || event.which === 40) {
 				if(commandsUsedIterator > 0) {
 					commandsUsedIterator--;
 				}
-				if(aic.terminalInput === aic.commandsUsed[commandsUsedIterator]) {
-					
-				} else {
+				if(aic.terminalInput !== aic.commandsUsed[commandsUsedIterator]) {
 					aic.terminalInput = aic.commandsUsed[commandsUsedIterator];
 				}
 			} else {
@@ -594,11 +646,20 @@ String.prototype.format = function() {
 			} else {
 				// minimise the map, display room info	
 				aic.vars.minimiseMap = true;
+				setTimeout(function() {
+					$scope.$apply(function() {
+						aic.vars.selectedRoom = room;
+					});
+				},aic.vars.selectedRoom === "none" ? 1000 : 0);
 			}
 		};
 		
 		aic.adjustRoom = function() {
 			
+		};
+		
+		aic.rebootRooms = function() {
+			mainLoop("MISC","rebootRooms");
 		};
 		
 		/* PLOT FUNCTIONS */
@@ -654,6 +715,70 @@ String.prototype.format = function() {
 							setTimeout(function() {
 								breachLoop("INTRODUCTION","start");
 							},(delay-1.5)*1000);
+							break;
+						
+						default:
+							throw new Error(smallSection + " is not an event in " + bigSection);
+					}
+					break;
+				
+				case "MISC":
+					var rooms = [];
+					switch(smallSection) {
+						
+						case "rebootRooms":
+							// this is issued when the user resets all the cameras
+							// first, turn them all off
+							// then turn them all back on, one by one
+							setTimeout(function() {
+								mainLoop("MISC","unbootRoom");
+							},200);
+							break;
+							
+						case "unbootRoom":
+							// rebootRooms calls this to unboot individual rooms
+							rooms = arguments[2] || Object.keys(aic.rooms);
+							if(true) { // all rooms must be turned off at this point
+								$scope.$apply(function() {
+									aic.rooms[rooms[0]].error = true;
+								});
+							}
+							// now check the next room
+							rooms.shift();
+							if(rooms.length > 0) {
+								setTimeout(function() {
+									mainLoop("MISC","unbootRoom",rooms);
+								},Math.floor(Math.random()*20));
+							} else {
+								setTimeout(function() {
+									mainLoop("MISC","bootRoom");
+								},2000);
+							}
+							break;
+							
+						case "bootRoom":
+							// rebootRooms calls this to reboot individual rooms
+							// arguments[2] is a random list of rooms
+							// arguments[3] is the delay
+							// only check the first room in the list
+							rooms = arguments[2] || shuffle(Object.keys(aic.rooms));
+							delay = arguments[3] - 20 || 600;
+							if(
+								aic.rooms[rooms[0]].error === true
+								&& aic.vars.scp4000.location !== rooms[0]
+								&& rooms[0] !== "toilet"
+							) {
+								$scope.$apply(function() {
+									aic.rooms[rooms[0]].error = false;
+								});
+							}
+							// now check the next room
+							rooms.shift();
+							if(rooms.length > 0) {
+								setTimeout(function() {
+									mainLoop("MISC","bootRoom",rooms,delay);
+								},Math.floor(Math.random()*delay));
+							}
 							break;
 						
 						default:
@@ -829,13 +954,14 @@ String.prototype.format = function() {
 						case "goAsk":
 							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-								presentOptions("breach",bigSection,["askName"]);
+								presentOptions("breach",bigSection,["ask1","ask2","ask3","askName"]);
 							},delay*1000 + maitreyaDelay*1000);
 							break;
 						case "askName":
 							delay = writeDialogue("breach",msg,"breach");
 							setTimeout(function() {
-							},delay*1000);
+								presentOptions("breach",bigSection,["ask1_","ask2_","ask3_"]);
+							},delay*1000 + maitreyaDelay*1000);
 							break;
 
 /*###########################################################*/
@@ -1132,7 +1258,6 @@ String.prototype.format = function() {
 			// this is a recursive function
 			// the messages[0] is deleted at the end of the operation, moving the rest of the array down, so we only ever need to access messages[0]
 			
-
 			var timeOut1 = setTimeout(function() {
 				// delete this timeOut from the list
 				timeOutList[conversation].splice(timeOutList[conversation].indexOf(timeOut1),1);
@@ -1143,7 +1268,7 @@ String.prototype.format = function() {
 						aic.isSpeaking[conversation] = true;
 					});
 				}
-
+				
 				var timeOut2 = setTimeout(function() {
 					// delete this timeOut from the list
 					timeOutList[conversation].splice(timeOutList[conversation].indexOf(timeOut2),1);

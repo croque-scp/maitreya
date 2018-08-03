@@ -980,13 +980,15 @@ html, body {
 	vertical-align: middle;
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
+	left: 0;
 	box-shadow: 1px 2px 2px 0 rgba(0,0,0,0.14), 2px 3px 1px -2px rgba(0,0,0,0.12), 1px 1px 5px 0 rgba(0,0,0,0.2);
 }
 #run-app .back .parallelogram.hidden {
-	transform: skew(-30deg) translate(-100%,0);
+	transform: skew(-30deg);
+	left: -100%;
 }
 #run-app .back .parallelogram:hover {
-	/*animation: bounce-left-with-skew 1s linear 1 both;*/
+	animation: bounce-left-with-skew 1s linear 1 both;
 }
 #run-app .back .parallelogram p {
 	position: relative;
@@ -1003,15 +1005,68 @@ html, body {
 	left: calc(-1.1em);
 	transform: translate(0,calc(-50% - 1px));
 }
+#run-app .section {
+	transition: transform 0.6s ease-out,
+	            height 0s ease-out 0s,
+	            overflow 0s ease-out 0s,
+	            opacity 0s ease-out 0s,
+	            visibility 0s ease-out 0s;
+	transform: translate(0,0);
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
 #run-app .section:not(.selected) {
+	transition: transform 0.6s ease-out,
+	            height 0s ease-out 0.6s,
+	            overflow 0s ease-out 0.6s,
+	            opacity 0s ease-out 0.6s,
+	            visibility 0s ease-out 0.6s;
 	height: 0;
-	overflow: hidden;
-	visibility: hidden;
+	opacity: 0;
+	/*overflow: hidden;
+	visibility: hidden;*/
 }
-#run-app .section.ng-enter {
+#run-app .section:not(.menu-section):not(.selected) {
+	transform: translate(100%,0);
 }
-#run-app .section.ng-enter-active {
+#run-app .section:not(.menu-section).selected {
+	transform: translate(0,0);
 }
+#run-app .section:not([new-section=menu]):not(.selected) {
+	transform: translate(-100%,0);
+}
+#run-app .section[new-section=menu] {
+	transform: translate(0,0);
+}
+#run-app .section[new-section=menu]:not(.selected) {
+	transform: translate(100%,0);
+}
+#run-app .section.menu-section:not(.selected) {
+	transform: translate(-100%,0);
+}
+#run-app .section.menu-section.selected {
+	transform: translate(0,0);
+}
+/*
+Specify a specific transition for when the INCOMING
+section is MENU. For when we are switching FROM
+something, TO menu.
+This will never occur when the currently selected
+section is menu.
+
+When switching to menu:
+misc leave -> slide to right DONE
+menu enter -> slide from left DONE
+
+When switching from menu:
+misc enter -> slide from right DONE
+menu leave -> slide to left DONE
+
+When switching between others:
+misc enter -> slide from right DONE
+misc leave -> slide to left DONE
+*/
 #run-app .section.menu-section {
 }
 #run-app .section.menu-section .menu-container {
@@ -1068,12 +1123,33 @@ html, body {
 #run-app .section.map-section .sitemap.ng-enter-active {
 	max-height: 450px;
 }
-#run-app .section.map-section .sitemap div {
+#run-app .section.map-section .sitemap .room {
 	position: absolute;
-	opacity: 0;
 	/* most of the style is in the HTML */
 }
-#run-app .section.map-section .sitemap div:hover {
+#run-app .section.map-section .sitemap .room div {
+	position: absolute;
+	opacity: 0;
+	width: 100%;
+	height: 100%;
+}
+#run-app .section.map-section .sitemap .room.error .room-light {
+	opacity: 0;
+}
+#run-app .section.map-section .sitemap .room:not(.error) .room-error-dark,
+#run-app .section.map-section .sitemap .room:not(.error) .room-error-light {
+	opacity: 0;
+	pointer-events: none;
+}
+#run-app .section.map-section .sitemap .room.error .room-error-dark {
+	opacity: 1;
+}
+#run-app .section.map-section .sitemap .room-light:hover {
+	opacity: 1;
+	animation: opacity-flicker 0.075s linear 0s 2;
+	cursor: pointer;
+}
+#run-app .section.map-section .sitemap .room.error .room-error-light:hover {
 	opacity: 1;
 	animation: opacity-flicker 0.075s linear 0s 2;
 	cursor: pointer;
@@ -1109,6 +1185,25 @@ html, body {
 	font-family: 'Retro Computer',Courier,monospace;
 	color: #0f380f;
 	border-bottom: 2px #0f380f solid;
+}
+#run-app .section.map-section .room-camera-feed {
+	color: #0f380f;
+	background: #749a13;
+	margin: 1em;
+	padding: 1em;
+	height: 200px;
+	overflow-y: scroll;
+}
+#run-app .section.map-section .room-camera-feed h2 {
+	font-family: 'Retro Computer',Courier,monospace;
+	margin: 0.5em;
+	margin-top: 0.1em;
+	border-bottom: 2px #0f380f solid;
+}
+#run-app .section.map-section .room-camera-feed p {
+	font-family: 'Retro Computer',Courier,monospace;
+	margin: 0.5em;
+	line-height: 1.2em;
 }
 
 /*     ______          ___            
@@ -1372,7 +1467,7 @@ html, body {
 	color: #b01;
 	text-decoration: none;
 	transition: all 0.2s;
-	padding: 5px 15px;
+	padding: 5px 12px 5px 15px;
 	border: none;
 	margin-left: 3px;
 	position: relative;
@@ -1395,7 +1490,7 @@ html, body {
 .option.action:hover {
 	color: white;
 	transition-duration: 0.2s;
-	/*margin-left: calc(23px - 5px); /*account for translateX*/
+	background: transparent;
 }
 .option.action:hover::before {
 	background-color: #b01;

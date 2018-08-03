@@ -311,7 +311,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									<p><i class="material-icons">arrow_back</i> Back to operation list</p>
 								</div>
 							</div>
-							<div class="section menu-section" ng-class="aic.selectedOperation === 'menu' ? 'selected' : null">
+							<div class="section menu-section" ng-class="aic.selectedOperation === 'menu' ? 'selected' : null" ng-attr-new-section="{{aic.selectedOperation}}">
 								<div class="menu-container">
 									<div class="menu-title">
 										Isolated Site-12 Operations Control
@@ -333,54 +333,74 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 								</div>
 							</div>
 							
-							<div class="section map-section"  ng-class="aic.selectedOperation === 'map' ? 'selected' : null" ng-animate-children="true">
+							<div class="section map-section"  ng-class="aic.selectedOperation === 'map' ? 'selected' : null" ng-animate-children="true" ng-attr-new-section="{{aic.selectedOperation}}">
 								<div class="title">
 									<p>SITE MAP (LEGACY)</p>
 								</div>
 								<div class="map-container" ng-class="aic.vars.minimiseMap ? 'minimise' : null">
 									<div detect class="sitemap" style="background-image: url(site12.png);">
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="ring-east" style="background-image: url(site_ring-east.png); top: 153px; left: 480px; height:153px; width: 36px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="pantry" style="background-image: url(site_pantry.png); top: 66px; left: 267px; height:84px; width: 117px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="storage" style="background-image: url(site_storage.png); top: 324px; left: 345px; height:84px; width: 156px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="foyer" style="background-image: url(site_foyer.png); top: 81px; left: 498px; height:240px; width: 93px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="hangar" style="background-image: url(site_hangar.png); top: 9px; left: 9px; height:432px; width: 132px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="server" style="background-image: url(site_server.png); top: 9px; left: 144px; height:141px; width: 120px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="cafe" style="background-image: url(site_cafe.png); top: 102px; left: 330px; height:48px; width: 111px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="s1" style="background-image: url(site_d1.png); top: 174px; left: 147px; height:60px; width: 54px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="s2" style="background-image: url(site_d2.png); top: 174px; left: 207px; height:60px; width: 54px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="s3" style="background-image: url(site_d3.png); top: 174px; left: 267px; height:60px; width: 54px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="s4" style="background-image: url(site_d4.png); top: 261px; left: 147px; height:60px; width: 54px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="s5" style="background-image: url(site_d5.png); top: 261px; left: 207px; height:60px; width: 54px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="s6" style="background-image: url(site_d6.png); top: 261px; left: 267px; height:60px; width: 54px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="d-corridor" style="background-image: url(site_d-corridor.png); top: 240px; left: 147px; height:15px; width: 174px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="armoury" style="background-image: url(site_armoury.png); top: 330px; left: 150px; height:78px; width: 168px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="toilet" style="background-image: url(site_toilet.png); top: 381px; left: 345px; height:27px; width: 21px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="bay" style="background-image: url(site_bay.png); top: 324px; left: 504px; height:84px; width: 87px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="containment" style="background-image: url(site_containment.png); top: 219px; left: 393px; height:36px; width: 36px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="airlock" style="background-image: url(site_airlock.png); top: 231px; left: 348px; height:12px; width: 39px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="a4" style="background-image: url(site_a4.png); top: 93px; left: 462px; height:57px; width: 54px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="a2" style="background-image: url(site_a2.png); top: 21px; left: 462px; height:39px; width: 24px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="a3" style="background-image: url(site_a3.png); top: 63px; left: 462px; height:27px; width: 24px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="a1" style="background-image: url(site_a1.png); top: 21px; left: 387px; height:78px; width: 54px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="server-corridor" style="background-image: url(site_server-corridor.png); top: 153px; left: 144px; height:15px; width: 183px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="armoury-corridor" style="background-image: url(site_armoury-corridor.png); top: 321px; left: 327px; height:87px; width: 15px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="office-corridor" style="background-image: url(site_office-corridor.png); top: 21px; left: 444px; height:132px; width: 15px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="ring-north" style="background-image: url(site_ring-north.png); top: 153px; left: 342px; height:15px; width: 138px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="ring-south" style="background-image: url(site_ring-south.png); top: 306px; left: 342px; height:15px; width: 153px;"></div>
-										<div class="room" ng-click="aic.selectRoom($event)" data-room="ring-west" style="background-image: url(site_ring-west.png); top: 153px; left: 327px; height:168px; width: 15px;"></div>
+										<div class="room" ng-class="aic.rooms['ring-east'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="ring-east" style="top: 153px; left: 480px; height:153px; width: 36px;"><div class="room-error-dark" style="background-image: url(site_ring-east_bad.png)"></div><div class="room-light" style="background-image: url(site_ring-east.png)"></div><div class="room-error-light" style="background-image: url(site_ring-east_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['pantry'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="pantry" style="top: 66px; left: 267px; height:84px; width: 117px;"><div class="room-error-dark" style="background-image: url(site_pantry_bad.png)"></div><div class="room-light" style="background-image: url(site_pantry.png)"></div><div class="room-error-light" style="background-image: url(site_pantry_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['storage'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="storage" style="top: 324px; left: 345px; height:84px; width: 156px;"><div class="room-error-dark" style="background-image: url(site_storage_bad.png)"></div><div class="room-light" style="background-image: url(site_storage.png)"></div><div class="room-error-light" style="background-image: url(site_storage_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['foyer'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="foyer" style="top: 81px; left: 498px; height:240px; width: 93px;"><div class="room-error-dark" style="background-image: url(site_foyer_bad.png)"></div><div class="room-light" style="background-image: url(site_foyer.png)"></div><div class="room-error-light" style="background-image: url(site_foyer_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['hangar'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="hangar" style="top: 9px; left: 9px; height:432px; width: 132px;"><div class="room-error-dark" style="background-image: url(site_hangar_bad.png)"></div><div class="room-light" style="background-image: url(site_hangar.png)"></div><div class="room-error-light" style="background-image: url(site_hangar_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['server'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="server" style="top: 9px; left: 144px; height:141px; width: 120px;"><div class="room-error-dark" style="background-image: url(site_server_bad.png)"></div><div class="room-light" style="background-image: url(site_server.png)"></div><div class="room-error-light" style="background-image: url(site_server_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['cafe'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="cafe" style="top: 102px; left: 330px; height:48px; width: 111px;"><div class="room-error-dark" style="background-image: url(site_cafe_bad.png)"></div><div class="room-light" style="background-image: url(site_cafe.png)"></div><div class="room-error-light" style="background-image: url(site_cafe_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['d1'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="d1" style="top: 174px; left: 147px; height:60px; width: 54px;"><div class="room-error-dark" style="background-image: url(site_d1_bad.png)"></div><div class="room-light" style="background-image: url(site_d1.png)"></div><div class="room-error-light" style="background-image: url(site_d1_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['d2'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="d2" style="top: 174px; left: 207px; height:60px; width: 54px;"><div class="room-error-dark" style="background-image: url(site_d2_bad.png)"></div><div class="room-light" style="background-image: url(site_d2.png)"></div><div class="room-error-light" style="background-image: url(site_d2_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['d3'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="d3" style="top: 174px; left: 267px; height:60px; width: 54px;"><div class="room-error-dark" style="background-image: url(site_d3_bad.png)"></div><div class="room-light" style="background-image: url(site_d3.png)"></div><div class="room-error-light" style="background-image: url(site_d3_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['d4'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="d4" style="top: 261px; left: 147px; height:60px; width: 54px;"><div class="room-error-dark" style="background-image: url(site_d4_bad.png)"></div><div class="room-light" style="background-image: url(site_d4.png)"></div><div class="room-error-light" style="background-image: url(site_d4_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['d5'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="d5" style="top: 261px; left: 207px; height:60px; width: 54px;"><div class="room-error-dark" style="background-image: url(site_d5_bad.png)"></div><div class="room-light" style="background-image: url(site_d5.png)"></div><div class="room-error-light" style="background-image: url(site_d5_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['d6'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="d6" style="top: 261px; left: 267px; height:60px; width: 54px;"><div class="room-error-dark" style="background-image: url(site_d6_bad.png)"></div><div class="room-light" style="background-image: url(site_d6.png)"></div><div class="room-error-light" style="background-image: url(site_d6_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['d-corridor'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="d-corridor" style="top: 240px; left: 147px; height:15px; width: 174px;"><div class="room-error-dark" style="background-image: url(site_d-corridor_bad.png)"></div><div class="room-light" style="background-image: url(site_d-corridor.png)"></div><div class="room-error-light" style="background-image: url(site_d-corridor_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['armoury'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="armoury" style="top: 330px; left: 150px; height:78px; width: 168px;"><div class="room-error-dark" style="background-image: url(site_armoury_bad.png)"></div><div class="room-light" style="background-image: url(site_armoury.png)"></div><div class="room-error-light" style="background-image: url(site_armoury_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['toilet'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="toilet" style="top: 381px; left: 345px; height:27px; width: 21px;"><div class="room-error-dark" style="background-image: url(site_toilet_bad.png)"></div><div class="room-light" style="background-image: url(site_toilet.png)"></div><div class="room-error-light" style="background-image: url(site_toilet_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['bay'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="bay" style="top: 324px; left: 504px; height:84px; width: 87px;"><div class="room-error-dark" style="background-image: url(site_bay_bad.png)"></div><div class="room-light" style="background-image: url(site_bay.png)"></div><div class="room-error-light" style="background-image: url(site_bay_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['containment'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="containment" style="top: 219px; left: 393px; height:36px; width: 36px;"><div class="room-error-dark" style="background-image: url(site_containment_bad.png)"></div><div class="room-light" style="background-image: url(site_containment.png)"></div><div class="room-error-light" style="background-image: url(site_containment_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['airlock'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="airlock" style="top: 231px; left: 348px; height:12px; width: 39px;"><div class="room-error-dark" style="background-image: url(site_airlock_bad.png)"></div><div class="room-light" style="background-image: url(site_airlock.png)"></div><div class="room-error-light" style="background-image: url(site_airlock_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['a4'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="a4" style="top: 93px; left: 462px; height:57px; width: 54px;"><div class="room-error-dark" style="background-image: url(site_a4_bad.png)"></div><div class="room-light" style="background-image: url(site_a4.png)"></div><div class="room-error-light" style="background-image: url(site_a4_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['a2'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="a2" style="top: 21px; left: 462px; height:39px; width: 24px;"><div class="room-error-dark" style="background-image: url(site_a2_bad.png)"></div><div class="room-light" style="background-image: url(site_a2.png)"></div><div class="room-error-light" style="background-image: url(site_a2_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['a3'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="a3" style="top: 63px; left: 462px; height:27px; width: 24px;"><div class="room-error-dark" style="background-image: url(site_a3_bad.png)"></div><div class="room-light" style="background-image: url(site_a3.png)"></div><div class="room-error-light" style="background-image: url(site_a3_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['a1'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="a1" style="top: 21px; left: 387px; height:78px; width: 54px;"><div class="room-error-dark" style="background-image: url(site_a1_bad.png)"></div><div class="room-light" style="background-image: url(site_a1.png)"></div><div class="room-error-light" style="background-image: url(site_a1_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['server-corridor'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="server-corridor" style="top: 153px; left: 144px; height:15px; width: 183px;"><div class="room-error-dark" style="background-image: url(site_server-corridor_bad.png)"></div><div class="room-light" style="background-image: url(site_server-corridor.png)"></div><div class="room-error-light" style="background-image: url(site_server-corridor_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['armoury-corridor'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="armoury-corridor" style="top: 321px; left: 327px; height:87px; width: 15px;"><div class="room-error-dark" style="background-image: url(site_armoury-corridor_bad.png)"></div><div class="room-light" style="background-image: url(site_armoury-corridor.png)"></div><div class="room-error-light" style="background-image: url(site_armoury-corridor_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['office-corridor'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="office-corridor" style="top: 21px; left: 444px; height:132px; width: 15px;"><div class="room-error-dark" style="background-image: url(site_office-corridor_bad.png)"></div><div class="room-light" style="background-image: url(site_office-corridor.png)"></div><div class="room-error-light" style="background-image: url(site_office-corridor_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['ring-north'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="ring-north" style="top: 153px; left: 342px; height:15px; width: 138px;"><div class="room-error-dark" style="background-image: url(site_ring-north_bad.png)"></div><div class="room-light" style="background-image: url(site_ring-north.png)"></div><div class="room-error-light" style="background-image: url(site_ring-north_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['ring-south'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="ring-south" style="top: 306px; left: 342px; height:15px; width: 153px;"><div class="room-error-dark" style="background-image: url(site_ring-south_bad.png)"></div><div class="room-light" style="background-image: url(site_ring-south.png)"></div><div class="room-error-light" style="background-image: url(site_ring-south_bad_light.png)"></div></div>
+										<div class="room" ng-class="aic.rooms['ring-west'.toCamelCase()].error ? 'error' : null" ng-click="aic.selectRoom($event)" data-room="ring-west" style="top: 153px; left: 327px; height:168px; width: 15px;"><div class="room-error-dark" style="background-image: url(site_ring-west_bad.png)"></div><div class="room-light" style="background-image: url(site_ring-west.png)"></div><div class="room-error-light" style="background-image: url(site_ring-west_bad_light.png)"></div></div>
 									</div>
+									<button ng-click="aic.rebootRooms()">Reboot</button>
 									<div class="selection-info">
 										<p>Currently selected: {{aic.vars.hoveredRoom}}</p>
 										<p>{{aic.vars.hoveredRoom !== 'none' ? 'Click for details/functions' : 'Mouseover a room for info'}}</p>
 									</div>
 									
-									<div class="room-info">
-										<div class="back-button" ng-click="aic.vars.minimiseMap = false">BACK</div>
+									<div class="room-info" ng-show="aic.vars.selectedRoom !== 'none'">
+										<div class="back-button" ng-click="aic.vars.minimiseMap = false; aic.vars.selectedRoom = 'none'">BACK</div>
 										<h1 class="room-title">Hangar</h1>
-										<p class="room-description">The hangar is the place where the airplanes used for transport to and from Isolated Site-12 are kept. They are automated entirely by Alexandra.aic.</p>
+										<p class="room-description">Camera Status: ONLINE</p>
 										<div class="room-camera-feed">
 											<h2>CAMERA FEED</h2>
-											<p></p>
+											<p>Someone is in the room.</p>
+											<p>Someone is watching you.</p>
+											<p>Someone is waiting for you to fall asleep.</p>
+											<p>Someone is in the room.</p>
+											<p>Someone is in the room.</p>
+											<p>Someone is in the room.</p>
+											<p>Someone is watching you.</p>
+											<p>Someone is waiting for you to fall asleep.</p>
+											<p>Someone is in the room.</p>
+											<p>Someone is in the room.</p>
+											<p>Someone is in the room.</p>
+											<p>Someone is watching you.</p>
+											<p>Someone is waiting for you to fall asleep.</p>
+											<p>Someone is in the room.</p>
+											<p>Someone is in the room.</p>
+											<p>Someone is in the room.</p>
+											<p>Someone is watching you.</p>
+											<p>Someone is waiting for you to fall asleep.</p>
+											<p>Someone is in the room.</p>
+											<p>Someone is in the room.</p>
 										</div>
 										<div class="room-options"></div>
 									</div>
