@@ -39,7 +39,7 @@ span, a {
 	margin: auto;
 }
 body {
-	padding: 20vh 0; 
+	padding: 20vh 0;
 }
 /* Add the interface background which should eventually be moved to the wiki page */
 html, body {
@@ -49,7 +49,6 @@ html, body {
 	margin: 0 -99rem;
 	padding: 0 99rem;
 	
-	/* lmao sort this out at some point */
 	background: linear-gradient(to right,
 	              transparent 0%,
 	              transparent calc(50% - 700px),
@@ -107,6 +106,7 @@ html, body {
 
 #app-selector {
 	height: 70px;
+	background: linear-gradient(to right,#1488cc,#2b32b2);
 	background: linear-gradient(to right,var(--light-theme),var(--dark-theme));
 	position: relative;
 	transition: all 1s cubic-bezier(0.19, 1, 0.22, 1) 0s;
@@ -198,6 +198,7 @@ html, body {
 	background-color: white;
 	display: inline-block;
 	position: absolute;
+	color: #205dbf;
 	color: var(--middle-theme);
 	border: 1px white solid;
 	transition: box-shadow 0.2s ease-in-out 0s,
@@ -227,6 +228,7 @@ html, body {
 	animation: bounce-with-x-translate 1s linear 1 both;
 }
 #app-selector ul li.selector.disabled a {
+	border: 1px #205dbf solid;
 	border: 1px var(--middle-theme) solid;
 	background-color: transparent;
 	color: transparent;
@@ -447,6 +449,7 @@ html, body {
 	transform: translate(102px,0) scaleX(-1);
 }
 #terminal-app .top-bar, #terminal-app .bottom-bar {
+	background: linear-gradient(to right,#1488cc,#2b32b2);
 	background: linear-gradient(to right,var(--light-theme),var(--dark-theme));
 	width: 100%;
 	height: 30px;
@@ -530,6 +533,7 @@ html, body {
 	opacity: 0;
 }
 #messages-app .speaking p {
+	color: #1a73c6;
 	color: var(--lightish-theme);
 	margin: 0 40px;
 	font-size: 1em;
@@ -617,6 +621,7 @@ html, body {
 	max-width: 60%;
 }
 #messages-app .conversation .wrapper div.maitreya {
+	background: linear-gradient(to bottom,#1488cc,#1a73c6);
 	background: linear-gradient(to bottom,var(--light-theme),var(--lightish-theme));
 	float: right;
 }
@@ -694,6 +699,7 @@ html, body {
 	max-height: 300px;
 }
 #messages-app .middle-bar {
+	background: linear-gradient(to right,#1488cc,#2b32b2);
 	background: linear-gradient(to right,var(--light-theme),var(--dark-theme));
 	width: 100%;
 	height: 30px;
@@ -714,6 +720,7 @@ html, body {
 	height: 10px;
 }
 #messages-app .bottom-bar {
+	background: linear-gradient(to right,#1488cc,#2b32b2);
 	background: linear-gradient(to right,var(--light-theme),var(--dark-theme));
 	width: 100%;
 	height: 25px;
@@ -768,6 +775,7 @@ html, body {
 	border-radius: 20px;
 	background-color: white;
 	display: inline-block;
+	color: #205dbf;
 	color: var(--middle-theme);
 	border: 1px white solid;
 	transition-duration: 0.2s;
@@ -793,6 +801,7 @@ html, body {
 #messages-selector ul li.selector.selected:hover a {
 	/* border: 1px var(--middle-theme) solid; */
 	cursor: default;
+	color: #205dbf;
 	color: var(--middle-theme);
 }
 #messages-selector ul li.selector.selected {
@@ -841,7 +850,7 @@ html, body {
 	transform: translate(-50%, -50%);
 }
 
-/*     ____        __        __                             
+/*     ____        __        __
  *    / __ \____ _/ /_____ _/ /_  ____ _________
  *   / / / / __ `/ __/ __ `/ __ \/ __ `/ ___/ _ \
  *  / /_/ / /_/ / /_/ /_/ / /_/ / /_/ (__  )  __/
@@ -881,6 +890,7 @@ html, body {
 	position: relative;
 	margin: 0 1em 0 calc(2em + 13px);
 	transform: skew(30deg);
+	color: #205dbf;
 	color: var(--middle-theme);
 	font-family: Nunito,Verdana,Arial,Helvetica,sans-serif;
 	font-size: 18px;
@@ -945,6 +955,7 @@ html, body {
 	padding: 1em 2em;
 	margin: 0.3em;
 	background: white;
+	color: #205dbf;
 	color: var(--middle-theme);
 	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
 }
@@ -994,6 +1005,7 @@ html, body {
 	position: relative;
 	margin: 0 1em 0 calc(2em + 13px);
 	transform: skew(30deg);
+	color: #205dbf;
 	color: var(--middle-theme);
 	font-family: Nunito,Verdana,Arial,Helvetica,sans-serif;
 	font-size: 18px;
@@ -1206,11 +1218,11 @@ misc leave -> slide to left DONE
 	line-height: 1.2em;
 }
 
-/*     ______          ___            
+/*     ______          ___
  *    / ____/___  ____/ (_)___  ____ _
  *   / __/ / __ \/ __  / / __ \/ __ `/
- *  / /___/ / / / /_/ / / / / / /_/ / 
- * /_____/_/ /_/\__,_/_/_/ /_/\__, /  
+ *  / /___/ / / / /_/ / / / / / /_/ /
+ * /_____/_/ /_/\__,_/_/_/ /_/\__, /
  *                           /____/ */
 #ending-app .app-main {
 	background: linear-gradient(to bottom,#292929,#333,#292929);
@@ -1339,6 +1351,7 @@ misc leave -> slide to left DONE
 }
 
 .statement:hover {
+	border: 3px #205dbf solid;
 	border: 3px var(--middle-theme) solid;
 	border-bottom-width: 12px;
 	padding: 1px 3px 1px 3px;
@@ -1428,6 +1441,12 @@ misc leave -> slide to left DONE
 .options-block.options-ready .hint-arrow.right {
 	transform: translate(92px,0) scaleX(-1);
 }
+/*.options-block.options-ready.emphasis .hint-arrow.left {
+	animation: options-emphasis 3s ease-in 0s infinite alternate forwards;
+}
+.options-block.options-ready.emphasis .hint-arrow.right {
+	animation: options-emphasis-reverse 3s ease-in 0s infinite alternate forwards;
+} how about we just don't? */
 .options {
 	height: calc(100% - 0px);
 	max-width: 50%;
@@ -1497,7 +1516,9 @@ misc leave -> slide to left DONE
 	transition-duration: 0.2s;
 }
 .option.speech {
+	color: #205dbf;
 	color: var(--middle-theme);
+	border: 1px solid #205dbf;
 	border: 1px solid var(--middle-theme);
 	text-decoration: none;
 	border-radius: 20px;
@@ -1506,6 +1527,7 @@ misc leave -> slide to left DONE
 }
 .option.speech:hover {
 	color: white;
+	background-color: #205dbf;
 	background-color: var(--middle-theme);
 	transition-duration: 0.2s;
 	/*margin-left: 30px;*/
@@ -1537,6 +1559,7 @@ misc leave -> slide to left DONE
 	background-color: transparent;
 }
 .option.speech#boot-up:hover {
+	color: #205dbf;
 	color: var(--middle-theme);
 	background-color: white;
 }
@@ -1657,11 +1680,11 @@ misc leave -> slide to left DONE
 		height: calc(100% - 140px);
 	}
 }
- 
+
 /* ANIMATIONS */
 @keyframes false-color {
 	0% {
-		border-color: var(--middle-theme);
+		border-color: #205dbf;
 	}
 	100% {
 		border-color: #ff4136;
@@ -1679,7 +1702,7 @@ misc leave -> slide to left DONE
 }
 @keyframes correct-color {
 	0% {
-		border-color: var(--middle-theme);
+		border-color: #205dbf;
 	}
 	100% {
 		border-color: #2ecc40;
@@ -1705,6 +1728,16 @@ misc leave -> slide to left DONE
 @keyframes app-emphasis {
 	0% {background: transparent;}
 	100% {background: #ff2222;}
+}
+
+@keyframes options-emphasis {
+	0% {transform: translate(-92px,0);}
+	100% {transform: translate(-62px,0);}
+}
+
+@keyframes options-emphasis-reverse {
+	0% {transform: translate(92px,0) scaleX(-1);}
+	100% {transform: translate(62px,0) scaleX(-1);}
 }
 
 /*@keyframes bounce {

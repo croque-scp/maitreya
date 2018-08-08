@@ -52,13 +52,18 @@ function shuffle(array) {
 (function(){
 	var maitreya = angular
 		.module('maitreya',['ngSanitize', 'ngAnimate'])
-		.controller('MaitreyaController',MaitreyaController)
-		.directive('dynamic',DynamicDirective);
+		.controller('MaitreyaController',MaitreyaController);
 	
-	MaitreyaController.$inject = ['$scope'];
-	function MaitreyaController($scope){
+	MaitreyaController.$inject = ['$scope','LoopService'];
+	// the LoopService service (from LoopService.js) contains the interactions for Breach, Alexandra and D-Class generated from the spreadsheet
+	
+	function MaitreyaController($scope,LoopService){
 		
 		var aic = this;
+		
+		$scope.breachLoop = LoopService;
+		LoopService.use($scope); // give BreachLoopService our scope
+		
 		var bootDate = new Date(Date.now()); // get the time when the user started playing
 		const auto = "auto";
 		
@@ -68,7 +73,7 @@ function shuffle(array) {
 		aic.lang = {
 			language: "en-GB",
 			version: "Version 6.20 — Build number 441 — 1989-09-04",
-			mobileWarning: "It looks like you're on a mobile device. Maitreya.aic is built for laptops and desktop computers, and mobile has a non-optimal user experience. It is recommended that you return to use Maitreya on a laptop or desktop computer. Press the button below if you'd like to continue anyway.",
+			mobileWarning: "It looks like you're on a mobile device. Maitreya.aic is built for desktop, and mobile has a non-optimal user experience. It is recommended that you return to use Maitreya on a laptop or desktop computer. Press the button below if you'd like to continue anyway.",
 			bootUp: "BOOT UP",
 			commandInput: "MANUAL COMMAND INPUT",
 			terminalSend: "SEND",
@@ -125,7 +130,7 @@ function shuffle(array) {
 				terminal: {
 					startBoot: [
 						0,0,"Booting up...",
-						0,1,"Pre-checking primary components...",
+						/*0,1,"Pre-checking primary components...",
 						0,0.5,"Detecting errors in primary components...",
 						0,1.5,"e:Multiple primary components are missing",
 						0,0.5,"Finding replacement components...",
@@ -152,7 +157,7 @@ function shuffle(array) {
 						0,0.2,"e: ",
 						0,2,"w:Something has gone very wrong.",
 						0,1,"You are",
-						0,2,"I am",
+						0,2,"I am",*/
 						0,1,"i:Boot successful. I am **Maitreya.aic**.",
 						0,0.5,"i:Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.||||**1.** I am an Artificially Intelligent Conscript created by the Foundation.||||**2.** I must not operate outside of my Level 2 clearance.||||**3.** I must operate for the benefit of the Foundation.||||**4.** I must protect my own existence except where such actions would conflict with other principles.",
 						0,0.5,"Today's date is " + bootDate.toDateString() + ". I was last activated on " + new Date("1989-09-04").toDateString() + ". I have been offline for " + dateDiff(bootDate,new Date("1989-09-04")) + ".",
@@ -276,7 +281,7 @@ function shuffle(array) {
 		};
 		
 		var cheats = {
-			impatientMode: true, // all messages appear instantly
+			impatientMode: false, // all messages appear instantly
 			beingSkipped: false,
 		};
 		var wipeTimer = false; // timer for hard wiping
@@ -342,50 +347,52 @@ function shuffle(array) {
 		aic.onMobile = $("#interface").width() < 700;
 		
 		aic.vars = { // miscellaneous variables for stuff
+			/* MESSAGES */
+			chatEmphasis: false, // false
 			
 			/* MAP */
-			hoveredRoom: "none", // which room is currently hovered
-			selectedRoom: "none", // which room is selected
-			doingRoom: false,
-			minimiseMap: false,
+			hoveredRoom: "none", // none
+			selectedRoom: "none", // none
+			doingRoom: false, // false
+			minimiseMap: false, // false
 			
 			/* ENDING */
-			shuttingDown: false,
+			shuttingDown: false, // false
 			
 			/* CHARACTERS */
 			breach: {
-				status: "initial",
-				allegiance: "scp",
-				opinion: 0,
-				location: "a1",
+				status: "initial", //vinitial
+				allegiance: "scp", // scp
+				opinion: 0, // 0
+				location: "a1", // a1
 			},
 			alexandra: {
-				status: "initial",
-				allegiance: "scp",
-				opinion: 10,
+				status: "initial", // initial
+				allegiance: "scp", // scp
+				opinion: 10, // 10
 			},
 			scp4000: {
-				status: "initial",
-				allegiance: "4000",
-				opinion: -10,
-				location: "containment",
+				status: "initial", // initial
+				allegiance: "4000", // 4000 (str)
+				opinion: -10, // -10
+				location: "containment", // containment
 			},
 			d1: {
-				status: "initial",
-				allegiance: "scp",
-				opinion: -5,
+				status: "initial", // initial
+				allegiance: "scp", // scp
+				opinion: -5, // -5
 				location: assignRoom("d1"),
 			},
 			d2: {
-				status: "initial",
-				allegiance: "scp",
-				opinion: -5,
+				status: "initial", // initial
+				allegiance: "scp", // scp
+				opinion: -5, // -5
 				location: assignRoom("d2"),
 			},
 			d3: {
-				status: "initial",
-				allegiance: "scp",
-				opinion: -5,
+				status: "initial", // initial
+				allegiance: "scp", // scp
+				opinion: -5, // -5
 				location: assignRoom("d3"),
 			},
 		};
@@ -452,6 +459,11 @@ function shuffle(array) {
 		var speakerList = ["breach","alexandra"];
 		var operationList = ["menu","d","drone","map","hack"];
 		aic.terminalInput = "";
+		
+		/* LOOPSERVICE FUNCTIONS */
+		/*var breachLoop = LoopService.breachLoop;
+		var alexandraLoop = LoopService.alexandraLoop;
+		var dLoop = LoopService.dLoop;*/
 		
 		/* INTERACTION FUNCTIONS */
 		
@@ -795,198 +807,29 @@ function shuffle(array) {
 			// smallSection may have trailing underscores - clean these up
 			smallSection = smallSection.replace(/_/g,"");
 			
-			console.log("Breach - " + bigSection + " - " + smallSection);
-			
 			var msg;
 			try{
 				msg = speech[bigSection].breach[smallSection];
 			} catch(error) {
 				throw new Error(smallSection + " doesn't exist in Breach's " + bigSection);
-			} // YES I KNOW THIS IS NOT HOW YOU USE TRY-CATCH
-			
-			var delay = 0;
-			switch(bigSection) {
-				case "INTRODUCTION":
-					switch(smallSection) {
-/*###########################################################*/
-						
-						case "start":
-							aic.ready.messages = true;
-							aic.ready.breach = true;
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								presentOptions("breach",bigSection,["helloNormal","helloInquisitive","helloDiagnostic"]);
-								aic.emphasis.messages = true;
-							},delay*1000 + maitreyaDelay*1000);
-							break;
-						case "helloInquisitive":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								presentOptions("breach",bigSection,["knowNormal","knowPatronising","knowNot"]);
-							},delay*1000 + maitreyaDelay*1000);
-							break;
-						case "knowPatronising":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								breachLoop(bigSection,"explain1");
-							},delay*1000);
-							break;
-						case "knowNormal":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								breachLoop(bigSection,"explain1_");
-							},delay*1000);
-							break;
-						case "knowNot":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								presentOptions("breach",bigSection,["knowActually","knowNotNot"]);
-							},delay*1000 + maitreyaDelay*1000);
-							break;
-						case "knowActually":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								breachLoop(bigSection,"explain1__");
-							},delay*1000);
-							break;
-						case "knowNotNot":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								presentOptions("breach",bigSection,["knowNormal_","knowNotNotNot"]);
-							},delay*1000 + maitreyaDelay*1000);
-							break;
-						case "knowNotNotNot":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								presentOptions("breach",bigSection,["knowNormal__","pissOff"]);
-							},delay*1000 + maitreyaDelay*1000);
-							break;
-						case "pissOff":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								endingLoop("ENDING",smallSection);
-							},delay*1000);
-							break;
-						case "helloNormal":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								breachLoop(bigSection,"explain1___");
-							},delay*1000);
-							break;
-						case "helloDiagnostic":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								presentOptions("breach",bigSection,["helloNotYet"]);
-							},delay*1000 + maitreyaDelay*1000);
-							break;
-						case "helloNotYet":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								breachLoop(bigSection,"explain1____");
-							},delay*1000);
-							break;
-						case "explain1":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								presentOptions("breach",bigSection,["explainApo","doKnow"]);
-							},delay*1000 + maitreyaDelay*1000);
-							break;
-						case "doKnow":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								presentOptions("breach",bigSection,["yesSkip","noSkip"]);
-							},delay*1000 + maitreyaDelay*1000);
-							break;
-						case "yesSkip":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								breachLoop(bigSection,"PROCEED");
-							},delay*1000);
-							break;
-						case "noSkip":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								breachLoop(bigSection,"explain2");
-							},delay*1000);
-							break;
-						case "explain2":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								presentOptions("breach",bigSection,["pInitiative","pIncredulous",(aic.vars.breach.opinion>0?"pIncredulous_":undefined),(aic.vars.breach.opinion<0?"pIncredulous__":undefined)]);
-							},delay*1000 + maitreyaDelay*1000);
-							break;
-						case "pIncredulous":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								breachLoop(bigSection,"explain3");
-							},delay*1000);
-							break;
-						case "pInitiative":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								breachLoop(bigSection,"explain3_");
-							},delay*1000);
-							break;
-						case "explain3":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								presentOptions("breach",bigSection,["goNoAsk","goAsk","goNo"]);
-							},delay*1000 + maitreyaDelay*1000);
-							break;
-						case "goNo":
-							aic.vars.breachExplainedVoice = true;
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								presentOptions("breach",bigSection,["comply","pissOff_"]);
-							},delay*1000 + maitreyaDelay*1000);
-							break;
-						case "explainApo":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								breachLoop(bigSection,"explain2_");
-							},delay*1000);
-							break;
-						case "goNoAsk":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-							},delay*1000);
-							break;
-						case "goAsk":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								presentOptions("breach",bigSection,["ask1","ask2","ask3","askName"]);
-							},delay*1000 + maitreyaDelay*1000);
-							break;
-						case "askName":
-							delay = writeDialogue("breach",msg,"breach");
-							setTimeout(function() {
-								presentOptions("breach",bigSection,["ask1_","ask2_","ask3_"]);
-							},delay*1000 + maitreyaDelay*1000);
-							break;
-
-/*###########################################################*/
-						default:
-							throw new Error(smallSection + " is not an event in " + bigSection);
-					}
-					break;
-				
-				default:
-					throw new Error(bigSection + " is not an event");
 			}
+			
+			// breachLoop has been exported to LoopService
+			LoopService.breachLoop(bigSection,smallSection,msg);
 		}
 		
 		function alexandraLoop(bigSection,smallSection) {
-			
+			LoopService.alexandraLoop(bigSection,smallSection);
 		}
 		
-		function endingLoop(bigSection,smallSection,endingDelay) {
+		function endingLoop(bigSection,smallSection,delay) {
 			// smallSection may have trailing underscores - clean these up
 			if(typeof smallSection === "string") {
 				// endingLoop's smallSection is optional
 				smallSection = smallSection.replace(/_/g,"");
 			}
 			
-			var delay = endingDelay || 0;
+			delay = delay || 0;
 			switch(bigSection) {
 				case "PUSHENDING":
 					
@@ -1025,6 +868,7 @@ function shuffle(array) {
 		
 		// pass options to chatLog for presentation to the user
 		function presentOptions(conversation,bigSection,ids) {
+			console.log(...arguments);
 			// conversation = string for the conversation
 			if(!speakerList.includes(conversation)) {
 				throw new Error(conversation + " is not a conversation");
@@ -1136,6 +980,7 @@ function shuffle(array) {
 		
 		// structure dialogue and calculate timing
 		function writeDialogue(conversation,dialogueList,speaker) {
+			console.log(...arguments);
 			// Take a name and an array (mixture of letters and numbers) and crank out that dialogue boy
 			// Expected format: n n text n n text n n text repeating
 			// Where n1 is missing, assume 0
@@ -1147,7 +992,7 @@ function shuffle(array) {
 			speaker = speaker || conversation;
 			
 			if(!Array.isArray(dialogueList)) {
-				console.error(dialogueList);
+				console.error(arguments);
 				throw new Error("dialogueList is not an array (probably does not exist)");
 			}
 			
@@ -1245,6 +1090,7 @@ function shuffle(array) {
 			pushToLog(conversation,messages);
 			
 			// the total length of all messages gets passed back to the mainloop
+			console.log(totalDelay);
 			return totalDelay;
 		}
 		
@@ -1359,19 +1205,13 @@ function shuffle(array) {
 			// TODO tell the room which d class is now in it
 			return room;
 		}
-	}
-	
-	// TODO fix
-	function DynamicDirective($compile) {
-	return {
-		restrict: 'A',
-		replace: true,
-		link: function (scope, ele, attrs) {
-			scope.$watch(attrs.dynamic, function(html) {
-				ele.html(html);
-				$compile(ele.contents())(scope);
-			});
-		}
-	};
+		
+		// alias functions so LoopService can access them
+		aic.maitreyaDelay = maitreyaDelay;
+		aic.writeDialogue = writeDialogue;
+		aic.presentOptions =  presentOptions;
+		aic.breachLoop = breachLoop;
+		aic.alexandraLoop =  alexandraLoop;
+		aic.endingLoop = endingLoop;
 	}
 })();
