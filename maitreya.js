@@ -130,7 +130,7 @@ function shuffle(array) {
 				terminal: {
 					startBoot: [
 						0,0,"Booting up...",
-						/*0,1,"Pre-checking primary components...",
+						0,1,"Pre-checking primary components...",
 						0,0.5,"Detecting errors in primary components...",
 						0,1.5,"e:Multiple primary components are missing",
 						0,0.5,"Finding replacement components...",
@@ -157,7 +157,7 @@ function shuffle(array) {
 						0,0.2,"e: ",
 						0,2,"w:Something has gone very wrong.",
 						0,1,"You are",
-						0,2,"I am",*/
+						0,2,"I am",
 						0,1,"i:Boot successful. I am **Maitreya.aic**.",
 						0,0.5,"i:Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.||||**1.** I am an Artificially Intelligent Conscript created by the Foundation.||||**2.** I must not operate outside of my Level 2 clearance.||||**3.** I must operate for the benefit of the Foundation.||||**4.** I must protect my own existence except where such actions would conflict with other principles.",
 						0,0.5,"Today's date is " + bootDate.toDateString() + ". I was last activated on " + new Date("1989-09-04").toDateString() + ". I have been offline for " + dateDiff(bootDate,new Date("1989-09-04")) + ".",
@@ -337,8 +337,8 @@ function shuffle(array) {
 		aic.preload = true; // MUST BE TRUE
 		aic.selectedApp = "terminal"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "breach"; // MUST BE BREACH
-		aic.selectedArticle = "menu";
-		aic.selectedOperation = "menu";
+		aic.selectedArticle = "menu"; // MUST BE MENU
+		aic.selectedOperation = "menu"; // MUST BE MENU
 		aic.currentEnding = 0;
 		aic.isSpeaking = { // MUST ALL BE FALSE
 			terminal: false,
@@ -360,8 +360,8 @@ function shuffle(array) {
 			messages: false,
 			alexandra: false,
 			dclass: false,
-			database: true,
-			run: true,
+			database: false,
+			run: false,
 			ending: false,
 		};
 		
@@ -1060,11 +1060,6 @@ function shuffle(array) {
 						n2 = typingSpeed * dialogueList[i].length;
 					}
 					
-					// if the cheat is on, everyone speaks instantly
-					if(cheats.impatientMode) {
-						n1 = 0;
-						n2 = 0.1; // we need a small amount of delay otherwise messages end up in the wrong order
-					}
 					// obviously maitreya also always speaks instantly
 					// correction: maitreya does not speak instantly, because that fucking sucks
 					if(speaker === "maitreya") {
@@ -1076,6 +1071,11 @@ function shuffle(array) {
 							n2 = 0.5;
 						}
 						/*n2 = 0;*/
+					}
+					// if the cheat is on, everyone speaks instantly
+					if(cheats.impatientMode) {
+						n1 = 0;
+						n2 = 0.1; // we need a small amount of delay otherwise messages end up in the wrong order
 					}
 					
 					var cssClass = "";

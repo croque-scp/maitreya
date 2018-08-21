@@ -237,13 +237,13 @@
 							delay = aic.writeDialogue("breach",msg,"breach");
 							$timeout(function() {
 								aic.presentOptions("breach",bigSection,[
-									(!aic.vars.hasAskedSite12 ? "askIS12_" : undefined),
-									(!aic.vars.hasAsked4000 ? "askScp4000_" : undefined),
-									(!aic.vars.hasAskedDeath && aic.vars.hasAsked4000 ? "askDeath" : undefined),
-									(!aic.vars.hasAskedSelf ? "askSelf_" : undefined),
-									(!aic.vars.hasAskedTask ? "askTask_" : undefined),
-									(!aic.vars.hasAskedBreach ? "askBreach_" : undefined),
-									(!aic.vars.hasAskedName && aic.vars.hasAskedSite12 && aic.vars.hasAsked4000 && aic.vars.hasAskedSelf && aic.vars.hasAskedTask && aic.vars.hasAskedBreach ? "askName" : undefined),
+									!aic.vars.hasAskedSite12 ? "askIS12_" : void 0,
+									!aic.vars.hasAsked4000 ? "askScp4000_" : void 0,
+									!aic.vars.hasAskedDeath && aic.vars.hasAsked4000 ? "askDeath" : void 0,
+									!aic.vars.hasAskedSelf ? "askSelf_" : void 0,
+									!aic.vars.hasAskedTask ? "askTask_" : void 0,
+									!aic.vars.hasAskedBreach ? "askBreach_" : void 0,
+									!aic.vars.hasAskedName && aic.vars.hasAskedSite12 && aic.vars.hasAsked4000 && aic.vars.hasAskedSelf && aic.vars.hasAskedTask && aic.vars.hasAskedBreach ? "askName" : void 0,
 									"noQuestions_"
 								]);
 							},delay*1000 + aic.maitreyaDelay*1000, true);
