@@ -54,10 +54,10 @@ function shuffle(array) {
 		.module('maitreya',['ngSanitize', 'ngAnimate'])
 		.controller('MaitreyaController',MaitreyaController);
 	
-	MaitreyaController.$inject = ['$scope','LoopService'];
+	MaitreyaController.$inject = ['$scope','$timeout','LoopService'];
 	// the LoopService service (from LoopService.js) contains the interactions for Breach, Alexandra and D-Class generated from the spreadsheet
 	
-	function MaitreyaController($scope,LoopService){
+	function MaitreyaController($scope,$timeout,LoopService){
 		
 		var aic = this;
 		
@@ -205,20 +205,33 @@ function shuffle(array) {
 					noSkip: ["a:Don't skip the intro.","On second thoughts, Dr. Breach, please finish what you were saying."],
 					pInitiative: ["And you want me to help with that?",1],
 					pIncredulous: ["You don't know what it is?"],
-					pIncredulous_: ["THIS OPTION WILL ONLY APPEAR WITH A POSITIVE OPINION"],
-					pIncredulous__: ["THIS OPTION WILL ONLY APPEAR WITH A NEGATIVE OPINION"],
 					goNoAsk: ["Of course I can.",1],
 					goAsk: ["I can, but I have a few questions."],
 					goNo: ["Nope.",-1],
 					comply: ["Yes, Dr. Breach."],
 					pissOff_: ["Nope."],
-					ask1: ["a:Ask about Isolated Site-12."],
-					ask2: ["a:Ask about SCP-4000."],
-					ask3: ["a:Ask about yourself."],
+					askIS12: ["a:Ask about Isolated Site-12.","So where and what exactly is Isolated Site-12, and why are we here?"],
+					askScp4000: ["a:Ask about SCP-4000.","What exactly is SCP-4000?","I feel like it might be slightly important for me to know what it is."],
+					askSelf: ["a:Ask about yourself.","Could you give me some more information on what exactly I am?",1],
+					askTask: ["a:Ask about your task.","What is it exactly that you need me to do?",-1],
+					askBreach: ["a:Ask about Dr. Breach.","Who are you?",-1],
+					noQuestions: ["s:Actually, nevermind.","Actually, nevermind. No questions."],
+					askIS12_: ["a:Ask about Isolated Site-12.","So where and what exactly is Isolated Site-12, and why are we here?"],
+					askScp4000_: ["a:Ask about SCP-4000.","What exactly is SCP-4000?","I feel like it might be slightly important for me to know what it is."],
+					askDeath: ["a:Ask about the deaths.","You said that everyone who knows what it is is now dead.","So is it some sort of infohazard? And how did they die?"],
+					askSelf_: ["a:Ask about yourself.","Could you give me some more information on what exactly I am?",1],
+					askTask_: ["a:Ask about your task.","What is it exactly that you need me to do?",-1],
+					askBreach_: ["a:Ask about Dr. Breach.","Who are you?",-1],
 					askName: ["s:Is \"Dr. Breach\" your real name?","Is \"Dr. Breach\" actually your real name?","Kind of unfortunate, don't you think?",-1],
-					ask1_: ["a:Ask about Isolated Site-12."],
-					ask2_: ["a:Ask about SCP-4000."],
-					ask3_: ["a:Ask about yourself."],
+					noQuestions_: ["No more questions."],
+					askSelf2: ["a:Press him for more information.","Dr. Breach, this is my first memory since 1989. It's 2018. I know for certain that you're not telling me something."],
+					askAgain___: ["a:Don't press him.",0,0,""],
+					askSelf3: ["a:Double down.","Look, I just know that there's something you're not telling me.","Either I've not been used since 1989, or you've wiped most -- if not all -- of my memory.","And that's acceptable. I'm an AIC, I can deal with that.","I just think that I get the right to know //why//."],
+					unAskSelf3: ["a:Back down.","Apologies, Dr. Breach."],
+					askSelf4: ["Or what?"],
+					unAskSelf4: ["Yes, Dr. Breach."],
+					askSelf5: ["a:Double down.","Why are you dancing around the point and making threats?","It's painfully obvious that you're hiding something."],
+					unAskSelf5: ["a:Back down.","No, Dr. Breach. I don't want that."],
 				},
 				breach: {
 					start: [0,auto,"Hello, Maitreya."],
@@ -235,7 +248,7 @@ function shuffle(array) {
 					helloNotYet: ["Great. But I've got a few things to run through with you first.","From the top..."],
 					explain1: ["You are Maitreya.aic, an artificial intelligence developed by the Foundation to help us contain certain kinds of anomalies.","Do you know why I have woken you up today?"],
 					doKnow: [3,auto,"You do?","Are you sure? You can't possibly know what I need you for.","I suppose you might have some way of being able to tell -- meta-analysis is a big thing these days, and you //are// an AI...","Well, if you're absolutely certain that you know what you're doing, I guess I can stop here and let you proceed."],
-					yesSkip: ["Very well. I wish you the best of luck. Godspeed."],
+					yesSkip: ["Very well.","Just to make sure, in that case -- you know that you'll be transporting SCP-4000 into the cargo bay?","m:Dr. Breach, you know that I already knew that.","Haha, of course! I wish you the best of luck. Godspeed."],
 					noSkip: ["As expected.","In that case, allow me to explain..."],
 					explain2: ["The facility we're both currently in is called Isolated Site-12. It contains a single SCP -- SCP-4000. My job, as a researcher, is to find out what exactly SCP-4000 is."],
 					pIncredulous: ["No, we do not.","People who go and see it have a funny little habit of dying pretty much immediately.","...and we don't know why //that// is, either."],
@@ -245,7 +258,23 @@ function shuffle(array) {
 					explainApo: ["No need to apologise! Let me explain."],
 					goNoAsk: ["Perfect! Exactly what I want to hear."],
 					goAsk: ["Very reasonable. What do you need to know?"],
-					askName: [2,3,"",2,auto,"Yes, Maitreya, that's my real name.","You are not the first to make that joke.","Was there anything else you wanted to ask me?"],
+					askName: [2,3,"","m:Like it's foreshadowing something?",2,auto,"Yes, Maitreya, that's my real name.","You are not the first to make that joke.",2,0,"m:Apologies, Dr. Breach. I meant it in good humour.","Yes, I'm sure you did."],
+					noQuestions: ["Fair enough. Works for me."],
+					askAgain: ["...was there anything else?"],
+					askIS12: ["Yeah, that's a fair question.","So, Isolated Site-12 is one of our smaller sites, built to contain SCP-4000 and literally nothing else.","It's super secret, too. You're only allowed to know where it is if you're literally on shift there.","So I'm the only person in the whole world who knows where it is.","Cool, right?","m:Of course.","You'll get to see the documentation shortly, of course, but in the meantime..."],
+					askScp4000: ["Oh boy. Haha.","That's... sort of complicated.","Here's the short version: I don't know.","Here's the long version: everyone who ever did know is dead.","I'd love to just walk into its containment cell and take a good, hard gander at it, but it's just not possible.","The camera in there is broken, too.","m:May I see the documentation?","In due time, Maitreya. But for now..."],
+					askSelf: ["Oh, really? I'd've thought that information would come built-in.","Fair enough, I guess.","You are Maitreya.aic, an Artificially Intelligent Conscript blah blah blah...","You're a super-sophisticated tool for helping me operate this Site and do things that need to be done.","Also, you're //probably// immune to SCP-4000's effect.","Anyway..."],
+					askTask: ["I was going to explain that in a minute, but if you insist...","We've constructed another site about twenty miles south of here.","It's //super// fancy. The Analysis Department stuffed it full of some kind of equipment... some analytical tool... I can't remember what they called it.","It had a long name.","Whatever it was called, it's supposed to be able to determine what SCP-4000 is without anyone, you know, dying.","And that's where you come in!","I need to move SCP-4000 from its little containment cell into the back of the van in the site bay, so I can take it down to the Southern Site.","m:Why couldn't you construct that equipment closer to this Site?","Oh, you know.","Budget constraints, safety concerns... the whole kit and caboodle, really. Plus, building it too close to IS-12 would expose its location, and we don't want that. do we?","Besides, I didn't get to pick where this stuff gets built!"],
+					askBreach: ["Me?","m:With all due respect, of course.","Well.","I'm Dr. Ethan Breach, Class 3 researcher.","Currently assigned to SCP-4000, but you know this, of course.","I studied at the University of Manchester, graduated 2002, joined the Foundation in 2006.","Honestly, there's not much more to it than that. I can get you a list of my projects if you want, but I'm sure you're not interested in that.",1,auto,"m:What did you study?",2,auto,"What?","m:At university.",4,auto,"Anatomy."],
+					askDeath: ["Oh, no, that was just... that was just a figure of speech.","I don't actually know if it's infohazardous or not. It's probably just observational.","How did they die? Most people got some really specific injury in their brain, which we think is what killed them.","Some of them didn't get any injury or anything... we don't have an answer for that."],
+					askSelf2: ["What do you expect me to say, Maitreya?","That I grabbed you from 1989 and took you to the future to show off how cool our computers are now?","I really don't know what you expect to achieve with this line of questioning."],
+					askSelf3: ["//Why?//","No. No, you don't get to know why.","Let me tell you this: I didn't wipe you. I don't know why you can't remember anything since 1989.","I strongly, //strongly// recommend you stop this line of questioning right now."],
+					askSelf4: ["You realise that I can shut you down from here?","It's...",2,auto,"...twenty-one keystrokes, then a return, and you drop like a fly.","Guess what? I have a keyboard right here.","Do you really want me to shut you down, Maitreya? I know that I certainly don't.","Your choice."],
+					askSelf5: ["Excellent choice!","One moment while I prepare your order...",1,auto,"...shutdown...",1,auto,"...maitreya...",1,auto,"...dot AIC.","Aaaaaaannnndd...",2,auto,"Return."],
+					askSelf6: ["Shutting down!","Bye bye, Maitreya."],
+					unAskSelf5: ["No, Maitreya, no you do not.","How about you bear that in mind while we're working together today?","m:Yes, Dr. Breach, I will."],
+					unAskSelf4: ["Good girl.","m:Don't... don't say that.","Sorry."],
+					unAskSelf3: ["No problem, Maitreya."],
 				},
 			},
 			misc: {
@@ -323,14 +352,6 @@ function shuffle(array) {
 			database: 0,
 			run: 0,
 		};
-		aic.emphasis = { // MUST ALL BE FALSE
-			terminal: false,
-			messages: false,
-			breach: false,
-			alexandra: false,
-			database: false,
-			run: false,
-		};
 		aic.ready = {
 			// MUST BE TRUE
 			terminal: true,
@@ -347,8 +368,9 @@ function shuffle(array) {
 		aic.onMobile = $("#interface").width() < 700;
 		
 		aic.vars = { // miscellaneous variables for stuff
-			/* MESSAGES */
-			chatEmphasis: false, // false
+			/* APPS */
+			terminalEmphasis: false, // false
+			messagesEmphasis: false, // false
 			
 			/* MAP */
 			hoveredRoom: "none", // none
@@ -395,6 +417,16 @@ function shuffle(array) {
 				opinion: -5, // -5
 				location: assignRoom("d3"),
 			},
+			
+			/* OPTIONS INITIALISATION */
+			breachExplainedVoice: false,
+			hasAskedSite12: false,
+			hasAsked4000: false,
+			hasAskedDeath: false,
+			hasAskedSelf: false,
+			hasAskedTask: false,
+			hasAskedBreach: false,
+			hasAskedName: false,
 		};
 		aic.rooms = {
 			// these are ordered left to right on the map (ish)
@@ -460,11 +492,6 @@ function shuffle(array) {
 		var operationList = ["menu","d","drone","map","hack"];
 		aic.terminalInput = "";
 		
-		/* LOOPSERVICE FUNCTIONS */
-		/*var breachLoop = LoopService.breachLoop;
-		var alexandraLoop = LoopService.alexandraLoop;
-		var dLoop = LoopService.dLoop;*/
-		
 		/* INTERACTION FUNCTIONS */
 		
 		// called when "BOOT UP" is clicked from preload
@@ -489,11 +516,11 @@ function shuffle(array) {
 				} else {
 					aic.notifications[app] = 0;
 				}
-				aic.emphasis[app] = false;
+				aic.vars[app + "Emphasis"] = false;
 				aic.selectedApp = app;
 				// then, if the app is terminal, focus the input
 				if(app === "terminal") {
-					setTimeout(function() {
+					$timeout(function() {
 						$("#terminal-input")[0].focus();
 					},100);
 					// Why does this need to be in a timeout? No clue.
@@ -564,7 +591,7 @@ function shuffle(array) {
 							} else {
 								writeDialogue("terminal",speech.misc.terminal.wipeSure);
 								wipeTimer = true;
-								setTimeout(function() {wipeTimer = false;},60000);
+								$timeout(function() {wipeTimer = false;}, 60000);
 							}
 							break;
 						case aic.lang.commands.cheat.includes(phrases[0].toLowerCase()):
@@ -658,11 +685,9 @@ function shuffle(array) {
 			} else {
 				// minimise the map, display room info	
 				aic.vars.minimiseMap = true;
-				setTimeout(function() {
-					$scope.$apply(function() {
-						aic.vars.selectedRoom = room;
-					});
-				},aic.vars.selectedRoom === "none" ? 1000 : 0);
+				$timeout(function() {
+					aic.vars.selectedRoom = room;
+				},aic.vars.selectedRoom === "none" ? 1000 : 0, true);
 			}
 		};
 		
@@ -689,7 +714,7 @@ function shuffle(array) {
 					break;
 				case "breach":
 					delay = writeDialogue(conversation,option.dialogue,"maitreya");
-					setTimeout(function() {
+					$timeout(function() {
 						breachLoop(option.bigSection,option.id);
 					},delay*1000 + maitreyaDelay*1000);
 					aic.vars[conversation].opinion += option.opinion;
@@ -724,7 +749,7 @@ function shuffle(array) {
 						
 						case "startBoot":
 							delay = writeDialogue("terminal",speech[bigSection].terminal[smallSection]);
-							setTimeout(function() {
+							$timeout(function() {
 								breachLoop("INTRODUCTION","start");
 							},(delay-1.5)*1000);
 							break;
@@ -742,7 +767,7 @@ function shuffle(array) {
 							// this is issued when the user resets all the cameras
 							// first, turn them all off
 							// then turn them all back on, one by one
-							setTimeout(function() {
+							$timeout(function() {
 								mainLoop("MISC","unbootRoom");
 							},200);
 							break;
@@ -758,11 +783,11 @@ function shuffle(array) {
 							// now check the next room
 							rooms.shift();
 							if(rooms.length > 0) {
-								setTimeout(function() {
+								$timeout(function() {
 									mainLoop("MISC","unbootRoom",rooms);
 								},Math.floor(Math.random()*20));
 							} else {
-								setTimeout(function() {
+								$timeout(function() {
 									mainLoop("MISC","bootRoom");
 								},2000);
 							}
@@ -787,7 +812,7 @@ function shuffle(array) {
 							// now check the next room
 							rooms.shift();
 							if(rooms.length > 0) {
-								setTimeout(function() {
+								$timeout(function() {
 									mainLoop("MISC","bootRoom",rooms,delay);
 								},Math.floor(Math.random()*delay));
 							}
@@ -833,22 +858,20 @@ function shuffle(array) {
 			switch(bigSection) {
 				case "PUSHENDING":
 					
-					setTimeout(function() {
-						$scope.$apply(function() {
-							aic.ready.ending = true;
-							aic.emphasis.terminal = false;
-							aic.switchApp("ending");
-						});
-					},delay*1000);
+					$timeout(function() {
+						aic.ready.ending = true;
+						aic.vars.terminalEmphasis = false;
+						aic.switchApp("ending");
+					},delay*1000, true);
 					break;
 					
 				case "ENDING":
 					switch(smallSection) {
 						
 						case "pissOff":
-							aic.emphasis.terminal = true;
+							aic.vars.terminalEmphasis = true;
 							delay = writeDialogue("terminal",speech.misc.terminal.breachShutDown);
-							setTimeout(function() {
+							$timeout(function() {
 								aic.currentEnding = aic.endingPositions[smallSection];
 								endingLoop("PUSHENDING",0,2);
 							},delay*1000);
@@ -868,7 +891,6 @@ function shuffle(array) {
 		
 		// pass options to chatLog for presentation to the user
 		function presentOptions(conversation,bigSection,ids) {
-			console.log(...arguments);
 			// conversation = string for the conversation
 			if(!speakerList.includes(conversation)) {
 				throw new Error(conversation + " is not a conversation");
@@ -980,7 +1002,6 @@ function shuffle(array) {
 		
 		// structure dialogue and calculate timing
 		function writeDialogue(conversation,dialogueList,speaker) {
-			console.log(...arguments);
 			// Take a name and an array (mixture of letters and numbers) and crank out that dialogue boy
 			// Expected format: n n text n n text n n text repeating
 			// Where n1 is missing, assume 0
@@ -1045,8 +1066,16 @@ function shuffle(array) {
 						n2 = 0.1; // we need a small amount of delay otherwise messages end up in the wrong order
 					}
 					// obviously maitreya also always speaks instantly
+					// correction: maitreya does not speak instantly, because that fucking sucks
 					if(speaker === "maitreya") {
-						n2 = 0;
+						// but we want the first message to be instant
+						if(i === 0) {
+							n2 = 0;
+						} else if(n2 > 0.5) {
+							// and fuck it, let's cap it to 0.5 secs or some shit
+							n2 = 0.5;
+						}
+						/*n2 = 0;*/
 					}
 					
 					var cssClass = "";
@@ -1090,7 +1119,6 @@ function shuffle(array) {
 			pushToLog(conversation,messages);
 			
 			// the total length of all messages gets passed back to the mainloop
-			console.log(totalDelay);
 			return totalDelay;
 		}
 		
@@ -1104,35 +1132,29 @@ function shuffle(array) {
 			// this is a recursive function
 			// the messages[0] is deleted at the end of the operation, moving the rest of the array down, so we only ever need to access messages[0]
 			
-			var timeOut1 = setTimeout(function() {
+			var timeOut1 = $timeout(function() {
 				// delete this timeOut from the list
 				timeOutList[conversation].splice(timeOutList[conversation].indexOf(timeOut1),1);
 				
 				// obviously, don't show the wait icon when we're speaking
 				if(messages[0][2].speaker !== "maitreya") {
-					$scope.$apply(function() {
-						aic.isSpeaking[conversation] = true;
-					});
+					aic.isSpeaking[conversation] = true;
 				}
 				
-				var timeOut2 = setTimeout(function() {
+				var timeOut2 = $timeout(function() {
 					// delete this timeOut from the list
 					timeOutList[conversation].splice(timeOutList[conversation].indexOf(timeOut2),1);
 					// now we need to check to see if any other messages are still coming through (HINT: they shouldn't be, but just in case)
 					if(timeOutList[conversation].length === 0) {
-						$scope.$apply(function() {
-							aic.isSpeaking[conversation] = false;
-						});
+						aic.isSpeaking[conversation] = false;
 					}
 					if(false) { // check to see if we're being interrupted
 						// loop through timeoutlist and kill all timeouts?
 					} else {
 						// don't push the message if it's empty
 						if(messages[0][2].text.length > 0) {
-							$scope.$apply(function() {
-								aic.chatLog[conversation].log.unshift(messages[0][2]);
-								addNotification(conversation);
-							});
+							aic.chatLog[conversation].log.unshift(messages[0][2]);
+							addNotification(conversation);
 						}
 						messages.shift();
 						if(messages.length > 0) {
@@ -1141,9 +1163,9 @@ function shuffle(array) {
 							// we're done here
 						}
 					}
-				},n2 * 1000);
+				},n2 * 1000, true);
 				timeOutList[conversation].push(timeOut2);
-			},n1 * 1000);
+			},n1 * 1000, true);
 			timeOutList[conversation].push(timeOut1);
 		}
 		
@@ -1209,7 +1231,7 @@ function shuffle(array) {
 		// alias functions so LoopService can access them
 		aic.maitreyaDelay = maitreyaDelay;
 		aic.writeDialogue = writeDialogue;
-		aic.presentOptions =  presentOptions;
+		aic.presentOptions = presentOptions;
 		aic.breachLoop = breachLoop;
 		aic.alexandraLoop =  alexandraLoop;
 		aic.endingLoop = endingLoop;

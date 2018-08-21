@@ -89,11 +89,11 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 							<a><i class="material-icons">clear</i></a>
 							<div class="notification" ng-show="aic.notifications.ending > 0"><p>{{aic.notifications.ending}}</p></div>
 						</li>
-						<li id="terminal-app" class="selector" ng-click="aic.switchApp('terminal')" ng-class="[aic.selectedApp == 'terminal' ? 'selected' : null, aic.ready.terminal ? null : 'disabled', aic.emphasis.terminal ? 'emphasis' : null]" ng-disabled="">
+						<li id="terminal-app" class="selector" ng-click="aic.switchApp('terminal')" ng-class="[aic.selectedApp == 'terminal' ? 'selected' : null, aic.ready.terminal ? null : 'disabled', aic.vars.terminalEmphasis ? 'emphasis' : null]" ng-disabled="">
 							<a><i class="material-icons">dvr</i></a>
 							<div class="notification" ng-show="aic.notifications.terminal > 0"><p>{{aic.notifications.terminal}}</p></div>
 						</li>
-						<li id="messages-app" class="selector" ng-click="aic.switchApp('messages')" ng-class="[aic.selectedApp == 'messages' ? 'selected' : null, aic.ready.messages ? null : 'disabled', aic.emphasis.messages ? 'emphasis' : null]" ng-disabled="">
+						<li id="messages-app" class="selector" ng-click="aic.switchApp('messages')" ng-class="[aic.selectedApp == 'messages' ? 'selected' : null, aic.ready.messages ? null : 'disabled', aic.vars.messagesEmphasis ? 'emphasis' : null]" ng-disabled="">
 							<a><i class="material-icons">record_voice_over</i></a>
 							<div class="notification" ng-show="(aic.notifications.breach + aic.notifications.alexandra) > 0"><p>{{aic.notifications.breach + aic.notifications.alexandra}}</p></div>
 						</li>
@@ -266,18 +266,10 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 											<div class="articles-list">
 												<a class="article-selector">SCP-4000</a>
 												<a class="article-selector">SCP-079</a>
-											</div>
-										</li>
-										<li>
-											<p class="heading">Locations</p>
-											<div class="articles-list">
+												
 												<a class="article-selector">Isolated Site-12</a>
 												<a class="article-selector">Quittinirpaaq</a>
-											</div>
-										</li>
-										<li>
-											<p class="heading">Personnel</p>
-											<div class="articles-list">
+												
 												<a class="article-selector">Ethan Breach</a>
 												<a class="article-selector">Rebecca Carver</a>
 												<a class="article-selector">Alexandra.aic</a>
