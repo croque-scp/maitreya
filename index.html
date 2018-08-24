@@ -253,7 +253,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 						</div>
 						<div class="app-main">
 						
-							<div class="section menu-section selected">
+							<div class="section menu-section" ng-class="aic.selectedArticle === 'menu' ? 'selected' : null">
 								<div class="menu-container">
 									<div class="menu-title">
 										<img src="database.png">
@@ -279,6 +279,10 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 										</li>
 									</ul>
 								</div>
+							</div>
+							
+							<div class="section" ng-repeat="article in aic.lang.articles" ng-class="aic.selectedArticle ===">
+							
 							</div>
 							
 							<div>

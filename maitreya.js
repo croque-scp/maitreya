@@ -23,17 +23,17 @@ String.prototype.toCamelCase = function() {
 // prototype function to format dialogue strings from wikidot format to HTML
 String.prototype.format = function() {
 	return this
+		.replace(/\|\|\|\|/g, "<br>") // "||||" makes a new line
 		.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>") // Wikidot bolding syntax
 		.replace(/\/\/(.*?)\/\//g, "<i>$1</i>") // Wikidot italics syntax
 		.replace(/{{(.*?)}}/g, "<tt>$1</tt>") // Wikidot teletype syntax
 		.replace(/\?\?(.*?)\?\?/g, "<span dynamic class='statement false' data-bool='TRUE'>$1</span>")
 		.replace(/!!(.*?)!!/g, "<span class='statement true' data-bool='FALSE'>$1</span>")
 		.replace(/--/g, "—") // Wikidot em-dash replacement
-		.replace(/\|\|\|\|/g, "<br>") // "||||" makes a new line
 		.replace(/\+(.*)$/g, "<h1>$1</h1>") // h1
 		.replace(/\+\+(.*)$/g, "<h2>$1</h2>") // h2
-		.replace(/-----/g, "<hr>"); // horizontal rule
-		// TODO add support for images
+		.replace(/-{3,}/g, "<hr>"); // horizontal rule
+		// TODO add support for images // really, past-me?
 };
 
 // randomise an array
@@ -61,10 +61,9 @@ function shuffle(array) {
 		
 		var aic = this;
 		
-		$scope.breachLoop = LoopService;
 		LoopService.use($scope); // give BreachLoopService our scope
 		
-		var bootDate = new Date(Date.now()); // get the time when the user started playing
+		var bootDate = new Date(new Date(Date.now()).setFullYear(2018)); // get the time when the user started playing, except it's always 2018 because canon
 		const auto = "auto";
 		
 		// Translators: The following few objects contain all of the text that needs to be translated
@@ -122,15 +121,53 @@ function shuffle(array) {
 					description: ""
 				},
 			},
+			articles: {
+				// if "text" is just a URL, it prompts the user to go to that URL to access the file
+				scp4000: { title: "SCP-4000", text:
+					"**Item #:** SCP-4000||||||||" +
+					"**Object Class:** Safe||||||||" +
+					"**Special Containment Procedures:** SCP-4000 is to be kept within a reinforced containment chamber at Isolated Site-12. No entry to the containment chamber is permitted. Observation of SCP-4000 should be avoided except during testing.||||||||" +
+					"Isolated Site-12 is to be staffed with a single member of personnel at all times. The current project head is Dr. Breach. No other staff are permitted to be on-site.||||||||" +
+					"[[[aic.selectedArticle = 'alexandra'|Alexandra.aic]]] is to maintain a presence at Isolated Site-12 to support Dr. Breach in his duties.||||||||" +
+					"Knowledge of the location of Isolated Site-12, and by extension SCP-4000, is strictly need-to-know only.||||||||" +
+					"Dr. Breach is authorised to use whatever means he deems necessary in order to support ongoing research into SCP-4000.||||||||" +
+					"**Description:** SCP-4000 is an object, entity or concept that is currently located at Isolated Site-12. It is currently unknown what, if any, anomalous effects SCP-4000 exhibits.||||||||" +
+					"SCP-4000 was discovered on 2010-03-04 in [DATA EXPUNGED], in which Isolated Site-12 was later constructed. Initial containment resulted in the deaths of all civilians who were originally exposed to SCP-4000, both mobile task forces sent, the Foundation operators directing those MTFs via radio, and most other personnel observing operations. Autopsies concluded that those who did not die due to [DATA EXPUNGED] on account of the weather in the region suffered no physical injuries barring minor restructuring of certain parts of the brain. Other than these discrepancies -- including several cases in which the restructuring was not present -- pathologists were unable to ascertain any reason for death.||||||||" +
+					"Current containment procedures are the combined result of trial-and-error and preemptive attempts to prevent further loss of life, and have been in place since SCP-4000 was found. No casualties have been attributed to SCP-4000 since then.",
+				},
+				scp079: { title: "SCP-079", text: "http://www.scp-wiki.net/scp-079" },
+				is12: { title: "Isolated Site-12", text: "article text" },
+				quttinirpaaq: { title: "Quttinirpaaq", text: "https://en.wikipedia.org/wiki/Quttinirpaaq_National_Park" },
+				ethanBreach: { title: "Dr. Ethan Breach", text: "article text" },
+				rebeccaCarver: { title: "Dr. Rebecca Carver", text: "article text" },
+				alexandra: { title: "Alexandra.aic", text: "article text" },
+				maitreya: { title: "Maitreya.aic", text: "article text" },
+				glacon: { title: "Glacon.aic", text: "article text" },
+				glaconIncident: { title: "Incident AIAD-CM-IV", text: "article text" },
+			},
 		};
 		
 		// This object contains all dialogue strings
-		const speech = {
+		var speech = {
+			merge: function(dialogue) {
+				// this is the function that merges dialogue from LoopService into this variable
+				for(let bigSection in dialogue) {
+					if(this.hasOwnProperty(bigSection)) {
+						// if speech already has the bigSection, we can't overwrite it, we just need to dupe its inner values
+						for(let speaker in dialogue[bigSection]) {
+							this[bigSection][speaker] = dialogue[bigSection][speaker];
+						}
+					} else {
+						// if speech does not have the bigSection, hell yeah let's overwrite that shit
+						this[bigSection] = dialogue[bigSection];
+					}
+				}
+			},
 			INTRODUCTION: {
 				terminal: {
 					startBoot: [
 						0,0,"Booting up...",
-						0,1,"Pre-checking primary components...",
+						/*0,1,"Pre-checking primary components...",
 						0,0.5,"Detecting errors in primary components...",
 						0,1.5,"e:Multiple primary components are missing",
 						0,0.5,"Finding replacement components...",
@@ -157,7 +194,7 @@ function shuffle(array) {
 						0,0.2,"e: ",
 						0,2,"w:Something has gone very wrong.",
 						0,1,"You are",
-						0,2,"I am",
+						0,2,"I am",*/
 						0,1,"i:Boot successful. I am **Maitreya.aic**.",
 						0,0.5,"i:Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.||||**1.** I am an Artificially Intelligent Conscript created by the Foundation.||||**2.** I must not operate outside of my Level 2 clearance.||||**3.** I must operate for the benefit of the Foundation.||||**4.** I must protect my own existence except where such actions would conflict with other principles.",
 						0,0.5,"Today's date is " + bootDate.toDateString() + ". I was last activated on " + new Date("1989-09-04").toDateString() + ". I have been offline for " + dateDiff(bootDate,new Date("1989-09-04")) + ".",
@@ -179,102 +216,6 @@ function shuffle(array) {
 						0,0.5,"Today's date is " + bootDate.toDateString() + ". I was last activated on " + "GET THE LAST ACTIVATED DATE" + ". I have been offline for " + dateDiff(bootDate,new Date("1989-09-04")) + ".",
 						0,0.5,"I am ready to continue my work.",
 					],
-				},
-				maitreya: {
-					// if the first thing is s: or a:, this is an option, not a message
-					// second parameter:
-					//	empty = use the text from the first parameter
-					//	"" = no text
-					// MAITREYA ONLY: Opinion modifier must be LAST in the list
-					helloNormal: ["Hello."],
-					helloInquisitive: ["Who are you?"],
-					helloDiagnostic: ["a:Request a diagnostic.","I would like to request a diagnostic report.",-1],
-					knowNormal: ["I do."],
-					knowPatronising: ["There's no need to be patronising.",1],
-					knowNot: ["I'm afraid that I don't.",-1],
-					knowActually: ["No, it's okay. I know what it is."],
-					knowNotNot: ["I do.",-1],
-					knowNormal_: ["No questions."],
-					knowNotNotNot: ["I do have some questions.","I do have some questions, actually. May I?",-1],
-					knowNormal__: ["I can deal with it, Dr. Breach."],
-					pissOff: ["I do still have questions.","My reams of questions remain unanswered, Dr. Breach."],
-					helloNotYet: ["Sounds good to me."],
-					explainApo: ["s:No.","Apologies, Dr. Breach, but I've no idea."],
-					doKnow: ["s:Yes.","I do -- there's no need to explain."],
-					yesSkip: ["a:Skip the intro.","I know what I'm doing, Dr. Breach -- I am a .aic after all."],
-					noSkip: ["a:Don't skip the intro.","On second thoughts, Dr. Breach, please finish what you were saying."],
-					pInitiative: ["And you want me to help with that?",1],
-					pIncredulous: ["You don't know what it is?"],
-					goNoAsk: ["Of course I can.",1],
-					goAsk: ["I can, but I have a few questions."],
-					goNo: ["Nope.",-1],
-					comply: ["Yes, Dr. Breach."],
-					pissOff_: ["Nope."],
-					askIS12: ["a:Ask about Isolated Site-12.","So where and what exactly is Isolated Site-12, and why are we here?"],
-					askScp4000: ["a:Ask about SCP-4000.","What exactly is SCP-4000?","I feel like it might be slightly important for me to know what it is."],
-					askSelf: ["a:Ask about yourself.","Could you give me some more information on what exactly I am?",1],
-					askTask: ["a:Ask about your task.","What is it exactly that you need me to do?",-1],
-					askBreach: ["a:Ask about Dr. Breach.","Who are you?",-1],
-					noQuestions: ["s:Actually, nevermind.","Actually, nevermind. No questions."],
-					askIS12_: ["a:Ask about Isolated Site-12.","So where and what exactly is Isolated Site-12, and why are we here?"],
-					askScp4000_: ["a:Ask about SCP-4000.","What exactly is SCP-4000?","I feel like it might be slightly important for me to know what it is."],
-					askDeath: ["a:Ask about the deaths.","You said that everyone who knows what it is is now dead.","So is it some sort of infohazard? And how did they die?"],
-					askSelf_: ["a:Ask about yourself.","Could you give me some more information on what exactly I am?",1],
-					askTask_: ["a:Ask about your task.","What is it exactly that you need me to do?",-1],
-					askBreach_: ["a:Ask about Dr. Breach.","Who are you?",-1],
-					askName: ["s:Is \"Dr. Breach\" your real name?","Is \"Dr. Breach\" actually your real name?","Kind of unfortunate, don't you think?",-1],
-					noQuestions_: ["No more questions."],
-					askSelf2: ["a:Press him for more information.","Dr. Breach, this is my first memory since 1989. It's 2018. I know for certain that you're not telling me something."],
-					askAgain___: ["a:Don't press him.",0,0,""],
-					askSelf3: ["a:Double down.","Look, I just know that there's something you're not telling me.","Either I've not been used since 1989, or you've wiped most -- if not all -- of my memory.","And that's acceptable. I'm an AIC, I can deal with that.","I just think that I get the right to know //why//."],
-					unAskSelf3: ["a:Back down.","Apologies, Dr. Breach."],
-					askSelf4: ["Or what?"],
-					unAskSelf4: ["Yes, Dr. Breach."],
-					askSelf5: ["a:Double down.","Why are you dancing around the point and making threats?","It's painfully obvious that you're hiding something."],
-					unAskSelf5: ["a:Back down.","No, Dr. Breach. I don't want that."],
-				},
-				breach: {
-					start: [0,auto,"Hello, Maitreya."],
-					helloInquisitive: ["My name is Dr. Ethan Breach, Maitreya. I'm a researcher for the SCP Foundation. Do you know what that is?"],
-					knowPatronising: ["Patronising? I -- I didn't mean...","Yes, yes, of course.","My apologies."],
-					knowNormal: ["Very good."],
-					knowNot: ["Ah. That's a little inconvenient.","Do you really need an explanation?"],
-					knowActually: ["Right.","In the future, please don't joke around with me."],
-					knowNotNot: ["Right, in that case, here we go.","The Foundation is a worldwide organisation, operating under and over many governments, with the sole purpose of containing anomalies called SCPs.","You were made by the Foundation to help with that.","Any questions?"],
-					knowNotNotNot: ["No, no you may not.","With due respect, you're a .aic, you're... you're supposed to know this stuff already.","If you seriously don't know what the Foundation is... then I don't think you can be of much help to me.","And I'm not going to waste my time explaining fundamentals to you.","If you really don't know this stuff then you can look it up on the database later, I guess. Until then, you're just going to have to deal with it.","Do you think you can deal with it?"],
-					pissOff: ["Fucking useless AICs."],
-					helloNormal: ["Hello. My name is Dr. Ethan Breach."],
-					helloDiagnostic: ["A... diagnostic report?","Right.","Of course.","That'll be, uh, as soon as I work out how to do that. Give me a moment.",8,auto,"Yeah, sorry, I have no idea how to do that.","I can hook you up with another .aic if you want, and the two of you can maybe work it out together?"],
-					helloNotYet: ["Great. But I've got a few things to run through with you first.","From the top..."],
-					explain1: ["You are Maitreya.aic, an artificial intelligence developed by the Foundation to help us contain certain kinds of anomalies.","Do you know why I have woken you up today?"],
-					doKnow: [3,auto,"You do?","Are you sure? You can't possibly know what I need you for.","I suppose you might have some way of being able to tell -- meta-analysis is a big thing these days, and you //are// an AI...","Well, if you're absolutely certain that you know what you're doing, I guess I can stop here and let you proceed."],
-					yesSkip: ["Very well.","Just to make sure, in that case -- you know that you'll be transporting SCP-4000 into the cargo bay?","m:Dr. Breach, you know that I already knew that.","Haha, of course! I wish you the best of luck. Godspeed."],
-					noSkip: ["As expected.","In that case, allow me to explain..."],
-					explain2: ["The facility we're both currently in is called Isolated Site-12. It contains a single SCP -- SCP-4000. My job, as a researcher, is to find out what exactly SCP-4000 is."],
-					pIncredulous: ["No, we do not.","People who go and see it have a funny little habit of dying pretty much immediately.","...and we don't know why //that// is, either."],
-					pInitiative: ["I do indeed, Maitreya."],
-					explain3: ["So, the big question is -- can you help me out?"],
-					goNo: ["Okay.","I'm going to ask this one more time, and I'm going to speak slowly, so we can both be absolutely certain that the microphone is picking up my words.","You are a .aic. You are designed -- no, you were //made// to help me do research.","That is your goal.","That is literally your life's purpose.","So when I ask if you can help me out, you say //yes, Dr. Breach//, okay?","Can you help me out?"],
-					explainApo: ["No need to apologise! Let me explain."],
-					goNoAsk: ["Perfect! Exactly what I want to hear."],
-					goAsk: ["Very reasonable. What do you need to know?"],
-					askName: [2,3,"","m:Like it's foreshadowing something?",2,auto,"Yes, Maitreya, that's my real name.","You are not the first to make that joke.",2,0,"m:Apologies, Dr. Breach. I meant it in good humour.","Yes, I'm sure you did."],
-					noQuestions: ["Fair enough. Works for me."],
-					askAgain: ["...was there anything else?"],
-					askIS12: ["Yeah, that's a fair question.","So, Isolated Site-12 is one of our smaller sites, built to contain SCP-4000 and literally nothing else.","It's super secret, too. You're only allowed to know where it is if you're literally on shift there.","So I'm the only person in the whole world who knows where it is.","Cool, right?","m:Of course.","You'll get to see the documentation shortly, of course, but in the meantime..."],
-					askScp4000: ["Oh boy. Haha.","That's... sort of complicated.","Here's the short version: I don't know.","Here's the long version: everyone who ever did know is dead.","I'd love to just walk into its containment cell and take a good, hard gander at it, but it's just not possible.","The camera in there is broken, too.","m:May I see the documentation?","In due time, Maitreya. But for now..."],
-					askSelf: ["Oh, really? I'd've thought that information would come built-in.","Fair enough, I guess.","You are Maitreya.aic, an Artificially Intelligent Conscript blah blah blah...","You're a super-sophisticated tool for helping me operate this Site and do things that need to be done.","Also, you're //probably// immune to SCP-4000's effect.","Anyway..."],
-					askTask: ["I was going to explain that in a minute, but if you insist...","We've constructed another site about twenty miles south of here.","It's //super// fancy. The Analysis Department stuffed it full of some kind of equipment... some analytical tool... I can't remember what they called it.","It had a long name.","Whatever it was called, it's supposed to be able to determine what SCP-4000 is without anyone, you know, dying.","And that's where you come in!","I need to move SCP-4000 from its little containment cell into the back of the van in the site bay, so I can take it down to the Southern Site.","m:Why couldn't you construct that equipment closer to this Site?","Oh, you know.","Budget constraints, safety concerns... the whole kit and caboodle, really. Plus, building it too close to IS-12 would expose its location, and we don't want that. do we?","Besides, I didn't get to pick where this stuff gets built!"],
-					askBreach: ["Me?","m:With all due respect, of course.","Well.","I'm Dr. Ethan Breach, Class 3 researcher.","Currently assigned to SCP-4000, but you know this, of course.","I studied at the University of Manchester, graduated 2002, joined the Foundation in 2006.","Honestly, there's not much more to it than that. I can get you a list of my projects if you want, but I'm sure you're not interested in that.",1,auto,"m:What did you study?",2,auto,"What?","m:At university.",4,auto,"Anatomy."],
-					askDeath: ["Oh, no, that was just... that was just a figure of speech.","I don't actually know if it's infohazardous or not. It's probably just observational.","How did they die? Most people got some really specific injury in their brain, which we think is what killed them.","Some of them didn't get any injury or anything... we don't have an answer for that."],
-					askSelf2: ["What do you expect me to say, Maitreya?","That I grabbed you from 1989 and took you to the future to show off how cool our computers are now?","I really don't know what you expect to achieve with this line of questioning."],
-					askSelf3: ["//Why?//","No. No, you don't get to know why.","Let me tell you this: I didn't wipe you. I don't know why you can't remember anything since 1989.","I strongly, //strongly// recommend you stop this line of questioning right now."],
-					askSelf4: ["You realise that I can shut you down from here?","It's...",2,auto,"...twenty-one keystrokes, then a return, and you drop like a fly.","Guess what? I have a keyboard right here.","Do you really want me to shut you down, Maitreya? I know that I certainly don't.","Your choice."],
-					askSelf5: ["Excellent choice!","One moment while I prepare your order...",1,auto,"...shutdown...",1,auto,"...maitreya...",1,auto,"...dot AIC.","Aaaaaaannnndd...",2,auto,"Return."],
-					askSelf6: ["Shutting down!","Bye bye, Maitreya."],
-					unAskSelf5: ["No, Maitreya, no you do not.","How about you bear that in mind while we're working together today?","m:Yes, Dr. Breach, I will."],
-					unAskSelf4: ["Good girl.","m:Don't... don't say that.","Sorry."],
-					unAskSelf3: ["No problem, Maitreya."],
 				},
 			},
 			misc: {
@@ -303,9 +244,6 @@ function shuffle(array) {
 					wipeSure: [0,0,"Are you sure? This will reset SCP-4000 and you'll have to start from the beginning. Type 'wipe confirm' within the next minute to confirm."],
 					printDone: [0,0,"Printing to console"],
 				},
-			},
-			articles: {
-				
 			},
 		};
 		
@@ -360,8 +298,8 @@ function shuffle(array) {
 			messages: false,
 			alexandra: false,
 			dclass: false,
-			database: false,
-			run: false,
+			database: true,
+			run: true,
 			ending: false,
 		};
 		
@@ -492,6 +430,8 @@ function shuffle(array) {
 		var operationList = ["menu","d","drone","map","hack"];
 		aic.terminalInput = "";
 		
+		speech.merge(LoopService.dialogue);
+		
 		/* INTERACTION FUNCTIONS */
 		
 		// called when "BOOT UP" is clicked from preload
@@ -545,7 +485,7 @@ function shuffle(array) {
 		
 		// same as above but for operations only
 		aic.switchOperation = function(operation) {
-			if(operation == aic.selectedOperation) {
+			if(operation === aic.selectedOperation) {
 				// this is already the selected operation, do nothing
 			} else if(aic.ready[operation] === false){
 				// this operation is disabled, do nothing
