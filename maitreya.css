@@ -1139,19 +1139,49 @@ misc leave -> slide to left DONE
 	position: absolute;
 	/* most of the style is in the HTML */
 }
+#run-app .section.map-section .sitemap .room::after {
+	content: attr(data-room);
+	text-transform: uppercase;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	pointer-events: none;
+	font-size: 20px;
+	z-index: 200;
+}
+#run-app .section.map-section .sitemap .room[data-room=server-corridor]::after,
+#run-app .section.map-section .sitemap .room[data-room=d-corridor]::after,
+#run-app .section.map-section .sitemap .room[data-room=armoury-corridor]::after,
+#run-app .section.map-section .sitemap .room[data-room=office-corridor]::after,
+#run-app .section.map-section .sitemap .room[data-room=ring-north]::after,
+#run-app .section.map-section .sitemap .room[data-room=ring-east]::after,
+#run-app .section.map-section .sitemap .room[data-room=ring-south]::after,
+#run-app .section.map-section .sitemap .room[data-room=ring-west]::after,
+#run-app .section.map-section .sitemap .room[data-room=airlock]::after,
+#run-app .section.map-section .sitemap .room[data-room=containment]::after,
+#run-app .section.map-section .sitemap .room[data-room=toilet]::after {
+	content: none;
+	/* my god I'm sick of all these fucking exclusions */
+}
 #run-app .section.map-section .sitemap .room div {
 	position: absolute;
 	opacity: 0;
 	width: 100%;
 	height: 100%;
+	background-image: url(rooms_overlay.png);
 }
 #run-app .section.map-section .sitemap .room.error .room-light {
 	opacity: 0;
+}
+#run-app .section.map-section .sitemap .room.error {
+	animation: opacity-flicker 0.075s linear 0s 1;
 }
 #run-app .section.map-section .sitemap .room:not(.error) .room-error-dark,
 #run-app .section.map-section .sitemap .room:not(.error) .room-error-light {
 	opacity: 0;
 	pointer-events: none;
+	animation: opacity-flicker 0.075s linear 0s 2;
 }
 #run-app .section.map-section .sitemap .room.error .room-error-dark {
 	opacity: 1;

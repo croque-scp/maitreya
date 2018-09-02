@@ -59,7 +59,7 @@
 					unAskSelf5: ["No, Maitreya, no you do not.","How about you bear that in mind while we're working together today?","m:Yes, Dr. Breach, I will."],
 					unAskSelf4: ["Good girl.","m:Don't... don't say that.","Sorry."],
 					unAskSelf3: ["No problem, Maitreya. Just be careful."],
-					askVoice: ["how u speking m8"],
+					askVoiceA: ["how u speking m8"],
 				},
 				maitreya: {
 					helloNormal: ["Hello."],
@@ -99,8 +99,8 @@
 					askSelf_: ["a:Ask about yourself.","Could you give me some more information on what exactly I am?",1],
 					askTask_: ["a:Ask about your task.","What is it exactly that you need me to do?",-1],
 					askBreach_: ["a:Ask about Dr. Breach.","Who are you?",-1],
-					askVoice: ["How are we talking?"],
-					askVoice_: ["How are we talking?"],
+					askVoiceA: ["How are we talking?"],
+					askVoiceB: ["How are we talking?"],
 					askName: ["s:Is \"Dr. Breach\" your real name?","Is \"Dr. Breach\" actually your real name?","Kind of unfortunate, don't you think?",-1],
 					noQuestions_: ["No more questions."],
 					askSelf2: ["a:Press him for more information.","Dr. Breach, this is my first memory since 1989. It's 2018. I know for certain that you're not telling me something."],
@@ -336,13 +336,13 @@
 								aic.presentOptions("breach",bigSection,[
 									!aic.vars.hasAskedSite12 ? "askIS12_" : void 0,
 									!aic.vars.hasAsked4000 ? "askScp4000_" : void 0,
-									!aic.vars.hasAskedDeath && aic.vars.hasAsked4000 ? "askDeath" : void 0,
+									!aic.vars.hasAskedDeath && !!aic.vars.hasAsked4000 ? "askDeath" : void 0,
 									!aic.vars.hasAskedSelf ? "askSelf_" : void 0,
 									!aic.vars.hasAskedTask ? "askTask_" : void 0,
 									!aic.vars.hasAskedBreach ? "askBreach_" : void 0,
-									aic.vars.breachExplainedVoice && !aic.vars.hasAskedVoice ? "askVoice" : void 0,
-									!aic.vars.breachExplainedVoice && !aic.vars.hasAskedVoice ? "askVoice_" : void 0,
-									!aic.vars.hasAskedName && aic.vars.hasAskedSite12 && aic.vars.hasAsked4000 && aic.vars.hasAskedSelf && aic.vars.hasAskedTask && aic.vars.hasAskedBreach ? "askName" : void 0,
+									!!aic.vars.breachExplainedVoice && !aic.vars.hasAskedVoice ? "askVoiceA" : void 0,
+									!aic.vars.breachExplainedVoice && !aic.vars.hasAskedVoice ? "askVoiceB" : void 0,
+									!aic.vars.hasAskedName && !!aic.vars.hasAskedSite12 && !!aic.vars.hasAsked4000 && !!aic.vars.hasAskedSelf && !!aic.vars.hasAskedTask && !!aic.vars.hasAskedBreach ? "askName" : void 0,
 									"noQuestions_"
 								]);
 							},delay*1000 + aic.maitreyaDelay*1000, true);
@@ -449,19 +449,20 @@
 								aic.breachLoop(bigSection,"askAgain_________");
 							},delay*1000);
 							break;
-						case "askVoice":
+						case "askVoiceA":
+							aic.vars.hasAskedVoice = true;
 							delay = aic.writeDialogue("breach",msg,"breach");
 							$timeout(function() {
 							},delay*1000);
 							break;
 						default:
-							throw new Error("Breach: " + smallSection + " is not an event in " + bigSection);
+							throw new Error("Breach " + smallSection + " is not an event in " + bigSection);
 					}
 					break;
 				case "UNDEFINED":
 					switch(smallSection) {
 						default:
-							throw new Error("Breach: " + smallSection + " is not an event in " + bigSection);
+							throw new Error("Breach " + smallSection + " is not an event in " + bigSection);
 					}
 					break;
 				

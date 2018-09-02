@@ -30,10 +30,12 @@ String.prototype.format = function() {
 		.replace(/\?\?(.*?)\?\?/g, "<span dynamic class='statement false' data-bool='TRUE'>$1</span>")
 		.replace(/!!(.*?)!!/g, "<span class='statement true' data-bool='FALSE'>$1</span>")
 		.replace(/--/g, "—") // Wikidot em-dash replacement
-		.replace(/\+(.*)$/g, "<h1>$1</h1>") // h1
-		.replace(/\+\+(.*)$/g, "<h2>$1</h2>") // h2
-		.replace(/-{3,}/g, "<hr>"); // horizontal rule
-		// TODO add support for images // really, past-me?
+		.replace(/^\=\s(.*)$/g, "<div style='text-align: center;'>$1</div>") // h1
+		.replace(/(^|>)\+\s([^<]*)/g, "$1<h1>$2</h1>") // h1
+		.replace(/(^|>)\+\+\s([^<]*)/g, "$1<h2>$2</h2>") // h2
+		.replace(/(^|>)\+\+\+\s([^<]*)/g, "$1<h3>$2</h3>") // h3
+		.replace(/^-{3,}/g, "<hr>"); // horizontal rule
+		// TODO add support for images // really, past-me? // really, less-past me?
 };
 
 // randomise an array
@@ -80,12 +82,21 @@ function shuffle(array) {
 			messagesAppName: "COMMUNICATIONS INTERFACE",
 			databaseAppName: "FOUNDATION DATABASE SEARCH",
 			runAppName: "IS-12 OPERATIONS CONTROL",
+			endAppName: "THE END",
 			
 			statementTrue: "TRUE",
 			statementFalse: "FALSE",
 			
 			speechOption: "SAY",
 			actionOption: "DO",
+			
+			breachTitle: "Breach E.",
+			alexandraTitle: "Alexandra.aic",
+			breachHeader: "You are talking to: BREACH E.",
+			alexandraHeader: "You are talking to: ALEXANDRA.AIC",
+			breachSpeakingMode: "Dr. Breach is speaking...",
+			breachTypingMode: "Dr. Breach is typing...",
+			alexandraThinking: "Alexandra is thinking...",
 			
 			// The following are commands used in the terminal
 			// To add alternative commands, just make another entry in the array
@@ -123,46 +134,86 @@ function shuffle(array) {
 			},
 			articles: {
 				// if "text" is just a URL, it prompts the user to go to that URL to access the file
-				scp4000: { title: "SCP-4000", text:
-					"**Item #:** SCP-4000||||||||" +
-					"**Object Class:** Safe||||||||" +
-					"**Special Containment Procedures:** SCP-4000 is to be kept within a reinforced containment chamber at Isolated Site-12. No entry to the containment chamber is permitted. Observation of SCP-4000 should be avoided except during testing.||||||||" +
-					"Isolated Site-12 is to be staffed with a single member of personnel at all times. The current project head is Dr. Breach. No other staff are permitted to be on-site.||||||||" +
-					"[[[aic.selectedArticle = 'alexandra'|Alexandra.aic]]] is to maintain a presence at Isolated Site-12 to support Dr. Breach in his duties.||||||||" +
-					"Knowledge of the location of Isolated Site-12, and by extension SCP-4000, is strictly need-to-know only.||||||||" +
-					"Dr. Breach is authorised to use whatever means he deems necessary in order to support ongoing research into SCP-4000.||||||||" +
-					"**Description:** SCP-4000 is an object, entity or concept that is currently located at Isolated Site-12. It is currently unknown what, if any, anomalous effects SCP-4000 exhibits.||||||||" +
-					"SCP-4000 was discovered on 2010-03-04 in [DATA EXPUNGED], in which Isolated Site-12 was later constructed. Initial containment resulted in the deaths of all civilians who were originally exposed to SCP-4000, both mobile task forces sent, the Foundation operators directing those MTFs via radio, and most other personnel observing operations. Autopsies concluded that those who did not die due to [DATA EXPUNGED] on account of the weather in the region suffered no physical injuries barring minor restructuring of certain parts of the brain. Other than these discrepancies -- including several cases in which the restructuring was not present -- pathologists were unable to ascertain any reason for death.||||||||" +
+				scp4000: { title: "SCP-4000", category: "scp", available: true, text: [
+					"**Item #:** SCP-4000",
+					"**Object Class:** Safe",
+					"**Special Containment Procedures:** SCP-4000 is to be kept within a reinforced containment chamber at Isolated Site-12. No entry to the containment chamber is permitted. Observation of SCP-4000 should be avoided except during testing.",
+					"Isolated Site-12 is to be staffed with a single member of personnel at all times. The current project head is Dr. Breach. No other staff are permitted to be on-site.",
+					"[[[aic.selectedArticle = 'alexandra'|Alexandra.aic]]] is to maintain a presence at Isolated Site-12 to support Dr. Breach in his duties.",
+					"Knowledge of the location of Isolated Site-12, and by extension SCP-4000, is strictly need-to-know only.",
+					"Dr. Breach is authorised to use whatever means he deems necessary in order to support ongoing research into SCP-4000.",
+					"**Description:** SCP-4000 is an object, entity or concept that is currently located at Isolated Site-12. It is currently unknown what, if any, anomalous effects SCP-4000 exhibits.",
+					"SCP-4000 was discovered on 2010-03-04 in [DATA EXPUNGED], in which Isolated Site-12 was later constructed. Initial containment resulted in the deaths of all civilians who were originally exposed to SCP-4000, both mobile task forces sent, the Foundation operators directing those MTFs via radio, and most other personnel observing operations. Autopsies concluded that those who did not die due to [DATA EXPUNGED] on account of the weather in the region suffered no physical injuries barring minor restructuring of certain parts of the brain. Other than these discrepancies -- including several cases in which the restructuring was not present -- pathologists were unable to ascertain any reason for death.",
 					"Current containment procedures are the combined result of trial-and-error and preemptive attempts to prevent further loss of life, and have been in place since SCP-4000 was found. No casualties have been attributed to SCP-4000 since then.",
+					]
 				},
-				scp079: { title: "SCP-079", text: "http://www.scp-wiki.net/scp-079" },
-				is12: { title: "Isolated Site-12", text: "article text" },
-				quttinirpaaq: { title: "Quttinirpaaq", text: "https://en.wikipedia.org/wiki/Quttinirpaaq_National_Park" },
-				ethanBreach: { title: "Dr. Ethan Breach", text: "article text" },
-				rebeccaCarver: { title: "Dr. Rebecca Carver", text: "article text" },
-				alexandra: { title: "Alexandra.aic", text: "article text" },
-				maitreya: { title: "Maitreya.aic", text: "article text" },
-				glacon: { title: "Glacon.aic", text: "article text" },
-				glaconIncident: { title: "Incident AIAD-CM-IV", text: "article text" },
+				is12: { title: "Isolated Site-12", category: "location", available: true, text: [
+					"= + SCP Foundation Secure Facility Dossier",
+					"= **Official Designation:** SCP Foundation Quittinirpaaq Isolated Containment Facility",
+					"= **Site Identification Code:** NACANU-IS-12",
+					"----",
+					"= ++ General Information",
+					"----",
+					"[[include component:image-block name=site12_300.png|caption=Isolated Site-12]]",
+					"**Purpose:** Isolated Site-12 is dedicated solely to the containment of SCP-4000.",
+					"**Founded:** 2010-03-04",
+					"**Founding Director:** Dr. Rebecca Carver",
+					"**Location:** Quittinirpaaq National Park, Ellesmere Island, Nunavut, Canada",
+					"**Cover Story:** Secondary Global Seed Vault",
+					"**Site Function:** Containment (singular -- see [[[aic.selectedArticle = 'scp4000'|SCP-4000]]])",
+					"**Size:** Area of 1.9 km^^2^^",
+					"----",
+					"= ++ Staffing Information",
+					"----",
+					"**Site Director:** None",
+					"**On-Site Personnel:**",
+					"    **Staff Researchers:** 0",
+					"    **Maintenance or Janitorial:** 1",
+					"    **D-Class:** 0",
+					"    **Other Personnel:** 0",
+					"-----",
+					"= ++ Additional Information",
+					"----",
+					"Located near the uppermost tip of Ellesmere Island, Isolated Site-12 is one of the most northern facilities operated by the Foundation. It is also one of the coldest, covered in snow for most of the year. Its location is kept strictly classified to those currently on-shift at the Site, who must be amnesticised post-shift in order to remove knowledge of its whereabouts.</p>",
+					"Isolated Site-12 is used solely for the containment of SCP-4000. Containment procedures for SCP-4000 dictate that as few people as possible are to be exposed to it in any way.",
+					"Isolated Site-12 must be staffed at all times by a single member of personnel. They are tasked with maintaining the Site, ensuring SCP-4000 does not breach containment, and ensuring that any problems that arise are solved quickly. Alexandra.aic maintains a presence within Isolated Site-12 servers to handle most issues, and also to provide the on-site personnel with social entertainment.",
+					"Transport to and from Isolated Site-12 is by air. Aircraft are stored in the on-site hangar. Alexandra.aic is trusted with plotting and piloting a sufficiently complex travel route.",
+					]
+				},
+				breach: { title: "Dr. Ethan Breach", category: "person", available: true, text: [
+					"article text"
+					]
+				},
+				rebeccaCarver: { title: "Dr. Rebecca Carver", category: "person", available: false, text: [
+					"article text"
+					]
+				},
+				alexandra: { title: "Alexandra.aic", category: "utility", available: false, text: [
+					"article text"
+					]
+				},
+				maitreya: { title: "Maitreya.aic", category: "utility", available: false, text: [
+					"article text"
+					]
+				},
+				glacon: { title: "Glacon.aic", category: "utility", available: false, text: [
+					"article text"
+					]
+				},
+				scp079: { title: "SCP-079", category: "scp", available: false, text:
+					"http://www.scp-wiki.net/scp-079"
+				},
+				quttinirpaaq: { title: "Quttinirpaaq", category: "location", available: false, text:
+					"https://en.wikipedia.org/wiki/Quttinirpaaq_National_Park"
+				},
+				glaconIncident: { title: "Incident AIAD-CM-IV", category: "event1", available: true, text:
+					"http://www.scp-wiki.net/clock-multiplier"
+				},
 			},
 		};
 		
 		// This object contains all dialogue strings
 		var speech = {
-			merge: function(dialogue) {
-				// this is the function that merges dialogue from LoopService into this variable
-				for(let bigSection in dialogue) {
-					if(this.hasOwnProperty(bigSection)) {
-						// if speech already has the bigSection, we can't overwrite it, we just need to dupe its inner values
-						for(let speaker in dialogue[bigSection]) {
-							this[bigSection][speaker] = dialogue[bigSection][speaker];
-						}
-					} else {
-						// if speech does not have the bigSection, hell yeah let's overwrite that shit
-						this[bigSection] = dialogue[bigSection];
-					}
-				}
-			},
 			INTRODUCTION: {
 				terminal: {
 					startBoot: [
@@ -221,7 +272,7 @@ function shuffle(array) {
 			misc: {
 				terminal: {
 					breachShutDown: [
-						0,0,"w:Shutdown command issued from external source (A1_TERMINAL)",
+						0,0,"w:Shutdown command issued from external source (ebrach1@A1_TERMINAL)",
 						0,1,"Shutting down...",
 						0,4,"Shutdown complete.",
 					],
@@ -244,6 +295,20 @@ function shuffle(array) {
 					wipeSure: [0,0,"Are you sure? This will reset SCP-4000 and you'll have to start from the beginning. Type 'wipe confirm' within the next minute to confirm."],
 					printDone: [0,0,"Printing to console"],
 				},
+			},
+			merge: function(dialogue) {
+				// this is the function that merges dialogue from LoopService into this variable
+				for(let bigSection in dialogue) {
+					if(this.hasOwnProperty(bigSection)) {
+						// if speech already has the bigSection, we can't overwrite it, we just need to dupe its inner values
+						for(let speaker in dialogue[bigSection]) {
+							this[bigSection][speaker] = dialogue[bigSection][speaker];
+						}
+					} else {
+						// if speech does not have the bigSection, hell yeah let's overwrite that shit
+						this[bigSection] = dialogue[bigSection];
+					}
+				}
 			},
 		};
 		
@@ -294,10 +359,10 @@ function shuffle(array) {
 			// MUST BE TRUE
 			terminal: true,
 			// MUST ALL BE FALSE
-			breach: false,
-			messages: false,
-			alexandra: false,
-			dclass: false,
+			breach: true,
+			messages: true,
+			alexandra: true,
+			dclass: true,
 			database: true,
 			run: true,
 			ending: false,
@@ -306,9 +371,16 @@ function shuffle(array) {
 		aic.onMobile = $("#interface").width() < 700;
 		
 		aic.vars = { // miscellaneous variables for stuff
+			/* STATUS */
+			// most variables **do not need** to be initialised
+			// this is mostly just for me to remember what variables I'm using
+			breachExplainedVoice: false,
+			breachExplainedTyping: false,
+			
 			/* APPS */
 			terminalEmphasis: false, // false
 			messagesEmphasis: false, // false
+			breachEntryMode: "speaking", // speaking
 			
 			/* MAP */
 			hoveredRoom: "none", // none
@@ -355,16 +427,6 @@ function shuffle(array) {
 				opinion: -5, // -5
 				location: assignRoom("d3"),
 			},
-			
-			/* OPTIONS INITIALISATION */
-			breachExplainedVoice: false,
-			hasAskedSite12: false,
-			hasAsked4000: false,
-			hasAskedDeath: false,
-			hasAskedSelf: false,
-			hasAskedTask: false,
-			hasAskedBreach: false,
-			hasAskedName: false,
 		};
 		aic.rooms = {
 			// these are ordered left to right on the map (ish)
@@ -387,7 +449,7 @@ function shuffle(array) {
 			airlock: {error: true, log: [],},
 			ringNorth: {error: false, log: [],},
 			ringSouth: {error: false, log: [],},
-			toilet: {error: false, log: [],},
+			toilet: {error: true, log: [],},
 			storage: {error: false, log: [],},
 			officeCorridor: {error: false, log: [],},
 			containment: {error: true, log: [],},
@@ -492,6 +554,10 @@ function shuffle(array) {
 			} else {
 				aic.selectedOperation = operation;
 			}
+		};
+		
+		aic.switchArticle = function(article) {
+			console.log(article);
 		};
 		
 		// Called when the user submits text via the terminal
@@ -636,7 +702,7 @@ function shuffle(array) {
 		};
 		
 		aic.rebootRooms = function() {
-			mainLoop("MISC","rebootRooms");
+			mainLoop("ROOMS","rebootRooms");
 		};
 		
 		/* PLOT FUNCTIONS */
@@ -699,7 +765,7 @@ function shuffle(array) {
 					}
 					break;
 				
-				case "MISC":
+				case "ROOMS":
 					var rooms = [];
 					switch(smallSection) {
 						
@@ -708,7 +774,7 @@ function shuffle(array) {
 							// first, turn them all off
 							// then turn them all back on, one by one
 							$timeout(function() {
-								mainLoop("MISC","unbootRoom");
+								mainLoop("ROOMS","unbootRoom");
 							},200);
 							break;
 							
@@ -724,11 +790,11 @@ function shuffle(array) {
 							rooms.shift();
 							if(rooms.length > 0) {
 								$timeout(function() {
-									mainLoop("MISC","unbootRoom",rooms);
+									mainLoop("ROOMS","unbootRoom",rooms);
 								},Math.floor(Math.random()*20));
 							} else {
 								$timeout(function() {
-									mainLoop("MISC","bootRoom");
+									mainLoop("ROOMS","bootRoom");
 								},2000);
 							}
 							break;
@@ -753,7 +819,7 @@ function shuffle(array) {
 							rooms.shift();
 							if(rooms.length > 0) {
 								$timeout(function() {
-									mainLoop("MISC","bootRoom",rooms,delay);
+									mainLoop("ROOMS","bootRoom",rooms,delay);
 								},Math.floor(Math.random()*delay));
 							}
 							break;
@@ -1039,6 +1105,11 @@ function shuffle(array) {
 								break;
 							case "n": // 592 narration
 								force = "narrator";
+								break;
+							case "q": // quiet, but might not implement this
+								break;
+							case "t": // message is typed, not spoken
+								n2 *= 2;
 								break;
 							default:
 								throw new Error("Unknown dialogue type: " + dialogueList[i].charAt(0));
