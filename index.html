@@ -57,6 +57,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 		<link href="maitreya.css" rel="stylesheet">
 		
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-sanitize.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
@@ -65,25 +66,23 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 	</head>
 	<body>
 		<div id="container">
-			<h1>{{greeter.greet()}}</h1>
-			<h1>{{fareweller.farewell()}}</h1>
 			<button class="option action">Fuck Bilbo Baggins in his tiny baby butt with my pixie dick</button>
 			<button class="option action">Waka</button>
 			<button class="option speech">Hello, my name is Maitreya.</button>
 			<button class="option speech">Who the fucking fuck are you and where the fuck am I</button>
 			
 			<p>It's a beautiful day outside.<p>
-			<p>Hello there. <span class="statement true" ng-attr-data-bool="{{aic.lang.true}}">My name is Tom</span>. How are you?</p>
-			<p>My grandfather is <span class="statement false" ng-attr-data-bool="{{aic.lang.false}}">out there</span>, somewhere.</p>
+			<p>Hello there. <span class="statement true" ng-attr-data-bool="{{::aic.lang.true}}">My name is Tom</span>. How are you?</p>
+			<p>My grandfather is <span class="statement false" ng-attr-data-bool="{{::aic.lang.false}}">out there</span>, somewhere.</p>
 			<div id="interface" ng-class="[aic.preload ? 'preload' : null, aic.ready.ending ? 'ended' : null]" ng-cloak>
 				<div id="app-selector">
 					<div class="title">
 						<img src="maitreya.png">
 						<div>
-							<p>{{aic.lang.version}}</p>
+							<p>{{::aic.lang.version}}</p>
 							<p ng-hide="true">This text should not be visible (unless you have javascript disabled) - if you can see this text, please contact the author.</p>
-							<p ng-show="aic.onMobile">{{aic.lang.mobileWarning}}</p>
-							<button id="boot-up" class="option speech" ng-click="aic.bootUp()">{{aic.lang.bootUp}}</button>
+							<p ng-show="::aic.onMobile">{{::aic.lang.mobileWarning}}</p>
+							<button id="boot-up" class="option speech" ng-click="aic.bootUp()">{{::aic.lang.bootUp}}</button>
 						</div>
 					</div>
 					<ul class="apps">
@@ -114,7 +113,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 					
 					<div id="terminal-app" class="container" ng-class="aic.selectedApp == 'terminal' ? 'selected' : null">
 						<div class="app-title">
-							<p>{{aic.lang.terminalAppName}}</p>
+							<p>{{::aic.lang.terminalAppName}}</p>
 						</div>
 						<div class="app-main">
 							
@@ -135,12 +134,11 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									<div class="bottom"></div>
 								</div>
 							<div class="input-section" ng-class="aic.terminalInput.length > 0 ? 'loaded' : null">
-										<div class="hint-arrow left"></div>
-										<div class="hint-arrow right"></div>
+								<div class="hint-arrow left"></div>
+								<div class="hint-arrow right"></div>
 								<form ng-submit="aic.processTerminalInput()" class="middle-bar">
-									<!--<p>{{aic.lang.commandInput}}</p>-->
-									<input id="terminal-input" ng-model="aic.terminalInput" ng-keydown="aic.previousCommand($event)" placeholder="{{aic.lang.commandInput}}">
-									<button id="terminal-send" class="option action" type="submit">{{aic.lang.terminalSend}}</button>
+									<input id="terminal-input" ng-model="aic.terminalInput" ng-keydown="aic.previousCommand($event)" placeholder="{{::aic.lang.commandInput}}">
+									<button id="terminal-send" class="option action" type="submit">{{::aic.lang.terminalSend}}</button>
 								</form>
 								
 							</div>
@@ -154,18 +152,18 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 					
 					<div id="messages-app" class="container" ng-class="aic.selectedApp == 'messages' ? 'selected' : null">
 						<div class="app-title">
-							<p>{{aic.lang.messagesAppName}}</p>
+							<p>{{::aic.lang.messagesAppName}}</p>
 						</div>
 						<div class="app-main">
 							
 							<div id="messages-selector">
 								<ul>
 									<li id="breach-msg" class="selector" ng-click="aic.switchSpeaker('breach')" ng-class="[aic.selectedSpeaker == 'breach' ? 'selected' : null, aic.ready.breach ? null : 'disabled']">
-										<a>{{aic.lang.breachTitle}}</a>
+										<a>{{::aic.lang.breachTitle}}</a>
 										<div class="notification" ng-show="aic.notifications.breach > 0"><p>{{aic.notifications.breach}}</p></div>
 									</li>
 									<li id="alexandra-msg" class="selector" ng-click="aic.switchSpeaker('alexandra')" ng-class="[aic.selectedSpeaker == 'alexandra' ? 'selected' : null, aic.ready.alexandra ? null : 'disabled']">
-										<a>{{aic.lang.alexandraTitle}}</a>
+										<a>{{::aic.lang.alexandraTitle}}</a>
 										<div class="notification" ng-show="aic.notifications.alexandra > 0"><p>{{aic.notifications.alexandra}}</p></div>
 									</li>
 								</ul>
@@ -176,17 +174,21 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 								<div id="breach-conversation" ng-show="aic.selectedSpeaker == 'breach'" class="conversation-wrapper">
 									<div class="conversation-container">
 										<div class="conversation">
-											<div ng-class="aic.isSpeaking.breach ? null : 'notSpeaking'" class="speaking">
-												<p><img src="typing.gif">{{aic.vars.breachEntryMode === "typing" ? aic.lang.breachTypingMode : aic.lang.breachSpeakingMode}}</p>
+											<div class="speaking-markers">
+												<div ng-class="aic.isSpeaking.breach ? null : 'notSpeaking'" class="speaking">
+													<p><img src="typing.gif">{{aic.vars.breachEntryMode === "typing" ? aic.lang.breachTypingMode : aic.lang.breachSpeakingMode}}</p>
+												</div>
+												<div ng-class="aic.isProcessing.breach ? null : 'notProcessing'" class="processing">
+													<img src="loading.gif">
+												</div>
 											</div>
 											<div class="wrapper" ng-repeat="line in aic.chatLog.breach.log" ng-class="[line.speaker, aic.chatLog.breach.log[$index-1].speaker == line.speaker ? 'collapsed' : null]">
 												<img ng-show="aic.chatLog.breach.log[$index-1].speaker !== line.speaker" ng-src="{{line.speaker == 'breach' ? 'breach_icon2.png' : (line.speaker == 'maitreya' ? 'maitreya_icon.png' : null)}}" ng-class="line.speaker" class="logo">
 												<div ng-class="[line.speaker, line.cssClass]">
 													<p><span ng-bind-html="line.text"></span></p>
 												</div>
-												<!-- <div class="logo maitreya">M</div> -->
 											</div>
-											<p class="title">{{aic.lang.breachHeader}}</p>
+											<p class="title">{{::aic.lang.breachHeader}}</p>
 										</div>
 									</div>
 									
@@ -197,12 +199,12 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									</div>
 									
 									<div class="options-block" ng-class="[aic.chatLog.breach.options.length > 0 ? 'options-ready' : null, aic.vars.chatEmphasis ? 'emphasis' : null]">
-										<!--<div class="disconnected-alert">DISCONNECTED</div>-->
+										<!--<div class="disconnected-alert">DISCONNECTED</div> TODO -->
 										<div class="hint-arrow left" ng-class="aic.vars.noob ? 'noob-emphasis' : null"></div>
 										<div class="hint-arrow right" ng-class="aic.vars.noob ? 'noob-emphasis' : null"></div>
 										<div class="options" ng-class="[5,6].includes(aic.chatLog.breach.options.length) ? 'balance' : null">
 											<div class="option-wrapper" ng-repeat="option in aic.chatLog.breach.options" ng-animate-children="true">
-												<button class="option" ng-class="option.optionType" ng-attr-data-action="{{aic.lang[option.optionType + 'Option']}}" ng-click="aic.maitreyaLoop('breach',option,this)">{{option.text}}</button>
+												<button class="option" ng-class="option.optionType" ng-attr-data-action="{{::aic.lang[option.optionType + 'Option']}}" ng-click="aic.maitreyaLoop('breach',option,this)">{{option.text}}</button>
 											</div>
 										</div>
 									</div>
@@ -217,7 +219,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									<div class="conversation-container">
 										<div class="conversation">
 											<div ng-show="aic.isSpeaking.alexandra" class="speaking">
-												<p><img src="typing.gif">{{aic.lang.alexandraThinking}}</p>
+												<p><img src="typing.gif">{{::aic.lang.alexandraThinking}}</p>
 											</div>
 											<div class="wrapper" ng-repeat="line in aic.chatLog.alexandra.log" ng-class="[line.speaker, aic.chatLog.alexandra.log[$index-1].speaker == line.speaker ? 'collapsed' : null]">
 												<img ng-src="{{line.speaker == 'alexandra' ? 'alex_sad.png' : (line.speaker == 'maitreya' ? 'maitreya_icon.png' : null)}}" ng-class="line.speaker" class="logo">
@@ -227,7 +229,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 												</div>
 												<!-- <div class="logo maitreya">M</div> -->
 											</div>
-											<p class="title">{{aic.lang.alexandraHeader}}</p>
+											<p class="title">{{::aic.lang.alexandraHeader}}</p>
 										</div>
 									</div>
 									
@@ -251,7 +253,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 					
 					<div id="database-app" class="container" ng-class="aic.selectedApp == 'database' ? 'selected' : null">
 						<div class="app-title">
-							<p>{{aic.lang.databaseAppName}}</p>
+							<p>{{::aic.lang.databaseAppName}}</p>
 						</div>
 						<div class="app-main">
 						
@@ -286,7 +288,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 					
 					<div id="run-app" class="container" ng-class="aic.selectedApp == 'run' ? 'selected' : null">
 						<div class="app-title">
-							<p>{{aic.lang.runAppName}}</p>
+							<p>{{::aic.lang.runAppName}}</p>
 						</div>
 						<div class="app-main">
 							<div class="back">
@@ -395,7 +397,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 								</div>
 								<p class="ending-desc" ng-repeat="line in aic.lang.endings[aic.currentEnding]">{{line}}</p>
 								<button class="option action" id="restart">RESTART</button>
-								<p class="ending-number">{{aic.lang.endingFraction}} {{aic.currentEnding + 1}}/{{aic.lang.endings.length}}</p>
+								<p class="ending-number">{{aic.vars.endingFractionText}}</p>
 							</div>
 						</div>
 					</div>

@@ -116,7 +116,7 @@ function shuffle(array) {
 					print: "print",
 				},
 			},
-			endingFraction: "Ending", // will be formatted "Ending XX/XX" - if this format is not suitable for your language, please adjust index.html as required (line TODO)
+			endingFraction: "Ending $1 of $2", // will be formatted "Ending 12 of 14"
 			endings: [
 				[ // example
 					"The cassette that contains Maitreya.aic was removed from its slot in a server at Isolated Site-12.",
@@ -128,9 +128,35 @@ function shuffle(array) {
 				],
 			],
 			rooms: {
-				hangar: {
-					description: ""
-				},
+				hangar: { mapName: "Hangar", name: "hangar", },
+				server: { mapName: "Server", name: "server room", },
+				serverCorridor: { mapName: null, name: "server room corridor", },
+				d1: { mapName: "S1", name: "Surplus Containment 1", },
+				d2: { mapName: "S2", name: "Surplus Containment 2", },
+				d3: { mapName: "S3", name: "Surplus Containment 3", },
+				dCorridor: { mapName: null, name: "Surplus Containment corridor", },
+				d4: { mapName: "S4", name: "Surplus Containment 4", },
+				d5: { mapName: "S5", name: "Surplus Containment 5", },
+				d6: { mapName: "S6", name: "Surplus Containment 6", },
+				armoury: { mapName: "Armoury", name: "armoury", },
+				pantry: { mapName: "Kitchen", name: "kitchen", },
+				cafe: { mapName: "Cafe", name: "cafe / dining room", },
+				ringWest: { mapName: null, name: "north ring corridor", },
+				armouryCorridor: { mapName: null, name: "armoury corridor", },
+				a1: { mapName: "A1", name: "administrative room 1", },
+				airlock: { mapName: "Airlock", name: "airlock", },
+				ringNorth: { mapName: null, name: "ringNorth", },
+				ringSouth: { mapName: null, name: "ringSouth", },
+				toilet: { mapName: null, name: "toilet", },
+				storage: { mapName: "Storage", name: "storage", },
+				officeCorridor: { mapName: null, name: "officeCorridor", },
+				containment: { mapName: null, name: "containment chamber 4000", },
+				a2: { mapName: "2", name: "administrative room 2", },
+				a3: { mapName: "3", name: "administrative room 3", },
+				a4: { mapName: "A4", name: "administrative room 4", },
+				ringEast: { mapName: null, name: "ringEast", },
+				foyer: { mapName: "Foyer", name: "foyer", },
+				bay: { mapName: "Bay", name: "bay", },
 			},
 			articles: {
 				// if "text" is just a URL, it prompts the user to go to that URL to access the file
@@ -272,7 +298,7 @@ function shuffle(array) {
 			misc: {
 				terminal: {
 					breachShutDown: [
-						0,0,"w:Shutdown command issued from external source (ebrach1@A1_TERMINAL)",
+						0,0,"w:Shutdown command issued from external source (ebreach1@A1_TERMINAL)",
 						0,1,"Shutting down...",
 						0,4,"Shutdown complete.",
 					],
@@ -338,12 +364,17 @@ function shuffle(array) {
 		
 		/* Initialisation */
 		aic.preload = true; // MUST BE TRUE
-		aic.selectedApp = "terminal"; // MUST BE TERMINAL
+		aic.selectedApp = "messages"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "breach"; // MUST BE BREACH
 		aic.selectedArticle = "menu"; // MUST BE MENU
 		aic.selectedOperation = "menu"; // MUST BE MENU
 		aic.currentEnding = 0;
 		aic.isSpeaking = { // MUST ALL BE FALSE
+			terminal: false,
+			breach: false,
+			alexandra: false,
+		};
+		aic.isProcessing = { // MUST ALL BE FALSE
 			terminal: false,
 			breach: false,
 			alexandra: false,
@@ -381,6 +412,7 @@ function shuffle(array) {
 			terminalEmphasis: false, // false
 			messagesEmphasis: false, // false
 			breachEntryMode: "speaking", // speaking
+			endingFractionText: "This should not be visible",
 			
 			/* MAP */
 			hoveredRoom: "none", // none
@@ -487,9 +519,9 @@ function shuffle(array) {
 			},
 		};
 		
-		var appList = ["terminal","messages","database","run","ending"];
-		var speakerList = ["breach","alexandra"];
-		var operationList = ["menu","d","drone","map","hack"];
+		const appList = ["terminal","messages","database","run","ending"];
+		const speakerList = ["breach","alexandra"];
+		const operationList = ["menu","d","drone","map","hack"];
 		aic.terminalInput = "";
 		
 		speech.merge(LoopService.dialogue);
@@ -865,6 +897,8 @@ function shuffle(array) {
 				case "PUSHENDING":
 					
 					$timeout(function() {
+						aic.currentEnding = aic.endingPositions[smallSection];
+						aic.vars.endingFractionText = aic.lang.endingFraction.replace("$1",aic.currentEnding + 1).replace("$2",aic.lang.endings.length);
 						aic.ready.ending = true;
 						aic.vars.terminalEmphasis = false;
 						aic.switchApp("ending");
@@ -878,8 +912,7 @@ function shuffle(array) {
 							aic.vars.terminalEmphasis = true;
 							delay = writeDialogue("terminal",speech.misc.terminal.breachShutDown);
 							$timeout(function() {
-								aic.currentEnding = aic.endingPositions[smallSection];
-								endingLoop("PUSHENDING",0,2);
+								endingLoop("PUSHENDING","pissOff",2);
 							},delay*1000);
 							break;
 							
@@ -999,11 +1032,11 @@ function shuffle(array) {
 				// ok cool
 				// move onto the next option?
 			}
-			$scope.$apply(function() {
+			/*$scope.$apply(function() {*/
 				//aic.chatLog[conversation].options.push(...options);
 				aic.chatLog[conversation].options = options;
 				// this is probably better tbh
-			});
+			/*});*/
 		}
 		
 		// structure dialogue and calculate timing
@@ -1026,12 +1059,9 @@ function shuffle(array) {
 			// deep copy the dialogue to protect the original
 			dialogueList = dialogueList.slice();
 			
-			var n1, n2, messages = [];
-			var totalDelay = 0;
-			var force;
+			var n1, n2, messages = [], totalDelay = 0, force, lastSpeaker = speaker;
 			
 			for(let i = 0; i < dialogueList.length; i++){
-				force = false;
 				
 				if(typeof dialogueList[i] === "number") {
 					if(typeof n1 === "number") {
@@ -1066,6 +1096,8 @@ function shuffle(array) {
 						n2 = typingSpeed * dialogueList[i].length;
 					}
 					
+					console.log(`The current speaker is ${speaker}. The last speaker was ${lastSpeaker}.`);
+					
 					// obviously maitreya also always speaks instantly
 					// correction: maitreya does not speak instantly, because that fucking sucks
 					if(speaker === "maitreya") {
@@ -1077,6 +1109,12 @@ function shuffle(array) {
 							n2 = 0.5;
 						}
 						/*n2 = 0;*/
+					} else {
+						if(lastSpeaker === "maitreya") {
+							// if maitreya was last to speak, we definitely want to add a little delay
+							// minimum n1 is now 1s
+							n1 = n1 > 1 ? n1 : n1 + 1;
+						}
 					}
 					// if the cheat is on, everyone speaks instantly
 					if(cheats.impatientMode) {
@@ -1084,7 +1122,7 @@ function shuffle(array) {
 						n2 = 0.1; // we need a small amount of delay otherwise messages end up in the wrong order
 					}
 					
-					var cssClass = "";
+					var cssClass = "", mode;
 					var text = dialogueList[i];
 					if(dialogueList[i].charAt(1) == ":") {
 						switch(dialogueList[i].charAt(0)) {
@@ -1110,6 +1148,7 @@ function shuffle(array) {
 								break;
 							case "t": // message is typed, not spoken
 								n2 *= 2;
+								mode = "typing";
 								break;
 							default:
 								throw new Error("Unknown dialogue type: " + dialogueList[i].charAt(0));
@@ -1117,12 +1156,14 @@ function shuffle(array) {
 						text = text.substring(2);
 					}
 					messages.push([n1,n2,
-						{speaker: force || speaker, cssClass: cssClass, text: text.format()}]
+						{speaker: force || speaker, cssClass: cssClass, text: text.format(), mode: mode || "default"}]
 					);
 					totalDelay += n1;
 					totalDelay += n2;
 					n1 = undefined;
 					n2 = undefined;
+					lastSpeaker = speaker;
+					force = false;
 				} else {
 					throw new Error("Dialogue not number or string");
 				}
@@ -1148,8 +1189,16 @@ function shuffle(array) {
 				timeOutList[conversation].splice(timeOutList[conversation].indexOf(timeOut1),1);
 				
 				// obviously, don't show the wait icon when we're speaking
-				if(messages[0][2].speaker !== "maitreya") {
+				if(messages[0][2].speaker === "maitreya") {
+					// this shows the marker for maitreya, but we only want this if we aren't the *only* maitreya message in the chain
+					// 1st check: if the next speaker is maitreya, then obviously the chain is longer than 1
+					// 2nd check: if we're already showing the marker, then the chain is definitely longer than 1
+					if((messages.length > 1 && messages[1][2].speaker === "maitreya") || aic.isProcessing[conversation]) {
+						aic.isProcessing[conversation] = true;
+					}
+				} else {
 					aic.isSpeaking[conversation] = true;
+					aic.isProcessing[conversation] = false;
 				}
 				
 				var timeOut2 = $timeout(function() {
@@ -1158,6 +1207,10 @@ function shuffle(array) {
 					// now we need to check to see if any other messages are still coming through (HINT: they shouldn't be, but just in case)
 					if(timeOutList[conversation].length === 0) {
 						aic.isSpeaking[conversation] = false;
+						// check if the next message is ours for marker smoothness
+						if(messages.length > 1 && messages[1][2].speaker !== "maitreya") {
+							aic.isProcessing[conversation] = false;
+						}
 					}
 					if(false) { // check to see if we're being interrupted
 						// loop through timeoutlist and kill all timeouts?
@@ -1171,7 +1224,7 @@ function shuffle(array) {
 						if(messages.length > 0) {
 							pushToLog(conversation,messages);
 						} else {
-							// we're done here
+							// no more messages. we're done here
 						}
 					}
 				},n2 * 1000, true);

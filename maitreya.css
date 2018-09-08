@@ -51,12 +51,12 @@ html, body {
 	
 	background: linear-gradient(to right,
 	              transparent 0%,
-	              transparent calc(50% - 700px),
-	              rgba(255,255,255,0.7) calc(50% - 500px),
-	              rgba(255,255,255,1) calc(50% - 400px),
-	              rgba(255,255,255,1) calc(50% + 400px),
-	              rgba(255,255,255,0.7) calc(50% + 500px),
-	              transparent calc(50% + 700px),
+	              transparent calc(50% - 500px),
+	              rgba(255,255,255,0.7) calc(50% - 420px),
+	              rgba(255,255,255,1) calc(50% - 375px),
+	              rgba(255,255,255,1) calc(50% + 375px),
+	              rgba(255,255,255,0.7) calc(50% + 420px),
+	              transparent calc(50% + 500px),
 	              transparent 100%),
 	            repeating-linear-gradient(45deg,
 	              rgba(20,136,204,0.05),
@@ -523,9 +523,16 @@ html, body {
 	background: linear-gradient(to top,#eee,#fff);
 	overflow:	auto;
 }
-#messages-app .speaking {
+#messages-app .speaking-markers {
 	margin: -0.7em 130px 0.3em 130px;
 	position: relative;
+	opacity: 1;
+	height: 18px;
+	min-height: 18px;
+	transition: opacity 0.1s ease-in-out;
+}
+#messages-app .speaking {
+	position: absolute;
 	opacity: 1;
 	transition: opacity 0.1s ease-in-out;
 }
@@ -545,7 +552,30 @@ html, body {
 	height: 30px;
 	width: 30px;
 	left: 5px;
-	transform: translate(0,-21%);
+	top: -6px;
+}
+#messages-app .processing {
+	position: absolute;
+	opacity: 1;
+	height: 20px;
+	width: 20px;
+	transition: transform 0.1s ease-in-out;
+	background: var(--light-theme);
+	border-radius: 25px;
+	top: -1px;
+	right: 0px;
+	transform: translate(0,0);
+}
+#messages-app .processing.notProcessing {
+	transform: translate(0,30px);
+}
+#messages-app .processing img {
+	position: absolute;
+	height: 12px;
+	width: 12px;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
 }
 #messages-app .conversation {
 	height: 100%;
