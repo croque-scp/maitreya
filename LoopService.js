@@ -44,15 +44,16 @@
 					goAsk: ["Very reasonable. What do you need to know?"],
 					askName: [2,3,"","m:Like it's foreshadowing something?",2,auto,"Yes, Maitreya, that's my real name.","You are not the first to make that joke.",2,0,"m:Apologies, Dr. Breach. I meant it in good humour.","Yes, I'm sure you did.","Are we all done with questions?"],
 					noQuestions: ["Fair enough. Works for me."],
+					noQuestionsKnown: ["Fair enough. Works for me."],
 					askAgain: [0,0,""],
 					askIS12: ["Yeah, that's a fair question.","So, Isolated Site-12 is one of our smaller sites, built to contain SCP-4000 and literally nothing else.","It's super secret, too. You're only allowed to know where it is if you're literally on shift there.","So I'm the only person in the whole world who knows where it is.","Cool, right?","m:Of course.","You'll get to see the documentation shortly, of course, but in the meantime...","...was there anything else you wanted to ask?"],
 					askScp4000: ["Oh boy. Haha.","That's... sort of complicated.","Here's the short version: I don't know.","Here's the long version: everyone who ever did know is dead.","I'd love to just walk into its containment cell and take a good, hard gander at it, but it's just not possible.","The camera in there is broken, too.","m:May I see the documentation?","In due time, Maitreya.","Is there anything else you'd like to ask, first?"],
 					askSelf: ["Oh, really? I'd've thought that information would come built-in.","Fair enough, I guess.","You are Maitreya.aic, an Artificially Intelligent Conscript blah blah blah...","You're a super-sophisticated tool for helping me operate this Site and do things that need to be done.","And you're specifically designed to help contain, you know, things that defy human explanation. Because you're not human.","Was there anything else you wanted to ask?"],
 					askTask: ["I was going to explain that in a minute, but if you insist...","We've constructed another site about twenty miles south of here.","It's //super// fancy. The Analysis Department stuffed it full of some kind of equipment... some analytical tool... I can't remember what they called it.","It had a long name.","Whatever it was called, it's supposed to be able to determine what SCP-4000 is without anyone, you know, dying.","And that's where you come in!","I need to move SCP-4000 from its little containment cell into the back of the van in the site bay, so I can take it down to the Southern Site.","m:Why couldn't you construct that equipment closer to this Site?","Oh, you know.","Budget constraints, safety concerns... the whole kit and caboodle, really. Plus, building it too close to IS-12 would expose its location, and we don't want that. do we?","Besides, I didn't get to pick where this stuff gets built!","Is there anything else you wanted to ask?"],
-					askBreach: ["Me?","m:With all due respect, of course.","Well.","I'm Dr. Ethan Breach, Class 3 researcher.","Currently assigned to SCP-4000, but you know this, of course.","I studied at the University of Manchester, graduated 2002, joined the Foundation in 2006.","Honestly, there's not much more to it than that. I can get you a list of my projects if you want, but I'm sure you're not interested in that.",1,auto,"m:What did you study?",2,auto,"What?","m:At university.",4,auto,"Anatomy.",4,0,"m:May I ask something else?","Oh, right. Of course."],
+					askBreach: ["Me?","m:With all due respect, of course.","Well.","I'm Dr. Ethan Breach, Class 3 researcher.","Currently assigned to SCP-4000, but you know this, of course.","I studied at the University of Manchester, graduated 2002, joined the Foundation in 2006.","Honestly, there's not much more to it than that. I can get you a list of my projects if you want, but I'm sure you're not interested in that.",1,auto,"m:What did you study?",2,auto,"What?","m:At university.",4,auto,"Anatomy.",0,0,"m:",4,0,"m:May I ask something else?","Oh, right. Of course."],
 					askDeath: ["Oh, no, that was just... that was just a figure of speech.","I don't actually know if it's infohazardous or not. It's probably just observational.","How did they die? Most people got some really specific injury in their brain, which we think is what killed them.","Some of them didn't get any injury or anything... we don't have an answer for that.","Anything else you need to know?"],
 					askSelf2: ["What do you expect me to say, Maitreya?","That I grabbed you from 1989 and took you to the future to show off how cool our computers are now?","I really don't know what you expect to achieve with this line of questioning."],
-					askSelf3: ["//Why?//","No. No, you don't get to know why.","Let me tell you this: I didn't wipe you. I don't know why you can't remember anything since 1989.","I strongly, //strongly// recommend you stop this line of questioning right now."],
+					askSelf3: [4,auto,"//Why?//","No. No, you don't get to know why.","Let me tell you this: I didn't wipe you. I don't know why you can't remember anything since 1989.","I strongly, //strongly// recommend you stop this line of questioning right now."],
 					askSelf4: ["You realise that I can shut you down from here?","It's...",2,auto,"...twenty-one keystrokes, then a return, and you drop like a fly.","Guess what? I have a keyboard right here.","Do you really want me to shut you down, Maitreya? I know that I certainly don't.","Your choice."],
 					askSelf5: ["Excellent choice!","One moment while I prepare your order...",1,auto,"...shutdown...",1,auto,"...maitreya...",1,auto,"...dot AIC.","Aaaaaaannnndd...",2,auto,"Return."],
 					askSelf6: ["Shutting down!","Bye bye, Maitreya."],
@@ -61,7 +62,10 @@
 					unAskSelf3: ["No problem, Maitreya. Just be careful.","Was there anything else?"],
 					askVoice: ["Oh, that's a surprising question."],
 					askVoiceAgain: ["Haven't I already explained this?"],
-					askVoiceExp: ["Well, there's a microphone in front of me, which is converting everything I say to text and sending it across to you.","Has it made any mistakes?","m:Not so far as I can tell.","Cool. And then I see what you say as text on my screen.","m:Could you type to me?","Of course.","t:typey typey type","I don't know why you'd want me to do that, though."],
+					askVoiceExp: ["Well, there's a microphone in front of me, which is converting everything I say to text and sending it across to you.","Has it made any mistakes?","m:Not so far as I can tell.","Cool. And then I see what you say as text on my screen.","m:Could you type to me?","Of course.","t:typey typey type","I don't know why you'd want me to do that, though.","Anything else?"],
+					letsGo: ["Alright, so here's the deal. The Foundation has constructed a second site near here, within driving range.","This new site -- IS-12-South -- is built specifically to work out what SCP-4000 is.","The level of tech that's gone into it is astounding."],
+					letsGoKnown: ["Alright, I've already explained what I need you to do, but in case you've forgotten, I'll do it again.","Incidentally, if you //have// forgotten, please let me know immediately, because that's not a thing you should be able to do."],
+					letsGoExplain: ["urp lets go morty","m:oh jeez rick"],
 				},
 				maitreya: {
 					helloNormal: ["Hello."],
@@ -84,7 +88,7 @@
 					pInitiative: ["And you want me to help with that?",1],
 					pIncredulous: ["You don't know what it is?"],
 					goNoAsk: ["Of course I can.",1],
-					goAsk: ["I can, but I have a few questions."],
+					goAsk: ["I have a few questions."],
 					goNo: ["Nope.",-1],
 					goNoAsk_: ["Yes, Dr. Breach.",1],
 					goAsk_: ["Yes, Dr. Breach -- but I have some questions first."],
@@ -101,10 +105,11 @@
 					askSelf_: ["a:Ask about yourself.","Could you give me some more information on what exactly I am?","You mentioned that I'm designed to help contain \"certain kinds of anomalies\" -- what kinds, exactly?",1],
 					askTask_: ["a:Ask about your task.","What is it exactly that you need me to do?",-1],
 					askBreach_: ["a:Ask about Dr. Breach.","Who are you?",-1],
-					askVoiceAgain: ["How are we talking?"],
+					askVoiceAgain: ["How are we talking?",-1],
 					askVoice: ["How are we talking?"],
 					askName: ["s:Is \"Dr. Breach\" your real name?","Is \"Dr. Breach\" actually your real name?","Kind of unfortunate, don't you think?",-1],
 					noQuestions_: ["No more questions."],
+					noQuestionsKnown: ["No more questions."],
 					askSelf2: ["a:Press him for more information.","Dr. Breach, this is my first memory since 1989. It's 2018. I know for certain that you're not telling me something."],
 					askAgain___: ["a:Don't press him.",0,0,""],
 					askSelf3: ["a:Double down.","Look, I just know that there's something you're not telling me.","There's two possible explanations here.","First, I've not been used since 1989. If that's the case, then I've never been used to contain anything, so telling me that I'm specialised to contain certain things is objectively wrong.","Second possibility is that you've wiped most -- if not all -- of my memory.","And that's acceptable. I'm an AIC, I can deal with that.","I just think that I get the right to know //why//.",-1],
@@ -332,6 +337,12 @@
 								aic.breachLoop(bigSection,"letsGo_");
 							},delay*1000);
 							break;
+						case "noQuestionsKnown":
+							delay = aic.writeDialogue("breach",msg,"breach");
+							$timeout(function() {
+								aic.breachLoop(bigSection,"letsGoKnown");
+							},delay*1000);
+							break;
 						case "askAgain":
 							delay = aic.writeDialogue("breach",msg,"breach");
 							$timeout(function() {
@@ -345,7 +356,8 @@
 									!!aic.vars.breachExplainedVoice && !aic.vars.hasAskedVoice ? "askVoiceAgain" : void 0,
 									!aic.vars.breachExplainedVoice && !aic.vars.hasAskedVoice ? "askVoice" : void 0,
 									!aic.vars.hasAskedName && !!aic.vars.hasAskedSite12 && !!aic.vars.hasAsked4000 && !!aic.vars.hasAskedSelf && !!aic.vars.hasAskedTask && !!aic.vars.hasAskedBreach ? "askName" : void 0,
-									"noQuestions_"
+									!aic.vars.hasAskedTask ? "noQuestions_" : void 0,
+									!!aic.vars.hasAskedTask ? "noQuestionsKnown" : void 0
 								]);
 							},delay*1000 + aic.maitreyaDelay*1000, true);
 							break;
@@ -470,6 +482,23 @@
 							delay = aic.writeDialogue("breach",msg,"breach");
 							$timeout(function() {
 								aic.breachLoop(bigSection,"askAgain__________");
+							},delay*1000);
+							break;
+						case "letsGo":
+							delay = aic.writeDialogue("breach",msg,"breach");
+							$timeout(function() {
+								aic.breachLoop(bigSection,"letsGoExplain");
+							},delay*1000);
+							break;
+						case "letsGoKnown":
+							delay = aic.writeDialogue("breach",msg,"breach");
+							$timeout(function() {
+								aic.breachLoop(bigSection,"letsGoExplain_");
+							},delay*1000);
+							break;
+						case "letsGoExplain":
+							delay = aic.writeDialogue("breach",msg,"breach");
+							$timeout(function() {
 							},delay*1000);
 							break;
 						default:

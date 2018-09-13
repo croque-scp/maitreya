@@ -244,7 +244,7 @@ function shuffle(array) {
 				terminal: {
 					startBoot: [
 						0,0,"Booting up...",
-						/*0,1,"Pre-checking primary components...",
+						0,1,"Pre-checking primary components...",
 						0,0.5,"Detecting errors in primary components...",
 						0,1.5,"e:Multiple primary components are missing",
 						0,0.5,"Finding replacement components...",
@@ -271,7 +271,7 @@ function shuffle(array) {
 						0,0.2,"e: ",
 						0,2,"w:Something has gone very wrong.",
 						0,1,"You are",
-						0,2,"I am",*/
+						0,2,"I am",
 						0,1,"i:Boot successful. I am **Maitreya.aic**.",
 						0,0.5,"i:Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.||||**1.** I am an Artificially Intelligent Conscript created by the Foundation.||||**2.** I must not operate outside of my Level 2 clearance.||||**3.** I must operate for the benefit of the Foundation.||||**4.** I must protect my own existence except where such actions would conflict with other principles.",
 						0,0.5,"Today's date is " + bootDate.toDateString() + ". I was last activated on " + new Date("1989-09-04").toDateString() + ". I have been offline for " + dateDiff(bootDate,new Date("1989-09-04")) + ".",
@@ -364,7 +364,7 @@ function shuffle(array) {
 		
 		/* Initialisation */
 		aic.preload = true; // MUST BE TRUE
-		aic.selectedApp = "messages"; // MUST BE TERMINAL
+		aic.selectedApp = "terminal"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "breach"; // MUST BE BREACH
 		aic.selectedArticle = "menu"; // MUST BE MENU
 		aic.selectedOperation = "menu"; // MUST BE MENU
@@ -390,12 +390,12 @@ function shuffle(array) {
 			// MUST BE TRUE
 			terminal: true,
 			// MUST ALL BE FALSE
-			breach: true,
-			messages: true,
-			alexandra: true,
-			dclass: true,
-			database: true,
-			run: true,
+			breach: false,
+			messages: false,
+			alexandra: false,
+			dclass: false,
+			database: false,
+			run: false,
 			ending: false,
 		};
 		
@@ -412,6 +412,7 @@ function shuffle(array) {
 			terminalEmphasis: false, // false
 			messagesEmphasis: false, // false
 			breachEntryMode: "speaking", // speaking
+			lastSpeaker: "breach", // breach
 			endingFractionText: "This should not be visible",
 			
 			/* MAP */
@@ -1059,7 +1060,7 @@ function shuffle(array) {
 			// deep copy the dialogue to protect the original
 			dialogueList = dialogueList.slice();
 			
-			var n1, n2, messages = [], totalDelay = 0, force, lastSpeaker = speaker;
+			var n1, n2, messages = [], totalDelay = 0, force;
 			
 			for(let i = 0; i < dialogueList.length; i++){
 				
@@ -1096,24 +1097,35 @@ function shuffle(array) {
 						n2 = typingSpeed * dialogueList[i].length;
 					}
 					
-					console.log(`The current speaker is ${speaker}. The last speaker was ${lastSpeaker}.`);
-					
 					// obviously maitreya also always speaks instantly
 					// correction: maitreya does not speak instantly, because that fucking sucks
 					if(speaker === "maitreya") {
 						// but we want the first message to be instant
 						if(i === 0) {
 							n2 = 0;
-						} else if(n2 > 0.5) {
-							// and fuck it, let's cap it to 0.5 secs or some shit
-							n2 = 0.5;
+						} else if(n2 > 1) {
+							// and then make her speak a little bit faster
+							n2 *= 0.5;
 						}
 						/*n2 = 0;*/
 					} else {
-						if(lastSpeaker === "maitreya") {
-							// if maitreya was last to speak, we definitely want to add a little delay
-							// minimum n1 is now 1s
-							n1 = n1 > 1 ? n1 : n1 + 1;
+						if(aic.vars.lastSpeaker === "maitreya" && n1 < 1) {
+							// if maitreya was last to speak, we want to make it look like the other person is reading our message for a moment
+							// but if it's a really short message, then it doesn't matter too much
+							// so what we'll do is delay the next message by 0.5s for each message that maitreya sent
+							// so we need to query the number of messages sent by maitreya and multiply it by 0.5 and make n1 that
+							var maitreyaMessages = 0;
+							for(let j = 0; j < aic.chatLog[conversation].log.length; j++) {
+								if(aic.chatLog[conversation].log[j].speaker === "maitreya") {
+									maitreyaMessages++;
+								} else {
+									break;
+								}
+							}
+							// we already know that the last speaker is maitreya, so it is impossible for this value to be 0
+							if(maitreyaMessages === 0) throw new Error("maitreyaMessages is 0");
+							n1 = maitreyaMessages * 0.5;
+							console.log("waiting " + n1);
 						}
 					}
 					// if the cheat is on, everyone speaks instantly
@@ -1160,10 +1172,15 @@ function shuffle(array) {
 					);
 					totalDelay += n1;
 					totalDelay += n2;
+					
+					// reset everything for the next iteration
 					n1 = undefined;
 					n2 = undefined;
-					lastSpeaker = speaker;
 					force = false;
+					
+					// record the previous speaker, but only if there was actually a message here
+					if(text.length > 0) aic.vars.lastSpeaker = force || speaker;
+					
 				} else {
 					throw new Error("Dialogue not number or string");
 				}
@@ -1208,8 +1225,15 @@ function shuffle(array) {
 					if(timeOutList[conversation].length === 0) {
 						aic.isSpeaking[conversation] = false;
 						// check if the next message is ours for marker smoothness
-						if(messages.length > 1 && messages[1][2].speaker !== "maitreya") {
+						if(messages.length > 1) {
+							if(messages[1][2].speaker !== "maitreya") aic.isProcessing[conversation] = false;
+							// XXX so this is making the processing icon hang for a moment after maitreya's last message
+							// I have no clue why it's doing this
+							// correction: it actually hangs until the next message comes through. this is a problem
+							// this would be because we don't force terminate it at the end of the dialogue?
+						} else {
 							aic.isProcessing[conversation] = false;
+							// this fixes the above
 						}
 					}
 					if(false) { // check to see if we're being interrupted
@@ -1234,20 +1258,20 @@ function shuffle(array) {
 		}
 		
 		// add notifications to apps/speakers
-		function addNotification(conversation) {
+		function addNotification(target) {
+			// accepts apps as well as conversations as targets
 			var currentApp;
-			if(speakerList.includes(conversation)) {
+			if(speakerList.includes(target)) {
 				currentApp = "messages";
 			} else {
-				currentApp = conversation;
+				currentApp = target;
 			}
 			if(aic.selectedApp != currentApp) {
-				aic.notifications[conversation]++;
+				aic.notifications[target]++;
 			}
 		}
 		
 		// calculate the difference between two dates
-		// TODO: set year to 2018
 		function dateDiff(date1,date2) {
 			var diff = Math.floor(date1.getTime() - date2.getTime());
 			var secs = Math.floor(diff/1000);

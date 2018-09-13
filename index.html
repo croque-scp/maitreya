@@ -267,9 +267,20 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									<ul>
 										<li>
 											<p class="heading">SCPs</p>
-											<div class="articles-list">
-												<a class="article-selector" ng-repeat="(id,article) in aic.lang.articles" ng-click="aic.switchArticle(id)" ng-show="article.available">{{article.title}}</a>
-											</div>
+											<table class="articles-list">
+												<tr>
+													<th>Article</th>
+													<th>Content</th>
+													<th>Modified</th>
+													<th>Clearance</th>
+												</tr>
+												<tr ng-repeat="(id,article) in aic.lang.articles" ng-click="aic.switchArticle(id)" ng-show="article.available">
+													<td>{{article.title}}</td>
+													<td>{{article.category}}</td>
+													<td>Today</td>
+													<td class="clearance">3</td>
+												</tr>
+											</table>
 										</li>
 									</ul>
 								</div>
