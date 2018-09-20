@@ -669,7 +669,9 @@ function shuffle(array) {
 										break;
 									case aic.lang.commands.cheats.print:
 										writeDialogue("terminal",speech.misc.terminal.printDone);
-										console.log(eval(phrases[2])); /*jslint ignore:line*/
+										var m = eval(phrases[2]); /*jslint ignore:line*/
+										writeDialogue("terminal",[0,0,m]);
+										console.log(m);
 										break;
 									case aic.lang.commands.cheats.skip:
 										if(aic.chatLog.breach.log.length === 0) {
