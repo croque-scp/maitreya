@@ -50,11 +50,11 @@
 					askScp4000: ["Oh boy. Haha.","That's... sort of complicated.","Here's the short version: I don't know.","Here's the long version: everyone who ever did know is dead.","I'd love to just walk into its containment cell and take a good, hard gander at it, but it's just not possible.","The camera in there is broken, too.","m:May I see the documentation?","In due time, Maitreya.","Is there anything else you'd like to ask, first?"],
 					askSelf: ["Oh, really? I'd've thought that information would come built-in.","Fair enough, I guess.","You are Maitreya.aic, an Artificially Intelligent Conscript blah blah blah...","You're a super-sophisticated tool for helping me operate this Site and do things that need to be done.","And you're specifically designed to help contain, you know, things that defy human explanation. Because you're not human.","Was there anything else you wanted to ask?"],
 					askTask: ["I was going to explain that in a minute, but if you insist...","We've constructed another site about twenty miles south of here.","It's //super// fancy. The Analysis Department stuffed it full of some kind of equipment... some analytical tool... I can't remember what they called it.","It had a long name.","Whatever it was called, it's supposed to be able to determine what SCP-4000 is without anyone, you know, dying.","And that's where you come in!","I need to move SCP-4000 from its little containment cell into the back of the van in the site bay, so I can take it down to the Southern Site.","m:Why couldn't you construct that equipment closer to this Site?","Oh, you know.","Budget constraints, safety concerns... the whole kit and caboodle, really. Plus, building it too close to IS-12 would expose its location, and we don't want that. do we?","Besides, I didn't get to pick where this stuff gets built!","Is there anything else you wanted to ask?"],
-					askBreach: ["Me?","m:With all due respect, of course.","Well.","I'm Dr. Ethan Breach, Class 3 researcher.","Currently assigned to SCP-4000, but you know this, of course.","I studied at the University of Manchester, graduated 2002, joined the Foundation in 2006.","Honestly, there's not much more to it than that. I can get you a list of my projects if you want, but I'm sure you're not interested in that.",1,auto,"m:What did you study?",2,auto,"What?","m:At university.",4,auto,"Anatomy.",0,0,"m:",4,0,"m:May I ask something else?","Oh, right. Of course."],
+					askBreach: ["Me?","m:With all due respect, of course.","Well.","I'm Dr. Ethan Breach, Class 3 researcher.","Currently assigned to SCP-4000, but you know this, of course.","I studied at the University of Manchester, graduated 2002, joined the Foundation in 2006.","Honestly, there's not much more to it than that. I can get you a list of my projects if you want, but I'm sure you're not interested in that.",1,auto,"m:What did you study?",2,auto,"What?","m:At university.",4,auto,"Uh, anatomy.",4,4,"m:May I ask something else?","Oh, right. Of course."],
 					askDeath: ["Oh, no, that was just... that was just a figure of speech.","I don't actually know if it's infohazardous or not. It's probably just observational.","How did they die? Most people got some really specific injury in their brain, which we think is what killed them.","Some of them didn't get any injury or anything... we don't have an answer for that.","Anything else you need to know?"],
 					askSelf2: ["What do you expect me to say, Maitreya?","That I grabbed you from 1989 and took you to the future to show off how cool our computers are now?","I really don't know what you expect to achieve with this line of questioning."],
 					askSelf3: [4,auto,"//Why?//","No. No, you don't get to know why.","Let me tell you this: I didn't wipe you. I don't know why you can't remember anything since 1989.","I strongly, //strongly// recommend you stop this line of questioning right now."],
-					askSelf4: ["You realise that I can shut you down from here?","It's...",2,auto,"...twenty-one keystrokes, then a return, and you drop like a fly.","Guess what? I have a keyboard right here.","Do you really want me to shut you down, Maitreya? I know that I certainly don't.","Your choice."],
+					askSelf4: ["Or //else//. It's implied.","You realise that I can shut you down from here?","It's...",2,auto,"...twenty-one keystrokes, then a return, and you drop like a fly.","Guess what? I have a keyboard right here.","Do you really want me to shut you down, Maitreya? I know that I certainly don't.","Your choice."],
 					askSelf5: ["Excellent choice!","One moment while I prepare your order...",1,auto,"...shutdown...",1,auto,"...maitreya...",1,auto,"...dot AIC.","Aaaaaaannnndd...",2,auto,"Return."],
 					askSelf6: ["Shutting down!","Bye bye, Maitreya."],
 					unAskSelf5: ["No, Maitreya, no you do not.","How about you bear that in mind while we're working together today?","m:Yes, Dr. Breach, I will.","Good.","Was there anything else?"],
@@ -62,10 +62,17 @@
 					unAskSelf3: ["No problem, Maitreya. Just be careful.","Was there anything else?"],
 					askVoice: ["Oh, that's a surprising question."],
 					askVoiceAgain: ["Haven't I already explained this?"],
-					askVoiceExp: ["Well, there's a microphone in front of me, which is converting everything I say to text and sending it across to you.","Has it made any mistakes?","m:Not so far as I can tell.","Cool. And then I see what you say as text on my screen.","m:Could you type to me?","Of course.","t:typey typey type","I don't know why you'd want me to do that, though.","Anything else?"],
+					askVoiceExp: ["Well, there's a microphone in front of me, which is converting everything I say to text and sending it across to you.","Has it made any mistakes?","m:Not so far as I can tell.","Cool. And then I see what you say as text on my screen.","m:Could you type to me?","Of course.","t:djgbjsbgkjd","I don't know why you'd want me to do that, though.","Anything else?"],
 					letsGo: ["Alright, so here's the deal. The Foundation has constructed a second site near here, within driving range.","This new site -- IS-12-South -- is built specifically to work out what SCP-4000 is.","The level of tech that's gone into it is astounding."],
 					letsGoKnown: ["Alright, I've already explained what I need you to do, but in case you've forgotten, I'll do it again.","Incidentally, if you //have// forgotten, please let me know immediately, because that's not a thing you should be able to do."],
-					letsGoExplain: ["urp lets go morty","m:oh jeez rick"],
+					letsGoExplain: ["What I need you to do is, somehow, get SCP-4000 into the back of the van in the vehicle bay. Then I'll drive it down to IS-12-South, and the personnel there will handle things.","Think you can manage that?"],
+					letsGo2: ["Well... that's sort of beyond me.","But I know someone who can explain things in more detail, hopefully.","Alexandra.aic is her name. She's an artificial intelligence, just like you. I think you'll like her."],
+					letsGo2wA: ["Well... that's sort of beyond me.","But I know someone who can explain things in more detail, hopefully.","m:Alexandra?","Exactly! Glad you remember."],
+					letsGo3: ["Are you ready to talk to her?"],
+					letsGo4Dislike: ["Perfect.","Patching you through now...",2,0,""],
+					letsGo4Like: ["Perfect.","Patching you through now...",2,0,""],
+					connectCheck: [20,auto,"All connected?"],
+					connectCheck2: ["Good, good."],
 				},
 				maitreya: {
 					helloNormal: ["Hello."],
@@ -118,21 +125,62 @@
 					unAskSelf4: ["Yes, Dr. Breach.",1],
 					askSelf5: ["a:Double down.","Why are you dancing around the point and making threats?","It's painfully obvious that you're hiding something.",-1],
 					unAskSelf5: ["a:Back down.","No, Dr. Breach. I don't want that."],
+					letsGo2: ["How?"],
+					letsGo2wA: ["How?"],
+					letsGo4Dislike: ["I'm ready, Dr. Breach."],
+					letsGo4Like: ["I'm ready, Dr. Breach."],
+					connectCheck2: ["s:All connected.","Things are looking fine from my end, Dr. Breach."],
+				},
+			},
+			TUTORIAL: {
+				alexandra: {
+					preload: [2,0,""],
+					connect: [0,0,""],
+					holdHorses: ["shocked:Hey hey, slow down!"],
+					alexHello: ["grinning:Hi, Maitreya! It's so good to finally meet you.","Breach has been telling me such lovely things!"],
+					alexHello1: ["satisfied:Only good things! Don't worry."],
+					alexImpatient: ["satisfied:Of course, of course! We'll save the pleasantries for afterwards."],
+					alexHello2: ["pensive:Oh, you know..."],
+					tut1: ["smiling:Okay, so it's my job to tell you how to work the systems at Isolated Site-12.","satisfied:AIC buddies, right? We gotta look out for each other.","concerned:So, do you think you need me to tell you how things work around here?"],
+					tutTest: ["celebrating:Haha, oh really?","grinning:You won't mind if I don't believe that for one second, then?","m:That's a bit rude.","smiling:I'm going to have to give you a quick test, just to make sure you're up to speed.","Ready?"],
+					tut2: ["satisfied:No problem!"],
+					tutTest1: ["grinning:Okay!","You have one minute, and in that one minute I'd like you...","shocked:...to tell me which cell D-68134 is being kept in!","grinning:Starting NOW!"],
+					tutTestFail: ["shocked:Ouch!","concerned:Not quite right. Looks like you need a helping hand after all."],
+					tutTestPass: ["shocked:Wow!","grinning:I guess you really can handle yourself."],
+					tutTestMinute: ["shocked:Uh-oh!","concerned:You ran out of time. Looks like you need a helping hand after all, huh?","m:I would've had it if you'd just given me a little more time.","concerned:AICs are supposed to be lightning-fast, sorry!"],
+				},
+				maitreya: {
+					alexHello: ["Hello?"],
+					holdHorses: ["a:Request instructions.","Tell me what I need to do to complete Breach's task.",-1],
+					alexHello1: ["Only good things, I hope?"],
+					alexHello2: ["Like what?"],
+					alexImpatient: ["s:I don't have the patience for small talk.","I really don't have the patience for small talk.",-1],
+					tut2: ["s:I could use a hand.","If you could lend me a helping hand, I'd very much appreciate it."],
+					tutTest: ["s:I already know what I'm doing.","Thanks for the offer, but I'm an AIC as well --	I know how to work a Site."],
+					tut2_: ["a:Proceed with the tutorial and refuse the test.","Um, on second thought, I feel like I could use a few pointers."],
+					tutTest1: ["a:Skip the tutorial by taking the test.","Ready!"],
+					tutTestFail: ["s:S1.","Is it S1?"],
+					tutTestPass: ["s:S1.","D-68134 is in S1."],
+					tutTestFail_: ["s:S2.","Is it S2?"],
+					tutTestPass_: ["s:S2.","D-68134 is in S2."],
+					tutTestFail__: ["s:S3.","Is it S3?"],
+					tutTestPass__: ["s:S3.","D-68134 is in S3."],
+					tutTestFail___: ["s:S4.","Is it S4?"],
+					tutTestPass___: ["s:S4.","D-68134 is in S4."],
+					tutTestFail____: ["s:S5.","Is it S5?"],
+					tutTestPass____: ["s:S5.","D-68134 is in S5."],
+					tutTestFail_____: ["s:S6.","Is it S6?"],
+					tutTestPass_____: ["s:S6.","D-68134 is in S6."],
 				},
 			},
 		};
-		loop.breachLoop = function(bigSection, smallSection,msg) {
+		loop.breachLoop = function(bigSection,smallSection,msg) {
 			smallSection = smallSection.replace(/_/g,"");
-			
-			console.log("Breach - " + bigSection + " - " + smallSection);
-			
 			var delay = 0;
 			switch(bigSection) {
 				case "INTRODUCTION":
 					switch(smallSection) {
 						case "start":
-							aic.ready.messages = true;
-							aic.ready.breach = true;
 							delay = aic.writeDialogue("breach",msg,"breach");
 							$timeout(function() {
 								aic.presentOptions("breach",bigSection,[
@@ -219,6 +267,7 @@
 								aic.presentOptions("breach",bigSection,[
 									"helloNotYet"
 								]);
+								aic.vars.breachMentionedAlexandra = true;
 							},delay*1000 + aic.maitreyaDelay*1000, true);
 							break;
 						case "helloNotYet":
@@ -499,6 +548,57 @@
 						case "letsGoExplain":
 							delay = aic.writeDialogue("breach",msg,"breach");
 							$timeout(function() {
+								aic.presentOptions("breach",bigSection,[
+									!aic.vars.breachMentionedAlexandra ? "letsGo2" : void 0,
+									!!aic.vars.breachMentionedAlexandra ? "letsGo2wA" : void 0
+								]);
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "letsGo2":
+							delay = aic.writeDialogue("breach",msg,"breach");
+							$timeout(function() {
+								aic.breachLoop(bigSection,"letsGo3");
+							},delay*1000);
+							break;
+						case "letsGo2wA":
+							delay = aic.writeDialogue("breach",msg,"breach");
+							$timeout(function() {
+								aic.breachLoop(bigSection,"letsGo3_");
+							},delay*1000);
+							break;
+						case "letsGo3":
+							delay = aic.writeDialogue("breach",msg,"breach");
+							$timeout(function() {
+								aic.presentOptions("breach",bigSection,[
+									aic.vars.breach.opinion<1 ? "letsGo4Dislike" : void 0,
+									aic.vars.breach.opinion>0 ? "letsGo4Like" : void 0
+								]);
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "letsGo4Dislike":
+							delay = aic.writeDialogue("breach",msg,"breach");
+							$timeout(function() {
+								aic.alexandraLoop("TUTORIAL","preload");
+							},delay*1000);
+							break;
+						case "letsGo4Like":
+							delay = aic.writeDialogue("breach",msg,"breach");
+							$timeout(function() {
+								aic.breachLoop(bigSection,"connectCheck");
+								aic.alexandraLoop("TUTORIAL","preload");
+							},delay*1000);
+							break;
+						case "connectCheck":
+							delay = aic.writeDialogue("breach",msg,"breach");
+							$timeout(function() {
+								aic.presentOptions("breach",bigSection,[
+									"connectCheck2"
+								]);
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "connectCheck2":
+							delay = aic.writeDialogue("breach",msg,"breach");
+							$timeout(function() {
 							},delay*1000);
 							break;
 						default:
@@ -516,15 +616,124 @@
 					throw new Error(bigSection + " is not an event");
 			}
 		};
-		loop.alexandraLoop = function(bigSection, smallSection,msg) {
+		loop.alexandraLoop = function(bigSection,smallSection,msg) {
 			smallSection = smallSection.replace(/_/g,"");
-			
-			console.log("Alexandra - " + bigSection + " - " + smallSection);
-			
 			var delay = 0;
 			switch(bigSection) {
-				case "WALKTHROUGH":
+				case "TUTORIAL":
 					switch(smallSection) {
+						case "preload":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.alexandraLoop(bigSection,"connect");
+							},delay*1000);
+							break;
+						case "connect":
+							aic.switchSpeaker("alexandra");
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.presentOptions("alexandra",bigSection,[
+									"alexHello",
+									"holdHorses"
+								]);
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "holdHorses":
+							aic.vars.alexHeldHorses = true;
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.alexandraLoop(bigSection,"alexHello_");
+							},delay*1000);
+							break;
+						case "alexHello":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.presentOptions("alexandra",bigSection,[
+									"alexHello1",
+									"alexHello2",
+									!!aic.vars.alexHeldHorses ? "alexImpatient" : void 0
+								]);
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "alexHello1":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.alexandraLoop(bigSection,"tut1");
+							},delay*1000);
+							break;
+						case "alexImpatient":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.alexandraLoop(bigSection,"tut1_");
+							},delay*1000);
+							break;
+						case "alexHello2":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.alexandraLoop(bigSection,"tut1__");
+							},delay*1000);
+							break;
+						case "tut1":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.presentOptions("alexandra",bigSection,[
+									"tut2",
+									"tutTest"
+								]);
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "tutTest":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.presentOptions("alexandra",bigSection,[
+									"tut2_",
+									"tutTest1"
+								]);
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "tut2":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+							},delay*1000);
+							break;
+						case "tutTest1":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.presentOptions("alexandra",bigSection,[
+									aic.vars.d68134.location!=="s1" ? "tutTestFail" : void 0,
+									aic.vars.d68134.location==="s1" ? "tutTestPass" : void 0,
+									aic.vars.d68134.location!=="s2" ? "tutTestFail_" : void 0,
+									aic.vars.d68134.location==="s2" ? "tutTestPass_" : void 0,
+									aic.vars.d68134.location!=="s3" ? "tutTestFail__" : void 0,
+									aic.vars.d68134.location==="s3" ? "tutTestPass__" : void 0,
+									aic.vars.d68134.location!=="s4" ? "tutTestFail___" : void 0,
+									aic.vars.d68134.location==="s4" ? "tutTestPass___" : void 0,
+									aic.vars.d68134.location!=="s5" ? "tutTestFail____" : void 0,
+									aic.vars.d68134.location==="s5" ? "tutTestPass____" : void 0,
+									aic.vars.d68134.location!=="s6" ? "tutTestFail_____" : void 0,
+									aic.vars.d68134.location==="s6" ? "tutTestPass_____" : void 0
+								]);
+								aic.vars.alexandraTimerContainer = $timeout(function() {aic.alexandraLoop("TUTORIAL","tutTestMinute")},60000,true);
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "tutTestFail":
+							$timeout.cancel(aic.vars.alexandraTimerContainer);
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+							},delay*1000);
+							break;
+						case "tutTestPass":
+							$timeout.cancel(aic.vars.alexandraTimerContainer);
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+							},delay*1000);
+							break;
+						case "tutTestMinute":
+							aic.presentOptions("alexandra","TUTORIAL","CLEAR");
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+							},delay*1000);
+							break;
 						default:
 							throw new Error("Breach: " + smallSection + " is not an event in " + bigSection);
 					}

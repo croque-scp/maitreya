@@ -54,7 +54,8 @@ function shuffle(array) {
 (function(){
 	var maitreya = angular
 		.module('maitreya',['ngSanitize', 'ngAnimate'])
-		.controller('MaitreyaController',MaitreyaController);
+		.controller('MaitreyaController',MaitreyaController)
+		.filter('encode',EncodeURIComponentFilter);
 	
 	MaitreyaController.$inject = ['$scope','$timeout','LoopService'];
 	// the LoopService service (from LoopService.js) contains the interactions for Breach, Alexandra and D-Class generated from the spreadsheet
@@ -80,7 +81,7 @@ function shuffle(array) {
 			terminalSend: "SEND",
 			terminalAppName: ".AIC ACCESS TERMINAL",
 			messagesAppName: "COMMUNICATIONS INTERFACE",
-			databaseAppName: "FOUNDATION DATABASE SEARCH",
+			databaseAppName: "FOUNDATION DATABASE",
 			runAppName: "IS-12 OPERATIONS CONTROL",
 			endAppName: "THE END",
 			
@@ -94,8 +95,10 @@ function shuffle(array) {
 			alexandraTitle: "Alexandra.aic",
 			breachHeader: "You are talking to: BREACH E.",
 			alexandraHeader: "You are talking to: ALEXANDRA.AIC",
-			breachSpeakingMode: "Dr. Breach is speaking...",
-			breachTypingMode: "Dr. Breach is typing...",
+			breachEntryMode: {
+				default: "Dr. Breach is speaking...",
+				typing: "Dr. Breach is typing...",
+			},
 			alexandraThinking: "Alexandra is thinking...",
 			
 			// The following are commands used in the terminal
@@ -114,6 +117,7 @@ function shuffle(array) {
 					impatient: "gottagofast",
 					shut: "shut",
 					print: "print",
+					skip: "skip",
 				},
 			},
 			endingFraction: "Ending $1 of $2", // will be formatted "Ending 12 of 14"
@@ -129,7 +133,7 @@ function shuffle(array) {
 			],
 			rooms: {
 				hangar: { mapName: "Hangar", name: "hangar", },
-				server: { mapName: "Server", name: "server room", },
+				server: { mapName: "Server Farm", name: "server room", },
 				serverCorridor: { mapName: null, name: "server room corridor", },
 				d1: { mapName: "S1", name: "Surplus Containment 1", },
 				d2: { mapName: "S2", name: "Surplus Containment 2", },
@@ -141,20 +145,20 @@ function shuffle(array) {
 				armoury: { mapName: "Armoury", name: "armoury", },
 				pantry: { mapName: "Kitchen", name: "kitchen", },
 				cafe: { mapName: "Cafe", name: "cafe / dining room", },
-				ringWest: { mapName: null, name: "north ring corridor", },
+				ringWest: { mapName: null, name: "west ring corridor", },
 				armouryCorridor: { mapName: null, name: "armoury corridor", },
 				a1: { mapName: "A1", name: "administrative room 1", },
-				airlock: { mapName: "Airlock", name: "airlock", },
-				ringNorth: { mapName: null, name: "ringNorth", },
-				ringSouth: { mapName: null, name: "ringSouth", },
+				airlock: { mapName: null, name: "airlock", },
+				ringNorth: { mapName: null, name: "north ring corridor", },
+				ringSouth: { mapName: null, name: "south ring corridor", },
 				toilet: { mapName: null, name: "toilet", },
 				storage: { mapName: "Storage", name: "storage", },
-				officeCorridor: { mapName: null, name: "officeCorridor", },
+				officeCorridor: { mapName: null, name: "administrative corridor", },
 				containment: { mapName: null, name: "containment chamber 4000", },
 				a2: { mapName: "2", name: "administrative room 2", },
 				a3: { mapName: "3", name: "administrative room 3", },
 				a4: { mapName: "A4", name: "administrative room 4", },
-				ringEast: { mapName: null, name: "ringEast", },
+				ringEast: { mapName: null, name: "east ring corridor", },
 				foyer: { mapName: "Foyer", name: "foyer", },
 				bay: { mapName: "Bay", name: "bay", },
 			},
@@ -315,11 +319,13 @@ function shuffle(array) {
 					],
 					cheatWarn: [
 						0,1,"w:Using these cheats and/or debug commands will probably spoil your enjoyment of SCP-4000. Feel free to use them if you want but... please don't :'(",
-						0,1,"i:**LIST OF CHEATS**||||gottagofast: Everyone talks lightning-fast (toggle)||||shut: //s h u t//||||print: Print a variable/function",
+						0,1,"i:**LIST OF CHEATS**||||gottagofast: Everyone talks lightning-fast (toggle)||||shut: //s h u t//||||print: Print a variable/function||||skip: Skip the opening cutscene",
 					],
-					cheatSuccess: [0,0,"Cheat code successful"],
-					wipeSure: [0,0,"Are you sure? This will reset SCP-4000 and you'll have to start from the beginning. Type 'wipe confirm' within the next minute to confirm."],
-					printDone: [0,0,"Printing to console"],
+					cheatSuccess: [0,0,"i:Cheat code successful"],
+					wipeSure: [0,0,"w:Are you sure? This will reset SCP-4000 and you'll have to start from the beginning. Type 'wipe confirm' within the next minute to confirm."],
+					printDone: [0,0,"i:Printing to console"],
+					introSkipped: [0,0,"i:Opening cutscene skipped. Summary: booting was a struggle, you eventually did it, but this is your first boot since 1989 and there's 1 unresolved error. Now you have a new message."],
+					skipFailed: [0,0,"e:This cheat only works during the opening cutscene."],
 				},
 			},
 			merge: function(dialogue) {
@@ -364,7 +370,7 @@ function shuffle(array) {
 		
 		/* Initialisation */
 		aic.preload = true; // MUST BE TRUE
-		aic.selectedApp = "terminal"; // MUST BE TERMINAL
+		aic.selectedApp = "database"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "breach"; // MUST BE BREACH
 		aic.selectedArticle = "menu"; // MUST BE MENU
 		aic.selectedOperation = "menu"; // MUST BE MENU
@@ -390,20 +396,29 @@ function shuffle(array) {
 			// MUST BE TRUE
 			terminal: true,
 			// MUST ALL BE FALSE
+			breach: true,
+			messages: true,
+			alexandra: true,
+			dclass: true,
+			database: true,
+			run: true,
+			ending: false,
+		};
+		aic.timers = {};
+		aic.isSkipping = {
+			// MUST ALL BE FALSE
+			terminal: false,
 			breach: false,
 			messages: false,
 			alexandra: false,
 			dclass: false,
-			database: false,
-			run: false,
-			ending: false,
 		};
 		
 		aic.onMobile = $("#interface").width() < 700;
 		
 		aic.vars = { // miscellaneous variables for stuff
 			/* STATUS */
-			// most variables **do not need** to be initialised
+			// most variables **do not need** to be initialised, if they start at false
 			// this is mostly just for me to remember what variables I'm using
 			breachExplainedVoice: false,
 			breachExplainedTyping: false,
@@ -411,7 +426,7 @@ function shuffle(array) {
 			/* APPS */
 			terminalEmphasis: false, // false
 			messagesEmphasis: false, // false
-			breachEntryMode: "speaking", // speaking
+			breachEntryMode: "default", // default
 			lastSpeaker: "breach", // breach
 			endingFractionText: "This should not be visible",
 			
@@ -435,6 +450,7 @@ function shuffle(array) {
 				status: "initial", // initial
 				allegiance: "scp", // scp
 				opinion: 10, // 10
+				emote: "grin", //concerned, grinning, shocked, pensive, satisfied, celebrating, frustrated
 			},
 			scp4000: {
 				status: "initial", // initial
@@ -442,19 +458,22 @@ function shuffle(array) {
 				opinion: -10, // -10
 				location: "containment", // containment
 			},
-			d1: {
+			d95951: {
+				number: 95951,
 				status: "initial", // initial
 				allegiance: "scp", // scp
 				opinion: -5, // -5
 				location: assignRoom("d1"),
 			},
-			d2: {
+			d68134: {
+				number: 68134,
 				status: "initial", // initial
 				allegiance: "scp", // scp
 				opinion: -5, // -5
 				location: assignRoom("d2"),
 			},
-			d3: {
+			d1602: {
+				number: 1602,
 				status: "initial", // initial
 				allegiance: "scp", // scp
 				opinion: -5, // -5
@@ -519,11 +538,13 @@ function shuffle(array) {
 				options: [],
 			},
 		};
+		aic.terminalInput = "";
+		aic.searchInput = "";
 		
 		const appList = ["terminal","messages","database","run","ending"];
 		const speakerList = ["breach","alexandra"];
-		const operationList = ["menu","d","drone","map","hack"];
-		aic.terminalInput = "";
+		const operationList = ["menu","d","drone","map"];
+		const alexandraEmotionList = ["smiling","concerned","grinning","shocked","pensive","satisfied","celebrating","frustrated","corrupted"];
 		
 		speech.merge(LoopService.dialogue);
 		
@@ -536,6 +557,7 @@ function shuffle(array) {
 			
 			// Here we go boys
 			mainLoop("INTRODUCTION","startBoot");
+			//alexandraLoop("TUTORIAL","tutTest");
 		};
 		
 		// called when user switches app via buttons or terminal
@@ -565,7 +587,7 @@ function shuffle(array) {
 			}
 		};
 		
-		// same as above but for messages only
+		// called when the user switches speaker in the messages app
 		aic.switchSpeaker = function(speaker) {
 			if(speaker == aic.selectedSpeaker) {
 				// this is already the selected speaker, do nothing
@@ -578,7 +600,7 @@ function shuffle(array) {
 			}
 		};
 		
-		// same as above but for operations only
+		// called when the user switches operations in the run app
 		aic.switchOperation = function(operation) {
 			if(operation === aic.selectedOperation) {
 				// this is already the selected operation, do nothing
@@ -589,6 +611,7 @@ function shuffle(array) {
 			}
 		};
 		
+		// called when the user switches articles in the database app
 		aic.switchArticle = function(article) {
 			console.log(article);
 		};
@@ -596,9 +619,8 @@ function shuffle(array) {
 		// Called when the user submits text via the terminal
 		// Effectively terminalLoop() except it always shows the input
 		aic.processTerminalInput = function() {
-			// TODO add to terminal conversation "> command" from maitreya
 			if(aic.terminalInput.length > 0) {
-				writeDialogue("terminal",[0,0,"> " + aic.terminalInput]);
+				writeDialogue("terminal",[0,0,aic.terminalInput],"input");
 				var phrases = aic.terminalInput.split(aic.lang.commands.separator);
 				try {
 					// Add the used command to a list of previous commands
@@ -649,15 +671,29 @@ function shuffle(array) {
 										writeDialogue("terminal",speech.misc.terminal.printDone);
 										console.log(eval(phrases[2])); /*jslint ignore:line*/
 										break;
-									case aic.lang.commands.cheats.interrupt:
-										writeDialogue("terminal",speech.misc.terminal.printDone);
-										cheats.beingSkipped = true;
+									case aic.lang.commands.cheats.skip:
+										if(aic.chatLog.breach.log.length === 0) {
+											writeDialogue("terminal",speech.misc.terminal.introSkipped);
+											aic.isSkipping.terminal = true;
+											breachLoop("INTRODUCTION","start");
+										} else {
+											writeDialogue("terminal",speech.misc.terminal.skipFailed);
+										}
 										break;
 									default:
 										throw new Error("Unknown cheat code: " + phrases[1]);
 								}
 							} else {
 								writeDialogue("terminal",speech.misc.terminal.cheatWarn);
+							}
+							break;
+						case aic.lang.commands.cheats.skip.includes(phrases[0].toLowerCase()):
+							if(aic.chatLog.breach.log.length === 0) {
+								writeDialogue("terminal",speech.misc.terminal.introSkipped);
+								aic.isSkipping.terminal = true;
+								breachLoop("INTRODUCTION","start");
+							} else {
+								writeDialogue("terminal",speech.misc.terminal.skipFailed);
 							}
 							break;
 						default:
@@ -700,7 +736,7 @@ function shuffle(array) {
 		// hover/unhover rooms - had to use jQuery for this and I despise it
 		$(".room").on({
 			mouseenter: function() {
-				var room = this.getAttribute("data-room");
+				var room = this.getAttribute("data-room-name");
 				$scope.$apply(function() {
 					aic.vars.hoveredRoom = room;
 				});
@@ -718,7 +754,6 @@ function shuffle(array) {
 		
 		// event handler for clicking rooms
 		aic.selectRoom = function(room) {
-			room = $(room.target).data("room");
 			if(room === "back") {
 				
 			} else {
@@ -730,10 +765,12 @@ function shuffle(array) {
 			}
 		};
 		
+		// modify room settings/options
 		aic.adjustRoom = function() {
 			
 		};
 		
+		// turn all the rooms off then on
 		aic.rebootRooms = function() {
 			mainLoop("ROOMS","rebootRooms");
 		};
@@ -758,8 +795,15 @@ function shuffle(array) {
 					},delay*1000 + maitreyaDelay*1000);
 					aic.vars[conversation].opinion += option.opinion;
 					break;
+				case "alexandra":
+					delay = writeDialogue(conversation,option.dialogue,"maitreya");
+					$timeout(function() {
+						alexandraLoop(option.bigSection,option.id);
+					},delay*1000 + maitreyaDelay*1000);
+					aic.vars[conversation].opinion += option.opinion;
+					break;
 				default:
-					throw new Error("How the fuck did you get this wrong");
+					throw new Error("Conversation " + conversation + " does not exist");
 			}
 			// obviously we don't need the old options anymore
 			aic.chatLog[conversation].options = [];
@@ -780,6 +824,8 @@ function shuffle(array) {
 			// pass to func for now
 			smallSection = smallSection.replace(/_/g,"");
 			
+			console.log("Main - " + bigSection + " - " + smallSection);
+			
 			// msg syntax IS NOT SUITABLE HERE! only for breach and alexandra!
 			var delay = 0;
 			switch(bigSection) {
@@ -788,7 +834,7 @@ function shuffle(array) {
 						
 						case "startBoot":
 							delay = writeDialogue("terminal",speech[bigSection].terminal[smallSection]);
-							$timeout(function() {
+							aic.timers.terminal = $timeout(function() {
 								breachLoop("INTRODUCTION","start");
 							},(delay-1.5)*1000);
 							break;
@@ -871,19 +917,36 @@ function shuffle(array) {
 			// smallSection may have trailing underscores - clean these up
 			smallSection = smallSection.replace(/_/g,"");
 			
+			console.log("Breach - " + bigSection + " - " + smallSection);
+			
 			var msg;
 			try{
 				msg = speech[bigSection].breach[smallSection];
 			} catch(error) {
 				throw new Error(smallSection + " doesn't exist in Breach's " + bigSection);
 			}
-			
+			aic.ready.messages = true;
+			aic.ready.breach = true;
 			// breachLoop has been exported to LoopService
 			LoopService.breachLoop(bigSection,smallSection,msg);
 		}
 		
 		function alexandraLoop(bigSection,smallSection) {
-			LoopService.alexandraLoop(bigSection,smallSection);
+			// smallSection may have trailing underscores - clean these up
+			smallSection = smallSection.replace(/_/g,"");
+			
+			console.log("Alexandra - " + bigSection + " - " + smallSection);
+			
+			var msg;
+			try{
+				msg = speech[bigSection].alexandra[smallSection];
+			} catch(error) {
+				throw new Error(smallSection + " doesn't exist in Alexandra's " + bigSection);
+			}
+			aic.ready.messages = true;
+			aic.ready.alexandra = true;
+			// breachLoop has been exported to LoopService
+			LoopService.alexandraLoop(bigSection,smallSection,msg);
 		}
 		
 		function endingLoop(bigSection,smallSection,delay) {
@@ -939,7 +1002,7 @@ function shuffle(array) {
 			// options = array with each option
 			// each option is also an array, of the format:
 			// ["s:OPTION TEXT","OUTPUT TEXT"]
-			if(!Array.isArray(ids)) {
+			if(!Array.isArray(ids) && ids !== "CLEAR") {
 				throw new Error("options is not an array");
 			}
 			
@@ -947,6 +1010,9 @@ function shuffle(array) {
 			
 			// options list may not be empty:
 			aic.chatLog[conversation].options = [];
+			
+			// if ids is "CLEAR", stop here, we only want to clear the array
+			if(ids === "CLEAR") return;
 			
 			// clear undefined from list of options (in case of false-less ifs)
 			ids = ids.filter(Boolean);
@@ -1029,7 +1095,7 @@ function shuffle(array) {
 					}
 				}
 				// dialogueList now contains the list of dialogue to output FOR THIS ONE OPTION
-				options[i] = {id: ids[i], optionType: optionType, text: options[i][0], opinion: opinion, dialogue: dialogueList, bigSection: bigSection,};
+				options[i] = {id: ids[i], optionType: optionType, text: options[i][0].format(), opinion: opinion, dialogue: dialogueList, bigSection: bigSection,};
 				// ok cool
 				// move onto the next option?
 			}
@@ -1060,7 +1126,7 @@ function shuffle(array) {
 			// deep copy the dialogue to protect the original
 			dialogueList = dialogueList.slice();
 			
-			var n1, n2, messages = [], totalDelay = 0, force;
+			var n1, n2, messages = [], totalDelay = 0, force, emote;
 			
 			for(let i = 0; i < dialogueList.length; i++){
 				
@@ -1104,7 +1170,7 @@ function shuffle(array) {
 						if(i === 0) {
 							n2 = 0;
 						} else if(n2 > 1) {
-							// and then make her speak a little bit faster
+							// and then make her speak a little bit faster anyway
 							n2 *= 0.5;
 						}
 						/*n2 = 0;*/
@@ -1125,7 +1191,6 @@ function shuffle(array) {
 							// we already know that the last speaker is maitreya, so it is impossible for this value to be 0
 							if(maitreyaMessages === 0) throw new Error("maitreyaMessages is 0");
 							n1 = maitreyaMessages * 0.5;
-							console.log("waiting " + n1);
 						}
 					}
 					// if the cheat is on, everyone speaks instantly
@@ -1136,8 +1201,8 @@ function shuffle(array) {
 					
 					var cssClass = "", mode;
 					var text = dialogueList[i];
-					if(dialogueList[i].charAt(1) == ":") {
-						switch(dialogueList[i].charAt(0)) {
+					if(text.charAt(1) == ":") {
+						switch(text.charAt(0)) {
 							case "e": // terminal error
 								cssClass = "error";
 								break;
@@ -1163,20 +1228,32 @@ function shuffle(array) {
 								mode = "typing";
 								break;
 							default:
-								throw new Error("Unknown dialogue type: " + dialogueList[i].charAt(0));
+								throw new Error("Unknown dialogue type: " + text.charAt(0));
 						}
 						text = text.substring(2);
 					}
+					
+					if(speaker === "alexandra" && text.length > 0) {
+						if(!!/(^\w*?):/.exec(text)) {
+							emote = /(^\w*?):/.exec(text)[1];
+							if(!alexandraEmotionList.includes(emote)) throw new Error("Alexandra is experiencing an invalid emotion: " + emote);
+							text = text.substring(emote.length + 1);
+						} else {
+							// if no emotion is specified, maintain the last one and set a default
+							emote = emote || alexandraEmotionList[0];
+						}
+					}
+					
 					messages.push([n1,n2,
-						{speaker: force || speaker, cssClass: cssClass, text: text.format(), mode: mode || "default"}]
+						{speaker: force || speaker, cssClass: cssClass, text: text.format(), mode: mode || "default", emote: emote}]
 					);
-					totalDelay += n1;
-					totalDelay += n2;
+					totalDelay += n1 + n2;
 					
 					// reset everything for the next iteration
 					n1 = undefined;
 					n2 = undefined;
 					force = false;
+					mode = "default";
 					
 					// record the previous speaker, but only if there was actually a message here
 					if(text.length > 0) aic.vars.lastSpeaker = force || speaker;
@@ -1203,7 +1280,7 @@ function shuffle(array) {
 			
 			var timeOut1 = $timeout(function() {
 				// delete this timeOut from the list
-				timeOutList[conversation].splice(timeOutList[conversation].indexOf(timeOut1),1);
+				timeOutList[conversation].splice(timeOutList[conversation].indexOf([timeOut1,conversation]),1);
 				
 				// obviously, don't show the wait icon when we're speaking
 				if(messages[0][2].speaker === "maitreya") {
@@ -1213,14 +1290,18 @@ function shuffle(array) {
 					if((messages.length > 1 && messages[1][2].speaker === "maitreya") || aic.isProcessing[conversation]) {
 						aic.isProcessing[conversation] = true;
 					}
-				} else {
+				} else if(n2 > 0) { // we only want to trigger the wait at all if n2 > 0
 					aic.isSpeaking[conversation] = true;
 					aic.isProcessing[conversation] = false;
+					// check to see whether breach is speaking or typing
+					if(messages[0][2].speaker === "breach") {
+						aic.vars.breachEntryMode = messages[0][2].mode || "speaking";
+					}
 				}
 				
 				var timeOut2 = $timeout(function() {
 					// delete this timeOut from the list
-					timeOutList[conversation].splice(timeOutList[conversation].indexOf(timeOut2),1);
+					timeOutList[conversation].splice(timeOutList[conversation].indexOf([timeOut2,conversation]),1);
 					// now we need to check to see if any other messages are still coming through (HINT: they shouldn't be, but just in case)
 					if(timeOutList[conversation].length === 0) {
 						aic.isSpeaking[conversation] = false;
@@ -1236,8 +1317,16 @@ function shuffle(array) {
 							// this fixes the above
 						}
 					}
-					if(false) { // check to see if we're being interrupted
+					if(aic.isSkipping[conversation]) { // check to see if we're being interrupted
 						// loop through timeoutlist and kill all timeouts?
+						// maybe associate each timeout with its conversation in the list so we can selectively kill them
+						for(let timeout = 0; timeout < timeOutList[conversation].length; timeout++) {
+							$timeout.cancel(timeOutList[conversation][timeout][0]);
+							timeOutList[conversation].splice(timeOutList[conversation].indexOf(timeout),1);
+							// cancel the timer associated with the messages itself
+							$timeout.cancel(aic.timers[conversation]);
+						}
+						aic.isSkipping[conversation] = false;
 					} else {
 						// don't push the message if it's empty
 						if(messages[0][2].text.length > 0) {
@@ -1252,22 +1341,22 @@ function shuffle(array) {
 						}
 					}
 				},n2 * 1000, true);
-				timeOutList[conversation].push(timeOut2);
+				timeOutList[conversation].push([timeOut2,conversation]);
 			},n1 * 1000, true);
-			timeOutList[conversation].push(timeOut1);
+			timeOutList[conversation].push([timeOut1,conversation]);
 		}
 		
 		// add notifications to apps/speakers
 		function addNotification(target) {
 			// accepts apps as well as conversations as targets
-			var currentApp;
 			if(speakerList.includes(target)) {
-				currentApp = "messages";
+				if(aic.selectedApp !== "messages" || aic.selectedSpeaker !== target) {
+					aic.notifications[target]++;
+				}
 			} else {
-				currentApp = target;
-			}
-			if(aic.selectedApp != currentApp) {
-				aic.notifications[target]++;
+				if(aic.selectedApp !== target) {
+					aic.notifications[target]++;
+				}
 			}
 		}
 		
@@ -1323,5 +1412,9 @@ function shuffle(array) {
 		aic.breachLoop = breachLoop;
 		aic.alexandraLoop =  alexandraLoop;
 		aic.endingLoop = endingLoop;
+	}
+	
+	function EncodeURIComponentFilter() {
+		return window.encodeURIComponent;
 	}
 })();
