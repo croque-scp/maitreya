@@ -370,7 +370,7 @@ function shuffle(array) {
 		
 		/* Initialisation */
 		aic.preload = true; // MUST BE TRUE
-		aic.selectedApp = "database"; // MUST BE TERMINAL
+		aic.selectedApp = "terminal"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "breach"; // MUST BE BREACH
 		aic.selectedArticle = "menu"; // MUST BE MENU
 		aic.selectedOperation = "menu"; // MUST BE MENU
@@ -396,12 +396,12 @@ function shuffle(array) {
 			// MUST BE TRUE
 			terminal: true,
 			// MUST ALL BE FALSE
-			breach: true,
-			messages: true,
+			breach: false,
+			messages: false,
 			alexandra: false,
-			dclass: true,
+			dclass: false,
 			database: false,
-			run: true,
+			run: false,
 			ending: false,
 		};
 		aic.timers = {};
@@ -557,9 +557,9 @@ function shuffle(array) {
 			bootDate = new Date(Date.now());
 			
 			// Here we go boys
-			//mainLoop("INTRODUCTION","startBoot");
-			breachLoop("INTRODUCTION","askBreach");
-			//alexandraLoop("TUTORIAL","tutTest");
+			mainLoop("INTRODUCTION","startBoot");
+			//breachLoop("INTRODUCTION","askBreach");
+			//alexandraLoop("TUTORIAL","preload");
 		};
 		
 		// called when user switches app via buttons or terminal
