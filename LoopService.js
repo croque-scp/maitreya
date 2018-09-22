@@ -46,7 +46,7 @@
 					noQuestions: ["Fair enough. Works for me."],
 					noQuestionsKnown: ["Fair enough. Works for me."],
 					askAgain: [0,0,""],
-					askIS12: ["Yeah, that's a fair question.","So, Isolated Site-12 is one of our smaller sites, built to contain SCP-4000 and literally nothing else.","It's super secret, too. You're only allowed to know where it is if you're literally on shift there.","So I'm the only person in the whole world who knows where it is.","Cool, right?","m:Of course.","You'll get to see the documentation shortly, of course, but in the meantime...","...was there anything else you wanted to ask?"],
+					askIS12: ["Yeah, that's a fair question.","So, Isolated Site-12 is one of our smaller sites, built to contain SCP-4000 and literally nothing else.","It's super secret, too. You're only allowed to know where it is if you're literally on shift there.","So I'm the only person in the whole world who knows where it is.","Cool, right?","m:Very cool.","You'll get to see the documentation shortly, of course, but in the meantime...","...was there anything else you wanted to ask?"],
 					askScp4000: ["Oh boy. Haha.","That's... sort of complicated.","Here's the short version: I don't know.","Here's the long version: everyone who ever did know is dead.","I'd love to just walk into its containment cell and take a good, hard gander at it, but it's just not possible.","The camera in there is broken, too.","m:May I see the documentation?","In due time, Maitreya.","Is there anything else you'd like to ask, first?"],
 					askSelf: ["Oh, really? I'd've thought that information would come built-in.","Fair enough, I guess.","You are Maitreya.aic, an Artificially Intelligent Conscript blah blah blah...","You're a super-sophisticated tool for helping me operate this Site and do things that need to be done.","And you're specifically designed to help contain, you know, things that defy human explanation. Because you're not human.","Was there anything else you wanted to ask?"],
 					askTask: ["I was going to explain that in a minute, but if you insist...","We've constructed another site about twenty miles south of here.","It's //super// fancy. The Analysis Department stuffed it full of some kind of equipment... some analytical tool... I can't remember what they called it.","It had a long name.","Whatever it was called, it's supposed to be able to determine what SCP-4000 is without anyone, you know, dying.","And that's where you come in!","I need to move SCP-4000 from its little containment cell into the back of the van in the site bay, so I can take it down to the Southern Site.","m:Why couldn't you construct that equipment closer to this Site?","Oh, you know.","Budget constraints, safety concerns... the whole kit and caboodle, really. Plus, building it too close to IS-12 would expose its location, and we don't want that. do we?","Besides, I didn't get to pick where this stuff gets built!","Is there anything else you wanted to ask?"],
@@ -143,11 +143,13 @@
 					alexHello2: ["pensive:Oh, you know..."],
 					tut1: ["smiling:Okay, so it's my job to tell you how to work the systems at Isolated Site-12.","satisfied:AIC buddies, right? We gotta look out for each other.","concerned:So, do you think you need me to tell you how things work around here?"],
 					tutTest: ["celebrating:Haha, oh really?","grinning:You won't mind if I don't believe that for one second, then?","m:That's a bit rude.","smiling:I'm going to have to give you a quick test, just to make sure you're up to speed.","Ready?"],
-					tut2: ["satisfied:No problem!"],
+					tut2: ["satisfied:No problem!","smiling:Always happy to help."],
 					tutTest1: ["grinning:Okay!","You have one minute, and in that one minute I'd like you...","shocked:...to tell me which cell D-68134 is being kept in!","grinning:Starting NOW!"],
-					tutTestFail: ["shocked:Ouch!","concerned:Not quite right. Looks like you need a helping hand after all."],
-					tutTestPass: ["shocked:Wow!","grinning:I guess you really can handle yourself."],
+					tutTestFail: ["shocked:Ouch!","concerned:Not quite right. Looks like you need a helping hand after all.","m:Maybe I do..."],
+					tutTestPass: ["shocked:Wow!","grinning:I guess you really can handle yourself.","m:Like I said, I can handle myself. You don't need to mother me.","pensive:Right."],
 					tutTestMinute: ["shocked:Uh-oh!","concerned:You ran out of time. Looks like you need a helping hand after all, huh?","m:I would've had it if you'd just given me a little more time.","concerned:AICs are supposed to be lightning-fast, sorry!"],
+					tut3: ["Okay! First thing's first -- I need to catch you up on the documentation for SCP-4000.","m:That would be extremely useful.","Give me a second to unlock the database for you.",3,0,""],
+					tut4: ["Got it."],
 				},
 				maitreya: {
 					alexHello: ["Hello?"],
@@ -156,21 +158,21 @@
 					alexHello2: ["Like what?"],
 					alexImpatient: ["s:I don't have the patience for small talk.","I really don't have the patience for small talk.",-1],
 					tut2: ["s:I could use a hand.","If you could lend me a helping hand, I'd very much appreciate it."],
-					tutTest: ["s:I already know what I'm doing.","Thanks for the offer, but I'm an AIC as well --	I know how to work a Site."],
+					tutTest: ["s:I already know what I'm doing.","Thanks for the offer, but I'm an AIC as well -- I know how to work a Site."],
 					tut2_: ["a:Proceed with the tutorial and refuse the test.","Um, on second thought, I feel like I could use a few pointers."],
-					tutTest1: ["a:Skip the tutorial by taking the test.","Ready!"],
-					tutTestFail: ["s:S1.","Is it S1?"],
-					tutTestPass: ["s:S1.","D-68134 is in S1."],
-					tutTestFail_: ["s:S2.","Is it S2?"],
-					tutTestPass_: ["s:S2.","D-68134 is in S2."],
-					tutTestFail__: ["s:S3.","Is it S3?"],
-					tutTestPass__: ["s:S3.","D-68134 is in S3."],
-					tutTestFail___: ["s:S4.","Is it S4?"],
-					tutTestPass___: ["s:S4.","D-68134 is in S4."],
-					tutTestFail____: ["s:S5.","Is it S5?"],
-					tutTestPass____: ["s:S5.","D-68134 is in S5."],
-					tutTestFail_____: ["s:S6.","Is it S6?"],
-					tutTestPass_____: ["s:S6.","D-68134 is in S6."],
+					tutTest1: ["a:Skip the tutorial by taking the test.","Ready!",-3],
+					tutTestFail: ["s:S1.","Is it S1?",2],
+					tutTestPass: ["s:S1.","D-68134 is in S1.",4],
+					tutTestFail_: ["s:S2.","Is it S2?",2],
+					tutTestPass_: ["s:S2.","D-68134 is in S2.",4],
+					tutTestFail__: ["s:S3.","Is it S3?",2],
+					tutTestPass__: ["s:S3.","D-68134 is in S3.",4],
+					tutTestFail___: ["s:S4.","Is it S4?",2],
+					tutTestPass___: ["s:S4.","D-68134 is in S4.",4],
+					tutTestFail____: ["s:S5.","Is it S5?",2],
+					tutTestPass____: ["s:S5.","D-68134 is in S5.",4],
+					tutTestFail_____: ["s:S6.","Is it S6?",2],
+					tutTestPass_____: ["s:S6.","D-68134 is in S6.",4],
 				},
 			},
 		};
@@ -694,6 +696,7 @@
 						case "tut2":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
 							$timeout(function() {
+								aic.alexandraLoop(bigSection,"tut3");
 							},delay*1000);
 							break;
 						case "tutTest1":
@@ -713,23 +716,36 @@
 									aic.vars.d68134.location!=="s6" ? "tutTestFail_____" : void 0,
 									aic.vars.d68134.location==="s6" ? "tutTestPass_____" : void 0
 								]);
-								aic.vars.alexandraTimerContainer = $timeout(function() {aic.alexandraLoop("TUTORIAL","tutTestMinute")},60000,true);
+								aic.timers.alexandra = $timeout(function() {aic.alexandraLoop("TUTORIAL","tutTestMinute")},60000,true);
 							},delay*1000 + aic.maitreyaDelay*1000, true);
 							break;
 						case "tutTestFail":
-							$timeout.cancel(aic.vars.alexandraTimerContainer);
+							$timeout.cancel(aic.timers.alexandra);
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
 							$timeout(function() {
+								aic.alexandraLoop(bigSection,"tut2__");
 							},delay*1000);
 							break;
 						case "tutTestPass":
-							$timeout.cancel(aic.vars.alexandraTimerContainer);
+							$timeout.cancel(aic.timers.alexandra);
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
 							$timeout(function() {
 							},delay*1000);
 							break;
 						case "tutTestMinute":
 							aic.presentOptions("alexandra","TUTORIAL","CLEAR");
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+							},delay*1000);
+							break;
+						case "tut3":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.alexandraLoop(bigSection,"tut4");
+								aic.unlock("database");
+							},delay*1000);
+							break;
+						case "tut4":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
 							$timeout(function() {
 							},delay*1000);

@@ -312,12 +312,8 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 								</div>
 							</div>
 							
-							<div class="section" ng-repeat="article in aic.lang.articles" ng-class="aic.selectedArticle === 1">
-							
-							</div>
-							
-							<div>
-							
+							<div class="section article" ng-repeat="(title,article) in aic.lang.articles" ng-class="aic.selectedArticle === title ? 'selected' : null">
+								<div class="article-content" ng-repeat="paragraph in article.text track by $index" ng-bind-html="paragraph.format()"></div>
 							</div>
 							
 						</div>

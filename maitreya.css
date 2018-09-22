@@ -206,6 +206,9 @@ html, body {
 	transform: translate(-50%,-50%);
 	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
 }
+#app-selector ul li.selector:not(.disabled) a {
+	animation: bounce-with-x-translate-and-opacity 1s linear 1 both;
+}
 #app-selector ul li.selector.selected a {
 	box-shadow: none;
 	border-radius: 0;
@@ -217,6 +220,7 @@ html, body {
 	            height 0.1s ease-in-out 0s,
 	            width 0.2s ease-in 0.2s,
 	            border-width 0s;
+	animation: none;
 }
 #app-selector ul li.selector:not(.selected):not(.disabled):hover a {
 	animation: bounce-with-x-translate 1s linear 1 both;
@@ -806,6 +810,9 @@ html, body {
 }
 #messages-selector ul li.selector.disabled {
 	display: none;
+}
+#messages-selector ul li.selector:not(.disabled) a {
+	animation: bounce-without-x-translate-and-opacity 1s linear 1 both;
 }
 #messages-selector ul li.selector a {
 	border-radius: 20px;
@@ -1881,6 +1888,21 @@ misc leave -> slide to left DONE
 	83.28% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.009,0,1);}
 	100% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);}
 }
+@keyframes bounce-without-x-translate-and-opacity {
+	0% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); opacity: 0;}
+	2.1% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-1.335,0,1); opacity: 0.33;}
+	4.1% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.166,0,1); opacity: 0.66;}
+	8.21% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.759,0,1); opacity: 1;}
+	11.41% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.497,0,1); opacity: 1;}
+	14.51% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-1.928,0,1); opacity: 1;}
+	20.72% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-0.636,0,1); opacity: 1;}
+	27.03% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.194,0,1); opacity: 1;}
+	33.23% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.413,0,1); opacity: 1;}
+	45.75% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.094,0,1); opacity: 1;}
+	58.26% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-0.062,0,1); opacity: 1;}
+	83.28% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.009,0,1); opacity: 1;}
+	100% {transform: translate(0,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); opacity: 1;}
+}
 
 @keyframes bounce-with-x-translate {
 	0% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);}
@@ -1896,6 +1918,21 @@ misc leave -> slide to left DONE
 	58.26% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-0.062,0,1);}
 	83.28% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.009,0,1);}
 	100% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);}
+}
+@keyframes bounce-with-x-translate-and-opacity {
+	0% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); opacity: 0;}
+	2.1% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-1.335,0,1); opacity: 0.33;}
+	4.1% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.166,0,1); opacity: 0.66;}
+	8.21% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.759,0,1); opacity: 1;}
+	11.41% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-2.497,0,1); opacity: 1;}
+	14.51% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-1.928,0,1); opacity: 1;}
+	20.72% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-0.636,0,1); opacity: 1;}
+	27.03% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.194,0,1); opacity: 1;}
+	33.23% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.413,0,1); opacity: 1;}
+	45.75% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.094,0,1); opacity: 1;}
+	58.26% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,-0.062,0,1); opacity: 1;}
+	83.28% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0.009,0,1); opacity: 1;}
+	100% {transform: translate(-50%,-50%) matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); opacity: 1;}
 }
 
 @keyframes bounce-left-with-skew {

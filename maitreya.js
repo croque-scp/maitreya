@@ -398,9 +398,9 @@ function shuffle(array) {
 			// MUST ALL BE FALSE
 			breach: true,
 			messages: true,
-			alexandra: true,
+			alexandra: false,
 			dclass: true,
-			database: true,
+			database: false,
 			run: true,
 			ending: false,
 		};
@@ -422,6 +422,7 @@ function shuffle(array) {
 			// this is mostly just for me to remember what variables I'm using
 			breachExplainedVoice: false,
 			breachExplainedTyping: false,
+			waitingForRead4000: false,
 			
 			/* APPS */
 			terminalEmphasis: false, // false
@@ -556,7 +557,8 @@ function shuffle(array) {
 			bootDate = new Date(Date.now());
 			
 			// Here we go boys
-			mainLoop("INTRODUCTION","startBoot");
+			//mainLoop("INTRODUCTION","startBoot");
+			breachLoop("INTRODUCTION","askBreach");
 			//alexandraLoop("TUTORIAL","tutTest");
 		};
 		
@@ -613,7 +615,17 @@ function shuffle(array) {
 		
 		// called when the user switches articles in the database app
 		aic.switchArticle = function(article) {
-			console.log(article);
+			if(article === "scp4000" && aic.vars.waitingForRead4000 === true) {
+				aic.vars.waitingForRead4000 = false;
+				alexandraLoop("TUTORIAL","tut5");
+			}
+			if(article === aic.selectedArticle) {
+				// this is already the selected article, do nothing
+			} else if(aic.lang.articles[article].available === false){
+				// this article is disabled, do nothing
+			} else {
+				aic.selectedArticle = article;
+			}
 		};
 		
 		// Called when the user submits text via the terminal
@@ -668,10 +680,17 @@ function shuffle(array) {
 										writeDialogue("terminal",speech.misc.terminal.cheatSuccess);
 										break;
 									case aic.lang.commands.cheats.print:
-										writeDialogue("terminal",speech.misc.terminal.printDone);
 										var m = eval(phrases[2]); /*jslint ignore:line*/
-										writeDialogue("terminal",[0,0,m]);
 										console.log(m);
+										switch(typeof m) {
+											case "number":
+												m = m.toString(); /*jslint ignore:line*/
+											case "string":
+												writeDialogue("terminal",[0,0,phrases[2] + ": " + m]);
+												break;
+											default:
+												writeDialogue("terminal",speech.misc.terminal.printDone);
+										}
 										break;
 									case aic.lang.commands.cheats.skip:
 										if(aic.chatLog.breach.log.length === 0) {
@@ -1285,6 +1304,8 @@ function shuffle(array) {
 				timeOutList[conversation].splice(timeOutList[conversation].indexOf([timeOut1,conversation]),1);
 				
 				// obviously, don't show the wait icon when we're speaking
+				
+				/*
 				if(messages[0][2].speaker === "maitreya") {
 					// this shows the marker for maitreya, but we only want this if we aren't the *only* maitreya message in the chain
 					// 1st check: if the next speaker is maitreya, then obviously the chain is longer than 1
@@ -1298,6 +1319,20 @@ function shuffle(array) {
 					// check to see whether breach is speaking or typing
 					if(messages[0][2].speaker === "breach") {
 						aic.vars.breachEntryMode = messages[0][2].mode || "speaking";
+					}
+				}
+				*/
+				
+				if(n2 > 0) { // we only want to trigger the wait at all if n2 > 0
+					if(messages[0][2].speaker === "maitreya" && messages.length > 0) {
+						aic.isProcessing[conversation] = true;
+					} else {
+						aic.isSpeaking[conversation] = true;
+						aic.isProcessing[conversation] = false;
+						// check to see whether breach is speaking or typing
+						if(messages[0][2].speaker === "breach") {
+							aic.vars.breachEntryMode = messages[0][2].mode || "speaking";
+						}
 					}
 				}
 				
@@ -1414,6 +1449,18 @@ function shuffle(array) {
 		aic.breachLoop = breachLoop;
 		aic.alexandraLoop =  alexandraLoop;
 		aic.endingLoop = endingLoop;
+		
+		aic.unlock = function(target) {
+			if(appList.includes(target)) {
+				aic.ready[target] = true;
+			} else if(speakerList.includes(target)) {
+				aic.ready[target] = true;
+			} else if(target in aic.lang.articles) {
+				aic.lang.articles.target.available = true;
+			} else {
+				throw new Error("Tried to unlock " + target + " which does not exist");
+			}
+		};
 	}
 	
 	function EncodeURIComponentFilter() {
