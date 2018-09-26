@@ -55,7 +55,8 @@ function shuffle(array) {
 	var maitreya = angular
 		.module('maitreya',['ngSanitize', 'ngAnimate'])
 		.controller('MaitreyaController',MaitreyaController)
-		.filter('encode',EncodeURIComponentFilter);
+		.filter('encode',EncodeURIComponentFilter)
+		.animation('.hexagonate',[HexagonateAnimation]);
 	
 	MaitreyaController.$inject = ['$scope','$timeout','LoopService'];
 	// the LoopService service (from LoopService.js) contains the interactions for Breach, Alexandra and D-Class generated from the spreadsheet
@@ -74,11 +75,13 @@ function shuffle(array) {
 		// This object contains all strings that aren't dialogue
 		aic.lang = {
 			language: "en-GB",
+			
 			version: "Version 6.20 — Build number 441 — 1989-09-04",
 			mobileWarning: "It looks like you're on a mobile device. Maitreya.aic is built for desktop, and mobile has a non-optimal user experience. It is recommended that you return to use Maitreya on a laptop or desktop computer. Press the button below if you'd like to continue anyway.",
 			bootUp: "BOOT UP",
 			commandInput: "MANUAL COMMAND INPUT",
 			terminalSend: "SEND",
+			
 			terminalAppName: ".AIC ACCESS TERMINAL",
 			messagesAppName: "COMMUNICATIONS INTERFACE",
 			databaseAppName: "FOUNDATION DATABASE",
@@ -162,6 +165,8 @@ function shuffle(array) {
 				foyer: { mapName: "Foyer", name: "foyer", },
 				bay: { mapName: "Bay", name: "bay", },
 			},
+			
+			defaultImage: "default_file.png",
 			articles: {
 				// if "text" is just a URL, it prompts the user to go to that URL to access the file
 				scp4000: { title: "SCP-4000", category: "scp", available: true, text: [
@@ -177,14 +182,14 @@ function shuffle(array) {
 					"Current containment procedures are the combined result of trial-and-error and preemptive attempts to prevent further loss of life, and have been in place since SCP-4000 was found. No casualties have been attributed to SCP-4000 since then.",
 					]
 				},
-				is12: { title: "Isolated Site-12", category: "location", available: true, text: [
+				is12: { title: "Isolated Site-12", category: "location", available: true, image: "site12_300.png", text: [
 					"= + SCP Foundation Secure Facility Dossier",
 					"= **Official Designation:** SCP Foundation Quittinirpaaq Isolated Containment Facility",
 					"= **Site Identification Code:** NACANU-IS-12",
 					"----",
 					"= ++ General Information",
 					"----",
-					"[[include component:image-block name=site12_300.png|caption=Isolated Site-12]]",
+					"[[IMAGE]]Isolated Site-12",
 					"**Purpose:** Isolated Site-12 is dedicated solely to the containment of SCP-4000.",
 					"**Founded:** 2010-03-04",
 					"**Founding Director:** Dr. Rebecca Carver",
@@ -370,7 +375,7 @@ function shuffle(array) {
 		
 		/* Initialisation */
 		aic.preload = true; // MUST BE TRUE
-		aic.selectedApp = "terminal"; // MUST BE TERMINAL
+		aic.selectedApp = "database"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "breach"; // MUST BE BREACH
 		aic.selectedArticle = "menu"; // MUST BE MENU
 		aic.selectedOperation = "menu"; // MUST BE MENU
@@ -385,26 +390,6 @@ function shuffle(array) {
 			breach: false,
 			alexandra: false,
 		};
-		aic.notifications = { // MUST ALL BE 0
-			terminal: 0,
-			breach: 0,
-			alexandra: 0,
-			database: 0,
-			run: 0,
-		};
-		aic.ready = {
-			// MUST BE TRUE
-			terminal: true,
-			// MUST ALL BE FALSE
-			breach: false,
-			messages: false,
-			alexandra: false,
-			dclass: false,
-			database: false,
-			run: false,
-			ending: false,
-		};
-		aic.timers = {};
 		aic.isSkipping = {
 			// MUST ALL BE FALSE
 			terminal: false,
@@ -412,6 +397,26 @@ function shuffle(array) {
 			messages: false,
 			alexandra: false,
 			dclass: false,
+		};
+		aic.notifications = { // MUST ALL BE 0
+			terminal: 0,
+			breach: 0,
+			alexandra: 0,
+			database: 0,
+			run: 0,
+		};
+		aic.timers = {};
+		aic.ready = {
+			// MUST BE TRUE
+			terminal: true,
+			// MUST ALL BE FALSE
+			breach: true,
+			messages: true,
+			alexandra: true,
+			dclass: true,
+			database: true,
+			run: true,
+			ending: false,
 		};
 		
 		aic.onMobile = $("#interface").width() < 700;
@@ -557,9 +562,9 @@ function shuffle(array) {
 			bootDate = new Date(Date.now());
 			
 			// Here we go boys
-			mainLoop("INTRODUCTION","startBoot");
+			//mainLoop("INTRODUCTION","startBoot");
 			//breachLoop("INTRODUCTION","askBreach");
-			//alexandraLoop("TUTORIAL","preload");
+			alexandraLoop("TUTORIAL","preload");
 		};
 		
 		// called when user switches app via buttons or terminal
@@ -615,7 +620,8 @@ function shuffle(array) {
 		
 		// called when the user switches articles in the database app
 		aic.switchArticle = function(article) {
-			if(article === "scp4000" && aic.vars.waitingForRead4000 === true) {
+			// specific exception for tutorial
+			if(aic.vars.waitingForRead4000 === true && article === "scp4000") {
 				aic.vars.waitingForRead4000 = false;
 				alexandraLoop("TUTORIAL","tut5");
 			}
@@ -1465,5 +1471,20 @@ function shuffle(array) {
 	
 	function EncodeURIComponentFilter() {
 		return window.encodeURIComponent;
+	}
+	
+	// animate database selectors upon addition/removal of .hexagonate
+	function HexagonateAnimation() {
+		return {
+			addClass: function(element,className,doneFn) {
+				
+			},
+			removeClass: function(element,className,doneFn) {
+				
+			},
+			setClass: function(element,addedClass,removedClass,doneFn) {
+				
+			}
+		};
 	}
 })();

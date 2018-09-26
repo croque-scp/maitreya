@@ -77,6 +77,13 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 			<p>It's a beautiful day outside.<p>
 			<p>Hello there. <span class="statement true" ng-attr-data-bool="{{::aic.lang.true}}">My name is Tom</span>. How are you?</p>
 			<p>My grandfather is <span class="statement false" ng-attr-data-bool="{{::aic.lang.false}}">out there</span>, somewhere.</p>
+			
+			<ul>
+				<p>TODO:</p>
+				<li>move selector ngclasses to nghides or ngifs so that their entry can be animated without fucking up their other animations</li>
+				<li>the database selector is now categorised blocks with image. can we make the sides hexagonate on mouseover?</li>
+				<li>use an svg+ clip to make the ting go boom. slap the box shadow on the svg interior instead of to the normal div boy</li>
+			</ul>
 			<div id="interface" ng-class="[aic.preload ? 'preload' : null, aic.ready.ending ? 'ended' : null]" ng-cloak>
 				<div id="app-selector">
 					<div class="title">
@@ -113,6 +120,12 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 				</div>
 				
 				<div id="app-body">
+				
+					<!--  ______                    _             __-->
+					<!-- /_  __/__  _________ ___  (_)___  ____ _/ /-->
+					<!--  / / / _ \/ ___/ __ `__ \/ / __ \/ __ `/ / -->
+					<!-- / / /  __/ /  / / / / / / / / / / /_/ / /  -->
+					<!--/_/  \___/_/  /_/ /_/ /_/_/_/ /_/\__,_/_/   -->
 					
 					<div id="terminal-app" class="container" ng-class="aic.selectedApp == 'terminal' ? 'selected' : null">
 						<div class="app-title">
@@ -153,6 +166,12 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 						</div>
 					</div>
 					
+					<!--    __  ___                                    -->
+					<!--   /  |/  /__  ______________  ____  ___  _____-->
+					<!--  / /|_/ / _ \/ ___/ ___/ __ `/ __ `/ _ \/ ___/-->
+					<!-- / /  / /  __(__  |__  ) /_/ / /_/ /  __(__  ) -->
+					<!--/_/  /_/\___/____/____/\__,_/\__, /\___/____/  -->
+					<!--                            /____/             -->
 					<div id="messages-app" class="container" ng-class="aic.selectedApp == 'messages' ? 'selected' : null">
 						<div class="app-title">
 							<p>{{::aic.lang.messagesAppName}}</p>
@@ -268,6 +287,12 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 						</div>
 					</div>
 					
+					<!--    ____        __        __                  -->
+					<!--   / __ \____ _/ /_____ _/ /_  ____ _________ -->
+					<!--  / / / / __ `/ __/ __ `/ __ \/ __ `/ ___/ _ \-->
+					<!-- / /_/ / /_/ / /_/ /_/ / /_/ / /_/ (__  )  __/-->
+					<!--/_____/\__,_/\__/\__,_/_.___/\__,_/____/\___/ -->
+					
 					<div id="database-app" class="container" ng-class="aic.selectedApp === 'database' ? 'selected' : null">
 						<div class="app-title">
 							<p>{{::aic.lang.databaseAppName}}</p>
@@ -293,21 +318,64 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 											<input type="checkbox" id="Events"><label for="Events">Events</label>
 										</fieldset>
 									</form>
-									<p class="heading">Available Documentation</p>
-									<table class="articles-list">
-										<tr>
-											<th>Article</th>
-											<th>Content</th>
-											<th>Modified</th>
-											<th>Clearance</th>
-										</tr>
-										<tr class="article-selector" ng-repeat="(id,article) in aic.lang.articles" ng-click="aic.switchArticle(id)" ng-show="article.available">
-											<td>{{article.title}}</td>
-											<td>{{article.category}}</td>
-											<td>Today</td>
-											<td class="clearance">3</td>
-										</tr>
-									</table>
+									
+									<svg xmlns="http://www.w3.org/2000/svg" height="0" width="0">
+										<defs>
+											<filter id="shadow-3dp" x="-50%" y="-100%" width="200%" height="300%">
+												<feOffset in="SourceAlpha" result="offA" dy="3" />
+												<feOffset in="SourceAlpha" result="offB" dy="1" />
+												<feOffset in="SourceAlpha" result="offC" dy="3" />
+												<feMorphology in="offC" result="spreadC" operator="erode" radius="2" />
+												<feGaussianBlur in="offA" result="blurA" stdDeviation="2" /><!--4px 0-->
+												<feGaussianBlur in="offB" result="blurB" stdDeviation="4" /><!--8px 0-->
+												<feGaussianBlur in="spreadC" result="blurC" stdDeviation="1.5" /><!--3px -2px-->
+												<feFlood flood-opacity="0.14" result="opA" />
+												<feFlood flood-opacity="0.12" result="opB" />
+												<feFlood flood-opacity="0.40" result="opC" />
+												<feComposite in="opA" in2="blurA" result="shA" operator="in" />
+												<feComposite in="opB" in2="blurB" result="shB" operator="in" />
+												<feComposite in="opC" in2="blurC" result="shC" operator="in" />
+												<feMerge>
+													<feMergeNode in="shA" />
+													<feMergeNode in="shB" />
+													<feMergeNode in="shC" />
+													<feMergeNode in="SourceGraphic" />
+												</feMerge>
+											</filter>
+											<clipPath id="square">
+												<path d="M 40,0 H 176 L 176,68 L 176,136 H 40 L 40,68 L 40,0 Z" />
+											</clipPath>
+											<clipPath id="hexagon">
+												<path d="M 40,0 H 176 L 196,68 L 176,136 H 40 L 20,68 L 40,0 Z" />
+											</clipPath>
+										</defs>
+									</svg>
+									
+									<p class="heading">SCPs</p>
+									<div class="articles-list">
+									
+										<div class="article-selector" ng-repeat="(id,article) in aic.lang.articles" ng-click="aic.switchArticle(id)" ng-show="article.available">
+											<svg xmlns="http://www.w3.org/2000/svg" height="136px" width="216px">
+												<g filter="url(#shadow-3dp)">
+													<g class="hexagon" clip-path="url(#hexagon)">
+														<image xlink:href="{{article.image || aic.lang.defaultImage}}" width="216" height="136" preserveAspectRatio="xMidYMid slice" />
+														<rect x="0" y="106" width="100%" height="30" fill="white" />
+														<text x="50%" y="124.9" text-anchor="middle">{{::article.title}}</text>
+													</g>
+												</g>
+											</svg>
+											
+											
+											<!--
+											<div class="article-image">
+												<img ng-src="article.image || aic.lang.images[article.type]">
+											</div>
+											<div class="article-title">{{article.title}}</div>
+											-->
+											
+										</div>
+									</div>
+									
 									<p>No articles found. <a ng-href="http://www.scp-wiki.net/search:site/q/{{aic.searchInput | encode}}" target="_blank">Search wider database?</a></p>
 								</div>
 							</div>
@@ -318,6 +386,12 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 							
 						</div>
 					</div>
+					
+					<!--    ____             -->
+					<!--   / __ \__  ______  -->
+					<!--  / /_/ / / / / __ \ -->
+					<!-- / _, _/ /_/ / / / / -->
+					<!--/_/ |_|\__,_/_/ /_/  -->
 					
 					<div id="run-app" class="container" ng-class="aic.selectedApp == 'run' ? 'selected' : null">
 						<div class="app-title">
@@ -399,6 +473,12 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 						</div>
 					</div>
 					
+					<!--    ______          ___            -->
+					<!--   / ____/___  ____/ (_)___  ____ _-->
+					<!--  / __/ / __ \/ __  / / __ \/ __ `/-->
+					<!-- / /___/ / / / /_/ / / / / / /_/ / -->
+					<!--/_____/_/ /_/\__,_/_/_/ /_/\__, /  -->
+					<!--                          /____/   -->
 					<div id="ending-app" class="container" ng-class="aic.selectedApp == 'ending' ? 'selected' : null">
 						<div class="app-title">
 							<p>THE END</p>
