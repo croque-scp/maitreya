@@ -354,10 +354,11 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									<p class="heading">SCPs</p>
 									<div class="articles-list">
 									
-										<div class="article-selector" ng-repeat="(id,article) in aic.lang.articles" ng-click="aic.switchArticle(id)" ng-show="article.available">
+										<div class="article-selector" ng-repeat="(id,article) in aic.lang.articles" ng-show="article.available">
 											<svg xmlns="http://www.w3.org/2000/svg" height="136px" width="216px">
 												<g filter="url(#shadow-3dp)">
-													<g class="hexagon" clip-path="url(#hexagon)">
+													<g class="hexagon" clip-path="url(#square)" ng-click="aic.switchArticle(id)">
+														<animate id="{{'article' + id}}" dur="5s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" attributeName="clip-path" values="url(#hexagon)" />
 														<image xlink:href="{{article.image || aic.lang.defaultImage}}" width="216" height="136" preserveAspectRatio="xMidYMid slice" />
 														<rect x="0" y="106" width="100%" height="30" fill="white" />
 														<text x="50%" y="124.9" text-anchor="middle">{{::article.title}}</text>
