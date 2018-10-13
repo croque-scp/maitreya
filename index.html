@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <!--
-Loading icon CC0 from loading.io
-Typing icon CC BY from loading.io
-Site-12 map made by me using Retro Computer font https://www.dafont.com/retro-computer.font
+Loading icon CC0 loading.io
+Typing icon CC BY loading.io
+
+Site-12 map made by me
+Glacon face made by LurkD
+Alexandra faces made by me, based **very** closely on those made by LurkD
+
 Isolated Site-12 CC BY 2.0 https://www.flickr.com/photos/rauckhaus/10996736375/
 MX1 Drone CC BY-SA 2.0 https://www.flickr.com/photos/deepfrozen/19793862459/
+
+Hetzner Online CC BY-SA 3.0 https://commons.wikimedia.org/wiki/File:Datacenterpark.jpg
+CERN server CC BY-SA 3.0 https://commons.wikimedia.org/wiki/File:CERN_Server.jpg
 Exidy ROM-PAC CC BY 4.0 https://collections.museumvictoria.com.au/items/399313
+
+Rebecca Carver CC BY 2.0 https://www.flickr.com/photos/waltstoneburner/3373248256
 -->
 
 <!-- AUTHOR COMMENT
@@ -59,11 +68,17 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 		<link href="maitreya.css" rel="stylesheet">
 		<link href="IBM_VGA8.css" rel="stylesheet">
 		
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+		<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-sanitize.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>-->
+		
+		<script src="src/jquery-3.3.1.slim.min.js"></script>
+		<script src="src/angular.min.js"></script>
+		<script src="src/angular-sanitize.min.js"></script>
+		<script src="src/angular-animate.min.js"></script>
+		
 		<script src="maitreya.js" type="text/javascript"></script>
 		<script src="LoopService.js" type="text/javascript"></script>
 	</head>
@@ -82,7 +97,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 				<p>TODO:</p>
 				<li>move selector ngclasses to nghides or ngifs so that their entry can be animated without fucking up their other animations</li>
 				<li>the database selector is now categorised blocks with image. can we make the sides hexagonate on mouseover?</li>
-				<li>use an svg+ clip to make the ting go boom. slap the box shadow on the svg interior instead of to the normal div boy</li>
+				<li>no more svg. svg is evil. same structure but now on mouseover make the white box a lil bit diagonal and make it super bouncy. definitely have the article expand out of the box tho</li>
 			</ul>
 			<div id="interface" ng-class="[aic.preload ? 'preload' : null, aic.ready.ending ? 'ended' : null]" ng-cloak>
 				<div id="app-selector">
@@ -297,9 +312,15 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 						<div class="app-title">
 							<p>{{::aic.lang.databaseAppName}}</p>
 						</div>
+						
+							<div class="back" ng-class="aic.selectedArticle === 'menu' ? 'hidden' : null">
+								<div class="parallelogram" ng-click="aic.switchArticle('menu')">
+									<p><i class="material-icons">arrow_back</i> Back to database</p>
+								</div>
+							</div>
 						<div class="app-main">
 						
-							<div class="section menu-section" ng-class="aic.selectedArticle === 'menu' ? 'selected' : null">
+							<div class="section menu-section" ng-class="aic.selectedArticle === 'menu' ? 'selected' : null" ng-attr-new-section="{{aic.selectedArticle}}">
 								<div class="menu-container">
 									<!--<div class="menu-title">
 										<img src="database.png">
@@ -307,82 +328,40 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 										<p>Your access to this database is limited by Isolated Site-12 Directive IS-12/088.61.M4. Documentation will only be made available when its subject matter is mentioned by any external source.</p>
 									</div>-->
 									<p class="heading">Database Search</p>
-									<form class="filters" id="db-search">
-										<input ng-model="aic.searchInput">
-										<fieldset>
-											<legend>Filter by:</legend>
-											<input type="checkbox" id="SCPs"><label for="SCPs">SCPs</label>
-											<input type="checkbox" id="People"><label for="People">People</label>
-											<input type="checkbox" id="Utilities"><label for="Utilities">Utilities</label>
-											<input type="checkbox" id="Locations"><label for="Locations">Locations</label>
-											<input type="checkbox" id="Events"><label for="Events">Events</label>
-										</fieldset>
-									</form>
-									
-									<svg xmlns="http://www.w3.org/2000/svg" height="0" width="0">
-										<defs>
-											<filter id="shadow-3dp" x="-50%" y="-100%" width="200%" height="300%">
-												<feOffset in="SourceAlpha" result="offA" dy="3" />
-												<feOffset in="SourceAlpha" result="offB" dy="1" />
-												<feOffset in="SourceAlpha" result="offC" dy="3" />
-												<feMorphology in="offC" result="spreadC" operator="erode" radius="2" />
-												<feGaussianBlur in="offA" result="blurA" stdDeviation="2" /><!--4px 0-->
-												<feGaussianBlur in="offB" result="blurB" stdDeviation="4" /><!--8px 0-->
-												<feGaussianBlur in="spreadC" result="blurC" stdDeviation="1.5" /><!--3px -2px-->
-												<feFlood flood-opacity="0.14" result="opA" />
-												<feFlood flood-opacity="0.12" result="opB" />
-												<feFlood flood-opacity="0.40" result="opC" />
-												<feComposite in="opA" in2="blurA" result="shA" operator="in" />
-												<feComposite in="opB" in2="blurB" result="shB" operator="in" />
-												<feComposite in="opC" in2="blurC" result="shC" operator="in" />
-												<feMerge>
-													<feMergeNode in="shA" />
-													<feMergeNode in="shB" />
-													<feMergeNode in="shC" />
-													<feMergeNode in="SourceGraphic" />
-												</feMerge>
-											</filter>
-											<clipPath id="square">
-												<path d="M 40,0 H 176 L 176,68 L 176,136 H 40 L 40,68 L 40,0 Z" />
-											</clipPath>
-											<clipPath id="hexagon">
-												<path d="M 40,0 H 176 L 196,68 L 176,136 H 40 L 20,68 L 40,0 Z" />
-											</clipPath>
-										</defs>
-									</svg>
 									
 									<p class="heading">SCPs</p>
 									<div class="articles-list">
 									
-										<div class="article-selector" ng-repeat="(id,article) in aic.lang.articles" ng-show="article.available">
-											<svg xmlns="http://www.w3.org/2000/svg" height="136px" width="216px">
-												<g filter="url(#shadow-3dp)">
-													<g class="hexagon" clip-path="url(#square)" ng-click="aic.switchArticle(id)">
-														<animate id="{{'article' + id}}" dur="5s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" attributeName="clip-path" values="url(#hexagon)" />
-														<image xlink:href="{{article.image || aic.lang.defaultImage}}" width="216" height="136" preserveAspectRatio="xMidYMid slice" />
-														<rect x="0" y="106" width="100%" height="30" fill="white" />
-														<text x="50%" y="124.9" text-anchor="middle">{{::article.title}}</text>
-													</g>
-												</g>
-											</svg>
-											
-											
-											<!--
-											<div class="article-image">
-												<img ng-src="article.image || aic.lang.images[article.type]">
+										<div class="article-selector" ng-repeat="(id,article) in aic.lang.articles track by article.title" ng-if="article.available" ng-click="aic.switchArticle(id)">
+											<div class="article-title">
+												<div class="article-title-icon-container"></div>
+												<div class="article-title-icon"><i class="material-icons">input</i></div>
+												<div class="article-title-title">
+													<p>{{::article.title}}</p>
+												</div>
 											</div>
-											<div class="article-title">{{article.title}}</div>
-											-->
-											
+											<div class="article-image" style="background-image: url({{::article.image || aic.lang.defaultImage}});"></div>
 										</div>
+										
 									</div>
 									
 									<p>No articles found. <a ng-href="http://www.scp-wiki.net/search:site/q/{{aic.searchInput | encode}}" target="_blank">Search wider database?</a></p>
 								</div>
 							</div>
 							
-							<div class="section article" ng-repeat="(title,article) in aic.lang.articles" ng-class="aic.selectedArticle === title ? 'selected' : null">
-								<div class="article-content" ng-repeat="paragraph in article.text track by $index" ng-bind-html="paragraph.format()"></div>
+							<div class="section article-section" ng-class="aic.selectedArticle !== 'menu' ? 'selected' : null" ng-attr-new-section="{{aic.selectedArticle}}">
+								<div class="article-content" ng-class="aic.selectedArticleData.content.length > 0 ? 'active' : 'inactive'">
+									<p ng-repeat="line in aic.selectedArticleData.content track by $index" ng-bind-html="trustAsHtml(line)"></p>
+								</div>
+								<!--TODO: replace unsafe with regular, because there are no local images in the final version-->
+							</div>
+							
+							<div class="bottom-bar">
+								<div class="top" ng-class="aic.selectedArticle !== 'menu' ? 'active' : 'inactive'">
+									<div class="inner"></div>
+								</div>
+								<div class="middle"></div>
+								<div class="bottom"></div>
 							</div>
 							
 						</div>

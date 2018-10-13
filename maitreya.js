@@ -21,21 +21,24 @@ String.prototype.toCamelCase = function() {
 };
 
 // prototype function to format dialogue strings from wikidot format to HTML
-String.prototype.format = function() {
+String.prototype.format = function() { // pass article argument only if this is an article
 	return this
 		.replace(/\|\|\|\|/g, "<br>") // "||||" makes a new line
 		.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>") // Wikidot bolding syntax
 		.replace(/\/\/(.*?)\/\//g, "<i>$1</i>") // Wikidot italics syntax
 		.replace(/{{(.*?)}}/g, "<tt>$1</tt>") // Wikidot teletype syntax
+		.replace(/\^\^(.*?)\^\^/g, "<sup>$1</sup>") // Wikidot superscript syntax
 		.replace(/\?\?(.*?)\?\?/g, "<span dynamic class='statement false' data-bool='TRUE'>$1</span>")
 		.replace(/!!(.*?)!!/g, "<span class='statement true' data-bool='FALSE'>$1</span>")
+		.replace(/^-{3,}$/g, "<hr>") // horizontal rule
 		.replace(/--/g, "—") // Wikidot em-dash replacement
-		.replace(/^\=\s(.*)$/g, "<div style='text-align: center;'>$1</div>") // h1
-		.replace(/(^|>)\+\s([^<]*)/g, "$1<h1>$2</h1>") // h1
-		.replace(/(^|>)\+\+\s([^<]*)/g, "$1<h2>$2</h2>") // h2
-		.replace(/(^|>)\+\+\+\s([^<]*)/g, "$1<h3>$2</h3>") // h3
-		.replace(/^-{3,}/g, "<hr>"); // horizontal rule
-		// TODO add support for images // really, past-me? // really, less-past me?
+		.replace(/^=\s(.*)$/g, "<div style='text-align: center;'>$1</div>") // centre align
+		.replace(/(^|>)\!\s([^<]*)/g, "$1<div class='fake-title'>$2</div>") // fake title
+		.replace(/(^|>)\+{3}\s([^<]*)/g, "$1<h3>$2</h3>") // h3
+		.replace(/(^|>)\+{2}\s([^<]*)/g, "$1<h2>$2</h2>") // h2
+		.replace(/(^|>)\+{1}\s([^<]*)/g, "$1<h1>$2</h1>") // h1
+		.replace(/^\[\[IMAGE\]\]\s([^\s]*)\s(.*)$/g, "<div class='scp-image-block block-right'><img src='$1'><div class='scp-image-caption'><p>$2</p></div></div>");
+	
 };
 
 // randomise an array
@@ -55,17 +58,20 @@ function shuffle(array) {
 	var maitreya = angular
 		.module('maitreya',['ngSanitize', 'ngAnimate'])
 		.controller('MaitreyaController',MaitreyaController)
-		.filter('encode',EncodeURIComponentFilter)
-		.animation('.hexagonate',[HexagonateAnimation]);
+		.filter('encode',EncodeURIComponentFilter);
 	
-	MaitreyaController.$inject = ['$scope','$timeout','LoopService'];
+	MaitreyaController.$inject = ['$scope','$timeout','LoopService','$sce'];
 	// the LoopService service (from LoopService.js) contains the interactions for Breach, Alexandra and D-Class generated from the spreadsheet
 	
-	function MaitreyaController($scope,$timeout,LoopService){
+	function MaitreyaController($scope,$timeout,LoopService,$sce){
 		
 		var aic = this;
 		
 		LoopService.use($scope); // give BreachLoopService our scope
+		
+		$scope.trustAsHtml = function(string) {
+			return $sce.trustAsHtml(string);
+		};
 		
 		var bootDate = new Date(new Date(Date.now()).setFullYear(2018)); // get the time when the user started playing, except it's always 2018 because canon
 		const auto = "auto";
@@ -170,13 +176,14 @@ function shuffle(array) {
 			articles: {
 				// if "text" is just a URL, it prompts the user to go to that URL to access the file
 				scp4000: { title: "SCP-4000", category: "scp", available: true, text: [
+					"! SCP-4000",
 					"**Item #:** SCP-4000",
 					"**Object Class:** Safe",
-					"**Special Containment Procedures:** SCP-4000 is to be kept within a reinforced containment chamber at Isolated Site-12. No entry to the containment chamber is permitted. Observation of SCP-4000 should be avoided except during testing.",
+					"**Special Containment Procedures:** Dr. Breach is authorised to use whatever means he deems necessary in order to support ongoing research into SCP-4000.",
+					"SCP-4000 is to be kept within a reinforced containment chamber at Isolated Site-12. No entry to the containment chamber is permitted. Observation of SCP-4000 should be avoided except during testing.",
 					"Isolated Site-12 is to be staffed with a single member of personnel at all times. The current project head is Dr. Breach. No other staff are permitted to be on-site.",
 					"[[[aic.selectedArticle = 'alexandra'|Alexandra.aic]]] is to maintain a presence at Isolated Site-12 to support Dr. Breach in his duties.",
 					"Knowledge of the location of Isolated Site-12, and by extension SCP-4000, is strictly need-to-know only.",
-					"Dr. Breach is authorised to use whatever means he deems necessary in order to support ongoing research into SCP-4000.",
 					"**Description:** SCP-4000 is an object, entity or concept that is currently located at Isolated Site-12. It is currently unknown what, if any, anomalous effects SCP-4000 exhibits.",
 					"SCP-4000 was discovered on 2010-03-04 in [DATA EXPUNGED], in which Isolated Site-12 was later constructed. Initial containment resulted in the deaths of all civilians who were originally exposed to SCP-4000, both mobile task forces sent, the Foundation operators directing those MTFs via radio, and most other personnel observing operations. Autopsies concluded that those who did not die due to [DATA EXPUNGED] on account of the weather in the region suffered no physical injuries barring minor restructuring of certain parts of the brain. Other than these discrepancies -- including several cases in which the restructuring was not present -- pathologists were unable to ascertain any reason for death.",
 					"Current containment procedures are the combined result of trial-and-error and preemptive attempts to prevent further loss of life, and have been in place since SCP-4000 was found. No casualties have been attributed to SCP-4000 since then.",
@@ -189,7 +196,7 @@ function shuffle(array) {
 					"----",
 					"= ++ General Information",
 					"----",
-					"[[IMAGE]]Isolated Site-12",
+					"[[IMAGE]] site12_300.png Isolated Site-12",
 					"**Purpose:** Isolated Site-12 is dedicated solely to the containment of SCP-4000.",
 					"**Founded:** 2010-03-04",
 					"**Founding Director:** Dr. Rebecca Carver",
@@ -209,40 +216,60 @@ function shuffle(array) {
 					"-----",
 					"= ++ Additional Information",
 					"----",
-					"Located near the uppermost tip of Ellesmere Island, Isolated Site-12 is one of the most northern facilities operated by the Foundation. It is also one of the coldest, covered in snow for most of the year. Its location is kept strictly classified to those currently on-shift at the Site, who must be amnesticised post-shift in order to remove knowledge of its whereabouts.</p>",
+					"Located near the uppermost tip of Ellesmere Island, Isolated Site-12 is one of the most northern facilities operated by the Foundation. It is also one of the coldest, covered in snow for most of the year. Its location is kept strictly classified to those currently on-shift at the Site, who must be amnesticised post-shift in order to remove knowledge of its whereabouts.",
 					"Isolated Site-12 is used solely for the containment of SCP-4000. Containment procedures for SCP-4000 dictate that as few people as possible are to be exposed to it in any way.",
 					"Isolated Site-12 must be staffed at all times by a single member of personnel. They are tasked with maintaining the Site, ensuring SCP-4000 does not breach containment, and ensuring that any problems that arise are solved quickly. Alexandra.aic maintains a presence within Isolated Site-12 servers to handle most issues, and also to provide the on-site personnel with social entertainment.",
 					"Transport to and from Isolated Site-12 is by air. Aircraft are stored in the on-site hangar. Alexandra.aic is trusted with plotting and piloting a sufficiently complex travel route.",
 					]
 				},
 				breach: { title: "Dr. Ethan Breach", category: "person", available: true, text: [
+					"! Dr Breach's Personnel File",
+					"**Name:** Moho",
+					"**Security Clearance:** Moho",
+					"**Occupation:** Moho",
+					"**Site of Operations:** Moho",
+					"**Name:** Moho",
+					"**Name:** Moho",
+					]
+				},
+				rebeccaCarver: { title: "Dr. Rebecca Carver", category: "person", available: true, image: "rebecca-carver.png", text: [
+					"! Dr Rebecca Carver's Personnel File",
+					"[[IMAGE]] rebecca-carver.png Dr. Rebecca Carver",
 					"article text"
 					]
 				},
-				rebeccaCarver: { title: "Dr. Rebecca Carver", category: "person", available: false, text: [
+				alexandra: { title: "Alexandra.aic", category: "utility", available: true, image: "dewey.jpg", text: [
+					"! Alexandra.aic",
+					"[[IMAGE]] dewey.jpg Alexandra.aic dedicated server at Site-19",
 					"article text"
 					]
 				},
-				alexandra: { title: "Alexandra.aic", category: "utility", available: false, text: [
+				maitreya: { title: "Maitreya.aic", category: "utility", available: true, image: "cantilever.png", text: [
+					"! Maitreya.aic",
+					"[[IMAGE]] cantilever.png Exidy ROM-PAC containing Maitreya.aic",
 					"article text"
 					]
 				},
-				maitreya: { title: "Maitreya.aic", category: "utility", available: false, text: [
+				glacon: { title: "Glacon.aic", category: "utility", available: true, image: "corinthian.jpg", text: [
+					"! Glacon.aic",
+					"[[IMAGE]] corinthian.jpg Glacon.aic dedicated server at Site-17",
 					"article text"
 					]
 				},
-				glacon: { title: "Glacon.aic", category: "utility", available: false, text: [
-					"article text"
-					]
-				},
-				scp079: { title: "SCP-079", category: "scp", available: false, text:
+				scp079: { title: "SCP-079", category: "scp", available: true, text:
 					"http://www.scp-wiki.net/scp-079"
 				},
-				quttinirpaaq: { title: "Quttinirpaaq", category: "location", available: false, text:
+				quttinirpaaq: { title: "Quttinirpaaq", category: "location", available: true, image: "https://upload.wikimedia.org/wikipedia/commons/6/6d/Quttinirtaaq_1_1997-08-05.jpg", text:
 					"https://en.wikipedia.org/wiki/Quttinirpaaq_National_Park"
 				},
 				glaconIncident: { title: "Incident AIAD-CM-IV", category: "event1", available: true, text:
 					"http://www.scp-wiki.net/clock-multiplier"
+				},
+				drone: { title: "MX1 Drone", category: "utility", available: true, image: "drone.png", text: [
+					"! MX1 Drone",
+					"[[IMAGE]] drone.png MX1 Drone",
+					"article text"
+					]
 				},
 			},
 		};
@@ -375,7 +402,7 @@ function shuffle(array) {
 		
 		/* Initialisation */
 		aic.preload = true; // MUST BE TRUE
-		aic.selectedApp = "database"; // MUST BE TERMINAL
+		aic.selectedApp = "terminal"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "breach"; // MUST BE BREACH
 		aic.selectedArticle = "menu"; // MUST BE MENU
 		aic.selectedOperation = "menu"; // MUST BE MENU
@@ -406,6 +433,7 @@ function shuffle(array) {
 			run: 0,
 		};
 		aic.timers = {};
+		aic.selectedArticleData = {type: "url or text", content: []};
 		aic.ready = {
 			// MUST BE TRUE
 			terminal: true,
@@ -563,8 +591,8 @@ function shuffle(array) {
 			
 			// Here we go boys
 			//mainLoop("INTRODUCTION","startBoot");
-			//breachLoop("INTRODUCTION","askBreach");
-			alexandraLoop("TUTORIAL","preload");
+			breachLoop("INTRODUCTION","start");
+			//alexandraLoop("TUTORIAL","preload");
 		};
 		
 		// called when user switches app via buttons or terminal
@@ -627,9 +655,24 @@ function shuffle(array) {
 			}
 			if(article === aic.selectedArticle) {
 				// this is already the selected article, do nothing
+			} else if(article === "menu") {
+				// we're selecting the menu, which is always enabled
+				aic.selectedArticle = "menu";
+				// however, because we're only using 1 section for all articles, we need to force a 0.6s delay so the css can catch up
+				$timeout(function() {aic.selectedArticleData = {}},600,true);
 			} else if(aic.lang.articles[article].available === false){
 				// this article is disabled, do nothing
 			} else {
+				// take all of the data from the articles db and wham that shit into selectedArticleData
+				aic.selectedArticleData.type = Array.isArray(aic.lang.articles[article].text) ? "text" : "url";
+				if(aic.selectedArticleData.type === "text") {
+					aic.selectedArticleData.content = [];
+					for(let i = 0; i < aic.lang.articles[article].text.length; i++) {
+						aic.selectedArticleData.content.push(aic.lang.articles[article].text[i].format());
+					}
+				} else {
+					aic.selectedArticleData.content = aic.lang.defaultArticle;
+				}
 				aic.selectedArticle = article;
 			}
 		};
@@ -955,7 +998,22 @@ function shuffle(array) {
 			aic.ready.messages = true;
 			aic.ready.breach = true;
 			// breachLoop has been exported to LoopService
-			LoopService.breachLoop(bigSection,smallSection,msg);
+			
+			// check for events that we want to handle manually
+			switch(bigSection) {
+				case "MISC":
+					switch(smallSection) {
+						case "fillerQuestion":
+							//do stuff
+							break;
+						default:
+							throw new Error("Breach " + smallSection + " is not an event in " + bigSection);
+					}
+					break;
+				default:
+					// this event is not declared, so defer to LoopService
+					LoopService.breachLoop(bigSection,smallSection,msg);
+			}
 		}
 		
 		function alexandraLoop(bigSection,smallSection) {
@@ -1467,24 +1525,13 @@ function shuffle(array) {
 				throw new Error("Tried to unlock " + target + " which does not exist");
 			}
 		};
+		
+		aic.eval = function(a) {
+			eval(a);
+		};
 	}
 	
 	function EncodeURIComponentFilter() {
 		return window.encodeURIComponent;
-	}
-	
-	// animate database selectors upon addition/removal of .hexagonate
-	function HexagonateAnimation() {
-		return {
-			addClass: function(element,className,doneFn) {
-				
-			},
-			removeClass: function(element,className,doneFn) {
-				
-			},
-			setClass: function(element,addedClass,removedClass,doneFn) {
-				
-			}
-		};
 	}
 })();
