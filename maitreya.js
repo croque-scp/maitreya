@@ -250,9 +250,9 @@ function shuffle(array) {
 					"article text"
 					]
 				},
-				glacon: { title: "Glacon.aic", category: "utility", available: true, image: "corinthian.jpg", text: [
+				glacon: { title: "Glacon.aic", category: "utility", available: true, image: "corinthian.png", text: [
 					"! Glacon.aic",
-					"[[IMAGE]] corinthian.jpg Glacon.aic dedicated server at Site-17",
+					"[[IMAGE]] corinthian.png Glacon.aic dedicated server at Site-17",
 					"article text"
 					]
 				},
