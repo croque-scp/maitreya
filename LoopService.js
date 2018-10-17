@@ -120,7 +120,7 @@
 					askSelf2: ["a:Press him for more information.","Dr. Breach, this is my first memory since 1989. It's 2018. I know for certain that you're not telling me something."],
 					askAgain___: ["a:Don't press him.",0,0,""],
 					askSelf3: ["a:Double down.","Look, I just know that there's something you're not telling me.","There's two possible explanations here.","First, I've not been used since 1989. If that's the case, then I've never been used to contain anything, so telling me that I'm specialised to contain certain things is objectively wrong.","Second possibility is that you've wiped most -- if not all -- of my memory.","And that's acceptable. I'm an AIC, I can deal with that.","I just think that I get the right to know //why//.",-1],
-					unAskSelf3: ["a:Back down.","Apologies, Dr. Breach.",1],
+					unAskSelf3: ["a:Back down.","You're right. Apologies, Dr. Breach.",1],
 					askSelf4: ["Or what?",-1],
 					unAskSelf4: ["Yes, Dr. Breach.",1],
 					askSelf5: ["a:Double down.","Why are you dancing around the point and making threats?","It's painfully obvious that you're hiding something.",-1],
@@ -147,9 +147,11 @@
 					tutTest1: ["grinning:Okay!","You have one minute, and in that one minute I'd like you...","shocked:...to tell me which cell D-68134 is being kept in!","grinning:Starting NOW!"],
 					tutTestFail: ["shocked:Ouch!","concerned:Not quite right. Looks like you need a helping hand after all.","m:Maybe I do..."],
 					tutTestPass: ["shocked:Wow!","grinning:I guess you really can handle yourself.","m:Like I said, I can handle myself. You don't need to mother me.","pensive:Right."],
-					tutTestMinute: ["shocked:Uh-oh!","concerned:You ran out of time. Looks like you need a helping hand after all, huh?","m:I would've had it if you'd just given me a little more time.","concerned:AICs are supposed to be lightning-fast, sorry!"],
+					tutTestMinute: ["shocked:Uh-oh!","concerned:You ran out of time. Looks like you need a helping hand after all, huh?","m:I would've had it if you'd just given me a little more time.","concerned:AICs are supposed to be lightning-fast, sorry!","satisfied:But that's okay! We can get you up to speed."],
 					tut3: ["Okay! First thing's first -- I need to catch you up on the documentation for SCP-4000.","m:That would be extremely useful.","Give me a second to unlock the database for you.",3,0,""],
-					tut4: ["Got it."],
+					tut4: ["Got it.","Alright, head on over to the database.","Once you're in, look for the file named \"SCP-4000\". Give it a read, come back here when you're done.","m:On it."],
+					tut5: [0,0,""],
+					tutIssue: ["shocked:Something wrong?","concerned:What do you mean?","m:It seems a little odd that Dr. Breach alone is allowed access to the site.","pensive:Maybe.","But I'm not in charge of containment procedures, and it is called //Isolated// Site-12, I guess.","Bring it up with Dr. Breach."],
 				},
 				maitreya: {
 					alexHello: ["Hello?"],
@@ -173,6 +175,8 @@
 					tutTestPass____: ["s:S5.","D-68134 is in S5.",4],
 					tutTestFail_____: ["s:S6.","Is it S6?",2],
 					tutTestPass_____: ["s:S6.","D-68134 is in S6.",4],
+					tut6: ["Done reading."],
+					tutIssue: ["Is there something wrong with the file?"],
 				},
 			},
 		};
@@ -736,6 +740,7 @@
 							aic.presentOptions("alexandra","TUTORIAL","CLEAR");
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
 							$timeout(function() {
+								aic.alexandraLoop(bigSection,"tut3_");
 							},delay*1000);
 							break;
 						case "tut3":
@@ -746,6 +751,26 @@
 							},delay*1000);
 							break;
 						case "tut4":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.vars.waitingForRead4000 = true;
+							},delay*1000);
+							break;
+						case "tut5":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.presentOptions("alexandra",bigSection,[
+									"tut6",
+									"tutIssue"
+								]);
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "tutIssue":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+							},delay*1000);
+							break;
+						case "tut6":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
 							$timeout(function() {
 							},delay*1000);

@@ -83,7 +83,9 @@ html, body {
 	--lightish-theme: #1a73c6;
 	--middle-theme: #205dbf;
 	--dark-theme: #2b32b2;
+	--ease-in-out: cubic-bezier(0.4, 0.0, 0.2, 1);
 	transition: all 1s ease-in-out;
+	transition: all 1s var(--ease-in-out);
 }
 #interface.ended {
 	--light-theme: #ff1111;
@@ -133,6 +135,7 @@ html, body {
 	right: 0;
 	padding: 0;
 	transition: opacity 0.3s ease-in-out 1.2s;
+	transition: opacity 0.3s var(--ease-in-out) 1.2s;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -150,6 +153,7 @@ html, body {
 #app-selector ul li.selector.selected {
 	/*background-color: white;*/
 	transition: background-color 0.2s ease-in-out;
+	transition: background-color 0.2s var(--ease-in-out);
 }
 #app-selector ul li.selector a::before {
 	box-shadow: none;
@@ -196,9 +200,13 @@ html, body {
 	color: var(--middle-theme);
 	border: 1px white solid;
 	transition: box-shadow 0.2s ease-in-out 0s,
+	transition: box-shadow 0.2s var(--ease-in-out) 0s,
 	            border-radius 0.2s ease-in-out 0s,
+	            border-radius 0.2s var(--ease-in-out) 0s,
 	            height 0.2s ease-in-out 0s,
+	            height 0.2s var(--ease-in-out) 0s,
 	            width 0.1s ease-in-out 0s,
+	            width 0.1s var(--ease-in-out) 0s,
 	            border-width 0s;
 	top: 50%;
 	left: 50%;
@@ -216,8 +224,11 @@ html, body {
 	width: 100%;
 	border-width: 0;
 	transition: box-shadow 0.1s ease-in-out 0s,
+	transition: box-shadow 0.1s var(--ease-in-out) 0s,
 	            border-radius 0.1s ease-in-out 0s,
+	            border-radius 0.1s var(--ease-in-out) 0s,
 	            height 0.1s ease-in-out 0s,
+	            height 0.1s var(--ease-in-out) 0s,
 	            width 0.2s ease-in 0.2s,
 	            border-width 0s;
 	animation: none;
@@ -291,6 +302,7 @@ html, body {
 	display: inline-block;
 	opacity: 1;
 	transition: opacity 0.3s ease-in-out 1.2s;
+	transition: opacity 0.3s var(--ease-in-out) 1.2s;
 }
 
 #app-body {
@@ -310,6 +322,7 @@ html, body {
 	transition: visibility 0s linear 0s,
 	            height 0s linear 0s,
 	            opacity 0.2s ease-in-out;
+	            opacity 0.2s var(--ease-in-out);
 }
 #app-body .container:not(.selected) {
 	height: 0;
@@ -319,6 +332,7 @@ html, body {
 	transition: visibility 0s linear 0.2s,
 	            height 0s linear 0.2s,
 	            opacity 0.2s ease-in-out;
+	            opacity 0.2s var(--ease-in-out);
 }
 #app-body .container:not(.selected) .app-title p {
 	margin-bottom: 2em;
@@ -332,7 +346,7 @@ html, body {
  */
 #terminal-app .terminal-body {
 	height: 450px;
-	background-image: url(grey_stripe.png);
+	/*background-image: url(grey_stripe.png);*/
 	position: relative;
 }
 #terminal-app .working {
@@ -414,6 +428,7 @@ html, body {
 #terminal-app .terminal-log p.ng-enter {
 	max-height: 0;
 	transition: all 0.5s ease-in-out;
+	transition: all 0.5s var(--ease-in-out);
 }
 #terminal-app .terminal-log p.ng-enter-active {
 	max-height: 300px;
@@ -423,23 +438,25 @@ html, body {
 	z-index: 1;
 	width: calc(100% + 20px);
 	transform: translate(-10px,0);
-	background: url(aiad_fade.png), linear-gradient(to bottom, #f4f4f4, white);
+	/*background: url(aiad_fade.png), linear-gradient(to bottom, #f4f4f4, white);*/
 	background-size: 300px 300px, 100% 100%;
 	background-position: 90% 50%, center;
 	background-repeat: no-repeat;
 	transition: all 2s ease-in-out;
+	transition: all 2s var(--ease-in-out);
 	box-shadow: inset 0 -3px 1px -2px rgba(0,0,0,0.12), inset 0 -1px 5px 0 rgba(0,0,0,0.2),
 	            inset 0 2px 2px 0 rgba(0,0,0,0.14), inset 0 3px 1px -2px rgba(0,0,0,0.12), inset 0 1px 5px 0 rgba(0,0,0,0.2);
 }
 #terminal-app .input-section .hint-arrow {
 	height: 90px;
 	width: 217px; /* width of image */
-	background-image: url(highlight-arrow.png);
+	/*background-image: url(highlight-arrow.png);*/
 	background-position: center;
 	position: absolute;
 	opacity: 1;
 	z-index: 2;
 	transition: all 1.5s ease-in-out;
+	transition: all 1.5s var(--ease-in-out);
 }
 #terminal-app .input-section .hint-arrow.left {
 	left: 0;
@@ -540,11 +557,13 @@ html, body {
 	height: 18px;
 	min-height: 18px;
 	transition: opacity 0.1s ease-in-out;
+	transition: opacity 0.1s var(--ease-in-out);
 }
 #messages-app .speaking {
 	position: absolute;
 	opacity: 1;
 	transition: opacity 0.1s ease-in-out;
+	transition: opacity 0.1s var(--ease-in-out);
 }
 #messages-app .speaking.notSpeaking {
 	opacity: 0;
@@ -570,6 +589,7 @@ html, body {
 	height: 20px;
 	width: 20px;
 	transition: transform 0.1s ease-in-out;
+	transition: transform 0.1s var(--ease-in-out);
 	background: var(--light-theme);
 	border-radius: 25px;
 	top: -1px;
@@ -622,6 +642,7 @@ html, body {
 	transform: translate(0,100px);
 	max-height: 0px;
 	transition: all 0.5s ease-in-out;
+	transition: all 0.5s var(--ease-in-out);
 	opacity: 0;
 }
 #messages-app .conversation .wrapper.maitreya.ng-enter {
@@ -636,52 +657,53 @@ html, body {
 	transform: translate(-500px,0);
 	margin-top: -100%;
 	transition: all 0.5s ease-in-out;
+	transition: all 0.5s var(--ease-in-out);
 }
 #messages-app .conversation .wrapper.ng-move-active {
 	transform: translate(0,0);
 	margin-top: 0;
 }*/
-#messages-app .conversation .wrapper div {
+#messages-app .conversation .wrapper > div {
 	color: #222;
 	background-color: #ddd;
 	border-radius: 5px;
 	clear: both;
 	position: relative;
 }
-#messages-app .conversation .wrapper div.breach {
+#messages-app .conversation .wrapper > div.breach {
 	border: 3px #ddd solid;
 	background-color: white;
 	float: left;
 }
-#messages-app .conversation .wrapper div.alexandra {
+#messages-app .conversation .wrapper > div.alexandra {
 	float: left;
 	background: linear-gradient(to bottom,#0cc,#009494);
 	border-radius: 30px / 70px;
 	padding: 2px 20px;
 	max-width: 60%;
 }
-#messages-app .conversation .wrapper div.maitreya {
+#messages-app .conversation .wrapper > div.maitreya {
 	background: linear-gradient(to bottom,#1488cc,#1a73c6);
 	background: linear-gradient(to bottom,var(--light-theme),var(--lightish-theme));
 	float: right;
 }
-#messages-app .conversation .wrapper div.narrator {
+#messages-app .conversation .wrapper > div.narrator {
 	background: #e9e9e9;
 	border-radius: 0;
 	border: 1px #999 dashed;
 }
-#messages-app .conversation .wrapper div p {
+#messages-app .conversation .wrapper > div p {
 	display: inline-block;
 	margin: 1em;
 }
-#messages-app .conversation .wrapper div.breach p {
+#messages-app .conversation .wrapper > div.breach p {
 	color: #222;
 	margin: calc(1em + 2px);
 }
-#messages-app .conversation .wrapper div.alexandra p {
+#messages-app .conversation .wrapper > div.alexandra p {
 	color: #f5e9e9;
 }
-#messages-app .conversation .wrapper div.maitreya p {
+#messages-app .conversation .wrapper > div.maitreya p {
 	color: white;
 }
 #messages-app .conversation .wrapper img.logo {
@@ -694,6 +716,7 @@ html, body {
 }
 #messages-app .conversation .wrapper img.logo.ng-hide-add {
 	transition: all 0.5s ease-in-out;
+	transition: all 0.5s var(--ease-in-out);
 }
 #messages-app .conversation .wrapper img.logo.ng-hide {
 	opacity: 0;
@@ -734,6 +757,7 @@ html, body {
 #messages-app .conversation p.ng-enter {
 	max-height: 0;
 	transition: all 0.5s ease-in-out;
+	transition: all 0.5s var(--ease-in-out);
 }
 #messages-app .conversation p.ng-enter-active {
 	max-height: 300px;
@@ -792,6 +816,7 @@ html, body {
 	margin: 0;
 	padding: 0;
 	transition: opacity 0.3s ease-in-out 1.2s;
+	transition: opacity 0.3s var(--ease-in-out) 1.2s;
 	background-color: #ddd;
 	display: flex;
 	flex-direction: row;
@@ -850,6 +875,7 @@ html, body {
 #messages-selector ul li.selector.selected {
 	/*background-color: white;*/
 	transition: background-color 0.2s ease-in-out;
+	transition: background-color 0.2s var(--ease-in-out);
 }
 #messages-selector ul li.selector.selected:before {
 	box-shadow: inset -3px 0 2px -2px rgba(0,0,0,0.28), inset -4px 0 1px -2px rgba(0,0,0,0.14), inset -2px 0 5px -5px rgba(0,0,0,0.2);
@@ -921,6 +947,7 @@ html, body {
 	vertical-align: middle;
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
+	transition: all 0.3s var(--ease-in-out);
 	box-shadow: 1px 2px 2px 0 rgba(0,0,0,0.14), 2px 3px 1px -2px rgba(0,0,0,0.12), 1px 1px 5px 0 rgba(0,0,0,0.2);
 }
 #database-app .back .parallelogram.hidden {
@@ -946,11 +973,12 @@ html, body {
 	transform: translate(0,calc(-50% - 1px));
 }*/
 #database-app .section {
-	transition: transform 0.4s ease-out,
-	            height 0s ease-out 0s,
-	            overflow 0s ease-out 0s,
-	            opacity 0s ease-out 0s,
-	            visibility 0s ease-out 0s;
+	transition: transform 0.4s ease-in-out,
+	            transform 0.4s var(--ease-in-out),
+	            height 0s ease-in-out 0s,
+	            overflow 0s ease-in-out 0s,
+	            opacity 0s ease-in-out 0s,
+	            visibility 0s ease-in-out 0s;
 	transform: translate(0,0);
 	position: absolute;
 	height: 100%;
@@ -958,11 +986,12 @@ html, body {
 	overflow-y: scroll;
 }
 #database-app .section:not(.selected) {
-	transition: transform 0.4s ease-out,
-	            height 0s ease-out 0.4s,
-	            overflow 0s ease-out 0.4s,
-	            opacity 0s ease-out 0.4s,
-	            visibility 0s ease-out 0.4s;
+	transition: transform 0.4s ease-in-out,
+	            transform 0.4s var(--ease-in-out),
+	            height 0s ease-in-out 0.4s,
+	            overflow 0s ease-in-out 0.4s,
+	            opacity 0s ease-in-out 0.4s,
+	            visibility 0s ease-in-out 0.4s;;
 	height: 0;
 	opacity: 0;
 	/*overflow: hidden;
@@ -1006,17 +1035,13 @@ html, body {
 #database-app .section.menu-section .menu-container form {
 	width: 60%;
 }
-/*#database-app .section.menu-section .menu-title {
-	width: 80%;
-	margin: 0 auto;
-}
-#database-app .section.menu-section .menu-title p {
+#database-app .section.menu-section .menu-container .heading {
 	font-family: Nunito,Arial,Helvetica,sans-serif;
-	color: #222;
-	padding: 0.5em 99rem;
-	margin: 0 -99rem;
-	background: rgba(255,255,255,0.6);
-}*/
+	border-bottom: 1px solid #555;
+	font-size: 1.8em;
+	padding: 0.05em 0;
+	margin: 0.7em 0.3em 0.3em 0.3em;
+}
 #database-app .section.menu-section .articles-list {
 	width: 100%;
 	display: flex;
@@ -1036,9 +1061,12 @@ html, body {
 	flex-direction: column-reverse;
 	transition: all 0.5s ease-out;
 	border-radius: 5px;
+	z-index: 0;
+	position: relative;
 }
 #database-app .section.menu-section .article-selector .article-title {
 	height: 30px;
+	z-index: 1;
 	position: relative;
 }
 #database-app .section.menu-section .article-selector .article-title-title {
@@ -1048,21 +1076,24 @@ html, body {
 	position: relative;
 	text-align: center;
 	border-radius: 0 0 5px 5px;
+	z-index: 1;
 }
 #database-app .section.menu-section .article-selector .article-title-title p {
 	margin: 0;
 	line-height: 30px;
 	transform: translate(0,0);
-	transition: all 0.15s ease-in;
+	transition: all 0.25s ease-in;
+	transition: all 0.25s var(--ease-in-out);
 }
 #database-app .section.menu-section .article-selector:hover .article-title-title p {
 	transform: translate(0,-3px);
-	transition: all 0.15s ease-out;
+	/*transition: all 0.15s ease-out;*/
 }
 #database-app .section.menu-section .article-selector .article-title .article-title-icon {
 	position: absolute;
 	transform: translate(0,100%);
-	transition: all 0.15s ease-in;
+	transition: all 0.25s ease-in;
+	transition: all 0.25s var(--ease-in-out);
 	height: 30px;
 	width: 30px;
 	border-radius: 30px;
@@ -1072,7 +1103,7 @@ html, body {
 	bottom: 100%;
 	right: 5px;
 	transform-origin: 50% 100%;
-	opacity: 0;
+	/*opacity: 0;*/
 }
 #database-app .section.menu-section .article-selector .article-title .article-title-icon i {
 	position: absolute;
@@ -1084,12 +1115,13 @@ html, body {
 #database-app .section.menu-section .article-selector:hover .article-title .article-title-icon {
 	transform: translate(0,20%);
 	opacity: 1;
-	transition: all 0.15s ease-out;
+	/*transition: all 0.15s ease-out;*/
 }
 #database-app .section.menu-section .article-selector .article-title .article-title-icon-container {
 	position: absolute;
 	transform: scaleY(0);
-	transition: all 0.15s ease-in;
+	transition: all 0.25s ease-in;
+	transition: all 0.25s var(--ease-in-out);
 	height: 0;
 	width: 0;
 	border-bottom: 30px solid white;
@@ -1099,13 +1131,26 @@ html, body {
 }
 #database-app .section.menu-section .article-selector:hover .article-title .article-title-icon-container {
 	transform: scaleY(0.5);
-	transition: all 0.15s ease-out;
+	/*transition: all 0.15s ease-out;*/
+}
+#database-app .section.menu-section .article-selector .article-image-wrapper {
+	flex: 1;
+	border-radius: 5px 5px 0 0;
+	overflow: hidden;
 }
 #database-app .section.menu-section .article-selector .article-image {
-	flex: 1;
+	width: 100%;
+	height: 100%;
 	background-size: cover;
 	background-position: 50% 25%;
-	border-radius: 5px 5px 0 0;
+	transform: scale(1);
+	position: relative;
+	z-index: 0;
+	transition: all 0.4s ease-in;
+	transition: all 0.4s var(--ease-in-out);
+}
+#database-app .section.menu-section .article-selector:hover .article-image {
+	transform: scale(1.02);
 }
 #database-app .section.menu-section .article-selector:hover {
 	/*animation: bounce-without-any-translate 1s linear 1 both;*/
@@ -1153,40 +1198,49 @@ html, body {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	pointer-events: none;
 }
 #database-app .bottom-bar .top {
 	width: 100%;
 	height: 35px;
 	position: relative;
 	overflow: hidden;
+	pointer-events: none;
 }
 #database-app .bottom-bar .top .inner {
 	background: white;
 	position: absolute;
 	bottom: 0;
+	right: 0;
+	height: 30px;
+	transform: translate(1.5em,110%) skew(-30deg);
+	transition: all 0.3s ease-in-out;
+	transition: all 0.3s var(--ease-in-out);
+	box-shadow: -2px -2px 2px 0 rgba(0,0,0,0.07), -3px -3px 1px -2px rgba(0,0,0,0.06), -2px -1px 5px 0 rgba(0,0,0,0.1);
+	pointer-events: auto;
+}
+#database-app .bottom-bar .top .inner p {
+	font-family: Nunito,Arial,Helvetica,sans-serif;
+	margin: 0 3em 0 1.5em;
 	width: 100%;
 	height: 30px;
-	transform: translate(85%,110%) skew(-30deg);
-	transition: all 0.3s ease-in-out;
-	box-shadow: -1px -2px 2px 0 rgba(0,0,0,0.07), -2px -3px 1px -2px rgba(0,0,0,0.06), -1px -1px 5px 0 rgba(0,0,0,0.1);
+	line-height: 30px;
+	transform: skew(30deg);
+	color: black;
 }
 #database-app .bottom-bar .top.active .inner {
-	transform: translate(85%,30%) skew(-30deg);
+	transform: translate(1.5em,20%) skew(-30deg);
 }
 #database-app .bottom-bar .middle {
 	background: white;
 	width: 100%;
 	height: 25px;
 	box-shadow: 0 -2px 2px 0 rgba(0,0,0,0.07), 0 -3px 1px -2px rgba(0,0,0,0.06), 0 -1px 5px 0 rgba(0,0,0,0.1);
-	pointer-events: auto;
 }
 #database-app .bottom-bar .bottom {
 	background: linear-gradient(to right,#1488cc,#2b32b2);
 	background: linear-gradient(to right,var(--light-theme),var(--dark-theme));
 	width: 100%;
 	height: 5px;
-	pointer-events: auto;
 }
 #database-app .options-block {
 	transform: translate(0,0);
@@ -1213,7 +1267,8 @@ html, body {
 	padding: 0;
 }
 #database-app .scp-image-block.block-right {
-	margin-right: 0;
+	margin-right: -3em;
+	margin-left: 1em;
 }
 #database-app .scp-image-block img {
 	display: block;
@@ -1254,6 +1309,7 @@ html, body {
 	vertical-align: middle;
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
+	transition: all 0.3s var(--ease-in-out);
 	top: 0;
 	box-shadow: 1px 2px 2px 0 rgba(0,0,0,0.14), 2px 3px 1px -2px rgba(0,0,0,0.12), 1px 1px 5px 0 rgba(0,0,0,0.2);
 }
@@ -1460,7 +1516,7 @@ misc leave -> slide to left DONE
 	opacity: 0;
 	width: 100%;
 	height: 100%;
-	background-image: url(rooms_overlay.png);
+	/*background-image: url(rooms_overlay.png);*/
 }
 #run-app .section.map-section .sitemap .room.error .room-light {
 	opacity: 0;
@@ -1610,6 +1666,7 @@ misc leave -> slide to left DONE
 .disconnected-alert.ng-enter {
 	transform: translate(0,-50%) scaleY(0);
 	transition: all 0.5s ease-in-out;
+	transition: all 0.5s var(--ease-in-out);
 }
 .disconnected-alert.ng-enter-active {
 	transform: translate(0,-50%);
@@ -1733,11 +1790,12 @@ misc leave -> slide to left DONE
 	height: 145px;
 	position: relative;
 	transform: translate(-10px,0);
-	background: url(aiad_fade.png), linear-gradient(to bottom, #f4f4f4, white);
+	/*background: url(aiad_fade.png), linear-gradient(to bottom, #f4f4f4, white);*/
 	background-size: 300px 300px, 100% 100%;
 	background-position: 90% 50%, center;
 	background-repeat: no-repeat;
 	transition: all 2s ease-in-out;
+	transition: all 2s var(--ease-in-out);
 	box-shadow: inset 0 -3px 1px -2px rgba(0,0,0,0.12), inset 0 -1px 5px 0 rgba(0,0,0,0.2),
 	            inset 0 2px 2px 0 rgba(0,0,0,0.14), inset 0 3px 1px -2px rgba(0,0,0,0.12), inset 0 1px 5px 0 rgba(0,0,0,0.2);
 	overflow: hidden;
@@ -1748,11 +1806,12 @@ misc leave -> slide to left DONE
 .options-block .hint-arrow {
 	height: 145px;
 	width: 217px; /* width of image */
-	background-image: url(highlight-arrow.png);
+	/*background-image: url(highlight-arrow.png);*/
 	background-position: center;
 	position: absolute;
 	opacity: 1;
 	transition: all 2s ease-in-out;
+	transition: all 2s var(--ease-in-out);
 }
 .options-block .hint-arrow.left {
 	left: 0;

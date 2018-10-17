@@ -9,50 +9,6 @@
 
 /* global $, angular */
 
-// prototype functuon to turn whatever-this-is to whateverThisIs
-String.prototype.toCamelCase = function() {
-	return this.toLowerCase()
-		.replace(/[^\w\s\-]/g, '')
-		.replace(/[^a-z0-9]/g, ' ')
-		.replace(/^\s+|\s+$/g, '')
-		.replace(/\s(.)/g, function(match,group) {
-			return group.toUpperCase();
-		});
-};
-
-// prototype function to format dialogue strings from wikidot format to HTML
-String.prototype.format = function() { // pass article argument only if this is an article
-	return this
-		.replace(/\|\|\|\|/g, "<br>") // "||||" makes a new line
-		.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>") // Wikidot bolding syntax
-		.replace(/\/\/(.*?)\/\//g, "<i>$1</i>") // Wikidot italics syntax
-		.replace(/{{(.*?)}}/g, "<tt>$1</tt>") // Wikidot teletype syntax
-		.replace(/\^\^(.*?)\^\^/g, "<sup>$1</sup>") // Wikidot superscript syntax
-		.replace(/\?\?(.*?)\?\?/g, "<span dynamic class='statement false' data-bool='TRUE'>$1</span>")
-		.replace(/!!(.*?)!!/g, "<span class='statement true' data-bool='FALSE'>$1</span>")
-		.replace(/^-{3,}$/g, "<hr>") // horizontal rule
-		.replace(/--/g, "—") // Wikidot em-dash replacement
-		.replace(/^=\s(.*)$/g, "<div style='text-align: center;'>$1</div>") // centre align
-		.replace(/(^|>)\!\s([^<]*)/g, "$1<div class='fake-title'>$2</div>") // fake title
-		.replace(/(^|>)\+{3}\s([^<]*)/g, "$1<h3>$2</h3>") // h3
-		.replace(/(^|>)\+{2}\s([^<]*)/g, "$1<h2>$2</h2>") // h2
-		.replace(/(^|>)\+{1}\s([^<]*)/g, "$1<h1>$2</h1>") // h1
-		.replace(/^\[\[IMAGE\]\]\s([^\s]*)\s(.*)$/g, "<div class='scp-image-block block-right'><img src='$1'><div class='scp-image-caption'><p>$2</p></div></div>");
-	
-};
-
-// randomise an array
-function shuffle(array) {
-  var m = array.length, t, i;
-  while (m) {
-    i = Math.floor(Math.random() * m--);
-    t = array[m];
-    array[m] = array[i];
-    array[i] = t;
-  }
-  return array;
-}
-
 // and here begins AngularJS
 (function(){
 	var maitreya = angular
@@ -109,6 +65,39 @@ function shuffle(array) {
 				typing: "Dr. Breach is typing...",
 			},
 			alexandraThinking: "Alexandra is thinking...",
+			articleLastRevised: "Last revision: ",
+			articleRevisedAgo: " ago",
+			
+			preloadTitle: "maitreya.png",
+			transparentPixel: "Transparent.gif",
+			defaultImage: "default_file.png",
+			aiadFadedLogo: "aiad_fade.png",
+			highlightArrow: "highlight-arrow.png",
+			greyStripe: "grey_stripe.png",
+			overlayRooms: "rooms_overlay.png",
+			typingGif: "typing.gif",
+			loadingGif: "loading.gif",
+			terminalHeader: "maitreya_terminal.png",
+			alexandraTriangle: "alex_triangle.png",
+			siteMap: "site12.png",
+			maitreyaLogo: "maitreya_icon.png",
+			breachLogo: "breach_icon2.png",
+			alexandraLogo: {
+				concerned: "alex_concerned.png",
+				grinning: "alex_grinning.png",
+				shocked: "alex_shocked.png",
+				pensive: "alex_pensive.png",
+				satisfied: "alex_satisfied.png",
+				celebrating: "alex_celebrating.png",
+				frustrated: "alex_frustrated.png",
+				smiling: "alex_smiling.png",
+				vindictive: "alex_vindictive.png",
+				stressed: "alex_stressed.png",
+				gritted: "alex_gritted.png",
+				disgusted: "alex_disgusted.png",
+				angry: "alex_angry.png",
+				pissed: "alex_pissed.png",
+			},
 			
 			// The following are commands used in the terminal
 			// To add alternative commands, just make another entry in the array
@@ -132,7 +121,7 @@ function shuffle(array) {
 			endingFraction: "Ending $1 of $2", // will be formatted "Ending 12 of 14"
 			endings: [
 				[ // example
-					"The cassette that contains Maitreya.aic was removed from its slot in a server at Isolated Site-12.",
+					"The SCP-4000 article/game thing ran out of content because the author has not yet finished it.",
 					"Maitreya.aic lost connection to Isolated Site-12 and was unable to operate further.",
 				],
 				[ // pissOff
@@ -172,14 +161,13 @@ function shuffle(array) {
 				bay: { mapName: "Bay", name: "bay", },
 			},
 			
-			defaultImage: "default_file.png",
 			articles: {
 				// if "text" is just a URL, it prompts the user to go to that URL to access the file
-				scp4000: { title: "SCP-4000", category: "scp", available: true, text: [
+				scp4000: { title: "SCP-4000", category: "scp", available: true, revised: -900000, text: [
 					"! SCP-4000",
 					"**Item #:** SCP-4000",
 					"**Object Class:** Safe",
-					"**Special Containment Procedures:** Dr. Breach is authorised to use whatever means he deems necessary in order to support ongoing research into SCP-4000.",
+					"**Special Containment Procedures:** Dr. Breach is authorised to use whatever means he deems necessary, including selective ignorance of the following containment proceudres, in order to support ongoing research into SCP-4000.",
 					"SCP-4000 is to be kept within a reinforced containment chamber at Isolated Site-12. No entry to the containment chamber is permitted. Observation of SCP-4000 should be avoided except during testing.",
 					"Isolated Site-12 is to be staffed with a single member of personnel at all times. The current project head is Dr. Breach. No other staff are permitted to be on-site.",
 					"[[[aic.selectedArticle = 'alexandra'|Alexandra.aic]]] is to maintain a presence at Isolated Site-12 to support Dr. Breach in his duties.",
@@ -189,7 +177,7 @@ function shuffle(array) {
 					"Current containment procedures are the combined result of trial-and-error and preemptive attempts to prevent further loss of life, and have been in place since SCP-4000 was found. No casualties have been attributed to SCP-4000 since then.",
 					]
 				},
-				is12: { title: "Isolated Site-12", category: "location", available: true, image: "site12_300.png", text: [
+				is12: { title: "Isolated Site-12", category: "location", available: true, image: "site12_300.png", revised: 1384819200000, text: [
 					"= + SCP Foundation Secure Facility Dossier",
 					"= **Official Designation:** SCP Foundation Quittinirpaaq Isolated Containment Facility",
 					"= **Site Identification Code:** NACANU-IS-12",
@@ -218,41 +206,53 @@ function shuffle(array) {
 					"----",
 					"Located near the uppermost tip of Ellesmere Island, Isolated Site-12 is one of the most northern facilities operated by the Foundation. It is also one of the coldest, covered in snow for most of the year. Its location is kept strictly classified to those currently on-shift at the Site, who must be amnesticised post-shift in order to remove knowledge of its whereabouts.",
 					"Isolated Site-12 is used solely for the containment of SCP-4000. Containment procedures for SCP-4000 dictate that as few people as possible are to be exposed to it in any way.",
-					"Isolated Site-12 must be staffed at all times by a single member of personnel. They are tasked with maintaining the Site, ensuring SCP-4000 does not breach containment, and ensuring that any problems that arise are solved quickly. Alexandra.aic maintains a presence within Isolated Site-12 servers to handle most issues, and also to provide the on-site personnel with social entertainment.",
+					"Isolated Site-12 must be staffed at all times by a single member of personnel. They are tasked with maintaining the Site, ensuring SCP-4000 does not breach containment, and ensuring that any problems that arise are solved quickly. As of 2013, Alexandra.aic maintains a presence within Isolated Site-12 servers to handle most issues, and also to provide the on-site personnel with social entertainment.",
 					"Transport to and from Isolated Site-12 is by air. Aircraft are stored in the on-site hangar. Alexandra.aic is trusted with plotting and piloting a sufficiently complex travel route.",
 					]
 				},
-				breach: { title: "Dr. Ethan Breach", category: "person", available: true, text: [
+				breach: { title: "Dr. Ethan Breach", category: "person", available: true, revised: -172800000, text: [
 					"! Dr Breach's Personnel File",
-					"**Name:** Moho",
-					"**Security Clearance:** Moho",
-					"**Occupation:** Moho",
-					"**Site of Operations:** Moho",
-					"**Name:** Moho",
-					"**Name:** Moho",
+					"[[IMAGE]] default_file.png Dr. Ethan Breach",
+					"**Name:** Dr. Ethan Breach",
+					"**Security Clearance:** Level 3",
+					"**Occupation:** On-Site Researcher, Consultant for Observational Anomalies, Anatomical Expert",
+					"**Site of Operations:** Isolated Site-12",
+					"**Major Projects:** [DATA MISSING]",
+					"**Profile:** [DATA MISSING]",
 					]
 				},
-				rebeccaCarver: { title: "Dr. Rebecca Carver", category: "person", available: true, image: "rebecca-carver.png", text: [
-					"! Dr Rebecca Carver's Personnel File",
+				rebeccaCarver: { title: "Dr. Rebecca Carver", category: "person", available: true, image: "rebecca-carver.png", revised: 1514592000000, text: [
+					"! Dr Carver's Personnel File",
 					"[[IMAGE]] rebecca-carver.png Dr. Rebecca Carver",
-					"article text"
+					"**Name:** Dr. Rebecca Carver",
+					"**Security Clearance:** Level 4",
+					"**Occupation:** Site Director (Site-94), Founding Director (Isolated Sites 01–21), Research Coordinator, General Site Design and Upkeep Manager, Administrator",
+					"**Site of Operations:** Site-94",
+					"**Major Projects:** SCP-2521, SCP-4000, Foundation Mental Heath Awareness Programme",
+					"**Profile:** Dr. Carver joined the Foundation in 1998 as a translational hire from Marshall, Carter and Dark on account of her impressive design portfolio for anomalous architecture. Dr. Carver immediately made herself indispensable by redesigning existing Sites and drafting construction plans for new ones. Her expertise lies in the creation of smaller sites that serve a singular, specific purpose and are run by a skeleton staff -- often termed \”Isolated Sites\” due to their likelihood to require geographical distance between themselves and more critical Sites. Dr. Carver’s expertise in this area, as well as her generally conscientious attitude and her special attention towards mental health activism led to her rapid rise in the Foundation ranks.",
 					]
 				},
-				alexandra: { title: "Alexandra.aic", category: "utility", available: true, image: "dewey.jpg", text: [
+				alexandra: { title: "Alexandra.aic", category: "utility", available: true, image: "dewey.jpg", revised: 1519862400000, text: [
 					"! Alexandra.aic",
 					"[[IMAGE]] dewey.jpg Alexandra.aic dedicated server at Site-19",
 					"article text"
 					]
 				},
-				maitreya: { title: "Maitreya.aic", category: "utility", available: true, image: "cantilever.png", text: [
+				maitreya: { title: "Maitreya.aic", category: "utility", available: true, image: "cantilever.png", revised: 633916800000, text: [
 					"! Maitreya.aic",
 					"[[IMAGE]] cantilever.png Exidy ROM-PAC containing Maitreya.aic",
 					"article text"
 					]
 				},
-				glacon: { title: "Glacon.aic", category: "utility", available: true, image: "corinthian.png", text: [
+				glacon: { title: "Glacon.aic", category: "utility", available: true, image: "corinthian.png", revised: 1427241600000, text: [
 					"! Glacon.aic",
 					"[[IMAGE]] corinthian.png Glacon.aic dedicated server at Site-17",
+					"article text"
+					]
+				},
+				drone: { title: "MX1 Drone", category: "utility", available: true, image: "drone.png", revised: 1380326400000, text: [
+					"! MX1 Drone",
+					"[[IMAGE]] drone.png MX1 Drone",
 					"article text"
 					]
 				},
@@ -264,12 +264,6 @@ function shuffle(array) {
 				},
 				glaconIncident: { title: "Incident AIAD-CM-IV", category: "event1", available: true, text:
 					"http://www.scp-wiki.net/clock-multiplier"
-				},
-				drone: { title: "MX1 Drone", category: "utility", available: true, image: "drone.png", text: [
-					"! MX1 Drone",
-					"[[IMAGE]] drone.png MX1 Drone",
-					"article text"
-					]
 				},
 			},
 		};
@@ -402,7 +396,7 @@ function shuffle(array) {
 		
 		/* Initialisation */
 		aic.preload = true; // MUST BE TRUE
-		aic.selectedApp = "terminal"; // MUST BE TERMINAL
+		aic.selectedApp = "messages"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "breach"; // MUST BE BREACH
 		aic.selectedArticle = "menu"; // MUST BE MENU
 		aic.selectedOperation = "menu"; // MUST BE MENU
@@ -589,9 +583,18 @@ function shuffle(array) {
 			aic.preload = false;
 			bootDate = new Date(Date.now());
 			
+			// TODO: save/load
+			
+			// also need to sort out the dates of the articles
+			for(let article in aic.lang.articles) {
+				if(!!aic.lang.articles[article].revised && aic.lang.articles[article].revised < 0) {
+					aic.lang.articles[article].revised = Date.now() + aic.lang.articles[article].revised;
+				}
+			}
+			
 			// Here we go boys
 			//mainLoop("INTRODUCTION","startBoot");
-			breachLoop("INTRODUCTION","start");
+			breachLoop("INTRODUCTION","askVoiceExp");
 			//alexandraLoop("TUTORIAL","preload");
 		};
 		
@@ -659,18 +662,30 @@ function shuffle(array) {
 				// we're selecting the menu, which is always enabled
 				aic.selectedArticle = "menu";
 				// however, because we're only using 1 section for all articles, we need to force a 0.6s delay so the css can catch up
-				$timeout(function() {aic.selectedArticleData = {}},600,true);
+				$timeout(function() {
+					aic.selectedArticleData = {};
+				},600,true);
 			} else if(aic.lang.articles[article].available === false){
 				// this article is disabled, do nothing
 			} else {
 				// take all of the data from the articles db and wham that shit into selectedArticleData
 				aic.selectedArticleData.type = Array.isArray(aic.lang.articles[article].text) ? "text" : "url";
 				if(aic.selectedArticleData.type === "text") {
+					// clear previous article's content, if any
 					aic.selectedArticleData.content = [];
+					// set the Last Revised date
+					aic.selectedArticleData.time = new Date(aic.lang.articles[article].revised);
+					if(aic.selectedArticleData.time.toDateString() === new Date().toDateString()) { // if the date is today
+						aic.selectedArticleData.time = dateDiff(new Date(Date.now()),aic.selectedArticleData.time) + aic.lang.articleRevisedAgo;
+					} else {
+						aic.selectedArticleData.time = aic.selectedArticleData.time.toLocaleDateString(aic.lang.language,{year: 'numeric', month: 'long', day: 'numeric'});
+					}
+					// add each line of content to the article
 					for(let i = 0; i < aic.lang.articles[article].text.length; i++) {
 						aic.selectedArticleData.content.push(aic.lang.articles[article].text[i].format());
 					}
 				} else {
+					// TODO: create redirection page
 					aic.selectedArticleData.content = aic.lang.defaultArticle;
 				}
 				aic.selectedArticle = article;
@@ -1061,7 +1076,13 @@ function shuffle(array) {
 							aic.vars.terminalEmphasis = true;
 							delay = writeDialogue("terminal",speech.misc.terminal.breachShutDown);
 							$timeout(function() {
-								endingLoop("PUSHENDING","pissOff",2);
+								endingLoop("PUSHENDING",smallSection,2);
+							},delay*1000);
+							break;
+						
+						case "example":
+							$timeout(function() {
+								endingLoop("PUSHENDING",smallSection,2);
 							},delay*1000);
 							break;
 							
@@ -1311,6 +1332,7 @@ function shuffle(array) {
 							case "t": // message is typed, not spoken
 								n2 *= 2;
 								mode = "typing";
+								cssClass = "typed";
 								break;
 							default:
 								throw new Error("Unknown dialogue type: " + text.charAt(0));
@@ -1477,9 +1499,9 @@ function shuffle(array) {
 			secs = Math.floor(secs%60); 
 			var message = "";
 			if(days <= 0) {
-			message += secs + " sec ";
-			message += mins + " min ";
-			message += hours + " hours ";
+				if(hours > 0) message += hours + " hours ";
+				if(mins > 0) message += mins + " min ";
+				if(hours < 1) message += secs + " sec ";
 			} else {
 				if(years > 0) {
 					message += years + " years, ";	
@@ -1506,6 +1528,11 @@ function shuffle(array) {
 			return room;
 		}
 		
+		function Actor() {
+			// TODO: constructor function for characters
+			// this will be useful for having them do things like walk around/track where they are, and interact with each other and stuff
+		}
+		
 		// alias functions so LoopService can access them
 		aic.maitreyaDelay = maitreyaDelay;
 		aic.writeDialogue = writeDialogue;
@@ -1527,7 +1554,7 @@ function shuffle(array) {
 		};
 		
 		aic.eval = function(a) {
-			eval(a);
+			eval(a); /* jslint ignore: line */
 		};
 	}
 	
@@ -1535,3 +1562,47 @@ function shuffle(array) {
 		return window.encodeURIComponent;
 	}
 })();
+
+// prototype functuon to turn whatever-this-is to whateverThisIs
+String.prototype.toCamelCase = function() {
+	return this.toLowerCase()
+		.replace(/[^\w\s\-]/g, '')
+		.replace(/[^a-z0-9]/g, ' ')
+		.replace(/^\s+|\s+$/g, '')
+		.replace(/\s(.)/g, function(match,group) {
+			return group.toUpperCase();
+		});
+};
+
+// prototype function to format dialogue strings from wikidot format to HTML
+String.prototype.format = function() { // pass article argument only if this is an article
+	return this
+		.replace(/\|\|\|\|/g, "<br>") // "||||" makes a new line
+		.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>") // Wikidot bolding syntax
+		.replace(/\/\/(.*?)\/\//g, "<i>$1</i>") // Wikidot italics syntax
+		.replace(/{{(.*?)}}/g, "<tt>$1</tt>") // Wikidot teletype syntax
+		.replace(/\^\^(.*?)\^\^/g, "<sup>$1</sup>") // Wikidot superscript syntax
+		.replace(/\?\?(.*?)\?\?/g, "<span dynamic class='statement false' data-bool='TRUE'>$1</span>")
+		.replace(/!!(.*?)!!/g, "<span class='statement true' data-bool='FALSE'>$1</span>")
+		.replace(/^-{3,}$/g, "<hr>") // horizontal rule
+		.replace(/--/g, "—") // Wikidot em-dash replacement
+		.replace(/^=\s(.*)$/g, "<div style='text-align: center;'>$1</div>") // centre align
+		.replace(/(^|>)\!\s([^<]*)/g, "$1<div class='fake-title'>$2</div>") // fake title
+		.replace(/(^|>)\+{3}\s([^<]*)/g, "$1<h3>$2</h3>") // h3
+		.replace(/(^|>)\+{2}\s([^<]*)/g, "$1<h2>$2</h2>") // h2
+		.replace(/(^|>)\+{1}\s([^<]*)/g, "$1<h1>$2</h1>") // h1
+		.replace(/^\[\[IMAGE\]\]\s([^\s]*)\s(.*)$/g, "<div class='scp-image-block block-right'><img src='$1'><div class='scp-image-caption'><p>$2</p></div></div>");
+	
+};
+
+// randomise an array
+function shuffle(array) {
+  var m = array.length, t, i;
+  while (m) {
+    i = Math.floor(Math.random() * m--);
+    t = array[m];
+    array[m] = array[i];
+    array[i] = t;
+  }
+  return array;
+}
