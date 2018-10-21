@@ -17,13 +17,12 @@
 		.filter('encode',EncodeURIComponentFilter);
 	
 	MaitreyaController.$inject = ['$scope','$timeout','LoopService','$sce'];
-	// the LoopService service (from LoopService.js) contains the interactions for Breach, Alexandra and D-Class generated from the spreadsheet
-	
 	function MaitreyaController($scope,$timeout,LoopService,$sce){
 		
 		var aic = this;
 		
 		LoopService.use($scope); // give BreachLoopService our scope
+		// the LoopService service (from LoopService.js) contains the interactions for Breach, Alexandra and D-Class generated from the spreadsheet
 		
 		$scope.trustAsHtml = function(string) {
 			return $sce.trustAsHtml(string);
@@ -68,35 +67,36 @@
 			articleLastRevised: "Last revision: ",
 			articleRevisedAgo: " ago",
 			
-			preloadTitle: "maitreya.png",
-			transparentPixel: "Transparent.gif",
-			defaultImage: "default_file.png",
-			aiadFadedLogo: "aiad_fade.png",
-			highlightArrow: "highlight-arrow.png",
-			greyStripe: "grey_stripe.png",
-			overlayRooms: "rooms_overlay.png",
-			typingGif: "typing.gif",
-			loadingGif: "loading.gif",
-			terminalHeader: "maitreya_terminal.png",
-			alexandraTriangle: "alex_triangle.png",
-			siteMap: "site12.png",
-			maitreyaLogo: "maitreya_icon.png",
-			breachLogo: "breach_icon2.png",
-			alexandraLogo: {
-				concerned: "alex_concerned.png",
-				grinning: "alex_grinning.png",
-				shocked: "alex_shocked.png",
-				pensive: "alex_pensive.png",
-				satisfied: "alex_satisfied.png",
-				celebrating: "alex_celebrating.png",
-				frustrated: "alex_frustrated.png",
-				smiling: "alex_smiling.png",
-				vindictive: "alex_vindictive.png",
-				stressed: "alex_stressed.png",
-				gritted: "alex_gritted.png",
-				disgusted: "alex_disgusted.png",
-				angry: "alex_angry.png",
-				pissed: "alex_pissed.png",
+			images: {
+				preloadTitle: "maitreya.png",
+				defaultImage: "default_file.png",
+				aiadFadedLogo: "aiad_fade.png",
+				highlightArrow: "highlight-arrow.png",
+				greyStripe: "grey_stripe.png",
+				overlayRooms: "rooms_overlay.png",
+				typingGif: "typing.gif",
+				loadingGif: "loading.gif",
+				terminalHeader: "maitreya_terminal.png",
+				alexandraTriangle: "alex_triangle.png",
+				siteMap: "site12.png",
+				maitreyaLogo: "maitreya_icon.png",
+				breachLogo: "breach_icon2.png",
+				alexandraLogo: {
+					concerned: "alex_concerned.png",
+					grinning: "alex_grinning.png",
+					shocked: "alex_shocked.png",
+					pensive: "alex_pensive.png",
+					satisfied: "alex_satisfied.png",
+					celebrating: "alex_celebrating.png",
+					frustrated: "alex_frustrated.png",
+					smiling: "alex_smiling.png",
+					vindictive: "alex_vindictive.png",
+					stressed: "alex_stressed.png",
+					gritted: "alex_gritted.png",
+					disgusted: "alex_disgusted.png",
+					angry: "alex_angry.png",
+					pissed: "alex_pissed.png",
+				},
 			},
 			
 			// The following are commands used in the terminal
@@ -167,17 +167,17 @@
 					"! SCP-4000",
 					"**Item #:** SCP-4000",
 					"**Object Class:** Safe",
-					"**Special Containment Procedures:** Dr. Breach is authorised to use whatever means he deems necessary, including selective ignorance of the following containment proceudres, in order to support ongoing research into SCP-4000.",
-					"SCP-4000 is to be kept within a reinforced containment chamber at Isolated Site-12. No entry to the containment chamber is permitted. Observation of SCP-4000 should be avoided except during testing.",
+					"**Special Containment Procedures:** [[[breach|Dr. Breach]]] is authorised to use whatever means he deems necessary, including selective ignorance of the following containment proceudres, in order to support ongoing research into SCP-4000.",
+					"SCP-4000 is to be kept within a reinforced containment chamber at [[[is12|Isolated Site-12]]]. No entry to the containment chamber is permitted. Observation of SCP-4000 should be avoided except during testing.",
 					"Isolated Site-12 is to be staffed with a single member of personnel at all times. The current project head is Dr. Breach. No other staff are permitted to be on-site.",
-					"[[[aic.selectedArticle = 'alexandra'|Alexandra.aic]]] is to maintain a presence at Isolated Site-12 to support Dr. Breach in his duties.",
+					"[[[alexandra|Alexandra.aic]]] is to maintain a presence at Isolated Site-12 to support Dr. Breach in his duties.",
 					"Knowledge of the location of Isolated Site-12, and by extension SCP-4000, is strictly need-to-know only.",
 					"**Description:** SCP-4000 is an object, entity or concept that is currently located at Isolated Site-12. It is currently unknown what, if any, anomalous effects SCP-4000 exhibits.",
 					"SCP-4000 was discovered on 2010-03-04 in [DATA EXPUNGED], in which Isolated Site-12 was later constructed. Initial containment resulted in the deaths of all civilians who were originally exposed to SCP-4000, both mobile task forces sent, the Foundation operators directing those MTFs via radio, and most other personnel observing operations. Autopsies concluded that those who did not die due to [DATA EXPUNGED] on account of the weather in the region suffered no physical injuries barring minor restructuring of certain parts of the brain. Other than these discrepancies -- including several cases in which the restructuring was not present -- pathologists were unable to ascertain any reason for death.",
 					"Current containment procedures are the combined result of trial-and-error and preemptive attempts to prevent further loss of life, and have been in place since SCP-4000 was found. No casualties have been attributed to SCP-4000 since then.",
 					]
 				},
-				is12: { title: "Isolated Site-12", category: "location", available: true, image: "site12_300.png", revised: 1384819200000, text: [
+				is12: { title: "Isolated Site-12", category: "location", available: false, image: "site12_300.png", revised: 1384819200000, text: [
 					"= + SCP Foundation Secure Facility Dossier",
 					"= **Official Designation:** SCP Foundation Quittinirpaaq Isolated Containment Facility",
 					"= **Site Identification Code:** NACANU-IS-12",
@@ -197,10 +197,10 @@
 					"----",
 					"**Site Director:** None",
 					"**On-Site Personnel:**",
-					"    **Staff Researchers:** 0",
-					"    **Maintenance or Janitorial:** 1",
-					"    **D-Class:** 0",
-					"    **Other Personnel:** 0",
+					"   **Staff Researchers:** 0",
+					"   **Maintenance or Janitorial:** 1",
+					"   **D-Class:** 0",
+					"   **Other Personnel:** 0",
 					"-----",
 					"= ++ Additional Information",
 					"----",
@@ -210,7 +210,7 @@
 					"Transport to and from Isolated Site-12 is by air. Aircraft are stored in the on-site hangar. Alexandra.aic is trusted with plotting and piloting a sufficiently complex travel route.",
 					]
 				},
-				breach: { title: "Dr. Ethan Breach", category: "person", available: true, revised: -172800000, text: [
+				breach: { title: "Dr. Ethan Breach", category: "person", available: false, revised: -172800000, text: [
 					"! Dr Breach's Personnel File",
 					"[[IMAGE]] default_file.png Dr. Ethan Breach",
 					"**Name:** Dr. Ethan Breach",
@@ -221,7 +221,7 @@
 					"**Profile:** [DATA MISSING]",
 					]
 				},
-				rebeccaCarver: { title: "Dr. Rebecca Carver", category: "person", available: true, image: "rebecca-carver.png", revised: 1514592000000, text: [
+				rebeccaCarver: { title: "Dr. Rebecca Carver", category: "person", available: false, image: "rebecca-carver.png", revised: 1514592000000, text: [
 					"! Dr Carver's Personnel File",
 					"[[IMAGE]] rebecca-carver.png Dr. Rebecca Carver",
 					"**Name:** Dr. Rebecca Carver",
@@ -232,37 +232,37 @@
 					"**Profile:** Dr. Carver joined the Foundation in 1998 as a translational hire from Marshall, Carter and Dark on account of her impressive design portfolio for anomalous architecture. Dr. Carver immediately made herself indispensable by redesigning existing Sites and drafting construction plans for new ones. Her expertise lies in the creation of smaller sites that serve a singular, specific purpose and are run by a skeleton staff -- often termed \”Isolated Sites\” due to their likelihood to require geographical distance between themselves and more critical Sites. Dr. Carver’s expertise in this area, as well as her generally conscientious attitude and her special attention towards mental health activism led to her rapid rise in the Foundation ranks.",
 					]
 				},
-				alexandra: { title: "Alexandra.aic", category: "utility", available: true, image: "dewey.jpg", revised: 1519862400000, text: [
+				alexandra: { title: "Alexandra.aic", category: "utility", available: false, image: "dewey.jpg", revised: 1519862400000, text: [
 					"! Alexandra.aic",
 					"[[IMAGE]] dewey.jpg Alexandra.aic dedicated server at Site-19",
 					"article text"
 					]
 				},
-				maitreya: { title: "Maitreya.aic", category: "utility", available: true, image: "cantilever.png", revised: 633916800000, text: [
+				maitreya: { title: "Maitreya.aic", category: "utility", available: false, image: "cantilever.png", revised: 633916800000, text: [
 					"! Maitreya.aic",
 					"[[IMAGE]] cantilever.png Exidy ROM-PAC containing Maitreya.aic",
 					"article text"
 					]
 				},
-				glacon: { title: "Glacon.aic", category: "utility", available: true, image: "corinthian.png", revised: 1427241600000, text: [
+				glacon: { title: "Glacon.aic", category: "utility", available: false, image: "corinthian.png", revised: 1427241600000, text: [
 					"! Glacon.aic",
 					"[[IMAGE]] corinthian.png Glacon.aic dedicated server at Site-17",
 					"article text"
 					]
 				},
-				drone: { title: "MX1 Drone", category: "utility", available: true, image: "drone.png", revised: 1380326400000, text: [
+				drone: { title: "MX1 Drone", category: "utility", available: false, image: "drone.png", revised: 1380326400000, text: [
 					"! MX1 Drone",
 					"[[IMAGE]] drone.png MX1 Drone",
 					"article text"
 					]
 				},
-				scp079: { title: "SCP-079", category: "scp", available: true, text:
+				scp079: { title: "SCP-079", category: "scp", available: false, text:
 					"http://www.scp-wiki.net/scp-079"
 				},
-				quttinirpaaq: { title: "Quttinirpaaq", category: "location", available: true, image: "https://upload.wikimedia.org/wikipedia/commons/6/6d/Quttinirtaaq_1_1997-08-05.jpg", text:
+				quttinirpaaq: { title: "Quttinirpaaq", category: "location", available: false, image: "https://upload.wikimedia.org/wikipedia/commons/6/6d/Quttinirtaaq_1_1997-08-05.jpg", text:
 					"https://en.wikipedia.org/wiki/Quttinirpaaq_National_Park"
 				},
-				glaconIncident: { title: "Incident AIAD-CM-IV", category: "event1", available: true, text:
+				glaconIncident: { title: "Incident AIAD-CM-IV", category: "event1", available: false, text:
 					"http://www.scp-wiki.net/clock-multiplier"
 				},
 			},
@@ -396,7 +396,7 @@
 		
 		/* Initialisation */
 		aic.preload = true; // MUST BE TRUE
-		aic.selectedApp = "messages"; // MUST BE TERMINAL
+		aic.selectedApp = "terminal"; // MUST BE TERMINAL
 		aic.selectedSpeaker = "breach"; // MUST BE BREACH
 		aic.selectedArticle = "menu"; // MUST BE MENU
 		aic.selectedOperation = "menu"; // MUST BE MENU
@@ -432,16 +432,14 @@
 			// MUST BE TRUE
 			terminal: true,
 			// MUST ALL BE FALSE
-			breach: true,
-			messages: true,
-			alexandra: true,
-			dclass: true,
-			database: true,
-			run: true,
+			breach: false,
+			messages: false,
+			alexandra: false,
+			dclass: false,
+			database: false,
+			run: false,
 			ending: false,
 		};
-		
-		aic.onMobile = $("#interface").width() < 700;
 		
 		aic.vars = { // miscellaneous variables for stuff
 			/* STATUS */
@@ -468,77 +466,45 @@
 			shuttingDown: false, // false
 			
 			/* CHARACTERS */
-			breach: {
-				status: "initial", //vinitial
-				allegiance: "scp", // scp
-				opinion: 0, // 0
-				location: "a1", // a1
-			},
-			alexandra: {
-				status: "initial", // initial
-				allegiance: "scp", // scp
-				opinion: 10, // 10
-				emote: "grin", //concerned, grinning, shocked, pensive, satisfied, celebrating, frustrated
-			},
-			scp4000: {
-				status: "initial", // initial
-				allegiance: "4000", // 4000 (str)
-				opinion: -10, // -10
-				location: "containment", // containment
-			},
-			d95951: {
-				number: 95951,
-				status: "initial", // initial
-				allegiance: "scp", // scp
-				opinion: -5, // -5
-				location: assignRoom("d1"),
-			},
-			d68134: {
-				number: 68134,
-				status: "initial", // initial
-				allegiance: "scp", // scp
-				opinion: -5, // -5
-				location: assignRoom("d2"),
-			},
-			d1602: {
-				number: 1602,
-				status: "initial", // initial
-				allegiance: "scp", // scp
-				opinion: -5, // -5
-				location: assignRoom("d3"),
-			},
+			breach: new Actor(["Ethan","Breach"],{id: "breach", status: "ok", allegiance: "scp", type: "dr"},"a1"),
+			alexandra: new Actor("Alexandra.aic",{id: "alexandra", status: "ok", allegiance: "scp", type: "aic"},"server"),
+			maitreya: new Actor("Maitreya.aic",{id: "maitreya", status: "ok", allegiance: "scp", type: "aic"},"server"),
+			scp4000: new Actor("SCP-4000",{id: "scp4000", status: "ok", allegiance: "4000", type: "scp"},"containment"),
+			d95951: new Actor(["Ethan","Breach"],{id: "d95951", status: "ok", allegiance: "scp", type: "d"},assignRoom()),
+			d68134: new Actor(["Ethan","Breach"],{id: "d68134", status: "ok", allegiance: "scp", type: "d"},assignRoom()),
+			d1602: new Actor(["Ethan","Breach"],{id: "d1602", status: "ok", allegiance: "scp", type: "d"},assignRoom()),
 		};
 		aic.rooms = {
 			// these are ordered left to right on the map (ish)
-			hangar: {error: false, log: [],},
-			server: {error: true, log: [],},
-			serverCorridor: {error: true, log: [],},
-			d1: {error: false, log: [],},
-			d2: {error: false, log: [],},
-			d3: {error: false, log: [],},
-			dCorridor: {error: false, log: [],},
-			d4: {error: false, log: [],},
-			d5: {error: false, log: [],},
-			d6: {error: false, log: [],},
-			armoury: {error: false, log: [],},
-			pantry: {error: false, log: [],},
-			cafe: {error: false, log: [],},
-			ringWest: {error: true, log: [],},
-			armouryCorridor: {error: false, log: [],},
-			a1: {error: false, log: [],},
-			airlock: {error: true, log: [],},
-			ringNorth: {error: false, log: [],},
-			ringSouth: {error: false, log: [],},
-			toilet: {error: true, log: [],},
-			storage: {error: false, log: [],},
-			officeCorridor: {error: false, log: [],},
-			containment: {error: true, log: [],},
-			a2: {error: false, log: [],},
-			a3: {error: false, log: [],},
-			a4: {error: false, log: [],},
-			ringEast: {error: false, log: [],},
-			foyer: {error: false, log: [],},
-			bay: {error: false, log: [],},
+			hangar: {error: false, log: [], connectedTo: ["serverCorridor"]},
+			server: {error: true, log: [], connectedTo: ["serverCorridor"]},
+			serverCorridor: {error: true, log: [], connectedTo: ["hangar","server","pantry","ringWest"]},
+			d1: {error: false, log: [], connectedTo: ["dCorridor"]},
+			d2: {error: false, log: [], connectedTo: ["dCorridor"]},
+			d3: {error: false, log: [], connectedTo: ["dCorridor"]},
+			dCorridor: {error: false, log: [], connectedTo: ["d1","d2","d3","d4","d5","d6","ringWest"]},
+			d4: {error: false, log: [], connectedTo: ["dCorridor"]},
+			d5: {error: false, log: [], connectedTo: ["dCorridor"]},
+			d6: {error: false, log: [], connectedTo: ["dCorridor"]},
+			armoury: {error: false, log: [], connectedTo: ["armouryCorridor"]},
+			pantry: {error: false, log: [], connectedTo: ["cafe","serverCorridor"]},
+			cafe: {error: false, log: [], connectedTo: ["pantry","ringNorth"]},
+			ringWest: {error: true, log: [], connectedTo: ["airlock","ringSouth","armouryCorridor","serverCorridor","ringNorth","dCorridor"]},
+			armouryCorridor: {error: false, log: [], connectedTo: ["armoury","storage","toilet","ringWest"]},
+			a1: {error: false, log: [], connectedTo: ["officeCorridor"]},
+			airlock: {error: true, log: [], connectedTo: ["containment","ringWest"]},
+			ringNorth: {error: false, log: [], connectedTo: ["cafe","ringWest","ringEast","officeCorridor"]},
+			ringSouth: {error: false, log: [], connectedTo: ["storage","ringEast","ringWest"]},
+			toilet: {error: true, log: [], connectedTo: ["armouryCorridor"]},
+			storage: {error: false, log: [], connectedTo: ["bay","ringSouth","armouryCorridor"]},
+			officeCorridor: {error: false, log: [], connectedTo: ["a1","a2","a3","a4","ringNorth"]},
+			containment: {error: true, log: [], connectedTo: ["airlock"]},
+			a2: {error: false, log: [], connectedTo: ["officeCorridor"]},
+			a3: {error: false, log: [], connectedTo: ["officeCorridor"]},
+			a4: {error: false, log: [], connectedTo: ["officeCorridor"]},
+			ringEast: {error: false, log: [], connectedTo: ["foyer","ringSouth","ringNorth"]},
+			foyer: {error: false, log: [], connectedTo: ["bay","ringEast"]},
+			bay: {error: false, log: [], connectedTo: ["storage","foyer"]},
 		};
 		
 		// EVERYTHING MUST BE ADDED TO THIS IN REVERSE ORDER.
@@ -574,7 +540,11 @@
 		const operationList = ["menu","d","drone","map"];
 		const alexandraEmotionList = ["smiling","concerned","grinning","shocked","pensive","satisfied","celebrating","frustrated","corrupted"];
 		
-		speech.merge(LoopService.dialogue);
+		$(document).ready(function() {
+			aic.onMobile = $("body").width() < 700;
+			speech.merge(LoopService.dialogue);
+			preloadImage(aic.lang.images.greyStripe);
+		});
 		
 		/* INTERACTION FUNCTIONS */
 		
@@ -593,8 +563,8 @@
 			}
 			
 			// Here we go boys
-			//mainLoop("INTRODUCTION","startBoot");
-			breachLoop("INTRODUCTION","askVoiceExp");
+			mainLoop("INTRODUCTION","startBoot");
+			//breachLoop("INTRODUCTION","askVoiceExp");
 			//alexandraLoop("TUTORIAL","preload");
 		};
 		
@@ -651,6 +621,7 @@
 		
 		// called when the user switches articles in the database app
 		aic.switchArticle = function(article) {
+			console.log(article);
 			// specific exception for tutorial
 			if(aic.vars.waitingForRead4000 === true && article === "scp4000") {
 				aic.vars.waitingForRead4000 = false;
@@ -1515,7 +1486,7 @@
 		}
 		
 		// assign a room to a d-class
-		function assignRoom(name) {
+		function assignRoom() {
 			var room = availableRooms[Math.floor(Math.random() * availableRooms.length)];
 			var index = availableRooms.indexOf(room);
 			if (index > -1) {
@@ -1528,18 +1499,70 @@
 			return room;
 		}
 		
-		function Actor() {
-			// TODO: constructor function for characters
-			// this will be useful for having them do things like walk around/track where they are, and interact with each other and stuff
+		// constructor function for characters
+		function Actor(name,role,location) {
+			var me = this;
+			if(Array.isArray(name)) {
+				me.firstName = name[0];
+				me.lastName = name[1];
+				me.name = me.firstName + " " + me.lastName;
+			} else {
+				me.name = name;
+			}
+			me.location = location;
+			// role is an object and expects id, status, allegiance, type
+			if(!role.id || !role.status || !role.allegiance || !role.type) throw new Error(me.name + " is missing role info");
+			me.id = role.id;
+			if(["ok","dead"].includes(role.status)) {
+				me.status = role.status;
+			} else {
+				throw new Error(me.name + " has an invalid role status");
+			}
+			if(["scp","4000","ci"].includes(role.allegiance)) {
+				me.allegiance = role.allegiance;
+			} else {
+				throw new Error(me.name + " has an invalid role allegiance");
+			}
+			if(["dr","aic","scp","d"].includes(role.type)) {
+				me.type = role.type;
+			} else {
+				throw new Error(me.name + " has an invalid role type");
+			}
+			switch(me.type) {
+				case "aic":
+					me.opinion = 5;
+					break;
+				case "d":
+					me.opinion = -5;
+					break;
+				default:
+					me.opinion = 0;
+			}
 		}
+		Actor.prototype.move = function(destination, continuous) {
+			// called when an actor moves from one room to another. they can only move to adjacent rooms
+			var me = this;
+			if(destination === "random") {
+				var validRooms = aic.rooms[me.location].connectedTo;
+				destination = validRooms[Math.floor(Math.random() * validRooms.length)];
+			}
+			if(aic.rooms[me.location].connectedTo.includes(destination)) {
+				me.location = destination;
+			} else {
+				// we're moving to an invalid room?
+				throw new Error(me.name + " tried to move from " + me.location + " to " + destination);
+			}
+			return me.location;
+		};
 		
 		// alias functions so LoopService can access them
 		aic.maitreyaDelay = maitreyaDelay;
 		aic.writeDialogue = writeDialogue;
 		aic.presentOptions = presentOptions;
 		aic.breachLoop = breachLoop;
-		aic.alexandraLoop =  alexandraLoop;
+		aic.alexandraLoop = alexandraLoop;
 		aic.endingLoop = endingLoop;
+		aic.preloadAlexandraFaces = preloadAlexandraFaces;
 		
 		aic.unlock = function(target) {
 			if(appList.includes(target)) {
@@ -1553,16 +1576,25 @@
 			}
 		};
 		
-		aic.eval = function(a) {
-			eval(a); /* jslint ignore: line */
-		};
+		function preloadAlexandraFaces() {
+			for(let face in aic.lang.images.alexandraLogo){
+				preloadImage(aic.lang.images.alexandraLogo[face]);
+			}
+		}
+		
+		function preloadImage(source) {
+			var image = new Image();
+			image.src = source;
+		}
+		
+		aic.eval = eval;
 	}
 	
 	function EncodeURIComponentFilter() {
 		return window.encodeURIComponent;
 	}
 })();
-
+	
 // prototype functuon to turn whatever-this-is to whateverThisIs
 String.prototype.toCamelCase = function() {
 	return this.toLowerCase()
@@ -1591,18 +1623,22 @@ String.prototype.format = function() { // pass article argument only if this is 
 		.replace(/(^|>)\+{3}\s([^<]*)/g, "$1<h3>$2</h3>") // h3
 		.replace(/(^|>)\+{2}\s([^<]*)/g, "$1<h2>$2</h2>") // h2
 		.replace(/(^|>)\+{1}\s([^<]*)/g, "$1<h1>$2</h1>") // h1
-		.replace(/^\[\[IMAGE\]\]\s([^\s]*)\s(.*)$/g, "<div class='scp-image-block block-right'><img src='$1'><div class='scp-image-caption'><p>$2</p></div></div>");
-	
+		.replace(/^\[\[IMAGE\]\]\s([^\s]*)\s(.*)$/g, "<div class='scp-image-block block-right'><img src='$1'><div class='scp-image-caption'><p>$2</p></div></div>")
+		.replace(/\[{3}(.*?)\|(.*?)\]{3}/, function(match,article,text) {
+			// please ready your butts for the single worst line of code I have ever written
+			angular.element(document.documentElement).scope().aic.lang.articles[article].available = true;
+			return "<span class='article-link'>" + text + "</span>";
+		});
 };
 
 // randomise an array
 function shuffle(array) {
-  var m = array.length, t, i;
-  while (m) {
-    i = Math.floor(Math.random() * m--);
-    t = array[m];
-    array[m] = array[i];
-    array[i] = t;
-  }
-  return array;
+	var m = array.length, t, i;
+	while (m) {
+	i = Math.floor(Math.random() * m--);
+	t = array[m];
+	array[m] = array[i];
+	array[i] = t;
+}
+	return array;
 }

@@ -62,7 +62,7 @@
 					unAskSelf3: ["No problem, Maitreya. Just be careful.","Was there anything else?"],
 					askVoice: ["Oh, that's a surprising question."],
 					askVoiceAgain: ["Haven't I already explained this?"],
-					askVoiceExp: ["Well, there's a microphone in front of me, which is converting everything I say to text and sending it across to you.","Has it made any mistakes?","m:Not so far as I can tell.","Cool. And then I see what you say as text on my screen.","m:Could you type to me?","Of course.","t:djgbjsbgkjd","I don't know why you'd want me to do that, though.","Anything else?"],
+					askVoiceExp: ["Well, there's a microphone in front of me, which is converting everything I say to text and sending it across to you.","Has it made any mistakes?","m:Not so far as I can tell.","Cool. And then I see what you say as text on my screen.","m:Could you type to me?","Of course.","t:sxdcfvgbhnjmk","I don't know why you'd want me to do that, though.","Anything else?"],
 					letsGo: ["Alright, so here's the deal. The Foundation has constructed a second site near here, within driving range.","This new site -- IS-12-South -- is built specifically to work out what SCP-4000 is.","The level of tech that's gone into it is astounding."],
 					letsGoKnown: ["Alright, I've already explained what I need you to do, but in case you've forgotten, I'll do it again.","Incidentally, if you //have// forgotten, please let me know immediately, because that's not a thing you should be able to do."],
 					letsGoExplain: ["What I need you to do is, somehow, get SCP-4000 into the back of the van in the vehicle bay. Then I'll drive it down to IS-12-South, and the personnel there will handle things.","Think you can manage that?"],
@@ -149,9 +149,12 @@
 					tutTestPass: ["shocked:Wow!","grinning:I guess you really can handle yourself.","m:Like I said, I can handle myself. You don't need to mother me.","pensive:Right."],
 					tutTestMinute: ["shocked:Uh-oh!","concerned:You ran out of time. Looks like you need a helping hand after all, huh?","m:I would've had it if you'd just given me a little more time.","concerned:AICs are supposed to be lightning-fast, sorry!","satisfied:But that's okay! We can get you up to speed."],
 					tut3: ["Okay! First thing's first -- I need to catch you up on the documentation for SCP-4000.","m:That would be extremely useful.","Give me a second to unlock the database for you.",3,0,""],
-					tut4: ["Got it.","Alright, head on over to the database.","Once you're in, look for the file named \"SCP-4000\". Give it a read, come back here when you're done.","m:On it."],
+					tut4: ["Got it.","Alright, head on over to the database.","Once you're in, look for the file named \"SCP-4000\". Give it a read, come back here when you're done.","m:On it.","Make sure you read it carefully!"],
 					tut5: [0,0,""],
-					tutIssue: ["shocked:Something wrong?","concerned:What do you mean?","m:It seems a little odd that Dr. Breach alone is allowed access to the site.","pensive:Maybe.","But I'm not in charge of containment procedures, and it is called //Isolated// Site-12, I guess.","Bring it up with Dr. Breach."],
+					tutIssue: ["shocked:Something wrong?","concerned:What do you mean?","m:It seems a little odd that Dr. Breach alone is allowed access to the site.","pensive:Maybe.","But I'm not in charge of containment procedures, and it is called //Isolated// Site-12, I guess.","Bring it up with Dr. Breach.","m:Will do."],
+					tut6: ["satisfied:Okay! You're all caught up, and you know exactly as much as we do.","concerned:Unfortunately, the two of us are only able to access articles that have been explicitly mentioned by a human or another article.","satisfied:So if you need to know about something, just get Dr. Breach to mention it!"],
+					tutProtocol: ["bottom text"],
+					tut7: ["bottom text"],
 				},
 				maitreya: {
 					alexHello: ["Hello?"],
@@ -177,6 +180,8 @@
 					tutTestPass_____: ["s:S6.","D-68134 is in S6.",4],
 					tut6: ["Done reading."],
 					tutIssue: ["Is there something wrong with the file?"],
+					tut7: ["Got it."],
+					tutProtocol: ["Why's that?"],
 				},
 			},
 		};
@@ -629,6 +634,7 @@
 				case "TUTORIAL":
 					switch(smallSection) {
 						case "preload":
+							aic.preloadAlexandraFaces();
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
 							$timeout(function() {
 								aic.alexandraLoop(bigSection,"connect");
@@ -768,11 +774,28 @@
 						case "tutIssue":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
 							$timeout(function() {
+								aic.alexandraLoop(bigSection,"tut6_");
 							},delay*1000);
 							break;
 						case "tut6":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
 							$timeout(function() {
+								aic.presentOptions("alexandra",bigSection,[
+									"tut7",
+									"tutProtocol"
+								]);
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "tutProtocol":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.endingLoop("ENDING","example");
+							},delay*1000);
+							break;
+						case "tut7":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.endingLoop("ENDING","example");
 							},delay*1000);
 							break;
 						default:
