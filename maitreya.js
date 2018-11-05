@@ -432,12 +432,12 @@
 			// MUST BE TRUE
 			terminal: true,
 			// MUST ALL BE FALSE
-			breach: false,
-			messages: false,
-			alexandra: false,
-			dclass: false,
-			database: false,
-			run: false,
+			breach: true,
+			messages: true,
+			alexandra: true,
+			dclass: true,
+			database: true,
+			run: true,
 			ending: false,
 		};
 		
@@ -790,22 +790,59 @@
 		};
 		
 		// hover/unhover rooms - had to use jQuery for this and I despise it
-		$(".room").on({
-			mouseenter: function() {
-				var room = this.getAttribute("data-room-name");
+		$(".sitemap").on("mouseenter",".room",function() {
+			var room = this.getAttribute("data-room-name");
+			$scope.$apply(function() {
+				aic.vars.hoveredRoom = room;
+			});
+			aic.vars.doingRoom = true;
+		});
+		$(".sitemap").on("mouseleave",".room",function() {
+			if(aic.vars.doingRoom) {
 				$scope.$apply(function() {
-					aic.vars.hoveredRoom = room;
+					aic.vars.hoveredRoom = "none";
 				});
-				aic.vars.doingRoom = true;
-			},
-			mouseleave: function() {
-				if(aic.vars.doingRoom) {
-					$scope.$apply(function() {
-						aic.vars.hoveredRoom = "none";
-					});
-					aic.vars.doingRoom = false;
-				}
+				aic.vars.doingRoom = false;
 			}
+		});
+		
+		// make the bouncy effect on the article selectors persist when the mouse is moved off them too quickly
+		$(".articles-list").on("mouseenter",".article-selector",function() {
+			// this event only fires when the mouse is moved onto a selector.
+			var article = this.getAttribute("data-article");
+			// check if there's a timer set by the mouseleave event - if there is, cancel it, because we're resetting it
+			if(!Number.isInteger(aic.lang.articles[article].cantUnhoverUntil)) $timeout.cancel(aic.lang.articles[article].cantUnhoverUntil);
+			// mark this selector as HOVERED
+			$scope.$apply(function() {
+				aic.lang.articles[article].hovered = true;
+			});
+			// set the time at which this article can be safely unhovered
+			aic.lang.articles[article].cantUnhoverUntil = Date.now() + 675;
+		});
+		$(".articles-list").on("mouseleave",".article-selector",function() {
+			// this event only fires when the mouse is moved off a selector.
+			var article = this.getAttribute("data-article");
+			// work out how much time is left before this article can be safely unhovered
+			var timeRemaining = aic.lang.articles[article].cantUnhoverUntil - Date.now();
+			if(timeRemaining < 0) {
+				// if we're out of time, mark as UNHOVERED, no questions asked
+				$scope.$apply(function() {
+					aic.lang.articles[article].hovered = false;
+				});
+			} else {
+				// if there's still time remaining, set a timer to mark it as UNHOVERED once the timer has expired
+				aic.lang.articles[article].cantUnhoverUntil = $timeout(function() {
+					aic.lang.articles[article].hovered = false;
+					// after the timer has completed successfully, delete it, just in case
+					if(!Number.isInteger(aic.lang.articles[article].cantUnhoverUntil)) aic.lang.articles[article].cantUnhoverUntil = undefined;
+				},timeRemaining,true);
+			}
+			
+			$scope.$apply(function() {
+				if(Date.now() - aic.lang.articles[article].hoveredAt > 675) {
+					aic.lang.articles[article].hovered = false;
+				}
+			});
 		});
 		
 		// event handler for clicking rooms
@@ -1630,6 +1667,34 @@ String.prototype.format = function() { // pass article argument only if this is 
 			return "<span class='article-link'>" + text + "</span>";
 		});
 };
+
+// polyfill for [].includes for IE
+if (!Array.prototype.includes) {
+	Object.defineProperty(Array.prototype, 'includes', {
+		value: function(searchElement, fromIndex) {
+			if (this === null) {
+				throw new TypeError('"this" is null or not defined');
+			}
+			var o = Object(this);
+			var len = o.length >>> 0;
+			if (len === 0) {
+				return false;
+			}
+			var n = fromIndex | 0;
+			var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+			function sameValueZero(x, y) {
+				return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y));
+			}
+			while (k < len) {
+				if (sameValueZero(o[k], searchElement)) {
+					return true;
+				}
+				k++;
+			}
+			return false;
+		}
+	});
+}
 
 // randomise an array
 function shuffle(array) {

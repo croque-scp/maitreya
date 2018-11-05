@@ -370,7 +370,7 @@ html, body {
 #terminal-app .terminal-log p {
 	margin: 1px 0;
 	padding: 3px 10px 3px 25px;
-	font-family: Courier,monospace;
+	font-family: Cousine,monospace;
 	color: #333;
 	background-color: #eee;
 	text-indent: -15px;
@@ -521,7 +521,7 @@ html, body {
 #terminal-app .middle-bar input {
 	margin: 0 -350px;
 	padding: 2px 350px;
-	font-family: Courier,monospace;
+	font-family: Cousine,monospace;
 	display: inline-block;
 	width: auto;
 	border: 1px solid #aaa;
@@ -1128,10 +1128,6 @@ html, body {
 	transition: all 0.25s ease-in;
 	transition: all 0.25s var(--ease-in-out);
 }
-#database-app .section.menu-section .article-selector:hover .article-title-title p {
-	transform: translate(0,-3px);
-	/*transition: all 0.15s ease-out;*/
-}
 #database-app .section.menu-section .article-selector .article-title .article-title-icon {
 	position: absolute;
 	transform: translate(0,100%);
@@ -1155,11 +1151,6 @@ html, body {
 	margin-right: -50%;
 	transform: translate(-50%,-50%);
 }
-#database-app .section.menu-section .article-selector:hover .article-title .article-title-icon {
-	transform: translate(0,20%);
-	opacity: 1;
-	/*transition: all 0.15s ease-out;*/
-}
 #database-app .section.menu-section .article-selector .article-title .article-title-icon-container {
 	position: absolute;
 	transform: scaleY(0);
@@ -1172,10 +1163,95 @@ html, body {
 	bottom: 100%;
 	transform-origin: 50% 100%;
 }
-#database-app .section.menu-section .article-selector:hover .article-title .article-title-icon-container {
+
+
+
+
+
+
+
+
+
+
+
+
+
+.animation-target {
+  animation: animation 1500ms linear infinite both;
+}
+
+/* Generated with Bounce.js. Edit at https://goo.gl/Cq6Lmn */
+
+@keyframes article-title-title-activate { 
+0% { transform: translate(0,0px); }
+6.89% { transform: translate(0,-1.457px); }
+13.8% { transform: translate(0,-2.635px); }
+20.69% { transform: translate(0,-3.253px); }
+27.58% { transform: translate(0,-3.408px); }
+44.71% { transform: translate(0,-3.092px); }
+61.62% { transform: translate(0,-2.956px); }
+95.87% { transform: translate(0,-3.005px); }
+
+
+
+100% { transform: translate(0,-3px); }
+}
+
+@keyframes article-title-icon-container-activate { 
+0% { transform: scaleY(0); }
+9.33% { transform: scaleY(0.275); }
+18.47% { transform: scaleY(0.442); }
+27.8% { transform: scaleY(0.516); }
+36.93% { transform: scaleY(0.532); }
+61.62% { transform: scaleY(0.506); }
+86.31% { transform: scaleY(0.499); }
+
+
+100% { transform: scaleY(0.5); }
+}
+
+@keyframes article-title-icon-activate {
+0% { transform: translate(0,100%); }
+6.89% { transform: translate(0,61.135%); }
+13.8% { transform: translate(0,29.733%); }
+20.69% { transform: translate(0,13.262%); }
+27.58% { transform: translate(0,9.109%); }
+44.71% { transform: translate(0,17.534%); }
+61.62% { transform: translate(0,21.174%); }
+95.87% { transform: translate(0,19.873%); }
+
+
+
+100% { transform: translate(0,20%); }
+}
+
+
+
+
+
+
+
+
+
+/* fuck it, js can handle this */
+/* animations are the thorn in my side */
+#database-app .section.menu-section .article-selector.HOVERED .article-title .article-title-icon {
+	transform: translate(0,20%);
+	opacity: 1;
+  animation: article-title-icon-activate 675ms linear 0s 1 none;
+	transition: all 0.15s ease-out;
+}
+#database-app .section.menu-section .article-selector.HOVERED .article-title .article-title-icon-container {
 	transform: scaleY(0.5);
+  animation: article-title-icon-container-activate 675ms linear 0s 1 none;
 	/*transition: all 0.15s ease-out;*/
 }
+#database-app .section.menu-section .article-selector.HOVERED .article-title-title p {
+	transform: translate(0,-3px);
+  animation: article-title-title-activate 675ms linear 0s 1 none;
+	/*transition: all 0.15s ease-out;*/
+}
+
 #database-app .section.menu-section .article-selector .article-image-wrapper {
 	flex: 1;
 	border-radius: 5px 5px 0 0;
@@ -1498,7 +1574,7 @@ misc leave -> slide to left DONE
 	margin: 0;
 }
 #run-app .section.map-section .map-container {
-	font-family: pxplus_ibm_vga8regular,Courier,monospace;
+	font-family: pxplus_ibm_vga8regular,Cousine,monospace;
 	background: #8bac0f;
 	margin: 0 20px;
 	box-shadow: inset 0 0 40px 0 #000;
@@ -1617,7 +1693,7 @@ misc leave -> slide to left DONE
 	color: #0f380f;
 }
 #run-app .section.map-section .room-info h1 {
-	font-family: pxplus_ibm_vga8regular,Courier,monospace;
+	font-family: pxplus_ibm_vga8regular,Cousine,monospace;
 	color: #0f380f;
 	border-bottom: 2px #0f380f solid;
 }
@@ -1635,13 +1711,13 @@ misc leave -> slide to left DONE
 	overflow-y: scroll;
 }
 #run-app .section.map-section .room-camera-feed h2 {
-	font-family: pxplus_ibm_vga8regular,Courier,monospace;
+	font-family: pxplus_ibm_vga8regular,Cousine,monospace;
 	margin: 0.5em;
 	margin-top: 0.1em;
 	border-bottom: 2px #0f380f solid;
 }
 #run-app .section.map-section .room-camera-feed p {
-	font-family: pxplus_ibm_vga8regular,Courier,monospace;
+	font-family: pxplus_ibm_vga8regular,Cousine,monospace;
 	margin: 0.5em;
 	line-height: 1.2em;
 }

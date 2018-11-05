@@ -58,21 +58,20 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 		<title>Maitreya</title>
 		<meta charset="UTF-8">
 		<meta name=viewport content="width=device-width, initial-scale=1">
-		<link rel="icon" type="image/png" href="src/favicon-16x16.png" sizes="16x16" />
-		<link rel="icon" type="image/png" href="src/favicon-32x32.png" sizes="32x32" />
+		<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+		<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
 		
 		<link href="https://fonts.googleapis.com/css?family=Nunito:600" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Cousine" rel="stylesheet">
+		<link href="IBM_VGA8.css" rel="stylesheet">
 		
 		<link href="http://d3g0gp89917ko0.cloudfront.net/v--edac79f846ba/common--theme/base/css/style.css" rel="stylesheet">
 		<link href="http://www.scp-wiki.net/component:theme/code/1" rel="stylesheet">
 		<link href="maitreya.css" rel="stylesheet">
-		<link href="IBM_VGA8.css" rel="stylesheet">
 		
 		<!--<link href="style.css" rel="stylesheet">
-		<link href="1.css" rel="stylesheet">
-		<link href="http://topia.wdfiles.com/local--files/maitreya/maitreya.css" rel="stylesheet">
-		<link href="http://topia.wdfiles.com/local--files/maitreya/IBM_VGA8.css" rel="stylesheet">-->
+		<link href="1.css" rel="stylesheet">-->
 		
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
@@ -84,9 +83,6 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 		<script src="src/angular.min.js"></script>
 		<script src="src/angular-sanitize.min.js"></script>
 		<script src="src/angular-animate.min.js"></script>-->
-		
-		<!--<script src="http://topia.wdfiles.com/local--files/maitreya/maitreya.js" type="text/javascript"></script>
-		<script src="http://topia.wdfiles.com/local--files/maitreya/LoopService.js" type="text/javascript"></script>-->
 		
 		<script src="maitreya.js" type="text/javascript"></script>
 		<script src="LoopService.js" type="text/javascript"></script>
@@ -265,7 +261,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 												</div>
 											</div>
 											<div class="wrapper" ng-repeat="line in aic.chatLog.alexandra.log" ng-class="[line.speaker, aic.chatLog.alexandra.log[$index-1].speaker == line.speaker ? 'collapsed' : null]">
-												<img ng-show="aic.chatLog.alexandra.log[$index-1].speaker !== line.speaker" ng-src="{{::line.speaker == 'alexandra' ? aic.lang.images.alexandraLogo[line.emote] : (line.speaker == 'maitreya' ? aic.lang.imagesmaitreyaLogo : null)}}" ng-class="line.speaker" class="logo">
+												<img ng-show="aic.chatLog.alexandra.log[$index-1].speaker !== line.speaker" ng-src="{{::line.speaker == 'alexandra' ? aic.lang.images.alexandraLogo[line.emote] : (line.speaker == 'maitreya' ? aic.lang.images.maitreyaLogo : null)}}" ng-class="line.speaker" class="logo">
 												<img ng-show="aic.chatLog.alexandra.log[$index-1].speaker !== line.speaker" ng-src="{{::line.speaker == 'alexandra' ? aic.lang.images.alexandraTriangle : null}}" ng-class="line.speaker" class="triangle">
 												<div ng-class="[line.speaker, line.cssClass]">
 													<p><span ng-bind-html="line.text"></span></p>
@@ -333,7 +329,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									<p class="heading">SCPs</p>
 									<div class="articles-list">
 									
-										<div class="article-selector" ng-repeat="(id,article) in aic.lang.articles track by article.title" ng-if="article.available && article.category === 'scp'" ng-click="aic.switchArticle(id)">
+										<div class="article-selector" ng-repeat="(id,article) in aic.lang.articles track by article.title" ng-if="article.available && article.category === 'scp'" ng-click="aic.switchArticle(id)" ng-attr-data-article="{{id}}" ng-class="!!article.hovered ? 'HOVERED' : 'not-hovered'">
 											<div class="article-title">
 												<div class="article-title-icon-container"></div>
 												<div class="article-title-icon"><i class="material-icons">input</i></div>
@@ -351,7 +347,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									<p class="heading">Personnel</p>
 									<div class="articles-list">
 									
-										<div class="article-selector" ng-repeat="(id,article) in aic.lang.articles track by article.title" ng-if="article.available && article.category === 'person'" ng-click="aic.switchArticle(id)">
+										<div class="article-selector" ng-repeat="(id,article) in aic.lang.articles track by article.title" ng-if="article.available && article.category === 'person'" ng-click="aic.switchArticle(id)" ng-attr-data-article="{{id}}" ng-class="!!article.hovered ? 'HOVERED' : 'not-hovered'">
 											<div class="article-title">
 												<div class="article-title-icon-container"></div>
 												<div class="article-title-icon"><i class="material-icons">input</i></div>
@@ -369,7 +365,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									<p class="heading">Utilities</p>
 									<div class="articles-list">
 									
-										<div class="article-selector" ng-repeat="(id,article) in aic.lang.articles track by article.title" ng-if="article.available && article.category === 'utility'" ng-click="aic.switchArticle(id)">
+										<div class="article-selector" ng-repeat="(id,article) in aic.lang.articles track by article.title" ng-if="article.available && article.category === 'utility'" ng-click="aic.switchArticle(id)" ng-attr-data-article="{{id}}" ng-class="!!article.hovered ? 'HOVERED' : 'not-hovered'">
 											<div class="article-title">
 												<div class="article-title-icon-container"></div>
 												<div class="article-title-icon"><i class="material-icons">input</i></div>
@@ -387,7 +383,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 									<p class="heading">Other</p>
 									<div class="articles-list">
 									
-										<div class="article-selector" ng-repeat="(id,article) in aic.lang.articles track by article.title" ng-if="article.available && article.category !== 'scp' && article.category !== 'person' && article.category !== 'utility'" ng-click="aic.switchArticle(id)">
+										<div class="article-selector" ng-repeat="(id,article) in aic.lang.articles track by article.title" ng-if="article.available && article.category !== 'scp' && article.category !== 'person' && article.category !== 'utility'" ng-click="aic.switchArticle(id)" ng-attr-data-article="{{id}}" ng-class="!!article.hovered ? 'HOVERED' : 'not-hovered'">
 											<div class="article-title">
 												<div class="article-title-icon-container"></div>
 												<div class="article-title-icon"><i class="material-icons">input</i></div>
