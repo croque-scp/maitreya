@@ -538,7 +538,7 @@
 		const appList = ["terminal","messages","database","run","ending"];
 		const speakerList = ["breach","alexandra"];
 		const operationList = ["menu","d","drone","map"];
-		const alexandraEmotionList = ["smiling","concerned","grinning","shocked","pensive","satisfied","celebrating","frustrated","corrupted"];
+		const alexandraEmotionList = ["smiling","concerned","grinning","shocked","pensive","satisfied","celebrating","frustrated","vindictive","stressed","gritted","disgusted","angry","pissed"];
 		
 		$(document).ready(function() {
 			aic.onMobile = $("body").width() < 700;
@@ -563,9 +563,9 @@
 			}
 			
 			// Here we go boys
-			mainLoop("INTRODUCTION","startBoot");
+			//mainLoop("INTRODUCTION","startBoot");
 			//breachLoop("INTRODUCTION","askVoiceExp");
-			//alexandraLoop("TUTORIAL","preload");
+			alexandraLoop("TUTORIAL","tut3");
 		};
 		
 		// called when user switches app via buttons or terminal
@@ -1063,6 +1063,8 @@
 				// endingLoop's smallSection is optional
 				smallSection = smallSection.replace(/_/g,"");
 			}
+			
+			console.log("Ending - " + bigSection + " - " + smallSection);
 			
 			delay = delay || 0;
 			switch(bigSection) {

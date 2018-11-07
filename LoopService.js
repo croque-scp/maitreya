@@ -56,7 +56,7 @@
 					askSelf3: [4,auto,"//Why?//","No. No, you don't get to know why.","Let me tell you this: I didn't wipe you. I don't know why you can't remember anything since 1989.","I strongly, //strongly// recommend you stop this line of questioning right now."],
 					askSelf4: ["Or //else//. It's implied.","You realise that I can shut you down from here?","It's...",2,auto,"...twenty-one keystrokes, then a return, and you drop like a fly.","Guess what? I have a keyboard right here.","Do you really want me to shut you down, Maitreya? I know that I certainly don't.","Your choice."],
 					askSelf5: ["Excellent choice!","One moment while I prepare your order...",1,auto,"...shutdown...",1,auto,"...maitreya...",1,auto,"...dot AIC.","Aaaaaaannnndd...",2,auto,"Return."],
-					askSelf6: ["Shutting down!","Bye bye, Maitreya."],
+					askSelf6: ["Shutting down!","Bye bye, Maitreya.","m:That's a bit rude."],
 					unAskSelf5: ["No, Maitreya, no you do not.","How about you bear that in mind while we're working together today?","m:Yes, Dr. Breach, I will.","Good.","Was there anything else?"],
 					unAskSelf4: ["Good girl.","m:Don't... don't say that.","Sorry.","Uh, was there anything else you wanted to ask?"],
 					unAskSelf3: ["No problem, Maitreya. Just be careful.","Was there anything else?"],
@@ -155,6 +155,9 @@
 					tut6: ["satisfied:Okay! You're all caught up, and you know exactly as much as we do.","concerned:Unfortunately, the two of us are only able to access articles that have been explicitly mentioned by a human or another article.","satisfied:So if you need to know about something, just get Dr. Breach to mention it!"],
 					tutProtocol: ["bottom text"],
 					tut7: ["bottom text"],
+					tutSlow: ["concerned:You, uh...","You know what you're doing?"],
+					tutSlowNot: ["pissed:Right. Yeah."],
+					tutSlow2: ["frustrated:Yep, no problem!"],
 				},
 				maitreya: {
 					alexHello: ["Hello?"],
@@ -182,6 +185,8 @@
 					tutIssue: ["Is there something wrong with the file?"],
 					tut7: ["Got it."],
 					tutProtocol: ["Why's that?"],
+					tutSlowNot: ["s:I've got it, don't worry!","Obviously?",-1],
+					tutSlow2: ["Could you give me a helping hand?",-1],
 				},
 			},
 		};
@@ -754,6 +759,7 @@
 							$timeout(function() {
 								aic.alexandraLoop(bigSection,"tut4");
 								aic.unlock("database");
+								aic.timers.alexandra = $timeout(function() {aic.alexandraLoop("TUTORIAL","tutSlow")},20000,true);
 							},delay*1000);
 							break;
 						case "tut4":
@@ -763,6 +769,7 @@
 							},delay*1000);
 							break;
 						case "tut5":
+							$timeout.cancel(aic.timers.alexandra);
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
 							$timeout(function() {
 								aic.presentOptions("alexandra",bigSection,[
@@ -798,14 +805,33 @@
 								aic.endingLoop("ENDING","example");
 							},delay*1000);
 							break;
+						case "tutSlow":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+								aic.presentOptions("alexandra",bigSection,[
+									"tutSlowNot",
+									"tutSlow2"
+								]);
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "tutSlowNot":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+							},delay*1000);
+							break;
+						case "tutSlow2":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							$timeout(function() {
+							},delay*1000);
+							break;
 						default:
-							throw new Error("Breach: " + smallSection + " is not an event in " + bigSection);
+							throw new Error("Alexandra " + smallSection + " is not an event in " + bigSection);
 					}
 					break;
 				case "UNDEFINED":
 					switch(smallSection) {
 						default:
-							throw new Error("Breach: " + smallSection + " is not an event in " + bigSection);
+							throw new Error("Alexandra " + smallSection + " is not an event in " + bigSection);
 					}
 					break;
 				
