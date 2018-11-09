@@ -27,19 +27,20 @@ span, a {
 }
 
 /* TEMPORARY WIKIDOT SIMULATOR */
-/* Make the page width the same as wikidot's display */
+html, body { 
+	height: 100%;
+}
 #container {
 	/*max-width: 700px;*/
 	margin: auto;
+	height: 100%;
 }
 body {
 	padding: 20vh 0;
 }
 
-
-
-#interface { /* keep this one */
-	height: 700px;
+#interface {
+	height: 100%;
 	overflow: hidden;
 	color: white;
 }

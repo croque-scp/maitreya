@@ -8,6 +8,7 @@ html, body {
 	width: 700px;
 	height: 700px;
 	overflow: visible;
+	transition: all 0.6s ease-in-out;
 }
 #interface { /* change this to refer to iframe */
 	margin: 0 -99rem;
