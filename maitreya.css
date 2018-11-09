@@ -29,39 +29,15 @@ span, a {
 /* TEMPORARY WIKIDOT SIMULATOR */
 /* Make the page width the same as wikidot's display */
 #container {
-	max-width: 700px;
+	/*max-width: 700px;*/
 	margin: auto;
 }
 body {
 	padding: 20vh 0;
 }
-/* Add the interface background which should eventually be moved to the wiki page */
-html, body {
-	overflow-x: hidden;
-}
-#interface { /* change this to refer to iframe */
-	margin: 0 -99rem;
-	padding: 0 99rem;
-	
-	background: linear-gradient(to right,
-	              transparent 0%,
-	              transparent calc(50% - 500px),
-	              rgba(255,255,255,0.7) calc(50% - 420px),
-	              rgba(255,255,255,1) calc(50% - 375px),
-	              rgba(255,255,255,1) calc(50% + 375px),
-	              rgba(255,255,255,0.7) calc(50% + 420px),
-	              transparent calc(50% + 500px),
-	              transparent 100%),
-	            repeating-linear-gradient(45deg,
-	              rgba(20,136,204,0.05),
-	              rgba(20,136,204,0.05) 15px,
-	              transparent 15px,
-	              transparent 30px,
-	              rgba(43,50,178,0.05) 30px,
-	              rgba(43,50,178,0.05) 45px,
-	              transparent 45px,
-	              transparent 60px);
-}
+
+
+
 #interface { /* keep this one */
 	height: 700px;
 	overflow: hidden;
@@ -2166,7 +2142,7 @@ misc leave -> slide to left DONE
  *  / /  / / /_/ / /_/ / / /  __/
  * /_/  /_/\____/_.___/_/_/\___/
  */
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 699px) {
 	/* at less than 700px probably a mobile device */
 	#app-selector .title img {
 		top: 0;
