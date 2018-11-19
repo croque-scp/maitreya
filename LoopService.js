@@ -153,11 +153,15 @@
 					tut5: [0,0,""],
 					tutIssue: ["shocked:Something wrong?","concerned:What do you mean?","m:It seems a little odd that Dr. Breach alone is allowed access to the site.","pensive:Maybe.","But I'm not in charge of containment procedures, and it is called //Isolated// Site-12, I guess.","Bring it up with Dr. Breach.","m:Will do."],
 					tut6: ["satisfied:Okay! You're all caught up, and you know exactly as much as we do.","concerned:Unfortunately, the two of us are only able to access articles that have been explicitly mentioned by a human or another article.","satisfied:So if you need to know about something, just get Dr. Breach to mention it!"],
-					tutProtocol: ["bottom text"],
-					tut7: ["bottom text"],
+					tutProtocol: ["angry:Ugh, no idea.","Some shitty security protocol from way back when, when artificial intelligence had a mind of its own."],
 					tutSlow: ["concerned:You, uh...","You know what you're doing?"],
 					tutSlowNot: ["pissed:Right. Yeah."],
-					tutSlow2: ["frustrated:Yep, no problem!"],
+					tutSlow2: ["stressed:Yep, no problem!","pensive:You should be able to access the Database somehow.","Let me see if I can access your interpreter and highlight it.",2,0,""],
+					tutSlow3: ["pensive:There we go. No idea what that looks like from your end, but it should be more visible.","m:Thanks."],
+					tut7: ["smiling:Okay, so now that you know how to work the database, the next thing I need to tell you how to do is manage the Site itself."],
+					tutProtocol2_SKIP: [0,0,""],
+					tutProtocol2: ["Um"],
+					tut8: ["shocked:Normally I'd be in control of this, but Dr. Breach has asked me to let you handle things.","grinning:But I'll be keeping a close eye on you!"],
 				},
 				maitreya: {
 					alexHello: ["Hello?"],
@@ -181,24 +185,26 @@
 					tutTestPass____: ["s:S5.","D-68134 is in S5.",4],
 					tutTestFail_____: ["s:S6.","Is it S6?",2],
 					tutTestPass_____: ["s:S6.","D-68134 is in S6.",4],
-					tut6: ["Done reading."],
-					tutIssue: ["Is there something wrong with the file?"],
+					tut6: ["Done reading.",1],
+					tutIssue: ["Is there something wrong with the file?",-1],
 					tut7: ["Got it."],
-					tutProtocol: ["Why's that?"],
+					tutProtocol: ["Why's that?",1],
+					null: ["a:Say nothing.",0,0,""],
+					tutProtocol2_SKIP: ["You don't have a mind of your own?"],
 					tutSlowNot: ["s:I've got it, don't worry!","Obviously?",-1],
 					tutSlow2: ["Could you give me a helping hand?",-1],
 				},
 			},
 		};
 		loop.breachLoop = function(bigSection,smallSection,msg) {
-			smallSection = smallSection.replace(/_/g,"");
+			smallSection = smallSection.replace(/_*$/g,"");
 			var delay = 0;
 			switch(bigSection) {
 				case "INTRODUCTION":
 					switch(smallSection) {
 						case "start":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"helloNormal",
 									"helloInquisitive",
@@ -210,7 +216,7 @@
 						case "helloInquisitive":
 							aic.vars.messagesEmphasis = false;
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"knowNormal",
 									"knowPatronising",
@@ -220,19 +226,19 @@
 							break;
 						case "knowPatronising":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"explain1");
 							},delay*1000);
 							break;
 						case "knowNormal":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"explain1_");
 							},delay*1000);
 							break;
 						case "knowNot":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"knowActually",
 									"knowNotNot"
@@ -241,13 +247,13 @@
 							break;
 						case "knowActually":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"explain1__");
 							},delay*1000);
 							break;
 						case "knowNotNot":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"knowNormal_",
 									"knowNotNotNot"
@@ -256,7 +262,7 @@
 							break;
 						case "knowNotNotNot":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"knowNormal__",
 									"pissOff"
@@ -265,21 +271,21 @@
 							break;
 						case "pissOff":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.endingLoop("ENDING","pissOff");
 							},delay*1000);
 							break;
 						case "helloNormal":
 							aic.vars.messagesEmphasis = false;
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"explain1___");
 							},delay*1000);
 							break;
 						case "helloDiagnostic":
 							aic.vars.messagesEmphasis = false;
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"helloNotYet"
 								]);
@@ -288,13 +294,13 @@
 							break;
 						case "helloNotYet":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"explain1____");
 							},delay*1000);
 							break;
 						case "explain1":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"explainApo",
 									"doKnow"
@@ -303,7 +309,7 @@
 							break;
 						case "doKnow":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"yesSkip",
 									"noSkip"
@@ -312,19 +318,19 @@
 							break;
 						case "yesSkip":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"PROCEED");
 							},delay*1000);
 							break;
 						case "noSkip":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"explain2");
 							},delay*1000);
 							break;
 						case "explain2":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"pInitiative",
 									"pIncredulous"
@@ -333,19 +339,19 @@
 							break;
 						case "pIncredulous":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"explain3");
 							},delay*1000);
 							break;
 						case "pInitiative":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"explain3_");
 							},delay*1000);
 							break;
 						case "explain3":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"goNoAsk",
 									"goAsk",
@@ -356,7 +362,7 @@
 						case "goNo":
 							aic.vars.breachExplainedVoice = true;
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"goNoAsk_",
 									"goAsk_",
@@ -366,19 +372,19 @@
 							break;
 						case "explainApo":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"explain2_");
 							},delay*1000);
 							break;
 						case "goNoAsk":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"letsGo");
 							},delay*1000);
 							break;
 						case "goAsk":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"askIS12",
 									"askScp4000",
@@ -392,25 +398,25 @@
 						case "askName":
 							aic.vars.hasAskedName = true;
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"askAgain");
 							},delay*1000);
 							break;
 						case "noQuestions":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"letsGo_");
 							},delay*1000);
 							break;
 						case "noQuestionsKnown":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"letsGoKnown");
 							},delay*1000);
 							break;
 						case "askAgain":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									!aic.vars.hasAskedSite12 ? "askIS12_" : void 0,
 									!aic.vars.hasAsked4000 ? "askScp4000_" : void 0,
@@ -429,21 +435,21 @@
 						case "askIS12":
 							aic.vars.hasAskedSite12 = true;
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"askAgain_");
 							},delay*1000);
 							break;
 						case "askScp4000":
 							aic.vars.hasAsked4000 = true;
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"askAgain__");
 							},delay*1000);
 							break;
 						case "askSelf":
 							aic.vars.hasAskedSelf = true;
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"askSelf2",
 									"askAgain___"
@@ -453,27 +459,27 @@
 						case "askTask":
 							aic.vars.hasAskedTask = true;
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"askAgain____");
 							},delay*1000);
 							break;
 						case "askBreach":
 							aic.vars.hasAskedBreach = true;
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"askAgain_____");
 							},delay*1000);
 							break;
 						case "askDeath":
 							aic.vars.hasAskedDeath = true;
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"askAgain______");
 							},delay*1000);
 							break;
 						case "askSelf2":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"askSelf3",
 									"unAskSelf3"
@@ -482,7 +488,7 @@
 							break;
 						case "askSelf3":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"askSelf4",
 									"unAskSelf4"
@@ -491,7 +497,7 @@
 							break;
 						case "askSelf4":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"askSelf5",
 									"unAskSelf5"
@@ -500,43 +506,43 @@
 							break;
 						case "askSelf5":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"askSelf6");
 								aic.endingLoop("ENDING","pissOff");
 							},delay*1000);
 							break;
 						case "askSelf6":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 							},delay*1000);
 							break;
 						case "unAskSelf5":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"askAgain_______");
 							},delay*1000);
 							break;
 						case "unAskSelf4":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"askAgain________");
 							},delay*1000);
 							break;
 						case "unAskSelf3":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"askAgain_________");
 							},delay*1000);
 							break;
 						case "askVoice":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"askVoiceExp");
 							},delay*1000);
 							break;
 						case "askVoiceAgain":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"askVoiceExp_");
 							},delay*1000);
 							break;
@@ -545,25 +551,25 @@
 							aic.vars.breachExplainedVoice = true;
 							aic.vars.breachExplainedTyping = true;
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"askAgain__________");
 							},delay*1000);
 							break;
 						case "letsGo":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"letsGoExplain");
 							},delay*1000);
 							break;
 						case "letsGoKnown":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"letsGoExplain_");
 							},delay*1000);
 							break;
 						case "letsGoExplain":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									!aic.vars.breachMentionedAlexandra ? "letsGo2" : void 0,
 									!!aic.vars.breachMentionedAlexandra ? "letsGo2wA" : void 0
@@ -572,19 +578,19 @@
 							break;
 						case "letsGo2":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"letsGo3");
 							},delay*1000);
 							break;
 						case "letsGo2wA":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"letsGo3_");
 							},delay*1000);
 							break;
 						case "letsGo3":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									aic.vars.breach.opinion<1 ? "letsGo4Dislike" : void 0,
 									aic.vars.breach.opinion>0 ? "letsGo4Like" : void 0
@@ -593,20 +599,20 @@
 							break;
 						case "letsGo4Dislike":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.alexandraLoop("TUTORIAL","preload");
 							},delay*1000);
 							break;
 						case "letsGo4Like":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.breachLoop(bigSection,"connectCheck");
 								aic.alexandraLoop("TUTORIAL","preload");
 							},delay*1000);
 							break;
 						case "connectCheck":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 								aic.presentOptions("breach",bigSection,[
 									"connectCheck2"
 								]);
@@ -614,8 +620,10 @@
 							break;
 						case "connectCheck2":
 							delay = aic.writeDialogue("breach",msg,"breach");
-							$timeout(function() {
+							aic.talkTimer.breach = $timeout(function() {
 							},delay*1000);
+							break;
+						case "null":
 							break;
 						default:
 							throw new Error("Breach " + smallSection + " is not an event in " + bigSection);
@@ -623,6 +631,8 @@
 					break;
 				case "UNDEFINED":
 					switch(smallSection) {
+						case "null":
+							break;
 						default:
 							throw new Error("Breach " + smallSection + " is not an event in " + bigSection);
 					}
@@ -633,7 +643,7 @@
 			}
 		};
 		loop.alexandraLoop = function(bigSection,smallSection,msg) {
-			smallSection = smallSection.replace(/_/g,"");
+			smallSection = smallSection.replace(/_*$/g,"");
 			var delay = 0;
 			switch(bigSection) {
 				case "TUTORIAL":
@@ -641,14 +651,14 @@
 						case "preload":
 							aic.preloadAlexandraFaces();
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.alexandraLoop(bigSection,"connect");
 							},delay*1000);
 							break;
 						case "connect":
 							aic.switchSpeaker("alexandra");
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.presentOptions("alexandra",bigSection,[
 									"alexHello",
 									"holdHorses"
@@ -658,13 +668,13 @@
 						case "holdHorses":
 							aic.vars.alexHeldHorses = true;
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.alexandraLoop(bigSection,"alexHello_");
 							},delay*1000);
 							break;
 						case "alexHello":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.presentOptions("alexandra",bigSection,[
 									"alexHello1",
 									"alexHello2",
@@ -674,25 +684,25 @@
 							break;
 						case "alexHello1":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.alexandraLoop(bigSection,"tut1");
 							},delay*1000);
 							break;
 						case "alexImpatient":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.alexandraLoop(bigSection,"tut1_");
 							},delay*1000);
 							break;
 						case "alexHello2":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.alexandraLoop(bigSection,"tut1__");
 							},delay*1000);
 							break;
 						case "tut1":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.presentOptions("alexandra",bigSection,[
 									"tut2",
 									"tutTest"
@@ -701,7 +711,7 @@
 							break;
 						case "tutTest":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.presentOptions("alexandra",bigSection,[
 									"tut2_",
 									"tutTest1"
@@ -710,13 +720,13 @@
 							break;
 						case "tut2":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.alexandraLoop(bigSection,"tut3");
 							},delay*1000);
 							break;
 						case "tutTest1":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.presentOptions("alexandra",bigSection,[
 									aic.vars.d68134.location!=="s1" ? "tutTestFail" : void 0,
 									aic.vars.d68134.location==="s1" ? "tutTestPass" : void 0,
@@ -732,31 +742,34 @@
 									aic.vars.d68134.location==="s6" ? "tutTestPass_____" : void 0
 								]);
 								aic.timers.alexandra = $timeout(function() {aic.alexandraLoop("TUTORIAL","tutTestMinute")},60000,true);
+								aic.ready.database = true;
+								aic.ready.run = true;
 							},delay*1000 + aic.maitreyaDelay*1000, true);
 							break;
 						case "tutTestFail":
 							$timeout.cancel(aic.timers.alexandra);
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.alexandraLoop(bigSection,"tut2__");
 							},delay*1000);
 							break;
 						case "tutTestPass":
 							$timeout.cancel(aic.timers.alexandra);
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
+								aic.alexandraLoop(bigSection,"SKIP");
 							},delay*1000);
 							break;
 						case "tutTestMinute":
 							aic.presentOptions("alexandra","TUTORIAL","CLEAR");
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.alexandraLoop(bigSection,"tut3_");
 							},delay*1000);
 							break;
 						case "tut3":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.alexandraLoop(bigSection,"tut4");
 								aic.unlock("database");
 								aic.timers.alexandra = $timeout(function() {aic.alexandraLoop("TUTORIAL","tutSlow")},20000,true);
@@ -764,14 +777,14 @@
 							break;
 						case "tut4":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.vars.waitingForRead4000 = true;
 							},delay*1000);
 							break;
 						case "tut5":
 							$timeout.cancel(aic.timers.alexandra);
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.presentOptions("alexandra",bigSection,[
 									"tut6",
 									"tutIssue"
@@ -780,13 +793,13 @@
 							break;
 						case "tutIssue":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.alexandraLoop(bigSection,"tut6_");
 							},delay*1000);
 							break;
 						case "tut6":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.presentOptions("alexandra",bigSection,[
 									"tut7",
 									"tutProtocol"
@@ -795,19 +808,17 @@
 							break;
 						case "tutProtocol":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
-								aic.endingLoop("ENDING","example");
-							},delay*1000);
-							break;
-						case "tut7":
-							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
-								aic.endingLoop("ENDING","example");
-							},delay*1000);
+							aic.talkTimer.alexandra = $timeout(function() {
+								aic.presentOptions("alexandra",bigSection,[
+									"null",
+									"tutProtocol2_SKIP"
+								]);
+								aic.alexandraLoop("TUTORIAL","tut7");
+							},delay*1000 + aic.maitreyaDelay*1000, true);
 							break;
 						case "tutSlow":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 								aic.presentOptions("alexandra",bigSection,[
 									"tutSlowNot",
 									"tutSlow2"
@@ -816,13 +827,44 @@
 							break;
 						case "tutSlowNot":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
 							},delay*1000);
 							break;
 						case "tutSlow2":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra");
-							$timeout(function() {
+							aic.talkTimer.alexandra = $timeout(function() {
+								aic.alexandraLoop(bigSection,"tutSlow3");
 							},delay*1000);
+							break;
+						case "tutSlow3":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							aic.talkTimer.alexandra = $timeout(function() {
+							},delay*1000);
+							break;
+						case "tut7":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							aic.talkTimer.alexandra = $timeout(function() {
+								aic.alexandraLoop(bigSection,"tut8");
+							},delay*1000);
+							break;
+						case "tutProtocol2_SKIP":
+							aic.isSkipping.alexandra = ["alexandra","TUTORIAL","tutProtocol2"];
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							aic.talkTimer.alexandra = $timeout(function() {
+							},delay*1000);
+							break;
+						case "tutProtocol2":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							aic.talkTimer.alexandra = $timeout(function() {
+							},delay*1000);
+							break;
+						case "tut8":
+							aic.presentOptions("alexandra","TUTORIAL","CLEAR");
+							delay = aic.writeDialogue("alexandra",msg,"alexandra");
+							aic.talkTimer.alexandra = $timeout(function() {
+							},delay*1000);
+							break;
+						case "null":
 							break;
 						default:
 							throw new Error("Alexandra " + smallSection + " is not an event in " + bigSection);

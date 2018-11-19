@@ -396,8 +396,8 @@
 		
 		/* Initialisation */
 		aic.preload = true; // MUST BE TRUE
-		aic.selectedApp = "terminal"; // MUST BE TERMINAL
-		aic.selectedSpeaker = "breach"; // MUST BE BREACH
+		aic.selectedApp = "messages"; // MUST BE TERMINAL
+		aic.selectedSpeaker = "alexandra"; // MUST BE BREACH
 		aic.selectedArticle = "menu"; // MUST BE MENU
 		aic.selectedOperation = "menu"; // MUST BE MENU
 		aic.currentEnding = 0;
@@ -426,7 +426,8 @@
 			database: 0,
 			run: 0,
 		};
-		aic.timers = {};
+		aic.timers = {}; // holds special timers for events and the like
+		aic.talkTimer = {}; // holds the timer for the next dialogue line
 		aic.selectedArticleData = {type: "url or text", content: []};
 		aic.ready = {
 			// MUST BE TRUE
@@ -565,7 +566,7 @@
 			// Here we go boys
 			//mainLoop("INTRODUCTION","startBoot");
 			//breachLoop("INTRODUCTION","askVoiceExp");
-			alexandraLoop("TUTORIAL","tut3");
+			alexandraLoop("TUTORIAL","tutProtocol");
 		};
 		
 		// called when user switches app via buttons or terminal
@@ -915,7 +916,7 @@
 			
 			// pass sections to the func or use variables?
 			// pass to func for now
-			smallSection = smallSection.replace(/_/g,"");
+			smallSection = smallSection.replace(/_*$/g,"");
 			
 			console.log("Main - " + bigSection + " - " + smallSection);
 			
@@ -1008,7 +1009,7 @@
 		
 		function breachLoop(bigSection,smallSection) {
 			// smallSection may have trailing underscores - clean these up
-			smallSection = smallSection.replace(/_/g,"");
+			smallSection = smallSection.replace(/_*$/g,"");
 			
 			console.log("Breach - " + bigSection + " - " + smallSection);
 			
@@ -1041,7 +1042,7 @@
 		
 		function alexandraLoop(bigSection,smallSection) {
 			// smallSection may have trailing underscores - clean these up
-			smallSection = smallSection.replace(/_/g,"");
+			smallSection = smallSection.replace(/_*$/g,"");
 			
 			console.log("Alexandra - " + bigSection + " - " + smallSection);
 			
@@ -1061,7 +1062,7 @@
 			// smallSection may have trailing underscores - clean these up
 			if(typeof smallSection === "string") {
 				// endingLoop's smallSection is optional
-				smallSection = smallSection.replace(/_/g,"");
+				smallSection = smallSection.replace(/_*$/g,"");
 			}
 			
 			console.log("Ending - " + bigSection + " - " + smallSection);
@@ -1106,6 +1107,19 @@
 			}
 		}
 		
+		function dynamicLoop(character,bigSection,smallSection) {
+			switch(character) {
+				case "breach":
+					breachLoop(bigSection,smallSection);
+					break;
+				case "alexandra":
+					alexandraLoop(bigSection,smallSection);
+					break;
+				default:
+					throw new Error("Unexpected dynamic character: " + character);
+			}
+		}
+		
 		/* PROCESSING FUNCTIONS */
 		
 		// pass options to chatLog for presentation to the user
@@ -1137,12 +1151,13 @@
 			var options = [];
 			for(let i = 0; i < ids.length; i++) {
 				// we're now looking at individual options.
+				console.log(options[i]);
 				
 				// deep copy the speech into the option
 				try {
 					options[i] = speech[bigSection].maitreya[ids[i]].slice();
 				} catch(error) {
-					// this can only fail if the option doesn't exist, which means we're still in development
+					// this can only fail if the option doesn't exist
 					throw new Error("Option " + ids[i] + " doesn't exist");
 				}
 				
@@ -1450,14 +1465,24 @@
 							// this fixes the above
 						}
 					}
-					if(aic.isSkipping[conversation]) { // check to see if we're being interrupted
+					if(!!aic.isSkipping[conversation]) { // check to see if we're being interrupted
+						// the value of isSkipping[c] is either false or a character-bigSection-smallSection array indicating where to go afterwards
+						console.log("Now interrupting: " + conversation);
 						// loop through timeoutlist and kill all timeouts?
 						// maybe associate each timeout with its conversation in the list so we can selectively kill them
 						for(let timeout = 0; timeout < timeOutList[conversation].length; timeout++) {
 							$timeout.cancel(timeOutList[conversation][timeout][0]);
 							timeOutList[conversation].splice(timeOutList[conversation].indexOf(timeout),1);
 							// cancel the timer associated with the messages itself
-							$timeout.cancel(aic.timers[conversation]);
+							//$timeout.cancel(aic.timers[conversation]); // commented because not sure why this is needed
+							// skip ahead to the requested conversation section
+							//TODO: if the (dialogue that's being interrupted) has already queued the next line (ie loopThrough==true), then the current dialogue will be cancelled but the upcoming dialogue will not
+							try {
+								aic.dynamicLoop(aic.isSkipping[conversation][0],aic.isSkipping[conversation][1],aic.isSkipping[conversation][2]);
+							} catch(e) {
+								console.error(e);
+								throw new Error("Unexpected interruption");
+							}
 						}
 						aic.isSkipping[conversation] = false;
 					} else {
@@ -1601,6 +1626,7 @@
 		aic.breachLoop = breachLoop;
 		aic.alexandraLoop = alexandraLoop;
 		aic.endingLoop = endingLoop;
+		aic.dynamicLoop = dynamicLoop;
 		aic.preloadAlexandraFaces = preloadAlexandraFaces;
 		
 		aic.unlock = function(target) {
@@ -1633,7 +1659,9 @@
 		return window.encodeURIComponent;
 	}
 })();
-	
+
+//#region prototype functions
+
 // prototype functuon to turn whatever-this-is to whateverThisIs
 String.prototype.toCamelCase = function() {
 	return this.toLowerCase()
@@ -1709,3 +1737,5 @@ function shuffle(array) {
 }
 	return array;
 }
+
+//#endregion

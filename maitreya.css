@@ -715,7 +715,7 @@ body {
 	margin: calc(1em + 2px);
 }
 #messages-app .conversation .wrapper > div.alexandra p {
-	color: #f5e9e9;
+	color: white;
 }
 #messages-app .conversation .wrapper > div.maitreya p {
 	color: white;
