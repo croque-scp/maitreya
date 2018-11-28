@@ -388,6 +388,7 @@
 		aic.commandsUsed = [];
 		var commandsUsedIterator = -1;
 		var availableRooms = [1,2,3,4,5,6];
+		var currentlyPushing = {breach: false, alexandra: false}; // whether or not pushToLog() is active
 		
 		aic.endingPositions = { // positions of each ending in aic.lang.endings
 			example: 0,
@@ -427,7 +428,6 @@
 			run: 0,
 		};
 		aic.timers = {}; // holds special timers for events and the like
-		aic.talkTimer = {}; // holds the timer for the next dialogue line
 		aic.selectedArticleData = {type: "url or text", content: []};
 		aic.ready = {
 			// MUST BE TRUE
@@ -535,6 +535,8 @@
 		};
 		aic.terminalInput = "";
 		aic.searchInput = "";
+		aic.blacklist = []; // list of conversation IDs that must be ignored
+		aic.currentDialogue = []; // list of conversation IDs that are currently being spoken / are queued to be spoken TODO
 		
 		const appList = ["terminal","messages","database","run","ending"];
 		const speakerList = ["breach","alexandra"];
@@ -883,14 +885,14 @@
 					mainLoop(option.bigSection,option.id); // I guess?
 					break;
 				case "breach":
-					delay = writeDialogue(conversation,option.dialogue,"maitreya");
+					delay = writeDialogue(conversation,option.dialogue,"maitreya",option.id);
 					$timeout(function() {
 						breachLoop(option.bigSection,option.id);
 					},delay*1000 + maitreyaDelay*1000);
 					aic.vars[conversation].opinion += option.opinion;
 					break;
 				case "alexandra":
-					delay = writeDialogue(conversation,option.dialogue,"maitreya");
+					delay = writeDialogue(conversation,option.dialogue,"maitreya",option.id);
 					$timeout(function() {
 						alexandraLoop(option.bigSection,option.id);
 					},delay*1000 + maitreyaDelay*1000);
@@ -1108,6 +1110,8 @@
 		}
 		
 		function dynamicLoop(character,bigSection,smallSection) {
+			// this only gets called when a conversation is skipped, so we can probably unmark the skippo here
+			aic.isSkipping[character] = false;
 			switch(character) {
 				case "breach":
 					breachLoop(bigSection,smallSection);
@@ -1238,7 +1242,9 @@
 		}
 		
 		// structure dialogue and calculate timing
-		function writeDialogue(conversation,dialogueList,speaker) {
+		function writeDialogue(conversation,dialogueList,speaker,smallSection) {
+			// smallSection won't be present
+			
 			// Take a name and an array (mixture of letters and numbers) and crank out that dialogue boy
 			// Expected format: n n text n n text n n text repeating
 			// Where n1 is missing, assume 0
@@ -1320,7 +1326,11 @@
 								}
 							}
 							// we already know that the last speaker is maitreya, so it is impossible for this value to be 0
-							if(maitreyaMessages === 0) throw new Error("maitreyaMessages is 0");
+							if(maitreyaMessages === 0) {
+								/*throw new Error("maitreyaMessages is 0");*/
+								// except sometimes we reach this point anyway, and I have no idea why, so there's no point breaking the flow lmao
+								console.error("maitreyaMessages is 0");
+							}
 							n1 = maitreyaMessages * 0.5;
 						}
 					}
@@ -1366,7 +1376,7 @@
 					}
 					
 					if(speaker === "alexandra" && text.length > 0) {
-						if(!!/(^\w*?):/.exec(text)) {
+						if(!!/(^\w*?):/.exec(text)) { // they told me this would be unreadable in a week and I did not believe them
 							emote = /(^\w*?):/.exec(text)[1];
 							if(!alexandraEmotionList.includes(emote)) throw new Error("Alexandra is experiencing an invalid emotion: " + emote);
 							text = text.substring(emote.length + 1);
@@ -1394,14 +1404,55 @@
 					throw new Error("Dialogue not number or string");
 				}
 			}
-			pushToLog(conversation,messages);
+			pushToLog(conversation,messages,smallSection);
 			
 			// the total length of all messages gets passed back to the mainloop
 			return totalDelay;
 		}
 		
 		// push dialogue to chatLog for presentation to the user
-		function pushToLog(conversation,messages) {
+		function pushToLog(conversation,messages,ID,thread) {
+			// check the dialogue's ID (ie smallSection)
+			/*if(!ID && conversation !== "terminal") {
+				throw new Error("ID was not passed to pushToLog");
+			}*/
+			
+			// next check if this iteration of pushToLog actually has permission to push To Log
+			/*var hasControl = false;
+			thread = thread || Math.floor(100000 + Math.random() * 900000); // give this thread a random identifiable ID
+			// currentlyPushing must be set to this unique value so that other instances know that we have control
+			if(currentlyPushing[conversation] !== false && currentlyPushing[conversation] !== thread) {
+				// another instance is using this thread
+				// ...but we don't care. newer threads get priority, for now
+				// take control anyway. the other thread will be notified passively
+				currentlyPushing[conversation] = thread;
+				hasControl = true;
+			} else if(currentlyPushing[conversation] === false) {
+				// no one is using this thread, we're good to go
+				// take control of the thread
+				currentlyPushing[conversation] = thread;
+				hasControl = true;
+			} else if(currentlyPushing[conversation] === thread) {
+				// this thread still has control
+				// no need to do anything
+				hasControl = true;
+			} else {
+				throw new Error("Unknown pushToLog thread ownership situation in " + conversation + " - new " + thread + " vs old " + currentlyPushing[conversation]);
+			}*/
+			
+			// we should only be handling one ID per character at any given time.
+			// if the redundancies are set up correctly, ID should be unique for every interaction.
+			// what we are going to do:
+			//   check if the queue (per character) is empty
+			//   if it it, great, carry on as normal.
+			//   if it's not, add the ID to the queue.
+			//     will need to find a way to pass the time delay back up to the loop function, but shouldn't be necessary for now
+			//   if we added the ID to the queue, abort.
+			//   if we didn't, then at the end of the function, get the next item in the queue and pushToLog it
+			//     make sure to splice the queue
+			// goal of this is to allow for cancelling messages in the future more easily as well as making sure that pushToLog is not running more than once per character
+			// TODO: reconfigure writeDialogue so that it also passes the ID
+			
 			// conversation: terminal, breach, etc
 			// messages: [n1, n2, message]
 			// message: {speaker:; cssClass:; text:}
@@ -1410,9 +1461,13 @@
 			// this is a recursive function
 			// the messages[0] is deleted at the end of the operation, moving the rest of the array down, so we only ever need to access messages[0]
 			
+			// check for control. will need to do this when doing anything after a timer
+			/*if(!stillHasControl(0)) return;*/
+			
 			var timeOut1 = $timeout(function() {
 				// delete this timeOut from the list
 				timeOutList[conversation].splice(timeOutList[conversation].indexOf([timeOut1,conversation]),1);
+				/*if(!stillHasControl(1)) return;*/
 				
 				// obviously, don't show the wait icon when we're speaking
 				
@@ -1450,6 +1505,7 @@
 				var timeOut2 = $timeout(function() {
 					// delete this timeOut from the list
 					timeOutList[conversation].splice(timeOutList[conversation].indexOf([timeOut2,conversation]),1);
+					/*if(!stillHasControl(2)) return;*/
 					// now we need to check to see if any other messages are still coming through (HINT: they shouldn't be, but just in case)
 					if(timeOutList[conversation].length === 0) {
 						aic.isSpeaking[conversation] = false;
@@ -1465,7 +1521,7 @@
 							// this fixes the above
 						}
 					}
-					if(!!aic.isSkipping[conversation]) { // check to see if we're being interrupted
+					if(!!aic.isSkipping[conversation] /*|| hasControl === false*/) { // check to see if we're being interrupted
 						// the value of isSkipping[c] is either false or a character-bigSection-smallSection array indicating where to go afterwards
 						console.log("Now interrupting: " + conversation);
 						// loop through timeoutlist and kill all timeouts?
@@ -1477,31 +1533,69 @@
 							//$timeout.cancel(aic.timers[conversation]); // commented because not sure why this is needed
 							// skip ahead to the requested conversation section
 							//TODO: if the (dialogue that's being interrupted) has already queued the next line (ie loopThrough==true), then the current dialogue will be cancelled but the upcoming dialogue will not
+							aic.blacklist.push(ID);
+							console.log("Blacklisting " + ID + " (via pushToLog)");
 							try {
 								aic.dynamicLoop(aic.isSkipping[conversation][0],aic.isSkipping[conversation][1],aic.isSkipping[conversation][2]);
+								// aic.isSkipping gets cleared in dynamicLoop
 							} catch(e) {
 								console.error(e);
 								throw new Error("Unexpected interruption");
 							}
 						}
+						// this entire interruption check may be bypassed by currentlyPushing, actually
+						// ...which is itself bypassed by the blacklist?
+						// honestly have no idea what's going on
+						// TODO clean up obsolete comments
 						aic.isSkipping[conversation] = false;
 					} else {
-						// don't push the message if it's empty
-						if(messages[0][2].text.length > 0) {
-							aic.chatLog[conversation].log.unshift(messages[0][2]);
-							addNotification(conversation);
-						}
-						messages.shift();
-						if(messages.length > 0) {
-							pushToLog(conversation,messages);
+						if(aic.blacklist.includes(ID)) {
+							console.error("WARNING: Tried to push " + ID + " but it was blacklisted (via pushToLog)");
+							// should never actually reach this point, but we do sometimes. final check.
 						} else {
-							// no more messages. we're done here
+							// don't push the message if it's empty
+							if(messages[0][2].text.length > 0) {
+								// also don't push it if we don't have control
+								/*if(hasControl) {*/
+									aic.chatLog[conversation].log.unshift(messages[0][2]);
+									addNotification(conversation);
+								/*}*/
+							}
+							messages.shift();
+							if(messages.length > 0 /*&& hasControl*/) {
+								// send the next message
+								pushToLog(conversation,messages,ID);
+							} else {
+								// no more messages. we're done here
+								// if we have control, declare that we're releasing it
+								/*if(hasControl) {
+									currentlyPushing[conversation] = false;
+								}*/
+							}
 						}
 					}
 				},n2 * 1000, true);
 				timeOutList[conversation].push([timeOut2,conversation]);
 			},n1 * 1000, true);
 			timeOutList[conversation].push([timeOut1,conversation]);
+			
+			/*function stillHasControl(timeout) {
+				// check whether or not the current thread has control
+				console.log(currentlyPushing[conversation] + " has control");
+				if(currentlyPushing[conversation] === false) {
+					throw new Error("currentlyPushing is false but a pushToLog thread (" + thread + ") is running");
+				} else if(currentlyPushing[conversation] === thread) {
+					// this thread still has control
+					console.log(thread + " still has control");
+					hasControl = true;
+					return true;
+				} else {
+					// this thread no longer has control
+					hasControl = false;
+					console.log("pushToLog thread " + thread + " interrupted by " + currentlyPushing[conversation] + " at " + timeout);
+					return false;
+				}
+			}*/
 		}
 		
 		// add notifications to apps/speakers
@@ -1629,6 +1723,23 @@
 		aic.dynamicLoop = dynamicLoop;
 		aic.preloadAlexandraFaces = preloadAlexandraFaces;
 		
+		// add a smallSection to the blacklist (for interrupting dialogue)
+		aic.blacklist.add = function(smallSection) {
+			// accepts either one smallSection or an array of multiple
+			if(typeof smallSection === "string") {
+				smallSection = [smallSection];
+			}
+			for(var i = 0; i < smallSection.length; i++) {
+				if(aic.blacklist.includes(smallSection[i])) {
+					// this smallSection is already blacklisted
+					console.log("Attempted to blacklist " + smallSection[i] + ", but it was already blacklisted");
+				} else {
+					console.log("Blacklisting " + smallSection[i] + " (via LoopService)");
+					aic.blacklist.push(smallSection[i]);
+				}
+			}
+		};
+		
 		aic.unlock = function(target) {
 			if(appList.includes(target)) {
 				aic.ready[target] = true;
@@ -1638,6 +1749,18 @@
 				aic.lang.articles.target.available = true;
 			} else {
 				throw new Error("Tried to unlock " + target + " which does not exist");
+			}
+		};
+		
+		aic.lock = function(target) {
+			if(appList.includes(target)) {
+				aic.ready[target] = false;
+			} else if(speakerList.includes(target)) {
+				aic.ready[target] = false;
+			} else if(target in aic.lang.articles) {
+				aic.lang.articles.target.available = false;
+			} else {
+				throw new Error("Tried to lock " + target + " which does not exist");
 			}
 		};
 		
