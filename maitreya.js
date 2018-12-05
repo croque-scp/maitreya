@@ -190,7 +190,7 @@
 					"**Founding Director:** Dr. Rebecca Carver",
 					"**Location:** Quittinirpaaq National Park, Ellesmere Island, Nunavut, Canada",
 					"**Cover Story:** Secondary Global Seed Vault",
-					"**Site Function:** Containment (singular -- see [[[aic.selectedArticle = 'scp4000'|SCP-4000]]])",
+					"**Site Function:** Containment (singular -- see [[[scp4000|SCP-4000]]])",
 					"**Size:** Area of 1.9 km^^2^^",
 					"----",
 					"= ++ Staffing Information",
@@ -449,13 +449,14 @@
 			breachExplainedVoice: false,
 			breachExplainedTyping: false,
 			waitingForRead4000: false,
+			alexCanRebel: false, // is alex primed to rebel against breach?
 			
 			/* APPS */
 			terminalEmphasis: false, // false
 			messagesEmphasis: false, // false
 			breachEntryMode: "default", // default
 			lastSpeaker: "breach", // breach
-			endingFractionText: "This should not be visible",
+			endingFractionText: "placeholder",
 			
 			/* MAP */
 			hoveredRoom: "none", // none
@@ -624,7 +625,7 @@
 		
 		// called when the user switches articles in the database app
 		aic.switchArticle = function(article) {
-			console.log(article);
+			console.log("Switching to article: " + article);
 			// specific exception for tutorial
 			if(aic.vars.waitingForRead4000 === true && article === "scp4000") {
 				aic.vars.waitingForRead4000 = false;
@@ -1155,7 +1156,6 @@
 			var options = [];
 			for(let i = 0; i < ids.length; i++) {
 				// we're now looking at individual options.
-				console.log(options[i]);
 				
 				// deep copy the speech into the option
 				try {
@@ -1737,6 +1737,21 @@
 					console.log("Blacklisting " + smallSection[i] + " (via LoopService)");
 					aic.blacklist.push(smallSection[i]);
 				}
+			}
+		};
+		aic.blacklist.remove = function(smallSection) {
+			// accepts either one smallSection or an array of multiple
+			if(typeof smallSection === "string") {
+				smallSection = [smallSection];
+			}
+			for(var i = 0; i < smallSection.length; i++) {
+				var index = aic.blacklist.indexOf(smallSection[i]);
+				if (index > -1) {
+					aic.blacklist.splice(index, 1);
+					console.log("Removed " + smallSection[i] + " from blacklist");
+				} else {
+					console.log("Tried to remove " + smallSection[i] + " from blacklist but it was not present");
+				}				
 			}
 		};
 		

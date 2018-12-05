@@ -619,7 +619,6 @@ body {
 	transform: translate(0,100px);
 	max-height: 0px;
 	transition: all 0.5s ease-in-out;
-	transition: all 0.5s var(--ease-in-out);
 	opacity: 0;
 }
 #messages-app .conversation .wrapper.maitreya.ng-enter {

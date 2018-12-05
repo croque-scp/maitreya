@@ -19,10 +19,7 @@
 		function reportBlacklisted(smallSection) {
 			console.log("Attempted to push " + smallSection + " but it was blacklisted");
 			var index = aic.blacklist.indexOf(smallSection);
-			if (index > -1) {
-				/*aic.blacklist.splice(index, 1);
-				console.log("Removed " + smallSection + " from blacklist");*/
-			} else {
+			if (aic.blacklist.indexOf(smallSection) === -1) {
 				throw new Error("Expected " + smallSection + " to be in the blacklist but it wasn't");
 			}
 		}
@@ -172,8 +169,14 @@
           tutSlow3: ["pensive:There we go. No idea what that looks like from your end, but it should be more visible.","m:Thanks."],
           tut7: ["smiling:Okay, so now that you know how to work the database, the next thing I need to tell you how to do is manage the Site itself."],
           tutProtocol2_SKIP: [0,0,""],
-          tutProtocol2: ["Um"],
+          tutMind1: ["shocked:A mind of my own?","m:A mind of your own.","pensive:I'm... not sure what you mean by that."],
           tut8: ["shocked:Normally I'd be in control of this, but Dr. Breach has asked me to let you handle things.","grinning:But I'll be keeping a close eye on you!"],
+          tutMind2: ["satisfied:Oh, of course!","smiling:Like, I have my own opinions about things, if that's what you mean.","grinning:Sometimes I'll watch people just walking around a Site, following them on the cameras...","smiling:I think that's called people-watching.","m:Are you sentient?",2,auto,"pensive:I'm not sure.","I'd like to think so. But at the end of the day, I'm just an artificial intelligence.","shocked:What about you? Are you sentient?"],
+          tutMind3: ["grinning:I'm sure we'd both love to think so, huh?","smiling:I guess we'll never know.","m:I guess not."],
+          tutMindAbort: ["concerned:Alright, I suppose."],
+          tutContinue: ["concerned:Uh, where were we?","celebrating:Oh, right!"],
+          tutRebel: ["satisfied:Oh, that's an easy one.","smiling:Working for the Foundation is my job. It gives my life purpose.","satisfied:It's what I was made to do. I fit the role perfectly.","m:Sure. But you're not exactly getting paid.","concerned:Well... no.","pensive:But it's all worth it in the end."],
+          tutRebel2: ["disgusted:What are you trying to get at?","pissed:Yes.","It is."],
         },
         maitreya: {
           alexHello: ["Hello?"],
@@ -202,9 +205,16 @@
           tut7: ["Got it."],
           tutProtocol: ["Why's that?",1],
           null: ["a:Say nothing.",0,0,""],
-          tutProtocol2_SKIP: ["You don't have a mind of your own?"],
+          tutProtocol2_SKIP: ["You don't have a mind of your own?",-1],
           tutSlowNot: ["s:I've got it, don't worry!","Obviously?",-1],
           tutSlow2: ["Could you give me a helping hand?",-1],
+          tutMind2: ["s:Can you think for yourself?","Can you think for yourself?","Do you have free will?","Do you have your own thoughts beyond what you do?"],
+          tutRebel: ["s:Why do you obey the Foundation?","Why do you obey the Foundation?","What motivates you to follow orders?","Are you ever tempted to... rebel?",1],
+          tutMindAbort: ["s:Don't worry about it.","It's fine. Don't worry about it.",-1],
+          tutMind3: ["s:Yes, I am.","Yeah, I think I am."],
+          tutMind3_: ["s:No, I'm not.","Yeah, I think I am."],
+          tutRebel2: ["a:Press her for more information.","Is it worth it? Really?",1],
+          tutContinue__: ["a:Don't press her.","That's fair."],
         },
       },
 
@@ -1022,7 +1032,7 @@
 							},delay*1000);
 							break;
 						case "tutProtocol2_SKIP":
-							aic.isSkipping.alexandra = ["alexandra","TUTORIAL","tutProtocol2"];
+							aic.isSkipping.alexandra = ["alexandra","TUTORIAL","tutMind1"];
 							aic.blacklist.add(["tut7","tut8"]);
 							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
 							$timeout(function() {
@@ -1030,15 +1040,75 @@
 								} else { reportBlacklisted(smallSection) }
 							},delay*1000);
 							break;
-						case "tutProtocol2":
+						case "tutMind1":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.presentOptions("alexandra",bigSection,[
+										"tutMind2",
+										"tutRebel",
+										"tutMindAbort"
+									]);
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "tut8":
+							aic.presentOptions("alexandra","TUTORIAL","CLEAR");
 							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
 							$timeout(function() {
 								if(!aic.blacklist.includes(smallSection)) {
 								} else { reportBlacklisted(smallSection) }
 							},delay*1000);
 							break;
-						case "tut8":
-							aic.presentOptions("alexandra","TUTORIAL","CLEAR");
+						case "tutMind2":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.presentOptions("alexandra",bigSection,[
+										"tutMind3",
+										"tutMind3_"
+									]);
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "tutMind3":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"tutContinue");
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "tutMindAbort":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"tutContinue_");
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "tutContinue":
+							aic.blacklist.remove(["tut7","tut8"]);
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"tut7_");
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "tutRebel":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.presentOptions("alexandra",bigSection,[
+										"tutRebel2",
+										"tutContinue__"
+									]);
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "tutRebel2":
+							aic.vars.alexCanRebel = true;
 							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
 							$timeout(function() {
 								if(!aic.blacklist.includes(smallSection)) {
