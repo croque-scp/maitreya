@@ -29,7 +29,10 @@
 		};
 		
 		var bootDate = new Date(new Date(Date.now()).setFullYear(2018)); // get the time when the user started playing, except it's always 2018 because canon
+		// TODO change to 2019?
 		const auto = "auto";
+		
+		//#region setup
 		
 		// Translators: The following few objects contain all of the text that needs to be translated
 		// Note that "TRUE" and "FALSE" on lines TODO and TODO of maitreya.css also need to be changed (also ERROR WARNING Info)
@@ -544,6 +547,8 @@
 		const operationList = ["menu","d","drone","map"];
 		const alexandraEmotionList = ["smiling","concerned","grinning","shocked","pensive","satisfied","celebrating","frustrated","vindictive","stressed","gritted","disgusted","angry","pissed"];
 		
+		//#endregion
+		
 		$(document).ready(function() {
 			aic.onMobile = $("body").width() < 700;
 			speech.merge(LoopService.dialogue);
@@ -569,7 +574,8 @@
 			// Here we go boys
 			//mainLoop("INTRODUCTION","startBoot");
 			//breachLoop("INTRODUCTION","askVoiceExp");
-			alexandraLoop("TUTORIAL","tutProtocol");
+			//alexandraLoop("TUTORIAL","emotiontest");
+			alexandraLoop("TUTORIAL","tutExp");
 		};
 		
 		// called when user switches app via buttons or terminal

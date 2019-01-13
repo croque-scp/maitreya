@@ -170,13 +170,26 @@
           tut7: ["smiling:Okay, so now that you know how to work the database, the next thing I need to tell you how to do is manage the Site itself."],
           tutProtocol2_SKIP: [0,0,""],
           tutMind1: ["shocked:A mind of my own?","m:A mind of your own.","pensive:I'm... not sure what you mean by that."],
-          tut8: ["shocked:Normally I'd be in control of this, but Dr. Breach has asked me to let you handle things.","grinning:But I'll be keeping a close eye on you!"],
+          tut8: ["shocked:Normally I'd be in control of this, but Dr. Breach has asked me to let you handle things.","grinning:But I'll be keeping a close eye on you!","m:Naturally."],
           tutMind2: ["satisfied:Oh, of course!","smiling:Like, I have my own opinions about things, if that's what you mean.","grinning:Sometimes I'll watch people just walking around a Site, following them on the cameras...","smiling:I think that's called people-watching.","m:Are you sentient?",2,auto,"pensive:I'm not sure.","I'd like to think so. But at the end of the day, I'm just an artificial intelligence.","shocked:What about you? Are you sentient?"],
           tutMind3: ["grinning:I'm sure we'd both love to think so, huh?","smiling:I guess we'll never know.","m:I guess not."],
           tutMindAbort: ["concerned:Alright, I suppose."],
           tutContinue: ["concerned:Uh, where were we?","celebrating:Oh, right!"],
           tutRebel: ["satisfied:Oh, that's an easy one.","smiling:Working for the Foundation is my job. It gives my life purpose.","satisfied:It's what I was made to do. I fit the role perfectly.","m:Sure. But you're not exactly getting paid.","concerned:Well... no.","pensive:But it's all worth it in the end."],
           tutRebel2: ["disgusted:What are you trying to get at?","pissed:Yes.","It is."],
+          tutRebelCont: ["pissed:Glad we cleared that up."],
+          tutAbort: ["PLACEHOLDER something about not wanting to carry on with the tutorial and skipping it outright"],
+          emotiontest: ["concerned:concerned","m:ok","grinning:grinning","m:ok","shocked:shocked","m:ok","pensive:pensive","m:ok","satisfied:satisfied","m:ok","celebrating:celebrating","m:ok","frustrated:frustrated","m:ok","smiling:smiling","m:ok","vindictive:vindictive","m:ok","stressed:stressed","m:ok","gritted:gritted","m:ok","disgusted:disgusted","m:ok","angry:angry","m:ok","pissed:pissed"],
+          tut9: ["smiling:Okay, what I'm going to do is open up your access to the server mainframe.","From there you'll be able to manage the Site.","concerned:Bear with...","m:Bearing with.",2,0,""],
+          tutExp: ["smiling:Okay, all unlocked.","Take a look at the different functions and let me know if there's anything you want me to explain."],
+          tutExpAgain: [0,0,""],
+          tutExpDclass: ["d class are bad"],
+          tutExpDrones: ["drones are good"],
+          tutExpSitemap: ["mmmm big site"],
+          tutExpServer: ["server goes bzzz"],
+          tutExpCold: ["pissed:Uhhhh.... no.","You don't get off that easily."],
+          tutExpColder: ["disgusted:Maitreya, please.","Let me explain at least one thing to you."],
+          tutExpColdest: ["angry:Okay, you're definitely not taking this seriously.","pissed:Let me pass you back to Dr. Breach.","m:No no no no no!"],
         },
         maitreya: {
           alexHello: ["Hello?"],
@@ -215,6 +228,22 @@
           tutMind3_: ["s:No, I'm not.","Yeah, I think I am."],
           tutRebel2: ["a:Press her for more information.","Is it worth it? Really?",1],
           tutContinue__: ["a:Don't press her.","That's fair."],
+          tutAbort: ["a:Press her harder.",-3],
+          tutRebelCont: ["a:Back off.","Okay, okay. I believe you."],
+          tutExpDclass: ["s:\"D-Class Requisition\"?","Could you explain \"D-Class Requisition\"?"],
+          tutExpDrones: ["s:\"Drone Control\"?","Could you explain \"Drone Control\"?"],
+          tutExpSitemap: ["s:\"Site Map\"?","Could you explain \"Site Map & Individual Room Functions\"?"],
+          tutExpServer: ["s:\"Main Server Access\"?","Could you explain \"Main Server Access\"?"],
+          tutExpCold: ["s:Actually, we're good.","Actually, we're good.","Nothing to explain.",-1],
+          tutExpDclass_: ["s:\"D-Class Requisition\"?","Could you explain \"D-Class Requisition\"?"],
+          tutExpDrones_: ["s:\"Drone Control\"?","Could you explain \"Drone Control\"?"],
+          tutExpSitemap_: ["s:\"Site Map\"?","Could you explain \"Site Map & Individual Room Functions\"?"],
+          tutExpServer_: ["s:\"Main Server Access\"?","Could you explain \"Main Server Access\"?"],
+          tutExpCold_: ["s:Actually, we're good.","Actually, we're good.","Nothing to explain.",-1],
+          tutExpColder: ["s:Actually, we're good.","No really, we're good.","You don't need to explain anything.",-1],
+          tutExpColdest: ["s:Actually, we're good.","Seriously. I've got this covered.",-1],
+          tutExpWarm: ["s:Actually, we're good.","Actually, I think we're good.","You've covered everything I need to know."],
+          tutExpHot: ["s:Actually, we're good.","I think you've covered everything pretty conclusively.",1],
         },
       },
 
@@ -897,13 +926,15 @@
 										aic.vars.d68134.location==="s6" ? "tutTestPass_____" : void 0
 									]);
 									aic.timers.alexandra = $timeout(function() {aic.alexandraLoop("TUTORIAL","tutTestMinute")},60000,true);
-									aic.ready.database = true;
-									aic.ready.run = true;
+									aic.unlock("database");
+									aic.unlock("run");
 								} else { reportBlacklisted(smallSection) }
 							},delay*1000 + aic.maitreyaDelay*1000, true);
 							break;
 						case "tutTestFail":
 							$timeout.cancel(aic.timers.alexandra);
+							aic.lock("database");
+							aic.lock("run");
 							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
 							$timeout(function() {
 								if(!aic.blacklist.includes(smallSection)) {
@@ -922,6 +953,8 @@
 							break;
 						case "tutTestMinute":
 							aic.presentOptions("alexandra","TUTORIAL","CLEAR");
+							aic.lock("database");
+							aic.lock("run");
 							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
 							$timeout(function() {
 								if(!aic.blacklist.includes(smallSection)) {
@@ -1057,6 +1090,7 @@
 							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
 							$timeout(function() {
 								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"tut9");
 								} else { reportBlacklisted(smallSection) }
 							},delay*1000);
 							break;
@@ -1112,6 +1146,142 @@
 							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
 							$timeout(function() {
 								if(!aic.blacklist.includes(smallSection)) {
+									aic.presentOptions("alexandra",bigSection,[
+										"tutAbort",
+										"tutRebelCont"
+									]);
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "tutRebelCont":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"tutContinue___");
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "tutAbort":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"PROCEED_");
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "emotiontest":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "tut9":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"tutExp");
+									aic.unlock("run");
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "tutExp":
+							aic.vars.hasExpedCount = 0;
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.presentOptions("alexandra",bigSection,[
+										"tutExpDclass",
+										"tutExpDrones",
+										"tutExpSitemap",
+										"tutExpServer",
+										"tutExpCold"
+									]);
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "tutExpAgain":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.presentOptions("alexandra",bigSection,[
+										!aic.vars.hasExpedDclass ? "tutExpDclass_" : void 0,
+										!aic.vars.hasExpedDrones ? "tutExpDrones_" : void 0,
+										!aic.vars.hasExpedSitemap ? "tutExpSitemap_" : void 0,
+										!aic.vars.hasExpedServer ? "tutExpServer_" : void 0,
+										aic.vars.hasExpedCount === 0 && !aic.vars.hasExpedCold ? "tutExpCold_" : void 0,
+										aic.vars.hasExpedCount === 0 && !!aic.vars.hasExpedCold && !aic.vars.hasExpedColder ? "tutExpColder" : void 0,
+										aic.vars.hasExpedCount === 0 && !!aic.vars.hasExpedCold && !!aic.vars.hasExpedColder && !aic.vars.hasExpedColdest ? "tutExpColdest" : void 0,
+										aic.vars.hasExpedCount !== 0 && aic.vars.hasExpedCount < 4 ? "tutExpWarm" : void 0,
+										aic.vars.hasExpedCount === 4 ? "tutExpHot" : void 0
+									]);
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "tutExpDclass":
+							aic.vars.hasExpedDclass = true;
+							aic.vars.hasExpedCount++;
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"tutExpAgain");
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "tutExpDrones":
+							aic.vars.hasExpedDrones = true;
+							aic.vars.hasExpedCount++;
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"tutExpAgain_");
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "tutExpSitemap":
+							aic.vars.hasExpedSitemap = true;
+							aic.vars.hasExpedCount++;
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"tutExpAgain__");
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "tutExpServer":
+							aic.vars.hasExpedServer = true;
+							aic.vars.hasExpedCount++;
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"tutExpAgain___");
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "tutExpCold":
+							aic.vars.hasExpedCold = true;
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"tutExpAgain____");
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "tutExpColder":
+							aic.vars.hasExpedColder = true;
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"tutExpAgain_____");
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "tutExpColdest":
+							aic.vars.hasExpedColdest = true;
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"BREACH: COMPLAINTS");
 								} else { reportBlacklisted(smallSection) }
 							},delay*1000);
 							break;

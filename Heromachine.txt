@@ -1,7 +1,7 @@
 <hmcharacters>
 	<savedCharacter>
-		<characterName>HeroMachine 3 Character</characterName>
-		<saveDate>Sat Sep 22 19:42:58 GMT+0100 2018</saveDate>
+		<characterName>alex_temp</characterName>
+		<saveDate>Sat Dec 8 07:19:05 GMT+0000 2018</saveDate>
 		<customColors>
 			<savedColor154>0xffffff</savedColor154>
 			<savedColor155>0xffffff</savedColor155>
@@ -34,36 +34,59 @@
 		</customColors>
 		<savedItem>
 			<item>
-				<name>HairFemaleStandard71</name>
-				<myColor1>40</myColor1>
-				<myColor2>72</myColor2>
-				<myColor3>106</myColor3>
+				<name>EyesFemaleStandard93</name>
+				<myColor1>11</myColor1>
+				<myColor2>12</myColor2>
+				<myColor3>32</myColor3>
 				<rotation>0</rotation>
-				<scaleX>1.063</scaleX>
-				<scaleY>1.063</scaleY>
-				<pattern></pattern>
-				<x>188.45</x>
-				<y>45.2</y>
+				<scaleX>1.378</scaleX>
+				<scaleY>1.3359999999999999</scaleY>
+				<pattern>0</pattern>
+				<x>190.45</x>
+				<y>60.25</y>
 				<oX>188.45</oX>
-				<oY>48.2</oY>
-				<slotNumber>14</slotNumber>
-				<slotName>Hair</slotName>
+				<oY>59.25</oY>
+				<slotNumber>7</slotNumber>
+				<slotName>Eyes</slotName>
 				<itemSetNumber>1</itemSetNumber>
 				<itemSetName>FemaleStandard</itemSetName>
-				<previewNumber>71</previewNumber>
+				<previewNumber>93</previewNumber>
 				<color1Alpha>1</color1Alpha>
 				<color2Alpha>1</color2Alpha>
 				<color3Alpha>1</color3Alpha>
-				<layerOrder>38</layerOrder>
+				<layerOrder>32</layerOrder>
+			</item>
+			<item>
+				<name>EyesFemaleStandard94</name>
+				<myColor1>11</myColor1>
+				<myColor2>12</myColor2>
+				<myColor3>32</myColor3>
+				<rotation>0</rotation>
+				<scaleX>1.378</scaleX>
+				<scaleY>1.3359999999999999</scaleY>
+				<pattern>0</pattern>
+				<x>185.45</x>
+				<y>60.25</y>
+				<oX>188.45</oX>
+				<oY>59.25</oY>
+				<slotNumber>7</slotNumber>
+				<slotName>Eyes</slotName>
+				<itemSetNumber>1</itemSetNumber>
+				<itemSetName>FemaleStandard</itemSetName>
+				<previewNumber>94</previewNumber>
+				<color1Alpha>1</color1Alpha>
+				<color2Alpha>1</color2Alpha>
+				<color3Alpha>1</color3Alpha>
+				<layerOrder>33</layerOrder>
 			</item>
 			<item>
 				<name>HeadFemaleStandard6</name>
 				<myColor1>13</myColor1>
 				<myColor2>10</myColor2>
-				<myColor3>32</myColor3>
+				<myColor3>106</myColor3>
 				<rotation>0</rotation>
 				<scaleX>1</scaleX>
-				<scaleY>0.958</scaleY>
+				<scaleY>0.96</scaleY>
 				<pattern>patternHex</pattern>
 				<x>188.4</x>
 				<y>64.3</y>
@@ -77,99 +100,7 @@
 				<color1Alpha>1</color1Alpha>
 				<color2Alpha>1</color2Alpha>
 				<color3Alpha>1</color3Alpha>
-				<layerOrder>33</layerOrder>
-			</item>
-			<item>
-				<name>NoseStandard35</name>
-				<myColor1>10</myColor1>
-				<myColor2>11</myColor2>
-				<myColor3>32</myColor3>
-				<rotation>0</rotation>
-				<scaleX>-1.105</scaleX>
-				<scaleY>0.8320000000000001</scaleY>
-				<pattern></pattern>
-				<x>188.45</x>
-				<y>77.55</y>
-				<oX>188.45</oX>
-				<oY>64.55</oY>
-				<slotNumber>25</slotNumber>
-				<slotName>Nose</slotName>
-				<itemSetNumber>0</itemSetNumber>
-				<itemSetName>Standard</itemSetName>
-				<previewNumber>35</previewNumber>
-				<color1Alpha>1</color1Alpha>
-				<color2Alpha>1</color2Alpha>
-				<color3Alpha>1</color3Alpha>
-				<layerOrder>37</layerOrder>
-			</item>
-			<item>
-				<name>HeadgearGlasses13</name>
-				<myColor1>32</myColor1>
-				<myColor2>7</myColor2>
-				<myColor3>32</myColor3>
-				<rotation>0</rotation>
-				<scaleX>0.945</scaleX>
-				<scaleY>1.202</scaleY>
-				<pattern></pattern>
-				<x>187.45</x>
-				<y>77.35</y>
-				<oX>188.45</oX>
-				<oY>63.35</oY>
-				<slotNumber>18</slotNumber>
-				<slotName>Headgear</slotName>
-				<itemSetNumber>2</itemSetNumber>
-				<itemSetName>Glasses</itemSetName>
-				<previewNumber>13</previewNumber>
-				<color1Alpha>1</color1Alpha>
-				<color2Alpha>0.3671875</color2Alpha>
-				<color3Alpha>1</color3Alpha>
-				<layerOrder>41</layerOrder>
-			</item>
-			<item>
-				<name>EyesFemaleStandard61</name>
-				<myColor1>2</myColor1>
-				<myColor2>6</myColor2>
-				<myColor3>32</myColor3>
-				<rotation>0</rotation>
-				<scaleX>1.2309999999999999</scaleX>
-				<scaleY>1.21</scaleY>
-				<pattern></pattern>
-				<x>190.45</x>
-				<y>60.25</y>
-				<oX>188.45</oX>
-				<oY>59.25</oY>
-				<slotNumber>7</slotNumber>
-				<slotName>Eyes</slotName>
-				<itemSetNumber>1</itemSetNumber>
-				<itemSetName>FemaleStandard</itemSetName>
-				<previewNumber>61</previewNumber>
-				<color1Alpha>1</color1Alpha>
-				<color2Alpha>1</color2Alpha>
-				<color3Alpha>1</color3Alpha>
-				<layerOrder>40</layerOrder>
-			</item>
-			<item>
-				<name>EyesFemaleStandard62</name>
-				<myColor1>2</myColor1>
-				<myColor2>6</myColor2>
-				<myColor3>32</myColor3>
-				<rotation>0</rotation>
-				<scaleX>1.399</scaleX>
-				<scaleY>1.3359999999999999</scaleY>
-				<pattern></pattern>
-				<x>185.45</x>
-				<y>59.25</y>
-				<oX>188.45</oX>
-				<oY>59.25</oY>
-				<slotNumber>7</slotNumber>
-				<slotName>Eyes</slotName>
-				<itemSetNumber>1</itemSetNumber>
-				<itemSetName>FemaleStandard</itemSetName>
-				<previewNumber>62</previewNumber>
-				<color1Alpha>1</color1Alpha>
-				<color2Alpha>1</color2Alpha>
-				<color3Alpha>1</color3Alpha>
-				<layerOrder>39</layerOrder>
+				<layerOrder>34</layerOrder>
 			</item>
 			<item>
 				<name>EyebrowsStandard3</name>
@@ -177,10 +108,10 @@
 				<myColor2>10</myColor2>
 				<myColor3>32</myColor3>
 				<rotation>0</rotation>
-				<scaleX>1</scaleX>
-				<scaleY>1</scaleY>
-				<pattern></pattern>
-				<x>187.45</x>
+				<scaleX>1.105</scaleX>
+				<scaleY>1.252</scaleY>
+				<pattern>0</pattern>
+				<x>188.45</x>
 				<y>65.75</y>
 				<oX>188.45</oX>
 				<oY>56.75</oY>
@@ -192,7 +123,7 @@
 				<color1Alpha>1</color1Alpha>
 				<color2Alpha>1</color2Alpha>
 				<color3Alpha>1</color3Alpha>
-				<layerOrder>34</layerOrder>
+				<layerOrder>41</layerOrder>
 			</item>
 			<item>
 				<name>EyebrowsStandard4</name>
@@ -200,11 +131,11 @@
 				<myColor2>10</myColor2>
 				<myColor3>32</myColor3>
 				<rotation>0</rotation>
-				<scaleX>1.063</scaleX>
-				<scaleY>1.105</scaleY>
-				<pattern></pattern>
+				<scaleX>1.11</scaleX>
+				<scaleY>1.25</scaleY>
+				<pattern>0</pattern>
 				<x>186.45</x>
-				<y>66.75</y>
+				<y>65.75</y>
 				<oX>188.45</oX>
 				<oY>56.75</oY>
 				<slotNumber>6</slotNumber>
@@ -215,63 +146,17 @@
 				<color1Alpha>1</color1Alpha>
 				<color2Alpha>1</color2Alpha>
 				<color3Alpha>1</color3Alpha>
-				<layerOrder>35</layerOrder>
-			</item>
-			<item>
-				<name>EyesFemaleStandard93</name>
-				<myColor1>11</myColor1>
-				<myColor2>12</myColor2>
-				<myColor3>32</myColor3>
-				<rotation>0</rotation>
-				<scaleX>1.3780000000000001</scaleX>
-				<scaleY>1.3359999999999999</scaleY>
-				<pattern></pattern>
-				<x>190.45</x>
-				<y>60.25</y>
-				<oX>188.45</oX>
-				<oY>59.25</oY>
-				<slotNumber>7</slotNumber>
-				<slotName>Eyes</slotName>
-				<itemSetNumber>1</itemSetNumber>
-				<itemSetName>FemaleStandard</itemSetName>
-				<previewNumber>93</previewNumber>
-				<color1Alpha>1</color1Alpha>
-				<color2Alpha>1</color2Alpha>
-				<color3Alpha>1</color3Alpha>
-				<layerOrder>31</layerOrder>
-			</item>
-			<item>
-				<name>EyesFemaleStandard94</name>
-				<myColor1>11</myColor1>
-				<myColor2>12</myColor2>
-				<myColor3>32</myColor3>
-				<rotation>0</rotation>
-				<scaleX>1.3780000000000001</scaleX>
-				<scaleY>1.3359999999999999</scaleY>
-				<pattern></pattern>
-				<x>185.45</x>
-				<y>60.25</y>
-				<oX>188.45</oX>
-				<oY>59.25</oY>
-				<slotNumber>7</slotNumber>
-				<slotName>Eyes</slotName>
-				<itemSetNumber>1</itemSetNumber>
-				<itemSetName>FemaleStandard</itemSetName>
-				<previewNumber>94</previewNumber>
-				<color1Alpha>1</color1Alpha>
-				<color2Alpha>1</color2Alpha>
-				<color3Alpha>1</color3Alpha>
-				<layerOrder>32</layerOrder>
+				<layerOrder>42</layerOrder>
 			</item>
 			<item>
 				<name>MouthFemaleStandard9</name>
-				<myColor1>106</myColor1>
+				<myColor1>90</myColor1>
 				<myColor2>90</myColor2>
 				<myColor3>32</myColor3>
 				<rotation>0</rotation>
 				<scaleX>1.105</scaleX>
 				<scaleY>1.063</scaleY>
-				<pattern></pattern>
+				<pattern>0</pattern>
 				<x>187.45</x>
 				<y>78.85</y>
 				<oX>188.45</oX>
@@ -284,7 +169,168 @@
 				<color1Alpha>1</color1Alpha>
 				<color2Alpha>1</color2Alpha>
 				<color3Alpha>1</color3Alpha>
+				<layerOrder>35</layerOrder>
+			</item>
+			<item>
+				<name>NoseStandard35</name>
+				<myColor1>10</myColor1>
+				<myColor2>11</myColor2>
+				<myColor3>32</myColor3>
+				<rotation>0</rotation>
+				<scaleX>-1.105</scaleX>
+				<scaleY>0.8320000000000001</scaleY>
+				<pattern>0</pattern>
+				<x>188.45</x>
+				<y>77.55</y>
+				<oX>188.45</oX>
+				<oY>64.55</oY>
+				<slotNumber>25</slotNumber>
+				<slotName>Nose</slotName>
+				<itemSetNumber>0</itemSetNumber>
+				<itemSetName>Standard</itemSetName>
+				<previewNumber>35</previewNumber>
+				<color1Alpha>1</color1Alpha>
+				<color2Alpha>1</color2Alpha>
+				<color3Alpha>1</color3Alpha>
 				<layerOrder>36</layerOrder>
+			</item>
+			<item>
+				<name>HairFemaleStandard71</name>
+				<myColor1>40</myColor1>
+				<myColor2>72</myColor2>
+				<myColor3>106</myColor3>
+				<rotation>0</rotation>
+				<scaleX>1.04</scaleX>
+				<scaleY>1.04</scaleY>
+				<pattern>0</pattern>
+				<x>188.45</x>
+				<y>45.2</y>
+				<oX>188.45</oX>
+				<oY>48.2</oY>
+				<slotNumber>14</slotNumber>
+				<slotName>Hair</slotName>
+				<itemSetNumber>1</itemSetNumber>
+				<itemSetName>FemaleStandard</itemSetName>
+				<previewNumber>71</previewNumber>
+				<color1Alpha>1</color1Alpha>
+				<color2Alpha>1</color2Alpha>
+				<color3Alpha>1</color3Alpha>
+				<layerOrder>43</layerOrder>
+			</item>
+			<item>
+				<name>EyesFemaleStandard62</name>
+				<myColor1>2</myColor1>
+				<myColor2>6</myColor2>
+				<myColor3>32</myColor3>
+				<rotation>0</rotation>
+				<scaleX>1.399</scaleX>
+				<scaleY>1.3359999999999999</scaleY>
+				<pattern>0</pattern>
+				<x>185.45</x>
+				<y>59.25</y>
+				<oX>188.45</oX>
+				<oY>59.25</oY>
+				<slotNumber>7</slotNumber>
+				<slotName>Eyes</slotName>
+				<itemSetNumber>1</itemSetNumber>
+				<itemSetName>FemaleStandard</itemSetName>
+				<previewNumber>62</previewNumber>
+				<color1Alpha>1</color1Alpha>
+				<color2Alpha>1</color2Alpha>
+				<color3Alpha>1</color3Alpha>
+				<layerOrder>37</layerOrder>
+			</item>
+			<item>
+				<name>EyesFemaleStandard61</name>
+				<myColor1>2</myColor1>
+				<myColor2>6</myColor2>
+				<myColor3>32</myColor3>
+				<rotation>0</rotation>
+				<scaleX>1.231</scaleX>
+				<scaleY>1.21</scaleY>
+				<pattern>0</pattern>
+				<x>190.45</x>
+				<y>60.25</y>
+				<oX>188.45</oX>
+				<oY>59.25</oY>
+				<slotNumber>7</slotNumber>
+				<slotName>Eyes</slotName>
+				<itemSetNumber>1</itemSetNumber>
+				<itemSetName>FemaleStandard</itemSetName>
+				<previewNumber>61</previewNumber>
+				<color1Alpha>1</color1Alpha>
+				<color2Alpha>1</color2Alpha>
+				<color3Alpha>1</color3Alpha>
+				<layerOrder>38</layerOrder>
+			</item>
+			<item>
+				<name>HeadgearGlasses13</name>
+				<myColor1>32</myColor1>
+				<myColor2>7</myColor2>
+				<myColor3>32</myColor3>
+				<rotation>0</rotation>
+				<scaleX>0.945</scaleX>
+				<scaleY>1.202</scaleY>
+				<pattern>0</pattern>
+				<x>187.45</x>
+				<y>77.35</y>
+				<oX>188.45</oX>
+				<oY>63.35</oY>
+				<slotNumber>18</slotNumber>
+				<slotName>Headgear</slotName>
+				<itemSetNumber>2</itemSetNumber>
+				<itemSetName>Glasses</itemSetName>
+				<previewNumber>13</previewNumber>
+				<color1Alpha>1</color1Alpha>
+				<color2Alpha>0.3671875</color2Alpha>
+				<color3Alpha>1</color3Alpha>
+				<layerOrder>31</layerOrder>
+			</item>
+			<item>
+				<name>EyebrowsStandard5</name>
+				<myColor1>10</myColor1>
+				<myColor2>10</myColor2>
+				<myColor3>10</myColor3>
+				<rotation>48</rotation>
+				<scaleX>0.706</scaleX>
+				<scaleY>0.8109999999999999</scaleY>
+				<pattern>0</pattern>
+				<x>188.45</x>
+				<y>73.75</y>
+				<oX>188.45</oX>
+				<oY>56.75</oY>
+				<slotNumber>6</slotNumber>
+				<slotName>Eyebrows</slotName>
+				<itemSetNumber>0</itemSetNumber>
+				<itemSetName>Standard</itemSetName>
+				<previewNumber>5</previewNumber>
+				<color1Alpha>1</color1Alpha>
+				<color2Alpha>1</color2Alpha>
+				<color3Alpha>1</color3Alpha>
+				<layerOrder>40</layerOrder>
+			</item>
+			<item>
+				<name>EyesFemaleStandard61</name>
+				<myColor1>2</myColor1>
+				<myColor2>6</myColor2>
+				<myColor3>32</myColor3>
+				<rotation>0</rotation>
+				<scaleX>-1.231</scaleX>
+				<scaleY>1.21</scaleY>
+				<pattern>0</pattern>
+				<x>184.45</x>
+				<y>60.25</y>
+				<oX>188.45</oX>
+				<oY>59.25</oY>
+				<slotNumber>7</slotNumber>
+				<slotName>Eyes</slotName>
+				<itemSetNumber>1</itemSetNumber>
+				<itemSetName>FemaleStandard</itemSetName>
+				<previewNumber>61</previewNumber>
+				<color1Alpha>1</color1Alpha>
+				<color2Alpha>1</color2Alpha>
+				<color3Alpha>1</color3Alpha>
+				<layerOrder>39</layerOrder>
 			</item>
 		</savedItem>
 	</savedCharacter>

@@ -177,7 +177,7 @@ body {
 	color: var(--middle-theme);
 	border: 1px white solid;
 	transition: box-shadow 0.2s ease-in-out 0s,
-	transition: box-shadow 0.2s var(--ease-in-out) 0s,
+	            box-shadow 0.2s var(--ease-in-out) 0s,
 	            border-radius 0.2s ease-in-out 0s,
 	            border-radius 0.2s var(--ease-in-out) 0s,
 	            height 0.2s ease-in-out 0s,
@@ -201,7 +201,7 @@ body {
 	width: 100%;
 	border-width: 0;
 	transition: box-shadow 0.1s ease-in-out 0s,
-	transition: box-shadow 0.1s var(--ease-in-out) 0s,
+	            box-shadow 0.1s var(--ease-in-out) 0s,
 	            border-radius 0.1s ease-in-out 0s,
 	            border-radius 0.1s var(--ease-in-out) 0s,
 	            height 0.1s ease-in-out 0s,
@@ -1920,9 +1920,11 @@ misc leave -> slide to left DONE
 	transform: translate(165px,0) scaleX(-1);
 }
 .options-block.options-ready .hint-arrow.left {
+	transition: all 2s ease-in-out;
 	transform: translate(-92px,0);
 }
 .options-block.options-ready .hint-arrow.right {
+	transition: all 2s ease-in-out;
 	transform: translate(92px,0) scaleX(-1);
 }
 /*.options-block.options-ready.emphasis .hint-arrow.left {
