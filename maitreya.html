@@ -94,8 +94,8 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 			<div id="interface" ng-class="[aic.preload ? 'preload' : null, aic.ready.ending ? 'ended' : null]" ng-cloak>
 				<div id="app-selector">
 					<div class="title">
-						<img ng-src="{{::aic.lang.images.preloadTitle}}">
-						<div>
+						<div class="title-image" ng-style="{'background-image': 'url(' + aic.lang.images.preloadTitle + ')'}"></div>
+						<div class="title-info">
 							<p>{{::aic.lang.version}}</p>
 							<p ng-hide="true">This text should not be visible (unless you have javascript disabled) - if you can see this text, please contact the author.</p>
 							<p ng-show="aic.onMobile">{{::aic.lang.mobileWarning}}</p>
@@ -195,6 +195,16 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 										<a>{{::aic.lang.alexandraTitle}}</a>
 										<div class="notification" ng-show="aic.notifications.alexandra > 0"><p>{{aic.notifications.alexandra}}</p></div>
 									</li>
+									
+									<!-- REMOVE THESE -->
+									<!--<li id="breach-msg" class="selector" ng-click="aic.switchSpeaker('breach')" ng-class="[aic.selectedSpeaker == 'breach' ? 'selected' : null, aic.ready.breach ? null : 'disabled']">
+										<a>{{::aic.lang.breachTitle}}</a>
+										<div class="notification" ng-show="aic.notifications.breach > 0"><p>{{aic.notifications.breach}}</p></div>
+									</li>
+									<li id="breach-msg" class="selector" ng-click="aic.switchSpeaker('breach')" ng-class="[aic.selectedSpeaker == 'breach' ? 'selected' : null, aic.ready.breach ? null : 'disabled']">
+										<a>{{::aic.lang.breachTitle}}</a>
+										<div class="notification" ng-show="aic.notifications.breach > 0"><p>{{aic.notifications.breach}}</p></div>
+									</li>-->
 								</ul>
 							</div>
 							

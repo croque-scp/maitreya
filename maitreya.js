@@ -190,7 +190,7 @@
 					"[[IMAGE]] site12_300.png Isolated Site-12",
 					"**Purpose:** Isolated Site-12 is dedicated solely to the containment of SCP-4000.",
 					"**Founded:** 2010-03-04",
-					"**Founding Director:** Dr. Rebecca Carver",
+					"**Founding Director:** [[[rebeccaCarver|Dr. Rebecca Carver]]]",
 					"**Location:** Quittinirpaaq National Park, Ellesmere Island, Nunavut, Canada",
 					"**Cover Story:** Secondary Global Seed Vault",
 					"**Site Function:** Containment (singular -- see [[[scp4000|SCP-4000]]])",
@@ -400,8 +400,8 @@
 		
 		/* Initialisation */
 		aic.preload = true; // MUST BE TRUE
-		aic.selectedApp = "messages"; // MUST BE TERMINAL
-		aic.selectedSpeaker = "alexandra"; // MUST BE BREACH
+		aic.selectedApp = "terminal"; // MUST BE TERMINAL
+		aic.selectedSpeaker = "breach"; // MUST BE BREACH
 		aic.selectedArticle = "menu"; // MUST BE MENU
 		aic.selectedOperation = "menu"; // MUST BE MENU
 		aic.currentEnding = 0;
@@ -436,12 +436,12 @@
 			// MUST BE TRUE
 			terminal: true,
 			// MUST ALL BE FALSE
-			breach: true,
-			messages: true,
-			alexandra: true,
-			dclass: true,
-			database: true,
-			run: true,
+			breach: false,
+			messages: false,
+			alexandra: false,
+			dclass: false,
+			database: false,
+			run: false,
 			ending: false,
 		};
 		
@@ -572,10 +572,10 @@
 			}
 			
 			// Here we go boys
-			//mainLoop("INTRODUCTION","startBoot");
+			mainLoop("INTRODUCTION","startBoot");
 			//breachLoop("INTRODUCTION","askVoiceExp");
 			//alexandraLoop("TUTORIAL","emotiontest");
-			alexandraLoop("TUTORIAL","tutExp");
+			//alexandraLoop("TUTORIAL","tutExp");
 		};
 		
 		// called when user switches app via buttons or terminal

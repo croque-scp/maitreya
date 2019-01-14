@@ -13,7 +13,7 @@
 		var wrap = this;
 		
 		wrap.height = "700px";
-		wrap.width = "700px";
+		wrap.width = "360px";
 		
 	}
 })();

@@ -55,6 +55,7 @@ body {
  *  _/ // / / / /_/  __/ /  / __/ /_/ / /__/  __/
  * /___/_/ /_/\__/\___/_/  /_/  \__,_/\___/\___/
  */
+/*#region interface*/
 :root {
 	--light-theme: #1488cc;
 	--lightish-theme: #1a73c6;
@@ -94,13 +95,17 @@ body {
 	top: 0;
 	transform: translate(0,0);
 }
-#app-selector .title img {
+#app-selector .title .title-image {
 	height: 100%;
 	transition: all 1s cubic-bezier(0.19, 1, 0.22, 1) 1.2s;
 	position: absolute;
+	width: 100%;
 	top: 0;
 	left: 0;
-	transform: translate(0,0)
+	transform: translate(0,0);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center left;
 }
 #app-selector ul {
 	position: absolute;
@@ -314,6 +319,7 @@ body {
 #app-body .container:not(.selected) .app-title p {
 	margin-bottom: 2em;
 }
+/*#endregion interface*/
 
 /*   ______                    _             __
  *  /_  __/__  _________ ___  (_)___  ____ _/ /
@@ -321,8 +327,9 @@ body {
  *  / / /  __/ /  / / / / / / / / / / /_/ / /
  * /_/  \___/_/  /_/ /_/ /_/_/_/ /_/\__,_/_/
  */
+/*#region terminal*/
 #terminal-app .terminal-body {
-	height: 450px;
+	height: calc(100vh - 250px);
 	/*background-image: url(grey_stripe.png);*/
 	position: relative;
 }
@@ -514,6 +521,7 @@ body {
 	font-family: Nunito,Arial,Helvetica,sans-serif;
 	opacity: 1;
 }
+/*#endregion terminal*/
 
 /*     __  ___
  *    /  |/  /__  ______________ _____ ____  _____
@@ -521,8 +529,9 @@ body {
  *  / /  / /  __(__  |__  ) /_/ / /_/ /  __(__  )
  * /_/  /_/\___/____/____/\__,_/\__, /\___/____/
  *                             /____/          */
+/*#region messages*/
 #messages-app .conversation-container {
-	height: 345px;
+	height: calc(100vh - 355px);
 	position: relative;
 	background: linear-gradient(to top,#eee,#fff);
 	overflow:	auto;
@@ -602,11 +611,11 @@ body {
 	z-index: 20;
 }
 #messages-app .conversation .wrapper {
-	margin: 0 130px 1em 130px;
+	margin: 0 130px 12px 130px;
 	position: relative;
 }
 #messages-app .conversation .wrapper.collapsed {
-	margin-bottom: 0.3em;
+	margin-bottom: 3px;
 }
 #messages-app .conversation .wrapper.maitreya {
 	margin-left: 133px; /* Literally no one else but me will notice this or even care about it if they did. I spent like 10 minutes deciding between 132 and 133px. You know what? If I could, I'd go for 132.5. But no. You can't have half a pixel. Fuck */
@@ -789,12 +798,12 @@ body {
 }
 #messages-app .middle-bar .top {
 	width: 100%;
-	height: 10px;
+	height: 5px;
 }
 #messages-app .middle-bar .middle {
 	background: white;
 	width: 100%;
-	height: 10px;
+	height: 15px;
 	transform: skew(-45deg,0) translate(50px,0);
 }
 #messages-app .middle-bar .bottom {
@@ -937,6 +946,7 @@ body {
 	margin-right: -50%;
 	transform: translate(-50%, -50%);
 }
+/*#endregion messages*/
 
 /*     ____        __        __
  *    / __ \____ _/ /_____ _/ /_  ____ _________
@@ -944,6 +954,7 @@ body {
  *  / /_/ / /_/ / /_/ /_/ / /_/ / /_/ (__  )  __/
  * /_____/\__,_/\__/\__,_/_.___/\__,_/____/\___/
  */
+/*#region database*/
 #database-app .app-main {
 	background: linear-gradient(to bottom,#fff,#eee);
 	position: relative;
@@ -1379,6 +1390,7 @@ body {
 #database-app .article-link {
 	background: linear-gradient(to bottom,white,white 50%,#cee7f7 50%);
 }
+/*#endregion database*/
 
 /*     ____
  *    / __ \__  ______
@@ -1386,6 +1398,7 @@ body {
  *  / _, _/ /_/ / / / /
  * /_/ |_|\__,_/_/ /_/
  */
+/*#region run*/
 #run-app .app-main {
 	background: linear-gradient(to bottom,#ddd,#eee);
 	position: relative;
@@ -1697,6 +1710,7 @@ misc leave -> slide to left DONE
 	margin: 0.5em;
 	line-height: 1.2em;
 }
+/*#endregion run*/
 
 /*     ______          ___
  *    / ____/___  ____/ (_)___  ____ _
@@ -1704,6 +1718,7 @@ misc leave -> slide to left DONE
  *  / /___/ / / / /_/ / / / / / /_/ /
  * /_____/_/ /_/\__,_/_/_/ /_/\__, /
  *                           /____/ */
+/*#region ending*/
 #ending-app .app-main {
 	background: linear-gradient(to bottom,#292929,#333,#292929);
 	position: relative;
@@ -1769,6 +1784,7 @@ misc leave -> slide to left DONE
 .disconnected-alert.ng-enter-active {
 	transform: translate(0,-50%);
 }
+/*#endregion ending*/
 
 /*     ____            __                __
  *    / __ \________  / /___  ____ _____/ /
@@ -1776,6 +1792,7 @@ misc leave -> slide to left DONE
  *  / ____/ /  /  __/ / /_/ / /_/ / /_/ /
  * /_/   /_/   \___/_/\____/\__,_/\__,_/
  */
+/*#region preload*/
 .preload #app-body {
 	display: none;
 }
@@ -1787,25 +1804,25 @@ misc leave -> slide to left DONE
 	transform: translate(0,-50%);
 	height: 140px;
 }
-#app-selector .title div {
+#app-selector .title .title-info {
 	display: none;
 }
-.preload #app-selector .title div {
+.preload #app-selector .title .title-info {
 	display: block;
 	position: absolute;
 	top: 85%;
 	width: 100%;
 }
-.preload #app-selector .title div p {
+.preload #app-selector .title .title-info p {
 	text-align: center;
 }
-.preload #app-selector .title div button {
+.preload #app-selector .title .title-info button {
 	margin: 0 auto;
 }
-.preload #app-selector .title img {
+.preload #app-selector .title .title-image {
 	left: 50%;
 	transform: translate(-50%,0);
-	height: 100%;
+	background-position: center;
 }
 .preload #app-selector ul {
 	opacity: 0;
@@ -1817,6 +1834,7 @@ misc leave -> slide to left DONE
 .preload *:not(button) {
 	transition: all 0s !important;
 }
+/*#endregion preload*/
 
 /*    _____ __        __                            __
  *   / ___// /_____ _/ /____  ____ ___  ___  ____  / /______
@@ -1824,6 +1842,7 @@ misc leave -> slide to left DONE
  *  ___/ / /_/ /_/ / /_/  __/ / / / / /  __/ / / / /_(__  )
  * /____/\__/\__,_/\__/\___/_/ /_/ /_/\___/_/ /_/\__/____/
  */
+/*#region statements*/
 .statement {
 	box-sizing: border-box;
 	display: inline-block;
@@ -1876,6 +1895,7 @@ misc leave -> slide to left DONE
 	animation: false-after 0s linear 1.95s 1;
 	animation-fill-mode: forwards;
 }
+/*#endregion statements*/
 
 /*    ____        __  _
  *   / __ \____  / /_(_)___  ____  _____
@@ -1883,6 +1903,7 @@ misc leave -> slide to left DONE
  * / /_/ / /_/ / /_/ / /_/ / / / (__  )
  * \____/ .___/\__/_/\____/_/ /_/____/
  *     /_/                           */
+/*#region options*/
 .options-block {
 	width: calc(100% + 20px);
 	height: 145px;
@@ -2137,6 +2158,7 @@ misc leave -> slide to left DONE
 	opacity: 0;
 	transform: translate(0,-0px);
 }
+/*#endregion options*/
 
 /*     __  ___      __    _ __
  *    /  |/  /___  / /_  (_) /__
@@ -2146,19 +2168,27 @@ misc leave -> slide to left DONE
  */
 @media only screen and (max-width: 699px) {
 	/* at less than 700px probably a mobile device */
-	#app-selector .title img {
+	#app-selector .title {
+		height: 50px;
+	}
+	#app-selector .title .title-image {
 		top: 0;
 		left: 50%;
 		transform: translate(-50%,0);
+		background-position: center;
 	}
 	#app-selector {
-		height: 140px;
+		height: 110px;
 	}
 	#app-selector ul {
-		height: 50%;
-		top: 50%;
+		height: 60px;
+		top: 50px;
 		left: 0;
 		transform: translate(0,0);
+		justify-content: center;
+	}
+	#app-selector li.selector.disabled {
+		display: none;
 	}
 	.app-title {
 		justify-content: center;
@@ -2166,9 +2196,78 @@ misc leave -> slide to left DONE
 	#app-body {
 		height: calc(100% - 140px);
 	}
+	#messages-app .conversation .wrapper {
+		margin-right: 20px;
+		margin-left: 100px;
+	}
+	#messages-app .conversation .wrapper.maitreya {
+		margin-right: 80px;
+		margin-left: 20px;
+	}
+	#messages-app .speaking-markers {
+		margin-right: 0;
+		margin-left: 100px;
+	}
+	#messages-selector {
+		height: 49px;
+	}
+	#messages-selector ul {
+		overflow-y: auto;
+	}
+	#messages-selector ul li.selector a {
+		white-space: nowrap;
+	}
+	#messages-selector ul li.selector.selected a {
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	#messages-app .middle-bar,
+	#terminal-app .top-bar {
+		height: 15px;
+	}
+	#messages-app .middle-bar .middle,
+	#terminal-app .top-bar .middle {
+		height: 5px;
+	}
+	#messages-app .middle-bar .bottom,
+	#terminal-app .top-bar .bottom {
+		height: 5px;
+	}
+	#messages-app .bottom-bar,
+	#terminal-app .bottom-bar {
+		height: 15px;
+	}
+	#messages-app .bottom-bar .top,
+	#terminal-app .bottom-bar .top {
+		height: 10px;
+	}
+	#terminal-app .bottom-bar .middle {
+		height: 0;
+	}
+	#messages-app .conversation-container {
+		height: 306px;
+	}
+	.options-block {
+		background-position: center;
+	}
+	#terminal-app .terminal-log {
+		margin-right: 25px;
+		margin-left: 25px;
+	}
+	#terminal-app .working {
+		left: 25px;
+	}
+	#terminal-app .terminal-body {
+		height: 410px;
+	}
+	#terminal-app .middle-bar {
+		width: calc(100% - 100px);
+	}
+	
 }
 
 /* ANIMATIONS */
+/*#region animations*/
 @keyframes false-color {
 	0% {
 		border-color: #205dbf;
@@ -2444,3 +2543,4 @@ misc leave -> slide to left DONE
 	clip: rect(0, 900px, 0, 0);
 	animation: noise-anim-2 3s infinite linear alternate-reverse;
 }
+/*#endregion animations*/
