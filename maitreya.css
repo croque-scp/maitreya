@@ -13,6 +13,24 @@ make terminal input disabled while the terminal is doing something
 
 */
 
+/* monospace import */
+/* other fonts are imported in the html but this one is Too Cool for that */
+@font-face{
+	font-family: 'Fira Code';
+	src: url('https://raw.githubusercontent.com/tonsky/FiraCode/master/distr/eot/FiraCode-Regular.eot') format('embedded-opentype'),
+		url('https://raw.githubusercontent.com/tonsky/FiraCode/master/distr/woff2/FiraCode-Regular.woff2') format('woff2'),
+		url('https://raw.githubusercontent.com/tonsky/FiraCode/master/distr/woff/FiraCode-Regular.woff') format('woff'),
+		url('https://raw.githubusercontent.com/tonsky/FiraCode/master/distr/ttf/FiraCode-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+* {
+	-webkit-font-feature-settings: "liga" on, "calt" on;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
 /*  _       ___ __   _     __      __
  * | |     / (_) /__(_)___/ /___  / /_
  * | | /| / / / //_/ / __  / __ \/ __/
@@ -66,6 +84,8 @@ body {
 	--ease-in-out: cubic-bezier(0.4, 0.0, 0.2, 1);
 	transition: all 1s ease-in-out;
 	transition: all 1s var(--ease-in-out);
+	/* fira code is objectively the best monospace font */
+	--monospace-font: 'Fira Code','Cousine','Roboto Mono',monospace;
 }
 #interface.ended {
 	--light-theme: #ff1111;
@@ -357,6 +377,7 @@ body {
 	margin: 1px 0;
 	padding: 3px 10px 3px 25px;
 	font-family: Cousine,monospace;
+	font-family: var(--monospace-font);
 	color: #333;
 	background-color: #eee;
 	text-indent: -15px;
@@ -508,6 +529,7 @@ body {
 	margin: 0 -350px;
 	padding: 2px 350px;
 	font-family: Cousine,monospace;
+	font-family: var(--monospace-font);
 	display: inline-block;
 	width: auto;
 	border: 1px solid #aaa;
@@ -1565,7 +1587,7 @@ misc leave -> slide to left DONE
 	margin: 0;
 }
 #run-app .section.map-section .map-container {
-	font-family: pxplus_ibm_vga8regular,Cousine,monospace;
+	font-family: pxplus_ibm_vga8regular,monospace;
 	background: #8bac0f;
 	margin: 0 20px;
 	box-shadow: inset 0 0 40px 0 #000;
@@ -1684,7 +1706,7 @@ misc leave -> slide to left DONE
 	color: #0f380f;
 }
 #run-app .section.map-section .room-info h1 {
-	font-family: pxplus_ibm_vga8regular,Cousine,monospace;
+	font-family: pxplus_ibm_vga8regular,monospace;
 	color: #0f380f;
 	border-bottom: 2px #0f380f solid;
 }
@@ -1702,13 +1724,13 @@ misc leave -> slide to left DONE
 	overflow-y: scroll;
 }
 #run-app .section.map-section .room-camera-feed h2 {
-	font-family: pxplus_ibm_vga8regular,Cousine,monospace;
+	font-family: pxplus_ibm_vga8regular,monospace;
 	margin: 0.5em;
 	margin-top: 0.1em;
 	border-bottom: 2px #0f380f solid;
 }
 #run-app .section.map-section .room-camera-feed p {
-	font-family: pxplus_ibm_vga8regular,Cousine,monospace;
+	font-family: pxplus_ibm_vga8regular,monospace;
 	margin: 0.5em;
 	line-height: 1.2em;
 }
