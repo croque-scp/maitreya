@@ -485,11 +485,11 @@
 			server: {error: true, log: [], connectedTo: ["serverCorridor"]},
 			serverCorridor: {error: true, log: [], connectedTo: ["hangar","server","pantry","ringWest"]},
 			d1: {error: false, log: [], connectedTo: ["dCorridor"]},
-			d2: {error: false, log: [], connectedTo: ["dCorridor"]},
-			d3: {error: false, log: [], connectedTo: ["dCorridor"]},
-			dCorridor: {error: false, log: [], connectedTo: ["d1","d2","d3","d4","d5","d6","ringWest"]},
 			d4: {error: false, log: [], connectedTo: ["dCorridor"]},
+			d2: {error: false, log: [], connectedTo: ["dCorridor"]},
+			dCorridor: {error: false, log: [], connectedTo: ["d1","d2","d3","d4","d5","d6","ringWest"]},
 			d5: {error: false, log: [], connectedTo: ["dCorridor"]},
+			d3: {error: false, log: [], connectedTo: ["dCorridor"]},
 			d6: {error: false, log: [], connectedTo: ["dCorridor"]},
 			armoury: {error: false, log: [], connectedTo: ["armouryCorridor"]},
 			pantry: {error: false, log: [], connectedTo: ["cafe","serverCorridor"]},
@@ -755,9 +755,9 @@
 							break;
 						case aic.lang.commands.cheats.skip.includes(phrases[0].toLowerCase()):
 							if(aic.chatLog.breach.log.length === 0) {
-								writeDialogue("terminal",speech.misc.terminal.introSkipped);
-								aic.isSkipping.terminal = true;
-								breachLoop("INTRODUCTION","start");
+								writeDialogue("terminal",speech.misc.terminal.introSkipped,"terminal","introSkipped");
+								aic.isSkipping.terminal = ["breach","INTRODUCTION","startSkipped"];
+								aic.blacklist.add("start");
 							} else {
 								writeDialogue("terminal",speech.misc.terminal.skipFailed);
 							}
@@ -1011,6 +1011,18 @@
 					}
 					break;
 				
+				case "misc":
+					switch(smallSection) {
+						
+						// pretty sure this only happens when skipping the intro, but whatever
+						case "introSkipped":
+							delay = writeDialogue("terminal",speech[bigSection].terminal[smallSection]);
+							break;
+						
+						default:
+							throw new Error(smallSection + " is not an event in " + bigSection);
+					}
+					break;
 				default:
 					throw new Error(bigSection + " is not an event");
 			}
@@ -1126,7 +1138,11 @@
 				case "alexandra":
 					alexandraLoop(bigSection,smallSection);
 					break;
+				case "terminal":
+					mainLoop(bigSection,smallSection);
+					break;
 				default:
+					console.log(character,bigSection,smallSection);
 					throw new Error("Unexpected dynamic character: " + character);
 			}
 		}
@@ -1249,7 +1265,6 @@
 		
 		// structure dialogue and calculate timing
 		function writeDialogue(conversation,dialogueList,speaker,smallSection) {
-			// smallSection won't be present
 			
 			// Take a name and an array (mixture of letters and numbers) and crank out that dialogue boy
 			// Expected format: n n text n n text n n text repeating
@@ -1260,6 +1275,9 @@
 			
 			// assume the current person is talking if no speaker is specified
 			speaker = speaker || conversation;
+			
+			// smallSection is not always present, but we need it
+			// it may be "undefined", deal with that later
 			
 			if(!Array.isArray(dialogueList)) {
 				console.error(arguments);
@@ -1539,8 +1557,12 @@
 							//$timeout.cancel(aic.timers[conversation]); // commented because not sure why this is needed
 							// skip ahead to the requested conversation section
 							//TODO: if the (dialogue that's being interrupted) has already queued the next line (ie loopThrough==true), then the current dialogue will be cancelled but the upcoming dialogue will not
-							aic.blacklist.push(ID);
-							console.log("Blacklisting " + ID + " (via pushToLog)");
+							if(ID !== undefined) {
+								aic.blacklist.push(ID);
+								console.log("Blacklisting " + ID + " (via pushToLog)");
+							} else {
+								console.log("Did not blacklist 'undefined' (via pushToLog)");
+							}
 							try {
 								aic.dynamicLoop(aic.isSkipping[conversation][0],aic.isSkipping[conversation][1],aic.isSkipping[conversation][2]);
 								// aic.isSkipping gets cleared in dynamicLoop

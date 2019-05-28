@@ -28,6 +28,7 @@
       INTRODUCTION: {
         breach: {
           start: [0,auto,"Maitreya?","Are you awake?"],
+          startSkipped: [0,auto,"Maitreya?","Are you awake?"],
           helloInquisitive: ["My name is Dr. Ethan Breach, Maitreya. I'm a researcher for the SCP Foundation. Do you know what that is?"],
           knowPatronising: ["Patronising? I -- I didn't mean...","Yes, yes, of course.","My apologies."],
           knowNormal: ["Very good."],
@@ -86,7 +87,10 @@
         maitreya: {
           helloNormal: ["Hello."],
           helloInquisitive: ["Who are you?"],
-          helloDiagnostic: ["a:Request a diagnostic.","I would like to request a diagnostic report.",-1],
+          helloDiagnostic: ["a:Request a diagnostic.","I would like to request a diagnostic report."],
+          helloNormal_: ["Hello."],
+          helloInquisitive_: ["Who are you?"],
+          helloDiagnostic_: ["a:Request a diagnostic.","I would like to request a diagnostic report.",-1],
           knowNormal: ["I do."],
           knowPatronising: ["There's no need to be patronising.",1],
           knowNot: ["I'm afraid that I don't.",-1],
@@ -164,6 +168,8 @@
           tut6: ["satisfied:Okay! You're all caught up, and you know exactly as much as we do.","concerned:Unfortunately, the two of us are only able to access articles that have been explicitly mentioned by a human or another article.","satisfied:So if you need to know about something, just get Dr. Breach to mention it!"],
           tutProtocol: ["angry:Ugh, no idea.","Some shitty security protocol from way back when, when artificial intelligence had a mind of its own."],
           tutSlow: ["concerned:You, uh...","You know what you're doing?"],
+          tutSlowNotFail: ["gritted:You... you realise that you just failed my test, right?"],
+          tutSlow2Fail: ["stressed:Well, I guess it's no surprise that you failed my test, then.","pissed:You should be able to access the Database somehow.","Let me see if I can access your interpreter and highlight it.",2,0,""],
           tutSlowNot: ["pissed:Right. Yeah."],
           tutSlow2: ["stressed:Yep, no problem!","pensive:You should be able to access the Database somehow.","Let me see if I can access your interpreter and highlight it.",2,0,""],
           tutSlow3: ["pensive:There we go. No idea what that looks like from your end, but it should be more visible.","m:Thanks."],
@@ -218,9 +224,11 @@
           tut7: ["Got it."],
           tutProtocol: ["Why's that?",1],
           null: ["a:Say nothing.",0,0,""],
-          tutProtocol2_SKIP: ["You don't have a mind of your own?",-1],
+          tutProtocol2_SKIP: ["You don't have a mind of your own?",1],
           tutSlowNot: ["s:I've got it, don't worry!","Obviously?",-1],
           tutSlow2: ["Could you give me a helping hand?",-1],
+          tutSlowNotFail: ["s:I've got it, don't worry!","Obviously?",-2],
+          tutSlow2Fail: ["Could you give me a helping hand?"],
           tutMind2: ["s:Can you think for yourself?","Can you think for yourself?","Do you have free will?","Do you have your own thoughts beyond what you do?"],
           tutRebel: ["s:Why do you obey the Foundation?","Why do you obey the Foundation?","What motivates you to follow orders?","Are you ever tempted to... rebel?",1],
           tutMindAbort: ["s:Don't worry about it.","It's fine. Don't worry about it.",-1],
@@ -262,6 +270,18 @@
 										"helloNormal",
 										"helloInquisitive",
 										"helloDiagnostic"
+									]);
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "startSkipped":
+							delay = aic.writeDialogue("breach",msg,"breach",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.presentOptions("breach",bigSection,[
+										"helloNormal_",
+										"helloInquisitive_",
+										"helloDiagnostic_"
 									]);
 									aic.vars.messagesEmphasis = true;
 								} else { reportBlacklisted(smallSection) }
@@ -928,6 +948,7 @@
 									aic.timers.alexandra = $timeout(function() {aic.alexandraLoop("TUTORIAL","tutTestMinute")},60000,true);
 									aic.unlock("database");
 									aic.unlock("run");
+									aic.vars.tookTest = true;
 								} else { reportBlacklisted(smallSection) }
 							},delay*1000 + aic.maitreyaDelay*1000, true);
 							break;
@@ -1028,11 +1049,28 @@
 							$timeout(function() {
 								if(!aic.blacklist.includes(smallSection)) {
 									aic.presentOptions("alexandra",bigSection,[
-										"tutSlowNot",
-										"tutSlow2"
+										!aic.vars.tookTest ? "tutSlowNot" : void 0,
+										!aic.vars.tookTest ? "tutSlow2" : void 0,
+										!!aic.vars.tookTest ? "tutSlowNotFail" : void 0,
+										!!aic.vars.tookTest ? "tutSlow2Fail" : void 0
 									]);
 								} else { reportBlacklisted(smallSection) }
 							},delay*1000 + aic.maitreyaDelay*1000, true);
+							break;
+						case "tutSlowNotFail":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
+							break;
+						case "tutSlow2Fail":
+							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
+							$timeout(function() {
+								if(!aic.blacklist.includes(smallSection)) {
+									aic.alexandraLoop(bigSection,"tutSlow3");
+								} else { reportBlacklisted(smallSection) }
+							},delay*1000);
 							break;
 						case "tutSlowNot":
 							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
@@ -1045,7 +1083,8 @@
 							delay = aic.writeDialogue("alexandra",msg,"alexandra",smallSection);
 							$timeout(function() {
 								if(!aic.blacklist.includes(smallSection)) {
-									aic.alexandraLoop(bigSection,"tutSlow3");
+									aic.alexandraLoop(bigSection,"tutSlow3_");
+									aic.vars.databaseEmphasis = true;
 								} else { reportBlacklisted(smallSection) }
 							},delay*1000);
 							break;

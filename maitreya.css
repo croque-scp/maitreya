@@ -19,6 +19,7 @@ make terminal input disabled while the terminal is doing something
  * | |/ |/ / / , </ / /_/ / /_/ / /_
  * |__/|__/_/_/|_/_/\__,_/\____/\__/
  */
+/*#region wikidot*/
 a, button, li.selector, .article-selector {
 	cursor: pointer;
 }
@@ -48,6 +49,7 @@ body {
 }
 #interface::after {
 }
+/*#endregion wikidot*/
 
 /*     ____      __            ____
  *    /  _/___  / /____  _____/ __/___ _________
@@ -2166,6 +2168,11 @@ misc leave -> slide to left DONE
  *  / /  / / /_/ / /_/ / / /  __/
  * /_/  /_/\____/_.___/_/_/\___/
  */
+
+/* https://css-tricks.com/books/volume-i/scale-typography-screen-size/
+font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [minimum viewport width]) / ([maximum viewport width] - [minimum viewport width])));
+*/
+ 
 @media only screen and (max-width: 699px) {
 	/* at less than 700px probably a mobile device */
 	#app-selector .title {

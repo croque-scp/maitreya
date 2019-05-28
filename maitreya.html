@@ -115,7 +115,7 @@ If you don't feel that's enough to qualify this for the 4K contest, fair enough 
 							<a><i class="material-icons">record_voice_over</i></a>
 							<div class="notification" ng-show="(aic.notifications.breach + aic.notifications.alexandra) > 0"><p>{{aic.notifications.breach + aic.notifications.alexandra}}</p></div>
 						</li>
-						<li id="database-app" class="selector" ng-click="aic.switchApp('database')" ng-class="[aic.selectedApp == 'database' ? 'selected' : null, aic.ready.database ? null : 'disabled']" ng-disabled="">
+						<li id="database-app" class="selector" ng-click="aic.switchApp('database')" ng-class="[aic.selectedApp == 'database' ? 'selected' : null, aic.ready.database ? null : 'disabled', aic.vars.databaseEmphasis ? 'emphasis' : null]" ng-disabled="">
 							<a><i class="material-icons">library_books</i></a>
 							<div class="notification" ng-show="aic.notifications.database > 0"><p>{{aic.notifications.database}}</p></div>
 						</li>
