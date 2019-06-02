@@ -15,6 +15,9 @@ The project will eventually be uploaded to Wikidot, and all files will be hosted
 ## Why is there both index.html and maitreya.html?
 index.html provides a resizable iframe for testing different screen sizes, which contains maitreya.html. maitreya.html is the content of the article, and fills the iframe if accessed through index.html or the Wikidot page, or the whole screen if accessed by itself.
 
+## What screen size is recommended?
+It's built to be responsive, but optimised for 700px wide (which is how wide the iframe will be on Wikidot) and desktop fullscreen. You can play on mobile but ehhhhh. Avoid it if you can.
+
 ## Can I record myself playing?
 Not sure why you'd want to but go ahead. Bottom left and bottom right are pretty good spots for webcams. Make sure you go fullscreen.
 
