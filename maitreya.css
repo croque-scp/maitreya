@@ -101,7 +101,7 @@ body {
 }
 
 #app-selector {
-	height: 70px;
+	height: 4.375rem;
 	background: linear-gradient(to right,#1488cc,#2b32b2);
 	background: linear-gradient(to right,var(--light-theme),var(--dark-theme));
 	position: relative;
@@ -110,7 +110,7 @@ body {
 }
 #app-selector .title {
 	display: block;
-	height: 70px;
+	height: 4.375rem;
 	margin: 0 5%;
 	position: relative;
 	transition: all 2s cubic-bezier(0.19, 1, 0.22, 1) 0s;
@@ -133,7 +133,7 @@ body {
 	position: absolute;
 	height: 100%;
 	margin: 0;
-	margin-right: -5px;
+	margin-right: -0.3125rem;
 	top: -50%;
 	transform: translate(0,50%);
 	right: 0;
@@ -151,8 +151,8 @@ body {
 	position: relative;
 	list-style: none;
 	height: 100%;
-	width: 60px;
-	margin: 0 5px;
+	width: 3.75rem;
+	margin: 0 0.3125rem;
 }
 #app-selector ul li.selector.selected {
 	/*background-color: white;*/
@@ -163,46 +163,46 @@ body {
 	box-shadow: none;
 	content: " ";
 	height: 100%;
-	left: -10px;
+	left: -0.625rem;
 	position: absolute;
 	top: 0;
-	width: 10px;
+	width: 0.625rem;
 }
 #app-selector ul li.selector a::after {
 	box-shadow: none;
 	content: "";
 	height: 100%;
 	position: absolute;
-	right: -10px;
-	width: 10px;
+	right: -0.625rem;
+	width: 0.625rem;
 }
 #app-selector ul li.selector.selected a::before {
-	box-shadow: inset -3px 0 2px -2px rgba(0,0,0,0.28), inset -4px 0 1px -2px rgba(0,0,0,0.14), inset -2px 0 5px -5px rgba(0,0,0,0.2);
+	box-shadow: inset -0.1875rem 0 0.125rem -0.125rem rgba(0,0,0,0.28), inset -0.25rem 0 0.0625rem -0.125rem rgba(0,0,0,0.14), inset -0.125rem 0 0.3125rem -0.3125rem rgba(0,0,0,0.2);
 	content: "";
 	height: 100%;
-	left: -10px;
+	left: -0.625rem;
 	position: absolute;
 	top: 0;
-	width: 10px;
+	width: 0.625rem;
 }
 #app-selector ul li.selector.selected:not(:last-of-type) a::after {
-	box-shadow: inset 3px 0 2px -2px rgba(0,0,0,0.28), inset 4px 0 1px -2px rgba(0,0,0,0.14), inset 2px 0 5px -5px rgba(0,0,0,0.2);
+	box-shadow: inset 0.1875rem 0 0.125rem -0.125rem rgba(0,0,0,0.28), inset 0.25rem 0 0.0625rem -0.125rem rgba(0,0,0,0.14), inset 0.125rem 0 0.3125rem -0.3125rem rgba(0,0,0,0.2);
 	content: " ";
 	height: 100%;
 	position: absolute;
-	right: -10px;
-	width: 10px;
+	right: -0.625rem;
+	width: 0.625rem;
 }
 #app-selector ul li.selector a {
-	height: 40px;
-	width: 40px;
+	height: 2.5rem;
+	width: 2.5rem;
 	border-radius: 50%;
 	background-color: white;
 	display: inline-block;
 	position: absolute;
 	color: #205dbf;
 	color: var(--middle-theme);
-	border: 1px white solid;
+	border: 0.0625rem white solid;
 	transition: box-shadow 0.2s ease-in-out 0s,
 	            box-shadow 0.2s var(--ease-in-out) 0s,
 	            border-radius 0.2s ease-in-out 0s,
@@ -216,7 +216,7 @@ body {
 	left: 50%;
 	margin-right: -50%;
 	transform: translate(-50%,-50%);
-	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+	box-shadow: 0 0.125rem 0.125rem 0 rgba(0,0,0,0.14), 0 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), 0 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
 }
 /*#app-selector ul li.selector:not(.disabled) a {
 	animation: bounce-with-x-translate-and-opacity 1s linear 1 both;
@@ -241,8 +241,8 @@ body {
 	animation: bounce-with-x-translate 1s linear 1 both;
 }
 #app-selector ul li.selector.disabled a {
-	border: 1px #205dbf solid;
-	border: 1px var(--middle-theme) solid;
+	border: 0.0625rem #205dbf solid;
+	border: 0.0625rem var(--middle-theme) solid;
 	background-color: transparent;
 	color: transparent;
 	box-shadow: none;
@@ -271,7 +271,7 @@ body {
 	min-width: 1.41em;
 	height: 1.41em;
 	border-radius: 1.41em;
-	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+	box-shadow: 0 0.125rem 0.125rem 0 rgba(0,0,0,0.14), 0 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), 0 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
 }
 #app-selector ul li.selector .notification p {
 	margin: 0;
@@ -294,15 +294,15 @@ body {
 	position: relative;
 	display: flex;
 	justify-content: flex-end;
-	height: 30px; /* I'm so sorry */
-	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+	height: 1.875rem; /* I'm so sorry */
+	box-shadow: 0 0.125rem 0.125rem 0 rgba(0,0,0,0.14), 0 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), 0 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
 	z-index: 10;
 }
 .app-title p {
 	font-family: Nunito,Arial,Helvetica,sans-serif;
 	margin: 0 5%;
-	margin-top: 2px;
-	font-size: 20px;
+	margin-top: 0.125rem;
+	font-size: 1.25rem;
 	display: inline-block;
 	opacity: 1;
 	transition: opacity 0.3s ease-in-out 1.2s;
@@ -310,13 +310,13 @@ body {
 }
 
 #app-body {
-	height: calc(100% - 70px);
+	height: calc(100% - 4.375rem);
 	position: relative;
 	overflow: hidden;
 	background-color: white;
 }
 #app-body .app-main {
-	height: calc(100% - 30px);
+	height: calc(100% - 1.875rem);
 }
 #app-body .container {
 	position: absolute;
@@ -351,22 +351,22 @@ body {
  */
 /*#region terminal*/
 #terminal-app .terminal-body {
-	height: calc(100vh - 250px);
+	height: calc(100vh - 15.625rem);
 	/*background-image: url(grey_stripe.png);*/
 	position: relative;
 }
 #terminal-app .working {
 	position: absolute;
-	width: 15px;
-	height: 15px;
-	left: 100px;
+	width: 0.9375rem;
+	height: 0.9375rem;
+	left: 6.25rem;
 	bottom: 0;
-	transform: translate(-20px,-5px);
+	transform: translate(-1.25rem,-0.3125rem);
 }
 #terminal-app .terminal-log {
 	height: 100%;
-	margin: 0 100px;
-	box-shadow: 3px 0 1px -2px rgba(0,0,0,0.12), 1px 0 5px 0 rgba(0,0,0,0.2), -3px 0 1px -2px rgba(0,0,0,0.12), -1px 0 5px rgba(0,0,0,0.2);
+	margin: 0 6.25rem;
+	box-shadow: 0.1875rem 0 0.0625rem -0.125rem rgba(0,0,0,0.12), 0.0625rem 0 0.3125rem 0 rgba(0,0,0,0.2), -0.1875rem 0 0.0625rem -0.125rem rgba(0,0,0,0.12), -0.0625rem 0 0.3125rem rgba(0,0,0,0.2);
 	overflow:	auto;
 	display: flex;
 	flex-direction: column-reverse;
@@ -374,45 +374,45 @@ body {
 	overflow-x: hidden;
 }
 #terminal-app .terminal-log p {
-	margin: 1px 0;
-	padding: 3px 10px 3px 25px;
+	margin: 0.0625rem 0;
+	padding: 0.1875rem 0.625rem 0.1875rem 1.5625rem;
 	font-family: Cousine,monospace;
 	font-family: var(--monospace-font);
 	color: #333;
 	background-color: #eee;
-	text-indent: -15px;
+	text-indent: -0.9375rem;
 }
 #terminal-app .terminal-log p.info {
-	margin: -1px 0;
+	margin: -0.0625rem 0;
 	color: #6b4c25;
 	background-color: #fffae8;
-	border-top: 2px #f7e5a3 solid;
-	border-bottom: 2px #f7e5a3 solid;
+	border-top: 0.125rem #f7e5a3 solid;
+	border-bottom: 0.125rem #f7e5a3 solid;
 }
 #terminal-app .terminal-log p.info::before {
 	content: "Info";
 	color: white;
 	background-color: #6b4c25;
 	font-weight: bold;
-	padding: 2px 4px;
-	margin-left: -7px;
-	margin-right: 4px;
+	padding: 0.125rem 0.25rem;
+	margin-left: -0.4375rem;
+	margin-right: 0.25rem;
 }
 #terminal-app .terminal-log p.error, #terminal-app .terminal-log p.warning {
-	margin: -1px 0;
+	margin: -0.0625rem 0;
 	color: red;
 	background-color: #fff0f0;
-	border-top: 2px #ffd6d6 solid;
-	border-bottom: 2px #ffd6d6 solid;
+	border-top: 0.125rem #ffd6d6 solid;
+	border-bottom: 0.125rem #ffd6d6 solid;
 }
 #terminal-app .terminal-log p.error::before, #terminal-app .terminal-log p.warning::before , #terminal-app .terminal-log p.input::before {
 	content: "ERROR";
 	color: white;
 	background-color: red;
 	font-weight: bold;
-	padding: 2px 4px;
-	margin-left: -7px;
-	margin-right: 2px;
+	padding: 0.125rem 0.25rem;
+	margin-left: -0.4375rem;
+	margin-right: 0.125rem;
 }
 #terminal-app .terminal-log p.warning::before {
 	content: "WARNING";
@@ -427,7 +427,7 @@ body {
 	background-color: transparent;
 }
 #terminal-app .terminal-log p.title img {
-	height: 50px;
+	height: 3.125rem;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -438,25 +438,25 @@ body {
 	transition: all 0.5s var(--ease-in-out);
 }
 #terminal-app .terminal-log p.ng-enter-active {
-	max-height: 300px;
+	max-height: 18.75rem;
 }
 #terminal-app .input-section {
 	position: relative;
 	z-index: 1;
-	width: calc(100% + 20px);
-	transform: translate(-10px,0);
+	width: calc(100% + 1.25rem);
+	transform: translate(-0.625rem,0);
 	/*background: url(aiad_fade.png), linear-gradient(to bottom, #f4f4f4, white);*/
-	background-size: 300px 300px, 100% 100%;
+	background-size: 18.75rem 18.75rem, 100% 100%;
 	background-position: 90% 50%, center;
 	background-repeat: no-repeat;
 	transition: all 2s ease-in-out;
 	transition: all 2s var(--ease-in-out);
-	box-shadow: inset 0 -3px 1px -2px rgba(0,0,0,0.12), inset 0 -1px 5px 0 rgba(0,0,0,0.2),
-	            inset 0 2px 2px 0 rgba(0,0,0,0.14), inset 0 3px 1px -2px rgba(0,0,0,0.12), inset 0 1px 5px 0 rgba(0,0,0,0.2);
+	box-shadow: inset 0 -0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), inset 0 -0.0625rem 0.3125rem 0 rgba(0,0,0,0.2),
+	            inset 0 0.125rem 0.125rem 0 rgba(0,0,0,0.14), inset 0 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), inset 0 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
 }
 #terminal-app .input-section .hint-arrow {
-	height: 90px;
-	width: 217px; /* width of image */
+	height: 5.625rem;
+	width: 13.5625rem; /* width of image */
 	/*background-image: url(highlight-arrow.png);*/
 	background-position: center;
 	position: absolute;
@@ -467,52 +467,52 @@ body {
 }
 #terminal-app .input-section .hint-arrow.left {
 	left: 0;
-	transform: translate(-175px,0);
+	transform: translate(-10.9375rem,0);
 }
 #terminal-app .input-section .hint-arrow.right {
 	right: 0;
-	transform: translate(175px,0) scaleX(-1);
+	transform: translate(10.9375rem,0) scaleX(-1);
 }
 #terminal-app .input-section.loaded .hint-arrow.left {
-	transform: translate(-102px,0);
+	transform: translate(-6.375rem,0);
 }
 #terminal-app .input-section.loaded .hint-arrow.right {
-	transform: translate(102px,0) scaleX(-1);
+	transform: translate(6.375rem,0) scaleX(-1);
 }
 #terminal-app .top-bar, #terminal-app .bottom-bar {
 	background: linear-gradient(to right,#1488cc,#2b32b2);
 	background: linear-gradient(to right,var(--light-theme),var(--dark-theme));
 	width: 100%;
-	height: 30px;
+	height: 1.875rem;
 	z-index: 10;
 	display: block;
 }
 #terminal-app .top-bar .top, #terminal-app .bottom-bar .bottom {
 	width: 100%;
-	height: 5px;
+	height: 0.3125rem;
 }
 #terminal-app .top-bar .middle {
 	background: white;
 	width: 100%;
-	height: 15px;
-	transform: skew(-45deg,0) translate(50px,0);
+	height: 0.9375rem;
+	transform: skew(-45deg,0) translate(3.125rem,0);
 }
 #terminal-app .bottom-bar .middle {
 	background: white;
 	width: 100%;
-	height: 15px;
-	/*transform: skew(-45deg,0) translate(-50px,0);*/
+	height: 0.9375rem;
+	/*transform: skew(-45deg,0) translate(-3.125rem,0);*/
 }
 #terminal-app .top-bar .bottom, #terminal-app .bottom-bar .top {
 	background: white;
 	width: 100%;
-	height: 10px;
+	height: 0.625rem;
 }
 #terminal-app .middle-bar {
 	display: flex;
-	width: calc(100% - 250px);
+	width: calc(100% - 15.625rem);
 	margin: 0 auto;
-	height: 90px;
+	height: 5.625rem;
 	justify-content: space-around;
 	align-items: center;
 	position: relative;
@@ -526,16 +526,16 @@ body {
 	display: inline-block;
 }
 #terminal-app .middle-bar input {
-	margin: 0 -350px;
-	padding: 2px 350px;
+	margin: 0 -21.875rem;
+	padding: 0.125rem 21.875rem;
 	font-family: Cousine,monospace;
 	font-family: var(--monospace-font);
 	display: inline-block;
 	width: auto;
-	border: 1px solid #aaa;
+	border: 0.0625rem solid #aaa;
 	flex-grow: 1;
 	background-color: rgba(255,255,255,0.5);
-	box-shadow: inset 0 1px 6px -4px rgba(0,0,0,0.12), inset 0 0.5px 3px 1px rgba(0,0,0,0.2);
+	box-shadow: inset 0 0.0625rem 0.375rem -0.25rem rgba(0,0,0,0.12), inset 0 0rem 0.1875rem 0.0625rem rgba(0,0,0,0.2);
 	color: black;
 	outline: none;
 }
@@ -555,17 +555,17 @@ body {
  *                             /____/          */
 /*#region messages*/
 #messages-app .conversation-container {
-	height: calc(100vh - 355px);
+	height: calc(100vh - 22.1875rem);
 	position: relative;
 	background: linear-gradient(to top,#eee,#fff);
 	overflow:	auto;
 }
 #messages-app .speaking-markers {
-	margin: -0.7em 130px 0.3em 130px;
+	margin: -0.7em 8.125rem 0.3em 8.125rem;
 	position: relative;
 	opacity: 1;
-	height: 18px;
-	min-height: 18px;
+	height: 1.125rem;
+	min-height: 1.125rem;
 	transition: opacity 0.1s ease-in-out;
 	transition: opacity 0.1s var(--ease-in-out);
 }
@@ -581,38 +581,38 @@ body {
 #messages-app .speaking p {
 	color: #1a73c6;
 	color: var(--lightish-theme);
-	margin: 0 40px;
+	margin: 0 2.5rem;
 	font-size: 1em;
 	display: inline-block;
 	font-family: Nunito,Arial,Helvetica,sans-serif;
 }
 #messages-app .speaking img {
 	position: absolute;
-	height: 30px;
-	width: 30px;
-	left: 5px;
-	top: -6px;
+	height: 1.875rem;
+	width: 1.875rem;
+	left: 0.3125rem;
+	top: -0.375rem;
 }
 #messages-app .processing {
 	position: absolute;
 	opacity: 1;
-	height: 20px;
-	width: 20px;
+	height: 1.25rem;
+	width: 1.25rem;
 	transition: transform 0.1s ease-in-out;
 	transition: transform 0.1s var(--ease-in-out);
 	background: var(--light-theme);
-	border-radius: 25px;
-	top: -1px;
-	right: 0px;
+	border-radius: 1.5625rem;
+	top: -0.0625rem;
+	right: 0rem;
 	transform: translate(0,0);
 }
 #messages-app .processing.notProcessing {
-	transform: translate(0,30px);
+	transform: translate(0,1.875rem);
 }
 #messages-app .processing img {
 	position: absolute;
-	height: 12px;
-	width: 12px;
+	height: 0.75rem;
+	width: 0.75rem;
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%,-50%);
@@ -627,30 +627,30 @@ body {
 #messages-app .conversation::before {
 	content: "";
 	width: 90%; /*this is so it doesn't go over the scrollbar*/
-	height: 15px;
+	height: 0.9375rem;
 	position: absolute;
-	background: linear-gradient(to bottom,white 3px,transparent);
+	background: linear-gradient(to bottom,white 0.1875rem,transparent);
 	top: 0;
 	left: 5%; /*help*/
 	z-index: 20;
 }
 #messages-app .conversation .wrapper {
-	margin: 0 130px 12px 130px;
+	margin: 0 8.125rem 0.75rem 8.125rem;
 	position: relative;
 }
 #messages-app .conversation .wrapper.collapsed {
-	margin-bottom: 3px;
+	margin-bottom: 0.1875rem;
 }
 #messages-app .conversation .wrapper.maitreya {
-	margin-left: 133px; /* Literally no one else but me will notice this or even care about it if they did. I spent like 10 minutes deciding between 132 and 133px. You know what? If I could, I'd go for 132.5. But no. You can't have half a pixel. Fuck */
+	margin-left: 8.3125rem; /* Literally no one else but me will notice this or even care about it if they did. I spent like 10 minutes deciding between 132 and 133px. You know what? If I could, I'd go for 132.5. But no. You can't have half a pixel. Fuck */
 }
 #messages-app .conversation .wrapper.narrator {
-	margin-left: 200px;
-	margin-right: 200px;
+	margin-left: 12.5rem;
+	margin-right: 12.5rem;
 }
 #messages-app .conversation .wrapper.ng-enter {
-	transform: translate(0,100px);
-	max-height: 0px;
+	transform: translate(0,6.25rem);
+	max-height: 0rem;
 	transition: all 0.5s ease-in-out;
 	opacity: 0;
 }
@@ -659,7 +659,7 @@ body {
 }
 #messages-app .conversation .wrapper.ng-enter-active {
 	transform: translate(0,0);
-	max-height: 200px;
+	max-height: 12.5rem;
 	opacity: 1;
 }
 /*#messages-app .conversation .wrapper.ng-move {
@@ -675,20 +675,20 @@ body {
 #messages-app .conversation .wrapper > div {
 	color: #222;
 	background-color: #ddd;
-	border-radius: 5px;
+	border-radius: 0.3125rem;
 	clear: both;
 	position: relative;
 }
 #messages-app .conversation .wrapper > div.breach {
-	border: 3px #ddd solid;
+	border: 0.1875rem #ddd solid;
 	background-color: white;
 	float: left;
 }
 #messages-app .conversation .wrapper > div.alexandra {
 	float: left;
 	background: linear-gradient(to bottom,#0cc,#009494);
-	border-radius: 30px / 70px;
-	padding: 2px 20px;
+	border-radius: 1.875rem / 4.375rem;
+	padding: 0.125rem 1.25rem;
 	max-width: 60%;
 }
 #messages-app .conversation .wrapper > div.maitreya {
@@ -699,7 +699,7 @@ body {
 #messages-app .conversation .wrapper > div.narrator {
 	background: #e9e9e9;
 	border-radius: 0;
-	border: 1px #999 dashed;
+	border: 0.0625rem #999 dashed;
 }
 #messages-app .conversation .wrapper > div.typed {
 	margin-left: 1em;
@@ -711,13 +711,13 @@ body {
 	z-index: 0;
 }
 #messages-app .conversation .wrapper > div.typed img {
-	height: calc(100% + 4px);
+	height: calc(100% + 0.25rem);
 	width: auto;
 	display: block;
 	position: absolute;
-	top: -2px;
+	top: -0.125rem;
 	background: inherit;
-	border: 2.8px #ddd solid;
+	border: 0.125rem #ddd solid;
 	box-sizing: border-box;
 }
 #messages-app .conversation .wrapper > div.typed .hex-left {
@@ -729,13 +729,13 @@ body {
 #messages-app .conversation .wrapper > div.typed .hex-left img {
 	left: 0;
 	transform: scale(0.707) scaleX(0.5774) rotate(-45deg);
-	border-width: 6px 0 0 6px;
+	border-width: 0.375rem 0 0 0.375rem;
 	transform-origin: 0% 100%;
 }
 #messages-app .conversation .wrapper > div.typed .hex-right img {
 	right: 0;
 	transform: scale(0.707) scaleX(0.5774) rotate(45deg);
-	border-width: 6px 6px 0 0;
+	border-width: 0.375rem 0.375rem 0 0;
 	transform-origin: 100% 100%;
 }
 #messages-app .conversation .wrapper > div p {
@@ -744,7 +744,7 @@ body {
 }
 #messages-app .conversation .wrapper > div.breach p {
 	color: #222;
-	margin: calc(1em + 2px);
+	margin: calc(1em + 0.125rem);
 }
 #messages-app .conversation .wrapper > div.alexandra p {
 	color: white;
@@ -759,9 +759,9 @@ body {
 	position: relative;
 }
 #messages-app .conversation .wrapper img.logo {
-	width: 60px;
+	width: 3.75rem;
 	position: absolute;
-	left: -45px;
+	left: -2.8125rem;
 	top: 50%;
 	transform: translate(-50%,-50%);
 	opacity: 1;
@@ -775,24 +775,24 @@ body {
 	transform: translate(-50%,-30%);
 }
 #messages-app .conversation .wrapper img.triangle {
-	width: 20px;
+	width: 1.25rem;
 	position: absolute;
-	left: -5px;
+	left: -0.3125rem;
 	top: 65%;
 	transform: translate(-50%,-50%);
 }
 #messages-app .conversation .wrapper img.logo.breach {
-	top: calc(50% + 5px);
+	top: calc(50% + 0.3125rem);
 }
 #messages-app .conversation .wrapper img.logo.alexandra {
-	width: 70px;
+	width: 4.375rem;
 	top: 60%;
 	transform: translate(-55%,-60%);
 }
 #messages-app .conversation .wrapper img.logo.maitreya {
-	width: 60px;
+	width: 3.75rem;
 	position: absolute;
-	right: -45px;
+	right: -2.8125rem;
 	left: initial;
 	top: calc(50%);
 	transform: translate(50%,-50%);
@@ -812,43 +812,43 @@ body {
 	transition: all 0.5s var(--ease-in-out);
 }
 #messages-app .conversation p.ng-enter-active {
-	max-height: 300px;
+	max-height: 18.75rem;
 }
 #messages-app .middle-bar {
 	background: linear-gradient(to right,#1488cc,#2b32b2);
 	background: linear-gradient(to right,var(--light-theme),var(--dark-theme));
 	width: 100%;
-	height: 30px;
+	height: 1.875rem;
 }
 #messages-app .middle-bar .top {
 	width: 100%;
-	height: 5px;
+	height: 0.3125rem;
 }
 #messages-app .middle-bar .middle {
 	background: white;
 	width: 100%;
-	height: 15px;
-	transform: skew(-45deg,0) translate(50px,0);
+	height: 0.9375rem;
+	transform: skew(-45deg,0) translate(3.125rem,0);
 }
 #messages-app .middle-bar .bottom {
 	background: white;
 	width: 100%;
-	height: 10px;
+	height: 0.625rem;
 }
 #messages-app .bottom-bar {
 	background: linear-gradient(to right,#1488cc,#2b32b2);
 	background: linear-gradient(to right,var(--light-theme),var(--dark-theme));
 	width: 100%;
-	height: 25px;
+	height: 1.5625rem;
 }
 #messages-app .bottom-bar .top {
 	background: white;
 	width: 100%;
-	height: 20px;
+	height: 1.25rem;
 }
 #messages-app .bottom-bar .bottom {
 	width: 100%;
-	height: 5px;
+	height: 0.3125rem;
 }
 #messages-app .messages-body {
 	position: relative;
@@ -856,13 +856,13 @@ body {
 }
 
 #messages-selector {
-	height: 55px;
+	height: 3.4375rem;
 	font-family: Nunito,Arial,Helvetica,sans-serif;
 	position: relative;
 	z-index: 5;
 }
 #messages-selector ul {
-	height: 55px;
+	height: 3.4375rem;
 	position: relative;
 	height: 100%;
 	margin: 0;
@@ -877,12 +877,12 @@ body {
 	list-style: none;
 	opacity: 1;
 	z-index: 20 !important; /*this doesn't actually work*/
-	box-shadow: inset 0 -3px 1px -2px rgba(0,0,0,0.12), inset 0 -1px 5px 0 rgba(0,0,0,0.2);
+	box-shadow: inset 0 -0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), inset 0 -0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
 }
 #messages-selector ul li.selector {
 	position: relative;
 	list-style: none;
-	margin: 0 8px;
+	margin: 0 0.5rem;
 	display: inline-block;
 }
 #messages-selector ul li.selector.disabled {
@@ -892,16 +892,16 @@ body {
 	animation: bounce-without-x-translate-and-opacity 1s linear 1 both;
 }*/
 #messages-selector ul li.selector a {
-	border-radius: 20px;
+	border-radius: 1.25rem;
 	background-color: white;
 	display: inline-block;
 	color: #205dbf;
 	color: var(--middle-theme);
-	border: 1px white solid;
+	border: 0.0625rem white solid;
 	transition-duration: 0.2s;
-	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+	box-shadow: 0 0.125rem 0.125rem 0 rgba(0,0,0,0.14), 0 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), 0 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
 	text-decoration: none;
-	padding: 5px 15px;
+	padding: 0.3125rem 0.9375rem;
 	position: relative;
 	top: 50%;
 	transform: translate(0,-50%);
@@ -909,8 +909,8 @@ body {
 }
 #messages-selector ul li.selector.selected a {
 	border-radius: 0;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding-top: 1.25rem;
+	padding-bottom: 1.25rem;
 	box-shadow: none;
 }
 #messages-selector ul li.selector:not(.selected):hover a {
@@ -930,22 +930,22 @@ body {
 	transition: background-color 0.2s var(--ease-in-out);
 }
 #messages-selector ul li.selector.selected:before {
-	box-shadow: inset -3px 0 2px -2px rgba(0,0,0,0.28), inset -4px 0 1px -2px rgba(0,0,0,0.14), inset -2px 0 5px -5px rgba(0,0,0,0.2);
+	box-shadow: inset -0.1875rem 0 0.125rem -0.125rem rgba(0,0,0,0.28), inset -0.25rem 0 0.0625rem -0.125rem rgba(0,0,0,0.14), inset -0.125rem 0 0.3125rem -0.3125rem rgba(0,0,0,0.2);
 	content: "";
 	height: 100%;
-	left: -10px;
+	left: -0.625rem;
 	position: absolute;
 	top: 0;
-	width: 10px;
+	width: 0.625rem;
 }
 #messages-selector ul li.selector.selected:after {
-	box-shadow: inset 3px 0 2px -2px rgba(0,0,0,0.28), inset 4px 0 1px -2px rgba(0,0,0,0.14), inset 2px 0 5px -5px rgba(0,0,0,0.2);
+	box-shadow: inset 0.1875rem 0 0.125rem -0.125rem rgba(0,0,0,0.28), inset 0.25rem 0 0.0625rem -0.125rem rgba(0,0,0,0.14), inset 0.125rem 0 0.3125rem -0.3125rem rgba(0,0,0,0.2);
 	content: "";
 	height: 100%;
 	position: absolute;
-	right: -10px;
+	right: -0.625rem;
 	top: 0;
-	width: 10px;
+	width: 0.625rem;
 }
 #messages-selector ul li.selector .notification {
 	z-index: 30;
@@ -957,7 +957,7 @@ body {
 	min-width: 1.41em;
 	height: 1.41em;
 	border-radius: 1.41em;
-	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+	box-shadow: 0 0.125rem 0.125rem 0 rgba(0,0,0,0.14), 0 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), 0 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
 }
 #messages-selector ul li.selector .notification p {
 	margin: 0;
@@ -986,14 +986,14 @@ body {
 }
 /*#database-app .back {
 	overflow-x: hidden;
-	height: 50px;
+	height: 3.125rem;
 	transform: none;
 	position: absolute;
 	z-index: 10;
 }
 #database-app .back .parallelogram {
-	height: 45px;
-	margin: 0 20px 0 -13px;
+	height: 2.8125rem;
+	margin: 0 1.25rem 0 -0.8125rem;
 	transform: skew(-30deg);
 	display: inline-block;
 	background: white;
@@ -1002,29 +1002,29 @@ body {
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
 	transition: all 0.3s var(--ease-in-out);
-	box-shadow: 1px 2px 2px 0 rgba(0,0,0,0.14), 2px 3px 1px -2px rgba(0,0,0,0.12), 1px 1px 5px 0 rgba(0,0,0,0.2);
+	box-shadow: 0.0625rem 0.125rem 0.125rem 0 rgba(0,0,0,0.14), 0.125rem 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), 0.0625rem 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
 }
 #database-app .back .parallelogram.hidden {
-	transform: skew(-30deg) translate(-200px,0);
+	transform: skew(-30deg) translate(-12.5rem,0);
 }
 #database-app .back .parallelogram:hover {
 	animation: bounce-left-with-skew 1s linear 1 both;
 }
 #database-app .back .parallelogram p {
 	position: relative;
-	margin: 0 1em 0 calc(2em + 13px);
+	margin: 0 1em 0 calc(2em + 0.8125rem);
 	transform: skew(30deg);
 	color: #205dbf;
 	color: var(--middle-theme);
 	font-family: Nunito,Arial,Helvetica,sans-serif;
-	font-size: 18px;
-	line-height: 45px;
+	font-size: 1.125rem;
+	line-height: 2.8125rem;
 }
 #database-app .back .parallelogram p i {
 	position: absolute;
 	top: 50%;
 	left: calc(-1.1em);
-	transform: translate(0,calc(-50% - 1px));
+	transform: translate(0,calc(-50% - 0.0625rem));
 }*/
 #database-app .section {
 	transition: transform 0.4s ease-in-out,
@@ -1091,7 +1091,7 @@ body {
 }
 #database-app .section.menu-section .menu-container .heading {
 	font-family: Nunito,Arial,Helvetica,sans-serif;
-	border-bottom: 1px solid #555;
+	border-bottom: 0.0625rem solid #555;
 	font-size: 1.8em;
 	padding: 0.05em 0;
 	margin: 0.7em 0.3em 0.3em 0.3em;
@@ -1108,33 +1108,33 @@ body {
 	margin: 0.4em;
 	color: #205dbf;
 	color: var(--middle-theme);
-	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.28), 0 3px 1px -2px rgba(0,0,0,0.24), 0 1px 5px 0 rgba(0,0,0,0.2);
-	height: 136px;
-	width: 136px;
+	box-shadow: 0 0.125rem 0.125rem 0 rgba(0,0,0,0.28), 0 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.24), 0 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
+	height: 8.5rem;
+	width: 8.5rem;
 	display: flex;
 	flex-direction: column-reverse;
 	transition: all 0.5s ease-out;
-	border-radius: 5px;
+	border-radius: 0.3125rem;
 	z-index: 0;
 	position: relative;
 }
 #database-app .section.menu-section .article-selector .article-title {
-	height: 30px;
+	height: 1.875rem;
 	z-index: 1;
 	position: relative;
 }
 #database-app .section.menu-section .article-selector .article-title-title {
-	height: 30px;
+	height: 1.875rem;
 	background-color: white;
 	color: var(--middle-theme);
 	position: relative;
 	text-align: center;
-	border-radius: 0 0 5px 5px;
+	border-radius: 0 0 0.3125rem 0.3125rem;
 	z-index: 1;
 }
 #database-app .section.menu-section .article-selector .article-title-title p {
 	margin: 0;
-	line-height: 30px;
+	line-height: 1.875rem;
 	transform: translate(0,0);
 	transition: all 0.25s ease-in;
 	transition: all 0.25s var(--ease-in-out);
@@ -1144,14 +1144,14 @@ body {
 	transform: translate(0,100%);
 	transition: all 0.25s ease-in;
 	transition: all 0.25s var(--ease-in-out);
-	height: 30px;
-	width: 30px;
-	border-radius: 30px;
+	height: 1.875rem;
+	width: 1.875rem;
+	border-radius: 1.875rem;
 	color: lightgrey;
 	text-align: center;
 	background-color: white;
 	bottom: 100%;
-	right: 5px;
+	right: 0.3125rem;
 	transform-origin: 50% 100%;
 	/*opacity: 0;*/
 }
@@ -1169,8 +1169,8 @@ body {
 	transition: all 0.25s var(--ease-in-out);
 	height: 0;
 	width: 0;
-	border-bottom: 30px solid white;
-	border-left: 136px solid transparent;
+	border-bottom: 1.875rem solid white;
+	border-left: 8.5rem solid transparent;
 	bottom: 100%;
 	transform-origin: 50% 100%;
 }
@@ -1194,18 +1194,18 @@ body {
 /* Generated with Bounce.js. Edit at https://goo.gl/Cq6Lmn */
 
 @keyframes article-title-title-activate { 
-0% { transform: translate(0,0px); }
-6.89% { transform: translate(0,-1.457px); }
-13.8% { transform: translate(0,-2.635px); }
-20.69% { transform: translate(0,-3.253px); }
-27.58% { transform: translate(0,-3.408px); }
-44.71% { transform: translate(0,-3.092px); }
-61.62% { transform: translate(0,-2.956px); }
-95.87% { transform: translate(0,-3.005px); }
+0% { transform: translate(0,0rem); }
+6.89% { transform: translate(0,-0.0625rem); }
+13.8% { transform: translate(0,-0.125rem); }
+20.69% { transform: translate(0,-0.1875rem); }
+27.58% { transform: translate(0,-0.1875rem); }
+44.71% { transform: translate(0,-0.1875rem); }
+61.62% { transform: translate(0,-0.125rem); }
+95.87% { transform: translate(0,-0.1875rem); }
 
 
 
-100% { transform: translate(0,-3px); }
+100% { transform: translate(0,-0.1875rem); }
 }
 
 @keyframes article-title-icon-container-activate { 
@@ -1258,14 +1258,14 @@ body {
 	/*transition: all 0.15s ease-out;*/
 }
 #database-app .section.menu-section .article-selector.HOVERED .article-title-title p {
-	transform: translate(0,-3px);
+	transform: translate(0,-0.1875rem);
   animation: article-title-title-activate 675ms linear 0s 1 none;
 	/*transition: all 0.15s ease-out;*/
 }
 
 #database-app .section.menu-section .article-selector .article-image-wrapper {
 	flex: 1;
-	border-radius: 5px 5px 0 0;
+	border-radius: 0.3125rem 0.3125rem 0 0;
 	overflow: hidden;
 }
 #database-app .section.menu-section .article-selector .article-image {
@@ -1289,7 +1289,7 @@ body {
 	background: linear-gradient(to right,#1488cc,#2b32b2);
 	background: linear-gradient(to right,var(--light-theme),var(--dark-theme));
 	width: 100%;
-	height: 30px;
+	height: 1.875rem;
 	position: relative;
 	overflow: hidden;
 }
@@ -1299,31 +1299,31 @@ body {
 	font-family: Nunito,Arial,Helvetica,sans-serif;
 	color: #222;
 	position: absolute;
-	height: 30px;
-	line-height: 30px;
+	height: 1.875rem;
+	line-height: 1.875rem;
 	top: 0;
-	left: 40px;
+	left: 2.5rem;
 }
 #database-app .heading-bar .top {
 	background: white;
 	width: 100%;
-	height: 5px;
+	height: 0.3125rem;
 	transform: skew(-45deg,0) translate(30%,0);
 }
 #database-app .heading-bar .middle {
 	background: white;
 	width: 100%;
-	height: 20px;
-	transform: skew(-45deg,0) translate(30px,0);
+	height: 1.25rem;
+	transform: skew(-45deg,0) translate(1.875rem,0);
 }
 #database-app .heading-bar .bottom {
 	background: white;
 	width: 100%;
-	height: 5px;
+	height: 0.3125rem;
 }
 #database-app .bottom-bar {
 	width: 100%;
-	height: 65px;
+	height: 4.0625rem;
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -1331,7 +1331,7 @@ body {
 }
 #database-app .bottom-bar .top {
 	width: 100%;
-	height: 35px;
+	height: 2.1875rem;
 	position: relative;
 	overflow: hidden;
 	pointer-events: none;
@@ -1341,19 +1341,19 @@ body {
 	position: absolute;
 	bottom: 0;
 	right: 0;
-	height: 30px;
+	height: 1.875rem;
 	transform: translate(1.5em,110%) skew(-30deg);
 	transition: all 0.3s ease-in-out;
 	transition: all 0.3s var(--ease-in-out);
-	box-shadow: -2px -2px 2px 0 rgba(0,0,0,0.07), -3px -3px 1px -2px rgba(0,0,0,0.06), -2px -1px 5px 0 rgba(0,0,0,0.1);
+	box-shadow: -0.125rem -0.125rem 0.125rem 0 rgba(0,0,0,0.07), -0.1875rem -0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.06), -0.125rem -0.0625rem 0.3125rem 0 rgba(0,0,0,0.1);
 	pointer-events: auto;
 }
 #database-app .bottom-bar .top .inner p {
 	font-family: Nunito,Arial,Helvetica,sans-serif;
 	margin: 0 3em 0 1.5em;
 	width: 100%;
-	height: 30px;
-	line-height: 30px;
+	height: 1.875rem;
+	line-height: 1.875rem;
 	transform: skew(30deg);
 	color: black;
 }
@@ -1363,24 +1363,24 @@ body {
 #database-app .bottom-bar .middle {
 	background: white;
 	width: 100%;
-	height: 25px;
-	box-shadow: 0 -2px 2px 0 rgba(0,0,0,0.07), 0 -3px 1px -2px rgba(0,0,0,0.06), 0 -1px 5px 0 rgba(0,0,0,0.1);
+	height: 1.5625rem;
+	box-shadow: 0 -0.125rem 0.125rem 0 rgba(0,0,0,0.07), 0 -0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.06), 0 -0.0625rem 0.3125rem 0 rgba(0,0,0,0.1);
 }
 #database-app .bottom-bar .bottom {
 	background: linear-gradient(to right,#1488cc,#2b32b2);
 	background: linear-gradient(to right,var(--light-theme),var(--dark-theme));
 	width: 100%;
-	height: 5px;
+	height: 0.3125rem;
 }
 #database-app .options-block {
 	transform: translate(0,0);
 	width: 100%;
 }
 #database-app .options-block .hint-arrow.left {
-	left: -10px;
+	left: -0.625rem;
 }
 #database-app .options-block .hint-arrow.right {
-	right: -10px;
+	right: -0.625rem;
 }
 
 #database-app .section.article-section {
@@ -1391,7 +1391,7 @@ body {
 	margin: 4.5em 4.5em 6em 4.5em;
 	padding: 1em 1.5em 1.5em 1.5em;
 	background: linear-gradient(to bottom,white,#f4f4f4);
-	box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+	box-shadow: 0 0.625rem 1.25rem rgba(0,0,0,0.19), 0 0.375rem 0.375rem rgba(0,0,0,0.23);
 }
 #database-app .section.article-section .article-content.inactive {
 	padding: 0;
@@ -1404,7 +1404,7 @@ body {
 	display: block;
 }
 #database-app .fake-title {
-	border-bottom: 1px solid #bbb;
+	border-bottom: 0.0625rem solid #bbb;
 	color: #901;
 	padding: 0 0 0.25em;
 	margin: 0 0 0.6em;
@@ -1429,14 +1429,14 @@ body {
 }
 .back {
 	overflow-x: hidden;
-	height: 50px;
+	height: 3.125rem;
 	transform: none;
 	position: absolute;
 	z-index: 10;
 }
 .back .parallelogram {
-	height: 45px;
-	margin: 0 20px 0 -13px;
+	height: 2.8125rem;
+	margin: 0 1.25rem 0 -0.8125rem;
 	transform: skew(-30deg);
 	display: inline-block;
 	background: white;
@@ -1446,7 +1446,7 @@ body {
 	transition: all 0.3s ease-in-out;
 	transition: all 0.3s var(--ease-in-out);
 	top: 0;
-	box-shadow: 1px 2px 2px 0 rgba(0,0,0,0.14), 2px 3px 1px -2px rgba(0,0,0,0.12), 1px 1px 5px 0 rgba(0,0,0,0.2);
+	box-shadow: 0.0625rem 0.125rem 0.125rem 0 rgba(0,0,0,0.14), 0.125rem 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), 0.0625rem 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
 }
 .back.hidden {
 	pointer-events: none;
@@ -1459,28 +1459,28 @@ body {
 }
 .back .parallelogram p {
 	position: relative;
-	margin: 0 1em 0 calc(2em + 13px);
+	margin: 0 1em 0 calc(2em + 0.8125rem);
 	transform: skew(30deg);
 	color: #205dbf;
 	color: var(--middle-theme);
 	font-family: Nunito,Arial,Helvetica,sans-serif;
-	font-size: 18px;
-	line-height: 45px;
+	font-size: 1.125rem;
+	line-height: 2.8125rem;
 }
 .back .parallelogram p i {
 	position: absolute;
 	top: 50%;
 	left: calc(-1.1em);
-	transform: translate(0,calc(-50% - 1px));
+	transform: translate(0,calc(-50% - 0.0625rem));
 }
 #run-app .section .title {
-	padding-top: 5px;
+	padding-top: 0.3125rem;
 }
 #run-app .section .title p {
-	height: 40px;
-	line-height: 40px;
+	height: 2.5rem;
+	line-height: 2.5rem;
 	margin: 0;
-	font-size: 25px;
+	font-size: 1.5625rem;
 	text-align: right;
 	font-family: Nunito,Arial,Helvetica,sans-serif;
 	margin: 0 6%;
@@ -1562,7 +1562,7 @@ misc leave -> slide to left DONE
 	margin: 0.3em;
 	background: white;
 	color: var(--middle-theme);
-	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+	box-shadow: 0 0.125rem 0.125rem 0 rgba(0,0,0,0.14), 0 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), 0 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
 }
 #run-app .section.menu-section .operations ul li a {
 	font-family: Nunito,Arial,Helvetica,sans-serif;
@@ -1570,7 +1570,7 @@ misc leave -> slide to left DONE
 #run-app .section.menu-section .menu-title {
 }
 #run-app .section.map-section {
-	font-size: 16px;
+	font-size: 1rem;
 	line-height: 1.1em;
 }
 #run-app .section.map-section .selection-info {
@@ -1580,8 +1580,8 @@ misc leave -> slide to left DONE
 	justify-content: center;
 	align-items: flex-end;
 	position: absolute;
-	bottom: 10px;
-	right: 70px;
+	bottom: 0.625rem;
+	right: 4.375rem;
 }
 #run-app .section.map-section .selection-info p {
 	margin: 0;
@@ -1589,37 +1589,37 @@ misc leave -> slide to left DONE
 #run-app .section.map-section .map-container {
 	font-family: pxplus_ibm_vga8regular,monospace;
 	background: #8bac0f;
-	margin: 0 20px;
-	box-shadow: inset 0 0 40px 0 #000;
-	padding: 20px;
-	height: 450px;
+	margin: 0 1.25rem;
+	box-shadow: inset 0 0 2.5rem 0 #000;
+	padding: 1.25rem;
+	height: 28.125rem;
 	position: relative;
 }
 #run-app .section.map-section .sitemap {
-	width: 600px;
-	height: 450px;
+	width: 37.5rem;
+	height: 28.125rem;
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	clip: rect(0px, 600px, 450px, 0px);
+	clip: rect(0rem, 37.5rem, 28.125rem, 0rem);
 	transform: translate(-50%,-50%);
 	transition: clip 2s steps(10,start) 1s, transform 1s steps(10,start);
 	/* background-image set in HTML */
 }
 #run-app .section.map-section:not(.selected) .sitemap {
-	clip: rect(0px, 600px, 0px, 0px);
+	clip: rect(0rem, 37.5rem, 0rem, 0rem);
 	transition: all 0s;
 }
 #run-app .section.map-section .map-container.minimise .sitemap {
 	transform: translate(-23%,-55%) scale(0.5,0.5);
 }
 #run-app .section.map-section .sitemap.ng-enter {
-	clip: rect(0.41em, 9999px, 0.29em, 0);
+	clip: rect(0.41em, 624.9375rem, 0.29em, 0);
 	transition: clip 3s linear;
 	/* TODO test if this works */
 }
 #run-app .section.map-section .sitemap.ng-enter-active {
-	max-height: 450px;
+	max-height: 28.125rem;
 }
 #run-app .section.map-section .sitemap .room {
 	position: absolute;
@@ -1679,14 +1679,14 @@ misc leave -> slide to left DONE
 	cursor: pointer;
 }
 #run-app .section.map-section .back-button {
-	font-size: 30px;
+	font-size: 1.875rem;
 	position: absolute;
-	border: 3px #0f380f solid;
+	border: 0.1875rem #0f380f solid;
 	color: #0f380f;
 	background: transparent;
-	padding: 5px 10px;
-	bottom: 85px;
-	right: 115px;
+	padding: 0.3125rem 0.625rem;
+	bottom: 5.3125rem;
+	right: 7.1875rem;
 	opacity: 0;
 	transition: opacity 0s linear 0s;
 	visibility: hidden;
@@ -1708,7 +1708,7 @@ misc leave -> slide to left DONE
 #run-app .section.map-section .room-info h1 {
 	font-family: pxplus_ibm_vga8regular,monospace;
 	color: #0f380f;
-	border-bottom: 2px #0f380f solid;
+	border-bottom: 0.125rem #0f380f solid;
 }
 #run-app .section.map-section .room-description {
 	width: 50%;
@@ -1720,14 +1720,14 @@ misc leave -> slide to left DONE
 	background: #749a13;
 	margin: 0.5em;
 	padding: 0.5em;
-	height: 200px;
+	height: 12.5rem;
 	overflow-y: scroll;
 }
 #run-app .section.map-section .room-camera-feed h2 {
 	font-family: pxplus_ibm_vga8regular,monospace;
 	margin: 0.5em;
 	margin-top: 0.1em;
-	border-bottom: 2px #0f380f solid;
+	border-bottom: 0.125rem #0f380f solid;
 }
 #run-app .section.map-section .room-camera-feed p {
 	font-family: pxplus_ibm_vga8regular,monospace;
@@ -1790,15 +1790,15 @@ misc leave -> slide to left DONE
 }
 .disconnected-alert {
 	width: 100%;
-	height: 30px;
+	height: 1.875rem;
 	position: absolute;
 	top: 50%;
 	transform: translate(0,-50%);
 	background: #dd0000;
 	font-family: Nunito,Arial,Helvetica,sans-serif;
 	text-align: center;
-	font-size: 20px;
-	line-height: 30px;
+	font-size: 1.25rem;
+	line-height: 1.875rem;
 }
 .disconnected-alert.ng-enter {
 	transform: translate(0,-50%) scaleY(0);
@@ -1826,7 +1826,7 @@ misc leave -> slide to left DONE
 .preload #app-selector .title {
 	top: 45%;
 	transform: translate(0,-50%);
-	height: 140px;
+	height: 8.75rem;
 }
 #app-selector .title .title-info {
 	display: none;
@@ -1875,32 +1875,32 @@ misc leave -> slide to left DONE
 }
 
 .statement:hover {
-	border: 3px #205dbf solid;
-	border: 3px var(--middle-theme) solid;
-	border-bottom-width: 12px;
-	padding: 1px 3px 1px 3px;
-	margin: -4px -6px -13px -6px;
-	border-radius: 6px;
+	border: 0.1875rem #205dbf solid;
+	border: 0.1875rem var(--middle-theme) solid;
+	border-bottom-width: 0.75rem;
+	padding: 0.0625rem 0.1875rem 0.0625rem 0.1875rem;
+	margin: -0.25rem -0.375rem -0.8125rem -0.375rem;
+	border-radius: 0.375rem;
 	z-index: 50;
 	position: relative;
 }
 .statement:hover::after {
 	content: "";
 	width: 100%;
-	height: 10px;
+	height: 0.625rem;
 	position: absolute;
 	background-image: url(loading.gif);
-	background-size: 10px 10px;
+	background-size: 0.625rem 0.625rem;
 	background-position: center center;
 	background-repeat: no-repeat;
 	text-align: center;
-	top: 21px;
-	margin-left: calc(-100% + 4px);
+	top: 1.3125rem;
+	margin-left: calc(-100% + 0.25rem);
 	z-index: 100;
 	color: white;
 	font-weight: bold;
-	font-size: 10px;
-	line-height: 10px;
+	font-size: 0.625rem;
+	line-height: 0.625rem;
 }
 
 .statement.true:hover {
@@ -1929,26 +1929,26 @@ misc leave -> slide to left DONE
  *     /_/                           */
 /*#region options*/
 .options-block {
-	width: calc(100% + 20px);
-	height: 145px;
+	width: calc(100% + 1.25rem);
+	height: 9.0625rem;
 	position: relative;
-	transform: translate(-10px,0);
+	transform: translate(-0.625rem,0);
 	/*background: url(aiad_fade.png), linear-gradient(to bottom, #f4f4f4, white);*/
-	background-size: 300px 300px, 100% 100%;
+	background-size: 18.75rem 18.75rem, 100% 100%;
 	background-position: 90% 50%, center;
 	background-repeat: no-repeat;
 	transition: all 2s ease-in-out;
 	transition: all 2s var(--ease-in-out);
-	box-shadow: inset 0 -3px 1px -2px rgba(0,0,0,0.12), inset 0 -1px 5px 0 rgba(0,0,0,0.2),
-	            inset 0 2px 2px 0 rgba(0,0,0,0.14), inset 0 3px 1px -2px rgba(0,0,0,0.12), inset 0 1px 5px 0 rgba(0,0,0,0.2);
+	box-shadow: inset 0 -0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), inset 0 -0.0625rem 0.3125rem 0 rgba(0,0,0,0.2),
+	            inset 0 0.125rem 0.125rem 0 rgba(0,0,0,0.14), inset 0 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), inset 0 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
 	overflow: hidden;
 }
 .options-block.options-ready {
 	/*background-position: 90% 50%;*/
 }
 .options-block .hint-arrow {
-	height: 145px;
-	width: 217px; /* width of image */
+	height: 9.0625rem;
+	width: 13.5625rem; /* width of image */
 	/*background-image: url(highlight-arrow.png);*/
 	background-position: center;
 	position: absolute;
@@ -1958,19 +1958,19 @@ misc leave -> slide to left DONE
 }
 .options-block .hint-arrow.left {
 	left: 0;
-	transform: translate(-165px,0);
+	transform: translate(-10.3125rem,0);
 }
 .options-block .hint-arrow.right {
 	right: 0;
-	transform: translate(165px,0) scaleX(-1);
+	transform: translate(10.3125rem,0) scaleX(-1);
 }
 .options-block.options-ready .hint-arrow.left {
 	transition: all 2s ease-in-out;
-	transform: translate(-92px,0);
+	transform: translate(-5.75rem,0);
 }
 .options-block.options-ready .hint-arrow.right {
 	transition: all 2s ease-in-out;
-	transform: translate(92px,0) scaleX(-1);
+	transform: translate(5.75rem,0) scaleX(-1);
 }
 /*.options-block.options-ready.emphasis .hint-arrow.left {
 	animation: options-emphasis 3s ease-in 0s infinite alternate forwards;
@@ -1979,7 +1979,7 @@ misc leave -> slide to left DONE
 	animation: options-emphasis-reverse 3s ease-in 0s infinite alternate forwards;
 } how about we just don't? */
 .options {
-	height: calc(100% - 0px);
+	height: calc(100% - 0rem);
 	max-width: 50%;
 	margin: 0 auto;
 	padding: 0 0;
@@ -1993,8 +1993,8 @@ misc leave -> slide to left DONE
 }
 .options.balance {
 	/* change the height so that the right column never has 1 option */
-	height: calc(100% - 20px);
-	padding: 10px 0;
+	height: calc(100% - 1.25rem);
+	padding: 0.625rem 0;
 	max-width: 60%;
 }
 
@@ -2017,15 +2017,15 @@ misc leave -> slide to left DONE
 	color: #b01;
 	text-decoration: none;
 	transition: all 0.2s;
-	padding: 5px 12px 5px 15px;
+	padding: 0.3125rem 0.75rem 0.3125rem 0.9375rem;
 	border: none;
-	margin-left: 3px;
+	margin-left: 0.1875rem;
 	position: relative;
 	z-index: 2;
 }
 .option.action::before {
 	background-color: transparent;
-	border: 1px solid #b01;
+	border: 0.0625rem solid #b01;
 	transition-duration: 0.2s;
 	transform: skewX(-20deg);
 	position: absolute;
@@ -2033,9 +2033,9 @@ misc leave -> slide to left DONE
 	left: 0;
 	z-index: -1;
 	width: 100%;
-	height: calc(100% - 2px);
+	height: calc(100% - 0.125rem);
 	content: "";
-	padding-bottom: -1px;
+	padding-bottom: -0.0625rem;
 }
 .option.action:hover {
 	color: white;
@@ -2049,19 +2049,19 @@ misc leave -> slide to left DONE
 .option.speech {
 	color: #205dbf;
 	color: var(--middle-theme);
-	border: 1px solid #205dbf;
-	border: 1px solid var(--middle-theme);
+	border: 0.0625rem solid #205dbf;
+	border: 0.0625rem solid var(--middle-theme);
 	text-decoration: none;
-	border-radius: 20px;
+	border-radius: 1.25rem;
 	transition: all 0.2s;
-	padding: 4px 15px;
+	padding: 0.25rem 0.9375rem;
 }
 .option.speech:hover {
 	color: white;
 	background-color: #205dbf;
 	background-color: var(--middle-theme);
 	transition-duration: 0.2s;
-	/*margin-left: 30px;*/
+	/*margin-left: 1.875rem;*/
 }
 .option::after {
 	content: attr(data-action);
@@ -2076,11 +2076,11 @@ misc leave -> slide to left DONE
 	opacity: 0;
 }
 .option:hover::after {
-	transform: translate(calc(-100% - 5px),-50%);
+	transform: translate(calc(-100% - 0.3125rem),-50%);
 	opacity: 1;
 }
 /*.option.action:hover::after {
-	margin-left: -23px;
+	margin-left: -1.4375rem;
 	opacity: 1;
 }*/
 .option.speech#boot-up {
@@ -2153,7 +2153,7 @@ misc leave -> slide to left DONE
 .options .option-wrapper.ng-enter button {
 	transition: inherit;
 	opacity: 0;
-	transform: translate(-30px,0);
+	transform: translate(-1.875rem,0);
 }
 .options .option-wrapper.ng-enter-active button {
 	opacity: 1;
@@ -2171,7 +2171,7 @@ misc leave -> slide to left DONE
 }
 .options .option-wrapper.ng-leave-active button {
 	opacity: 0;
-	transform: translate(0,30px);
+	transform: translate(0,1.875rem);
 }
 .options .option-wrapper.ng-leave button:active, .options .option-wrapper.ng-leave button:focus {
 	transition: transform 0.5s linear 0s, opacity 0.5s linear 0s;
@@ -2180,7 +2180,7 @@ misc leave -> slide to left DONE
 }
 .options .option-wrapper.ng-leave-active button:active, .options .option-wrapper.ng-leave-active button:focus {
 	opacity: 0;
-	transform: translate(0,-0px);
+	transform: translate(0,-0rem);
 }
 /*#endregion options*/
 
@@ -2195,10 +2195,10 @@ misc leave -> slide to left DONE
 font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [minimum viewport width]) / ([maximum viewport width] - [minimum viewport width])));
 */
  
-@media only screen and (max-width: 699px) {
-	/* at less than 700px probably a mobile device */
+@media only screen and (max-width: 43.6875rem) {
+	/* at less than 43.75rem probably a mobile device */
 	#app-selector .title {
-		height: 50px;
+		height: 3.125rem;
 	}
 	#app-selector .title .title-image {
 		top: 0;
@@ -2207,11 +2207,11 @@ font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [
 		background-position: center;
 	}
 	#app-selector {
-		height: 110px;
+		height: 6.875rem;
 	}
 	#app-selector ul {
-		height: 60px;
-		top: 50px;
+		height: 3.75rem;
+		top: 3.125rem;
 		left: 0;
 		transform: translate(0,0);
 		justify-content: center;
@@ -2223,22 +2223,22 @@ font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [
 		justify-content: center;
 	}
 	#app-body {
-		height: calc(100% - 140px);
+		height: calc(100% - 8.75rem);
 	}
 	#messages-app .conversation .wrapper {
-		margin-right: 20px;
-		margin-left: 100px;
+		margin-right: 1.25rem;
+		margin-left: 6.25rem;
 	}
 	#messages-app .conversation .wrapper.maitreya {
-		margin-right: 80px;
-		margin-left: 20px;
+		margin-right: 5rem;
+		margin-left: 1.25rem;
 	}
 	#messages-app .speaking-markers {
 		margin-right: 0;
-		margin-left: 100px;
+		margin-left: 6.25rem;
 	}
 	#messages-selector {
-		height: 49px;
+		height: 3.0625rem;
 	}
 	#messages-selector ul {
 		overflow-y: auto;
@@ -2247,50 +2247,50 @@ font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [
 		white-space: nowrap;
 	}
 	#messages-selector ul li.selector.selected a {
-		padding-top: 10px;
-		padding-bottom: 10px;
+		padding-top: 0.625rem;
+		padding-bottom: 0.625rem;
 	}
 	#messages-app .middle-bar,
 	#terminal-app .top-bar {
-		height: 15px;
+		height: 0.9375rem;
 	}
 	#messages-app .middle-bar .middle,
 	#terminal-app .top-bar .middle {
-		height: 5px;
+		height: 0.3125rem;
 	}
 	#messages-app .middle-bar .bottom,
 	#terminal-app .top-bar .bottom {
-		height: 5px;
+		height: 0.3125rem;
 	}
 	#messages-app .bottom-bar,
 	#terminal-app .bottom-bar {
-		height: 15px;
+		height: 0.9375rem;
 	}
 	#messages-app .bottom-bar .top,
 	#terminal-app .bottom-bar .top {
-		height: 10px;
+		height: 0.625rem;
 	}
 	#terminal-app .bottom-bar .middle {
 		height: 0;
 	}
 	#messages-app .conversation-container {
-		height: 306px;
+		height: 19.125rem;
 	}
 	.options-block {
 		background-position: center;
 	}
 	#terminal-app .terminal-log {
-		margin-right: 25px;
-		margin-left: 25px;
+		margin-right: 1.5625rem;
+		margin-left: 1.5625rem;
 	}
 	#terminal-app .working {
-		left: 25px;
+		left: 1.5625rem;
 	}
 	#terminal-app .terminal-body {
-		height: 410px;
+		height: 25.625rem;
 	}
 	#terminal-app .middle-bar {
-		width: calc(100% - 100px);
+		width: calc(100% - 6.25rem);
 	}
 	
 }
@@ -2346,22 +2346,22 @@ font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [
 }
 
 @keyframes options-emphasis {
-	0% {transform: translate(-92px,0);}
-	100% {transform: translate(-62px,0);}
+	0% {transform: translate(-5.75rem,0);}
+	100% {transform: translate(-3.875rem,0);}
 }
 
 @keyframes options-emphasis-reverse {
-	0% {transform: translate(92px,0) scaleX(-1);}
-	100% {transform: translate(62px,0) scaleX(-1);}
+	0% {transform: translate(5.75rem,0) scaleX(-1);}
+	100% {transform: translate(3.875rem,0) scaleX(-1);}
 }
 
 /*@keyframes bounce {
 	0%, 100% {top: 50%;}
-	10%, 90% {top: calc(50% - 1.08px);}
-	20%, 80% {top: calc(50% - 1.92px);}
-	30%, 70% {top: calc(50% - 2.52px);}
-	40%, 60% {top: calc(50% - 2.88px);}
-	50%, {top: calc(50% - 3px);}
+	10%, 90% {top: calc(50% - 0.0625rem);}
+	20%, 80% {top: calc(50% - 0.0625rem);}
+	30%, 70% {top: calc(50% - 0.125rem);}
+	40%, 60% {top: calc(50% - 0.125rem);}
+	50%, {top: calc(50% - 0.1875rem);}
 }*/
 
 /* MOUSEOVER BOUNCE */
@@ -2502,74 +2502,74 @@ font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [
 }
 
 @keyframes noise-anim {
-	0% {clip: rect(0.63em, 9999px, 0.96em, 0);}
-	5% {clip: rect(0.82em, 9999px, 0.06em, 0);}
-	10% {clip: rect(0.68em, 9999px, 0.49em, 0);}
-	15% {clip: rect(0.32em, 9999px, 0.9em, 0);}
-	20% {clip: rect(0.1em, 9999px, 0.09em, 0);}
-	25% {clip: rect(0.34em, 9999px, 0.67em, 0);}
-	30% {clip: rect(0.64em, 9999px, 0.36em, 0);}
-	35% {clip: rect(0.12em, 9999px, 0.61em, 0);}
-	40% {clip: rect(0.67em, 9999px, 0.45em, 0);}
-	45% {clip: rect(1em, 9999px, 0.02em, 0);}
-	50% {clip: rect(0.04em, 9999px, 0.56em, 0);}
-	55% {clip: rect(0.87em, 9999px, 0.84em, 0);}
-	60% {clip: rect(0.72em, 9999px, 0.91em, 0);}
-	65% {clip: rect(0.2em, 9999px, 0.63em, 0);}
-	70% {clip: rect(0.93em, 9999px, 0em, 0);}
-	75% {clip: rect(0.39em, 9999px, 0.01em, 0);}
-	80% {clip: rect(0.79em, 9999px, 0.64em, 0);}
-	85% {clip: rect(0.19em, 9999px, 0.98em, 0);}
-	90% {clip: rect(0.99em, 9999px, 0.73em, 0);}
-	95% {clip: rect(0.51em, 9999px, 0.19em, 0);}
-	100% {clip: rect(0.29em, 9999px, 0.76em, 0);}
+	0% {clip: rect(0.63em, 624.9375rem, 0.96em, 0);}
+	5% {clip: rect(0.82em, 624.9375rem, 0.06em, 0);}
+	10% {clip: rect(0.68em, 624.9375rem, 0.49em, 0);}
+	15% {clip: rect(0.32em, 624.9375rem, 0.9em, 0);}
+	20% {clip: rect(0.1em, 624.9375rem, 0.09em, 0);}
+	25% {clip: rect(0.34em, 624.9375rem, 0.67em, 0);}
+	30% {clip: rect(0.64em, 624.9375rem, 0.36em, 0);}
+	35% {clip: rect(0.12em, 624.9375rem, 0.61em, 0);}
+	40% {clip: rect(0.67em, 624.9375rem, 0.45em, 0);}
+	45% {clip: rect(1em, 624.9375rem, 0.02em, 0);}
+	50% {clip: rect(0.04em, 624.9375rem, 0.56em, 0);}
+	55% {clip: rect(0.87em, 624.9375rem, 0.84em, 0);}
+	60% {clip: rect(0.72em, 624.9375rem, 0.91em, 0);}
+	65% {clip: rect(0.2em, 624.9375rem, 0.63em, 0);}
+	70% {clip: rect(0.93em, 624.9375rem, 0em, 0);}
+	75% {clip: rect(0.39em, 624.9375rem, 0.01em, 0);}
+	80% {clip: rect(0.79em, 624.9375rem, 0.64em, 0);}
+	85% {clip: rect(0.19em, 624.9375rem, 0.98em, 0);}
+	90% {clip: rect(0.99em, 624.9375rem, 0.73em, 0);}
+	95% {clip: rect(0.51em, 624.9375rem, 0.19em, 0);}
+	100% {clip: rect(0.29em, 624.9375rem, 0.76em, 0);}
 }
 .glitch:after {
 	content: attr(data-text);
 	position: absolute;
-	left: 2px;
-	text-shadow: -1px 0 red;
+	left: 0.125rem;
+	text-shadow: -0.0625rem 0 red;
 	color: white;
 	background: linear-gradient(to bottom,#111,#222,#222,#111);
 	overflow: hidden;
-	clip: rect(0, 900px, 0, 0);
+	clip: rect(0, 56.25rem, 0, 0);
 	animation: noise-anim 2s infinite linear alternate-reverse;
 	top: 0;
 }
 
 @keyframes noise-anim-2 {
-	0% {clip: rect(0.07em, 9999px, 0.02em, 0);}
-	5% {clip: rect(0.3em, 9999px, 0.44em, 0);}
-	10% {clip: rect(0.95em, 9999px, 0.32em, 0);}
-	15% {clip: rect(0.43em, 9999px, 0.08em, 0);}
-	20% {clip: rect(0.75em, 9999px, 0.62em, 0);}
-	25% {clip: rect(0.47em, 9999px, 0.77em, 0);}
-	30% {clip: rect(0.68em, 9999px, 0.39em, 0);}
-	35% {clip: rect(0.49em, 9999px, 0.14em, 0);}
-	40% {clip: rect(0.34em, 9999px, 0.71em, 0);}
-	45% {clip: rect(0.2em, 9999px, 0.7em, 0);}
-	50% {clip: rect(0.57em, 9999px, 0.09em, 0);}
-	55% {clip: rect(0.28em, 9999px, 0.89em, 0);}
-	60% {clip: rect(0.41em, 9999px, 0.29em, 0);}
-	65% {clip: rect(0.31em, 9999px, 0.98em, 0);}
-	70% {clip: rect(0.71em, 9999px, 0.17em, 0);}
-	75% {clip: rect(0.69em, 9999px, 0.75em, 0);}
-	80% {clip: rect(0.74em, 9999px, 0.18em, 0);}
-	85% {clip: rect(0.01em, 9999px, 0.61em, 0);}
-	90% {clip: rect(0.43em, 9999px, 0.56em, 0);}
-	95% {clip: rect(0.64em, 9999px, 0.68em, 0);}
-	100% {clip: rect(0.77em, 9999px, 0.45em, 0);}
+	0% {clip: rect(0.07em, 624.9375rem, 0.02em, 0);}
+	5% {clip: rect(0.3em, 624.9375rem, 0.44em, 0);}
+	10% {clip: rect(0.95em, 624.9375rem, 0.32em, 0);}
+	15% {clip: rect(0.43em, 624.9375rem, 0.08em, 0);}
+	20% {clip: rect(0.75em, 624.9375rem, 0.62em, 0);}
+	25% {clip: rect(0.47em, 624.9375rem, 0.77em, 0);}
+	30% {clip: rect(0.68em, 624.9375rem, 0.39em, 0);}
+	35% {clip: rect(0.49em, 624.9375rem, 0.14em, 0);}
+	40% {clip: rect(0.34em, 624.9375rem, 0.71em, 0);}
+	45% {clip: rect(0.2em, 624.9375rem, 0.7em, 0);}
+	50% {clip: rect(0.57em, 624.9375rem, 0.09em, 0);}
+	55% {clip: rect(0.28em, 624.9375rem, 0.89em, 0);}
+	60% {clip: rect(0.41em, 624.9375rem, 0.29em, 0);}
+	65% {clip: rect(0.31em, 624.9375rem, 0.98em, 0);}
+	70% {clip: rect(0.71em, 624.9375rem, 0.17em, 0);}
+	75% {clip: rect(0.69em, 624.9375rem, 0.75em, 0);}
+	80% {clip: rect(0.74em, 624.9375rem, 0.18em, 0);}
+	85% {clip: rect(0.01em, 624.9375rem, 0.61em, 0);}
+	90% {clip: rect(0.43em, 624.9375rem, 0.56em, 0);}
+	95% {clip: rect(0.64em, 624.9375rem, 0.68em, 0);}
+	100% {clip: rect(0.77em, 624.9375rem, 0.45em, 0);}
 }
 .glitch:before {
 	content: attr(data-text);
 	position: absolute;
-	left: -2px;
-	text-shadow: 1px 0 blue;
+	left: -0.125rem;
+	text-shadow: 0.0625rem 0 blue;
 	top: 0;
 	color: white;
 	background: linear-gradient(to bottom,#111,#222,#222,#111);
 	overflow: hidden;
-	clip: rect(0, 900px, 0, 0);
+	clip: rect(0, 56.25rem, 0, 0);
 	animation: noise-anim-2 3s infinite linear alternate-reverse;
 }
 /*#endregion animations*/
