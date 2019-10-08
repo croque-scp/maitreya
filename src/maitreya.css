@@ -325,7 +325,7 @@ body {
 	opacity: 1;
 	transition: visibility 0s linear 0s,
 	            height 0s linear 0s,
-	            opacity 0.2s ease-in-out;
+	            opacity 0.2s ease-in-out,
 	            opacity 0.2s var(--ease-in-out);
 }
 #app-body .container:not(.selected) {
@@ -335,7 +335,7 @@ body {
 	opacity: 0;
 	transition: visibility 0s linear 0.2s,
 	            height 0s linear 0.2s,
-	            opacity 0.2s ease-in-out;
+	            opacity 0.2s ease-in-out,
 	            opacity 0.2s var(--ease-in-out);
 }
 #app-body .container:not(.selected) .app-title p {
@@ -1889,7 +1889,7 @@ misc leave -> slide to left DONE
 	width: 100%;
 	height: 0.625rem;
 	position: absolute;
-	background-image: url(loading.gif);
+	background-image: url(images/loading.gif);
 	background-size: 0.625rem 0.625rem;
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -2308,7 +2308,7 @@ font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [
 @keyframes false-after {
 	0% {
 		content: "";
-		background-image: url(loading.gif);
+		background-image: url(images/loading.gif);
 	}
 	100% {
 		content: attr(data-bool);
@@ -2326,7 +2326,7 @@ font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [
 @keyframes correct-after {
 	0% {
 		content: "";
-		background-image: url(loading.gif);
+		background-image: url(images/loading.gif);
 	}
 	100% {
 		content: attr(data-bool);
