@@ -4,13 +4,7 @@
   "description": "## What is it? An interactive SCP story.",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config ./webpack.config.js --mode development",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "webpack": "webpack --config ./webpack.config.js",
-    "webpack-bundle-analyzer": "webpack-bundle-analyzer"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -22,18 +16,5 @@
   "bugs": {
     "url": "https://github.com/rossjrw/maitreya/issues"
   },
-  "homepage": "https://github.com/rossjrw/maitreya",
-  "devDependencies": {
-    "css-loader": "^3.2.0",
-    "file-loader": "^4.2.0",
-    "image-webpack-loader": "^6.0.0",
-    "style-loader": "^1.0.0",
-    "webpack": "^4.41.0",
-    "webpack-bundle-analyzer": "^3.5.2",
-    "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.2"
-  },
-  "dependencies": {
-    "gh-pages": "^2.1.1"
-  }
+  "homepage": "https://github.com/rossjrw/maitreya"
 }

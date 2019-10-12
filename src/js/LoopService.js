@@ -6,7 +6,7 @@
 	angular
 		.module('maitreya')
 		.service('LoopService',LoopService);
-	
+
 	function LoopService($timeout) {
 		var aic = {}, $scope = {};
 		this.use = function(scope) {
@@ -15,7 +15,7 @@
 		};
 		const loop = this;
 		const auto = "auto";
-		
+
 		function reportBlacklisted(smallSection) {
 			console.log("Attempted to push " + smallSection + " but it was blacklisted");
 			var index = aic.blacklist.indexOf(smallSection);
@@ -820,7 +820,7 @@
 					}
 					break;
 
-				
+
 				default:
 					throw new Error(bigSection + " is not an event");
 			}
@@ -1337,7 +1337,7 @@
 					}
 					break;
 
-				
+
 				default:
 					throw new Error(bigSection + " is not an event");
 			}
@@ -1355,5 +1355,5 @@
 
 
 	}
-	
+
 })();
