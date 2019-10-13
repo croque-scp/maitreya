@@ -430,7 +430,6 @@ do ->
               when 'n'
                 # 592 narration
                 force = 'narrator'
-              when 'q'
                 # quiet, but might not implement this
               when 't'
                 # message is typed, not spoken
@@ -1156,7 +1155,7 @@ do ->
           available: false
           text: 'http://www.scp-wiki.net/clock-multiplier'
     # This object contains all dialogue strings
-    speech = 
+    speech =
       INTRODUCTION: terminal:
         startBoot: [
           0
@@ -1380,7 +1379,7 @@ do ->
             # if speech does not have the bigSection, hell yeah let's overwrite that shit
             @[bigSection] = dialogue[bigSection]
         return
-    cheats = 
+    cheats =
       impatientMode: false
       beingSkipped: false
     wipeTimer = false
@@ -1390,7 +1389,7 @@ do ->
     # seconds per letter
     maitreyaDelay = 0.5
     # how long it takes people to respond to maitreya
-    timeOutList = 
+    timeOutList =
       terminal: []
       breach: []
       alexandra: []
@@ -1404,7 +1403,7 @@ do ->
       5
       6
     ]
-    currentlyPushing = 
+    currentlyPushing =
       breach: false
       alexandra: false
     # whether or not pushToLog() is active
@@ -2089,7 +2088,7 @@ do ->
         $timeout (->
           aic.vars.selectedRoom = room
           return
-        ), if aic.vars.selectedRoom == 'none' then 1000 else 0, true
+        ), (if aic.vars.selectedRoom == 'none' then 1000 else 0), true
       return
 
     # modify room settings/options

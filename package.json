@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/rossjrw/maitreya/issues"
   },
-  "homepage": "https://github.com/rossjrw/maitreya"
+  "homepage": "https://github.com/rossjrw/maitreya",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-coffee": "^3.0.3"
+  }
 }
