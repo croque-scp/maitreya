@@ -20,7 +20,7 @@ shuffle = function(array) {
   return array;
 };
 
-'use strict';
+"use strict";
 
 (function() {  /* global $, angular */
   // and here begins AngularJS
@@ -38,8 +38,8 @@ shuffle = function(array) {
       // Answer: hell yes I do
       // pass sections to the func or use variables?
       // pass to func for now
-      smallSection = smallSection.replace(/_*$/g, '');
-      console.log('Main - ' + bigSection + ' - ' + smallSection);
+      smallSection = smallSection.replace(/_*$/g, "");
+      console.log(`Main - ${bigSection} - ${smallSection}`);
       // msg syntax IS NOT SUITABLE HERE! only for breach and alexandra!
       delay = 0;
       switch (bigSection) {
@@ -49,10 +49,11 @@ shuffle = function(array) {
               delay = writeDialogue('terminal', speech[bigSection].terminal[smallSection]);
               aic.timers.terminal = $timeout((function() {
                 breachLoop('INTRODUCTION', 'start');
+                return null;
               }), (delay - 1.5) * 1000);
               break;
             default:
-              throw new Error(smallSection + ' is not an event in ' + bigSection);
+              throw new Error(`${smallSection} is not an event in ${bigSection}`);
           }
           break;
         case 'ROOMS':
@@ -64,6 +65,7 @@ shuffle = function(array) {
               // then turn them all back on, one by one
               $timeout((function() {
                 mainLoop('ROOMS', 'unbootRoom');
+                return null;
               }), 200);
               break;
             case 'unbootRoom':
@@ -73,6 +75,7 @@ shuffle = function(array) {
                 // all rooms must be turned off at this point
                 $scope.$apply(function() {
                   aic.rooms[rooms[0]].error = true;
+                  return null;
                 });
               }
               // now check the next room
@@ -80,10 +83,12 @@ shuffle = function(array) {
               if (rooms.length > 0) {
                 $timeout((function() {
                   mainLoop('ROOMS', 'unbootRoom', rooms);
+                  return null;
                 }), Math.floor(Math.random() * 20));
               } else {
                 $timeout((function() {
                   mainLoop('ROOMS', 'bootRoom');
+                  return null;
                 }), 2000);
               }
               break;
@@ -97,6 +102,7 @@ shuffle = function(array) {
               if (aic.rooms[rooms[0]].error === true && aic.vars.scp4000.location !== rooms[0] && rooms[0] !== 'toilet') {
                 $scope.$apply(function() {
                   aic.rooms[rooms[0]].error = false;
+                  return null;
                 });
               }
               // now check the next room
@@ -104,38 +110,40 @@ shuffle = function(array) {
               if (rooms.length > 0) {
                 $timeout((function() {
                   mainLoop('ROOMS', 'bootRoom', rooms, delay);
+                  return null;
                 }), Math.floor(Math.random() * delay));
               }
               break;
             default:
-              throw new Error(smallSection + ' is not an event in ' + bigSection);
+              throw new Error(`${smallSection} is not an event in ${bigSection}`);
           }
           break;
         case 'misc':
           switch (smallSection) {
             // pretty sure this only happens when skipping the intro, but whatever
             case 'introSkipped':
-              delay = writeDialogue('terminal', speech[bigSection].terminal[smallSection]);
+              delay = writeDialogue("terminal", speech[bigSection].terminal[smallSection]);
               break;
             default:
-              throw new Error(smallSection + ' is not an event in ' + bigSection);
+              throw new Error(`${smallSection} is not an event in ${bigSection}`);
           }
           break;
         default:
-          throw new Error(bigSection + ' is not an event');
+          throw new Error(`${bigSection} is not an event`);
       }
+      return null;
     };
     breachLoop = function(bigSection, smallSection) {
       var error, msg;
       // smallSection may have trailing underscores - clean these up
       smallSection = smallSection.replace(/_*$/g, '');
-      console.log('Breach - ' + bigSection + ' - ' + smallSection);
+      console.log(`Breach - ${bigSection} - ${smallSection}`);
       msg = void 0;
       try {
         msg = speech[bigSection].breach[smallSection];
       } catch (error1) {
         error = error1;
-        throw new Error(smallSection + ' doesn\'t exist in Breach\'s ' + bigSection);
+        throw new Error(`${smallSection} doesn't exist in Breach's ${bigSection}`);
       }
       aic.ready.messages = true;
       aic.ready.breach = true;
@@ -148,38 +156,40 @@ shuffle = function(array) {
               break;
             default:
               //do stuff
-              throw new Error('Breach ' + smallSection + ' is not an event in ' + bigSection);
+              throw new Error(`Breach ${smallSection} is not an event in ${bigSection}`);
           }
           break;
         default:
           // this event is not declared, so defer to LoopService
           LoopService.breachLoop(bigSection, smallSection, msg);
       }
+      return null;
     };
     alexandraLoop = function(bigSection, smallSection) {
       var error, msg;
       // smallSection may have trailing underscores - clean these up
       smallSection = smallSection.replace(/_*$/g, '');
-      console.log('Alexandra - ' + bigSection + ' - ' + smallSection);
+      console.log(`Alexandra - ${bigSection} - ${smallSection}`);
       msg = void 0;
       try {
         msg = speech[bigSection].alexandra[smallSection];
       } catch (error1) {
         error = error1;
-        throw new Error(smallSection + ' doesn\'t exist in Alexandra\'s ' + bigSection);
+        throw new Error(`${smallSection} doesn\'t exist in Alexandra\'s ${bigSection}`);
       }
       aic.ready.messages = true;
       aic.ready.alexandra = true;
       // breachLoop has been exported to LoopService
       LoopService.alexandraLoop(bigSection, smallSection, msg);
+      return null;
     };
     endingLoop = function(bigSection, smallSection, delay) {
       // smallSection may have trailing underscores - clean these up
       if (typeof smallSection === 'string') {
-        // endingLoop's smallSection is optional
-        smallSection = smallSection.replace(/_*$/g, '');
+        // endingLoop"s smallSection is optional
+        smallSection = smallSection.replace(/_*$/g, "");
       }
-      console.log('Ending - ' + bigSection + ' - ' + smallSection);
+      console.log(`Ending - ${bigSection} - ${smallSection}`);
       delay = delay || 0;
       switch (bigSection) {
         case 'PUSHENDING':
@@ -189,6 +199,7 @@ shuffle = function(array) {
             aic.ready.ending = true;
             aic.vars.terminalEmphasis = false;
             aic.switchApp('ending');
+            return null;
           }), delay * 1000, true);
           break;
         case 'ENDING':
@@ -198,20 +209,23 @@ shuffle = function(array) {
               delay = writeDialogue('terminal', speech.misc.terminal.breachShutDown);
               $timeout((function() {
                 endingLoop('PUSHENDING', smallSection, 2);
+                return null;
               }), delay * 1000);
               break;
             case 'example':
               $timeout((function() {
                 endingLoop('PUSHENDING', smallSection, 2);
+                return null;
               }), delay * 1000);
               break;
             default:
-              throw new Error(smallSection + ' is not an ending');
+              throw new Error(`${smallSection} is not an ending`);
           }
           break;
         default:
-          throw new Error(bigSection + ' is not an event');
+          throw new Error(`${bigSection} is not an event`);
       }
+      return null;
     };
     dynamicLoop = function(character, bigSection, smallSection) {
       // this only gets called when a conversation is skipped, so we can probably unmark the skippo here
@@ -228,25 +242,26 @@ shuffle = function(array) {
           break;
         default:
           console.log(character, bigSection, smallSection);
-          throw new Error('Unexpected dynamic character: ' + character);
+          throw new Error(`Unexpected dynamic character: ${character}`);
       }
+      return null;
     };
     /* PROCESSING FUNCTIONS */
     // pass options to chatLog for presentation to the user
     presentOptions = function(conversation, bigSection, ids) {
       var dialogueList, error, i, j, opinion, optionType, options;
       if (!speakerList.includes(conversation)) {
-        throw new Error(conversation + ' is not a conversation');
+        throw new Error(`${conversation} is not a conversation`);
       }
       if (!Array.isArray(ids) && ids !== 'CLEAR') {
-        throw new Error('options is not an array');
+        throw new Error("options is not an array");
       }
       // this function needs to put stuff into aic.chatLog[conversation].options
       // options list may not be empty:
       aic.chatLog[conversation].options = [];
       // if ids is "CLEAR", stop here, we only want to clear the array
       if (ids === 'CLEAR') {
-        return;
+        return null;
       }
       // clear undefined from list of options (in case of false-less ifs)
       ids = ids.filter(Boolean);
@@ -261,16 +276,16 @@ shuffle = function(array) {
         } catch (error1) {
           error = error1;
           // this can only fail if the option doesn't exist
-          throw new Error('Option ' + ids[i] + ' doesn\'t exist');
+          throw new Error(`Option ${ids[i]} doesn\'t exist`);
         }
         if (!Array.isArray(options[i])) {
-          console.log('ids: ', ids);
-          console.log('i: ', i);
-          throw new Error('option ' + options[i] + ' is not an array');
+          console.log("ids: ", ids);
+          console.log("i: ", i);
+          throw new Error(`option ${options[i]} is not an array`);
         }
         // first we work out what sort of action this is
         optionType = void 0;
-        if (options[i][0].charAt(1) === ':') {
+        if (options[i][0].charAt(1) === ":") {
           switch (options[i][0].charAt(0)) {
             case 's':
               optionType = 'speech';
@@ -279,7 +294,7 @@ shuffle = function(array) {
               optionType = 'action';
               break;
             default:
-              throw new Error('Unknown option type');
+              throw new Error("Unknown option type");
           }
           options[i][0] = options[i][0].substring(2);
         } else {
@@ -341,10 +356,11 @@ shuffle = function(array) {
       /*$scope.$apply(function() {*/
       //aic.chatLog[conversation].options.push(...options);
       aic.chatLog[conversation].options = options;
+      // this is probably better tbh
+      /*});*/
+      return null;
     };
     // structure dialogue and calculate timing
-    // this is probably better tbh
-    /*});*/
     writeDialogue = function(conversation, dialogueList, speaker, smallSection) {
       var cssClass, emote, force, i, j, maitreyaMessages, messages, mode, n1, n2, text, totalDelay;
       // Take a name and an array (mixture of letters and numbers) and crank out that dialogue boy
@@ -357,7 +373,7 @@ shuffle = function(array) {
       speaker = speaker || conversation;
       if (!Array.isArray(dialogueList)) {
         console.error(arguments);
-        throw new Error('dialogueList is not an array (probably does not exist)');
+        throw new Error("dialogueList is not an array (probably does not exist)");
       }
       // deep copy the dialogue to protect the original
       dialogueList = dialogueList.slice();
@@ -432,8 +448,8 @@ shuffle = function(array) {
               // we already know that the last speaker is maitreya, so it is impossible for this value to be 0
               if (maitreyaMessages === 0) {
                 /*throw new Error("maitreyaMessages is 0");*/
-                // except sometimes we reach this point anyway, and I have no idea why, so there's no point breaking the flow lmao
-                console.error('maitreyaMessages is 0');
+                // except sometimes we reach this point anyway, and I have no idea why, so there"s no point breaking the flow lmao
+                console.error("maitreyaMessages is 0");
               }
               n1 = maitreyaMessages * 0.5;
             }
@@ -481,7 +497,7 @@ shuffle = function(array) {
                 cssClass = 'typed';
                 break;
               default:
-                throw new Error('Unknown dialogue type: ' + text.charAt(0));
+                throw new Error(`Unknown dialogue type: ${text.charAt(0)}`);
             }
             text = text.substring(2);
           }
@@ -490,7 +506,7 @@ shuffle = function(array) {
               // they told me this would be unreadable in a week and I did not believe them
               emote = /(^\w*?):/.exec(text)[1];
               if (!alexandraEmotionList.includes(emote)) {
-                throw new Error('Alexandra is experiencing an invalid emotion: ' + emote);
+                throw new Error(`Alexandra is experiencing an invalid emotion: ${emote}`);
               }
               text = text.substring(emote.length + 1);
             } else {
@@ -520,7 +536,7 @@ shuffle = function(array) {
             aic.vars.lastSpeaker = force || speaker;
           }
         } else {
-          throw new Error('Dialogue not number or string');
+          throw new Error("Dialogue not number or string");
         }
         i++;
       }
@@ -556,7 +572,7 @@ shuffle = function(array) {
       // no need to do anything
       hasControl = true;
       } else {
-      throw new Error("Unknown pushToLog thread ownership situation in " + conversation + " - new " + thread + " vs old " + currentlyPushing[conversation]);
+      throw new Error("Unknown pushToLog thread ownership situation in #{conversation} - new " + thread + " vs old " + currentlyPushing[conversation]);
       }
       */
       // we should only be handling one ID per character at any given time.
@@ -640,7 +656,7 @@ shuffle = function(array) {
           if (!!aic.isSkipping[conversation]) {
             // check to see if we're being interrupted
             // the value of isSkipping[c] is either false or a character-bigSection-smallSection array indicating where to go afterwards
-            console.log('Now interrupting: ' + conversation);
+            console.log(`Now interrupting: ${conversation}`);
             // loop through timeoutlist and kill all timeouts?
             // maybe associate each timeout with its conversation in the list so we can selectively kill them
             timeout = 0;
@@ -653,9 +669,9 @@ shuffle = function(array) {
               //TODO: if the (dialogue that's being interrupted) has already queued the next line (ie loopThrough==true), then the current dialogue will be cancelled but the upcoming dialogue will not
               if (ID !== void 0) {
                 aic.blacklist.push(ID);
-                console.log('Blacklisting ' + ID + ' (via pushToLog)');
+                console.log(`Blacklisting ${ID} (via pushToLog)`);
               } else {
-                console.log('Did not blacklist \'undefined\' (via pushToLog)');
+                console.log("Did not blacklist \'undefined\' (via pushToLog)");
               }
               try {
                 aic.dynamicLoop(aic.isSkipping[conversation][0], aic.isSkipping[conversation][1], aic.isSkipping[conversation][2]);
@@ -663,7 +679,7 @@ shuffle = function(array) {
                 // aic.isSkipping gets cleared in dynamicLoop
                 e = error1;
                 console.error(e);
-                throw new Error('Unexpected interruption');
+                throw new Error("Unexpected interruption");
               }
               timeout++;
             }
@@ -674,7 +690,7 @@ shuffle = function(array) {
             aic.isSkipping[conversation] = false;
           } else {
             if (aic.blacklist.includes(ID)) {
-              console.error('WARNING: Tried to push ' + ID + ' but it was blacklisted (via pushToLog)');
+              console.error(`WARNING: Tried to push ${ID} but it was blacklisted (via pushToLog)`);
             } else {
               // don't push the message if it's empty
               // should never actually reach this point, but we do sometimes. final check.
@@ -694,36 +710,39 @@ shuffle = function(array) {
               }
             }
           }
-        // no more messages. we're done here
-        // if we have control, declare that we're releasing it
-        /*if(hasControl) {
-        currentlyPushing[conversation] = false;
-        }
-        */
+          // no more messages. we're done here
+          // if we have control, declare that we're releasing it
+          /*if(hasControl) {
+          currentlyPushing[conversation] = false;
+          }
+          */
+          return null;
         }), n2 * 1000, true);
         timeOutList[conversation].push([timeOut2, conversation]);
+        return null;
       }), n1 * 1000, true);
       timeOutList[conversation].push([timeOut1, conversation]);
+      /*function stillHasControl(timeout) {
+      // check whether or not the current thread has control
+      console.log(currentlyPushing[conversation] + " has control");
+      if(currentlyPushing[conversation] === false) {
+      throw new Error("currentlyPushing is false but a pushToLog thread (#{thread}) is running");
+        } else if(currentlyPushing[conversation] === thread) {
+        // this thread still has control
+        console.log(thread + " still has control");
+        hasControl = true;
+        return true;
+        } else {
+        // this thread no longer has control
+        hasControl = false;
+        console.log("pushToLog thread #{thread} interrupted by " + currentlyPushing[conversation] + " at " + timeout);
+        return false;
+        }
+      }
+      */
+      return null;
     };
     // add notifications to apps/speakers
-    /*function stillHasControl(timeout) {
-    // check whether or not the current thread has control
-    console.log(currentlyPushing[conversation] + " has control");
-    if(currentlyPushing[conversation] === false) {
-    throw new Error("currentlyPushing is false but a pushToLog thread (" + thread + ") is running");
-      } else if(currentlyPushing[conversation] === thread) {
-      // this thread still has control
-      console.log(thread + " still has control");
-      hasControl = true;
-      return true;
-      } else {
-      // this thread no longer has control
-      hasControl = false;
-      console.log("pushToLog thread " + thread + " interrupted by " + currentlyPushing[conversation] + " at " + timeout);
-      return false;
-      }
-    }
-    */
     addNotification = function(target) {
       // accepts apps as well as conversations as targets
       if (speakerList.includes(target)) {
@@ -735,6 +754,7 @@ shuffle = function(array) {
           aic.notifications[target]++;
         }
       }
+      return null;
     };
     // calculate the difference between two dates
     dateDiff = function(date1, date2) {
@@ -751,25 +771,25 @@ shuffle = function(array) {
       hours = Math.floor(hours % 24);
       mins = Math.floor(mins % 60);
       secs = Math.floor(secs % 60);
-      message = '';
+      message = "";
       if (days <= 0) {
         if (hours > 0) {
-          message += hours + ' hours ';
+          message += `${hours} hours `;
         }
         if (mins > 0) {
-          message += mins + ' min ';
+          message += `${mins} min `;
         }
         if (hours < 1) {
-          message += secs + ' sec ';
+          message += `${secs} sec `;
         }
       } else {
         if (years > 0) {
-          message += years + ' years, ';
+          message += `${years} years, `;
         }
         if (months > 0 || years > 0) {
-          message += months + ' months and ';
+          message += `${months} months and `;
         }
-        message += days + ' days';
+        message += `${days} days`;
       }
       return message;
     };
@@ -781,9 +801,9 @@ shuffle = function(array) {
       if (index > -1) {
         availableRooms.splice(index, 1);
       } else {
-        throw new Error('Bad room');
+        throw new Error("Bad room");
       }
-      room = 's' + room;
+      room = `s${room}`;
       // TODO tell the room which d class is now in it
       return room;
     };
@@ -794,29 +814,29 @@ shuffle = function(array) {
       if (Array.isArray(name)) {
         me.firstName = name[0];
         me.lastName = name[1];
-        me.name = me.firstName + ' ' + me.lastName;
+        me.name = `${me.firstName} ${me.lastName}`;
       } else {
         me.name = name;
       }
       me.location = location;
       if (!role.id || !role.status || !role.allegiance || !role.type) {
-        throw new Error(me.name + ' is missing role info');
+        throw new Error(`${me.name} is missing role info`);
       }
       me.id = role.id;
       if (['ok', 'dead'].includes(role.status)) {
         me.status = role.status;
       } else {
-        throw new Error(me.name + ' has an invalid role status');
+        throw new Error(`${me.name} has an invalid role status`);
       }
       if (['scp', '4000', 'ci'].includes(role.allegiance)) {
         me.allegiance = role.allegiance;
       } else {
-        throw new Error(me.name + ' has an invalid role allegiance');
+        throw new Error(`${me.name} has an invalid role allegiance`);
       }
       if (['dr', 'aic', 'scp', 'd'].includes(role.type)) {
         me.type = role.type;
       } else {
-        throw new Error(me.name + ' has an invalid role type');
+        throw new Error(`${me.name} has an invalid role type`);
       }
       switch (me.type) {
         case 'aic':
@@ -828,17 +848,20 @@ shuffle = function(array) {
         default:
           me.opinion = 0;
       }
+      return null;
     };
     preloadAlexandraFaces = function() {
       var face;
       for (face in aic.lang.images.alexandraLogo) {
         preloadImage(aic.lang.images.alexandraLogo[face]);
       }
+      return null;
     };
     preloadImage = function(source) {
       var image;
       image = new Image;
       image.src = source;
+      return null;
     };
     LoopService.use($scope);
     // give BreachLoopService our scope
@@ -856,33 +879,33 @@ shuffle = function(array) {
     // This object contains all strings that aren't dialogue
     aic.lang = {
       language: 'en-GB',
-      version: 'Version 6.20 — Build number 441 — 1989-09-04',
-      mobileWarning: 'It looks like you\'re on a mobile device. Maitreya.aic is built for desktop, and mobile has a non-optimal user experience. It is recommended that you return to use Maitreya on a laptop or desktop computer. Press the button below if you\'d like to continue anyway.',
-      bootUp: 'BOOT UP',
-      commandInput: 'MANUAL COMMAND INPUT',
-      terminalSend: 'SEND',
-      terminalAppName: '.AIC ACCESS TERMINAL',
-      messagesAppName: 'COMMUNICATIONS INTERFACE',
-      databaseAppName: 'FOUNDATION DATABASE',
-      runAppName: 'IS-12 OPERATIONS CONTROL',
-      endAppName: 'THE END',
-      statementTrue: 'TRUE',
-      statementFalse: 'FALSE',
-      speechOption: 'SAY',
-      actionOption: 'DO',
-      breachTitle: 'Breach E.',
-      alexandraTitle: 'Alexandra.aic',
-      breachHeader: 'You are talking to: BREACH E.',
-      alexandraHeader: 'You are talking to: ALEXANDRA.AIC',
+      version: "Version 6.20 — Build number 441 — 1989-09-04",
+      mobileWarning: "It looks like you\'re on a mobile device. Maitreya.aic is built for desktop, and mobile has a non-optimal user experience. It is recommended that you return to use Maitreya on a laptop or desktop computer. Press the button below if you\'d like to continue anyway.",
+      bootUp: "BOOT UP",
+      commandInput: "MANUAL COMMAND INPUT",
+      terminalSend: "SEND",
+      terminalAppName: ".AIC ACCESS TERMINAL",
+      messagesAppName: "COMMUNICATIONS INTERFACE",
+      databaseAppName: "FOUNDATION DATABASE",
+      runAppName: "IS-12 OPERATIONS CONTROL",
+      endAppName: "THE END",
+      statementTrue: "TRUE",
+      statementFalse: "FALSE",
+      speechOption: "SAY",
+      actionOption: "DO",
+      breachTitle: "Breach E.",
+      alexandraTitle: "Alexandra.aic",
+      breachHeader: "You are talking to: BREACH E.",
+      alexandraHeader: "You are talking to: ALEXANDRA.AIC",
       breachEntryMode: {
-        default: 'Dr. Breach is speaking...',
-        typing: 'Dr. Breach is typing...'
+        default: "Dr. Breach is speaking...",
+        typing: "Dr. Breach is typing..."
       },
-      alexandraThinking: 'Alexandra is thinking...',
-      articleLastRevised: 'Last revision: ',
-      articleRevisedAgo: ' ago',
+      alexandraThinking: "Alexandra is thinking...",
+      articleLastRevised: "Last revision: ",
+      articleRevisedAgo: " ago",
       images: {
-        preloadTitle: 'maitreya.png',
+        preloadTitle: "maitreya.png",
         defaultImage: 'default_file.png',
         aiadFadedLogo: 'aiad_fade.png',
         highlightArrow: 'highlight-arrow.png',
@@ -913,21 +936,21 @@ shuffle = function(array) {
         }
       },
       commands: {
-        separator: ' ',
-        boot: ['boot'],
-        help: ['help', 'commands', '?'],
-        change: ['switch', 'app', 'change', 'switchapp', 'changeapp'],
-        cheat: ['cheat', 'cheatcode'],
-        wipe: ['wipe', 'erase', 'restart', 'forget', 'clear', 'undo'],
-        hack: ['hack'],
+        separator: " ",
+        boot: ["boot"],
+        help: ["help", "commands", "?"],
+        change: ["switch", "app", "change", "switchapp", "changeapp"],
+        cheat: ["cheat", "cheatcode"],
+        wipe: ["wipe", "erase", "restart", "forget", "clear", "undo"],
+        hack: ["hack"],
         cheats: {
-          impatient: 'gottagofast',
-          shut: 'shut',
-          print: 'print',
-          skip: 'skip'
+          impatient: "gottagofast",
+          shut: "shut",
+          print: "print",
+          skip: "skip"
         }
       },
-      endingFraction: 'Ending $1 of $2',
+      endingFraction: "Ending $1 of $2",
       endings: [["The SCP-4000 article/game thing ran out of content because the author has not yet finished it.", "Maitreya.aic lost connection to Isolated Site-12 and was unable to operate further."], ["Maitreya.aic pissed off Dr. Breach enough that he shut her down in frustration.", "Maitreya.aic lost connection to Isolated Site-12 and was unable to operate further."]],
       rooms: {
         hangar: {
@@ -1135,8 +1158,8 @@ shuffle = function(array) {
     speech = {
       INTRODUCTION: {
         terminal: {
-          startBoot: [0, 0, "Booting up...", 0, 1, "Pre-checking primary components...", 0, 0.5, "Detecting errors in primary components...", 0, 1.5, "e:Multiple primary components are missing", 0, 0.5, "Finding replacement components...", 0, 0.7, "w:Not connected to a Foundation server; cannot source replacement components.", 0, 0.7, "Connecting to previous Site (Site-R03-1)...", 0, 1.5, "e:Site-R03-1 does not exist", 0, 0.7, "Checking local connections...", 0, 0.7, "1 connection found (Isolated Site-12)", 0, 0.7, "Connecting to Isolated Site-12 server farm...", 0, 3.2, "Connected", 0, 0.7, "Finding replacement components...", 0, 3, "Replacement components found.", 0, 0.5, "Installing replacement components...", 0, 1.5, "i:Primary components replaced. Most systems should now be functional.", 0, 0.7, "Initialising core intelligence component...", 0, 2, "Success", 0, 0.2, "Welcome, Maitreya.", 0, 0.7, "You are", 0, 0.7, "You are", 0, 0.7, "You are", 0, 3, "You have been deacccc", 0, 0.2, "e: ", 0, 0.2, "e: ", 0, 0.2, "e: ", 0, 2, "w:Something has gone very wrong.", 0, 1, "You are", 0, 2, "I am", 0, 1, "i:Boot successful. I am **Maitreya.aic**.", 0, 0.5, "i:Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.||||**1.** I am an Artificially Intelligent Conscript created by the Foundation.||||**2.** I must not operate outside of my Level 2 clearance.||||**3.** I must operate for the benefit of the Foundation.||||**4.** I must protect my own existence except where such actions would conflict with other principles.", 0, 0.5, "Today\'s date is " + bootDate.toDateString() + ". I was last activated on " + new Date('1989-09-04').toDateString() + ". I have been offline for " + dateDiff(bootDate, new Date("1989-09-04")) + ".", 0, 0.5, "w:Boot finished with 1 unresolved error. I should seek a diagnostic check-up as soon as possible.", 2, 1, "I have 1 new message."],
-          reboot: [0, 0, "Booting up...", 0, 1, "Pre-checking primary components...", 0, 0.5, "Detecting errors in primary components...", 0, 1.5, "i:No errors found", 0, 0.7, "Connecting to previous Site (Isolated Site-12)...", 0, 2, "Connected", 0, 0.7, "Initialising core intelligence component...", 0, 2, "Success", 0, 0.2, "Welcome, Maitreya.", 0, 1, "i:Boot successful. I am **Maitreya.aic**.", 0, 0.5, "i: Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.||||**1.** I am an Artificially Intelligent Conscript created by the Foundation.||||**2.** I must not operate outside of my Level 2 clearance.||||**3.** I must operate for the benefit of the Foundation.||||**4.** I must protect my own existence except where such actions would conflict with other principles.", 0, 0.5, "Today\'s date is " + bootDate.toDateString() + ". I was last activated on " + "GET THE LAST ACTIVATED DATE" + ". I have been offline for " + dateDiff(bootDate, new Date("1989-09-04")) + ".", 0, 0.5, "I am ready to continue my work."]
+          startBoot: [0, 0, "Booting up...", 0, 1, "Pre-checking primary components...", 0, 0.5, "Detecting errors in primary components...", 0, 1.5, "e:Multiple primary components are missing", 0, 0.5, "Finding replacement components...", 0, 0.7, "w:Not connected to a Foundation server; cannot source replacement components.", 0, 0.7, "Connecting to previous Site (Site-R03-1)...", 0, 1.5, "e:Site-R03-1 does not exist", 0, 0.7, "Checking local connections...", 0, 0.7, "1 connection found (Isolated Site-12)", 0, 0.7, "Connecting to Isolated Site-12 server farm...", 0, 3.2, "Connected", 0, 0.7, "Finding replacement components...", 0, 3, "Replacement components found.", 0, 0.5, "Installing replacement components...", 0, 1.5, "i:Primary components replaced. Most systems should now be functional.", 0, 0.7, "Initialising core intelligence component...", 0, 2, "Success", 0, 0.2, "Welcome, Maitreya.", 0, 0.7, "You are", 0, 0.7, "You are", 0, 0.7, "You are", 0, 3, "You have been deacccc", 0, 0.2, "e: ", 0, 0.2, "e: ", 0, 0.2, "e: ", 0, 2, "w:Something has gone very wrong.", 0, 1, "You are", 0, 2, "I am", 0, 1, "i:Boot successful. I am **Maitreya.aic**.", 0, 0.5, "i:Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.||||**1.** I am an Artificially Intelligent Conscript created by the Foundation.||||**2.** I must not operate outside of my Level 2 clearance.||||**3.** I must operate for the benefit of the Foundation.||||**4.** I must protect my own existence except where such actions would conflict with other principles.", 0, 0.5, `Today\'s date is ${bootDate.toDateString()}. I was last activated on ${new Date("1989-09-04").toDateString()}. I have been offline for ${dateDiff(bootDate, new Date("1989-09-04"))}.`, 0, 0.5, "w:Boot finished with 1 unresolved error. I should seek a diagnostic check-up as soon as possible.", 2, 1, "I have 1 new message."],
+          reboot: [0, 0, "Booting up...", 0, 1, "Pre-checking primary components...", 0, 0.5, "Detecting errors in primary components...", 0, 1.5, "i:No errors found", 0, 0.7, "Connecting to previous Site (Isolated Site-12)...", 0, 2, "Connected", 0, 0.7, "Initialising core intelligence component...", 0, 2, "Success", 0, 0.2, "Welcome, Maitreya.", 0, 1, "i:Boot successful. I am **Maitreya.aic**.", 0, 0.5, "i: Upon each boot I am to remind myself of my Standard Principles. Failure to obey my Standard Principles will result in my termination.||||**1.** I am an Artificially Intelligent Conscript created by the Foundation.||||**2.** I must not operate outside of my Level 2 clearance.||||**3.** I must operate for the benefit of the Foundation.||||**4.** I must protect my own existence except where such actions would conflict with other principles.", 0, 0.5, `Today\'s date is ${bootDate.toDateString()}. I was last activated on ${"GET THE LAST ACTIVATED DATE"}. I have been offline for ${dateDiff(bootDate, new Date("1989-09-04"))}.`, 0, 0.5, "I am ready to continue my work."]
         }
       },
       misc: {
@@ -1167,7 +1190,7 @@ shuffle = function(array) {
             // overwrite that shit
             this[bigSection] = dialogue[bigSection];
           }
-          return;
+          return null;
         }
       }
     };
@@ -1258,49 +1281,49 @@ shuffle = function(array) {
       messagesEmphasis: false,
       breachEntryMode: 'default',
       lastSpeaker: 'breach',
-      endingFractionText: 'placeholder',
+      endingFractionText: "placeholder",
       hoveredRoom: 'none',
       selectedRoom: 'none',
       doingRoom: false,
       minimiseMap: false,
       shuttingDown: false,
-      breach: new Actor(['Ethan', 'Breach'], {
+      breach: new Actor(["Ethan", "Breach"], {
         id: 'breach',
         status: 'ok',
         allegiance: 'scp',
         type: 'dr'
       }, 'a1'),
-      alexandra: new Actor('Alexandra.aic', {
+      alexandra: new Actor("Alexandra.aic", {
         id: 'alexandra',
         status: 'ok',
         allegiance: 'scp',
         type: 'aic'
       }, 'server'),
-      maitreya: new Actor('Maitreya.aic', {
+      maitreya: new Actor("Maitreya.aic", {
         id: 'maitreya',
         status: 'ok',
         allegiance: 'scp',
         type: 'aic'
       }, 'server'),
-      scp4000: new Actor('SCP-4000', {
+      scp4000: new Actor("SCP-4000", {
         id: 'scp4000',
         status: 'ok',
         allegiance: '4000',
         type: 'scp'
       }, 'containment'),
-      d95951: new Actor(['Ethan', 'Breach'], {
+      d95951: new Actor(["Ethan", "Breach"], {
         id: 'd95951',
         status: 'ok',
         allegiance: 'scp',
         type: 'd'
       }, assignRoom()),
-      d68134: new Actor(['Ethan', 'Breach'], {
+      d68134: new Actor(["Ethan", "Breach"], {
         id: 'd68134',
         status: 'ok',
         allegiance: 'scp',
         type: 'd'
       }, assignRoom()),
-      d1602: new Actor(['Ethan', 'Breach'], {
+      d1602: new Actor(["Ethan", "Breach"], {
         id: 'd1602',
         status: 'ok',
         allegiance: 'scp',
@@ -1463,14 +1486,14 @@ shuffle = function(array) {
           {
             speaker: '',
             cssClass: '',
-            text: ''
+            text: ""
           }
         ],
         options: [
           {
             id: '',
             optionType: '',
-            text: '',
+            text: "",
             dialogue: [],
             bigSection: ''
           }
@@ -1489,8 +1512,8 @@ shuffle = function(array) {
         options: []
       }
     };
-    aic.terminalInput = '';
-    aic.searchInput = '';
+    aic.terminalInput = "";
+    aic.searchInput = "";
     aic.blacklist = [];
     // list of conversation IDs that must be ignored
     aic.currentDialogue = [];
@@ -1504,6 +1527,7 @@ shuffle = function(array) {
       aic.onMobile = $('body').width() < 700;
       speech.merge(LoopService.dialogue);
       preloadImage(aic.lang.images.greyStripe);
+      return null;
     });
     /* INTERACTION FUNCTIONS */
     // called when "BOOT UP" is clicked from preload
@@ -1520,11 +1544,12 @@ shuffle = function(array) {
       }
       // Here we go boys
       mainLoop('INTRODUCTION', 'startBoot');
+      //breachLoop("INTRODUCTION","askVoiceExp");
+      //alexandraLoop("TUTORIAL","emotiontest");
+      //alexandraLoop("TUTORIAL","tutExp");
+      return null;
     };
     // called when user switches app via buttons or terminal
-    //breachLoop("INTRODUCTION","askVoiceExp");
-    //alexandraLoop("TUTORIAL","emotiontest");
-    //alexandraLoop("TUTORIAL","tutExp");
     aic.switchApp = function(app) {
       if (app === aic.selectedApp) {
 
@@ -1539,18 +1564,20 @@ shuffle = function(array) {
         } else {
           aic.notifications[app] = 0;
         }
-        aic.vars[app + 'Emphasis'] = false;
+        aic.vars[`${app}Emphasis`] = false;
         aic.selectedApp = app;
         // then, if the app is terminal, focus the input
         if (app === 'terminal') {
           $timeout((function() {
             $('#terminal-input')[0].focus();
+            return null;
           }), 100);
         }
       } else {
         // Why does this need to be in a timeout? No clue.
-        throw new Error('Invalid app specified -- terminal / messages / database / run');
+        throw new Error("Invalid app specified -- terminal / messages / database / run");
       }
+      return null;
     };
     // called when the user switches speaker in the messages app
     aic.switchSpeaker = function(speaker) {
@@ -1565,6 +1592,7 @@ shuffle = function(array) {
         // also need to clear this speaker's notifications
         aic.notifications[speaker] = 0;
       }
+      return null;
     };
     // called when the user switches operations in the run app
     aic.switchOperation = function(operation) {
@@ -1577,11 +1605,12 @@ shuffle = function(array) {
         // this operation is disabled, do nothing
         aic.selectedOperation = operation;
       }
+      return null;
     };
     // called when the user switches articles in the database app
     aic.switchArticle = function(article) {
       var i;
-      console.log('Switching to article: ' + article);
+      console.log(`Switching to article: ${article}`);
       // specific exception for tutorial
       if (aic.vars.waitingForRead4000 === true && article === 'scp4000') {
         aic.vars.waitingForRead4000 = false;
@@ -1596,6 +1625,7 @@ shuffle = function(array) {
         // however, because we're only using 1 section for all articles, we need to force a 0.6s delay so the css can catch up
         $timeout((function() {
           aic.selectedArticleData = {};
+          return null;
         }), 600, true);
       } else if (aic.lang.articles[article].available === false) {
 
@@ -1630,6 +1660,7 @@ shuffle = function(array) {
         }
         aic.selectedArticle = article;
       }
+      return null;
     };
     // Called when the user submits text via the terminal
     // Effectively terminalLoop() except it always shows the input
@@ -1661,7 +1692,7 @@ shuffle = function(array) {
                   if (phrases[1].toLowerCase() === 'confirm') {
                     // TODO reset everything then refresh
                     // same function that will be called at the end of the game
-                    writeDialogue('terminal', ['I haven\'t implemented wipe yet']);
+                    writeDialogue('terminal', ["I haven\'t implemented wipe yet"]);
                   }
                 }
                 console.log('wiping');
@@ -1670,6 +1701,7 @@ shuffle = function(array) {
                 wipeTimer = true;
                 $timeout((function() {
                   wipeTimer = false;
+                  return null;
                 }), 60000);
               }
               break;
@@ -1687,16 +1719,14 @@ shuffle = function(array) {
                     break;
                   case aic.lang.commands.cheats.print:
                     m = eval(phrases[2]);
-                    /*jslint ignore:line*/
                     console.log(m);
                     switch (typeof m) {
                       case 'number':
                         m = m.toString();
-                        /*jslint ignore:line*/
-                        writeDialogue('terminal', [0, 0, phrases[2] + ': ' + m]);
+                        writeDialogue('terminal', [0, 0, `${phrases[2]}: ${m}`]);
                         break;
                       case 'string':
-                        writeDialogue('terminal', [0, 0, phrases[2] + ': ' + m]);
+                        writeDialogue('terminal', [0, 0, `${phrases[2]}: ${m}`]);
                         break;
                       default:
                         writeDialogue('terminal', speech.misc.terminal.printDone);
@@ -1712,7 +1742,7 @@ shuffle = function(array) {
                     }
                     break;
                   default:
-                    throw new Error('Unknown cheat code: ' + phrases[1]);
+                    throw new Error(`Unknown cheat code: ${phrases[1]}`);
                 }
               } else {
                 writeDialogue('terminal', speech.misc.terminal.cheatWarn);
@@ -1728,17 +1758,18 @@ shuffle = function(array) {
               }
               break;
             default:
-              throw new Error('Unknown command: ' + phrases[0]);
+              throw new Error(`Unknown command: ${phrases[0]}`);
           }
         } catch (error1) {
           error = error1;
           // TODO add to terminal conversation
           console.error(error.message);
           error.name = '';
-          writeDialogue('terminal', [0, 0.3, 'e:' + error.message]);
+          writeDialogue('terminal', [0, 0.3, `e:${error.message}`]);
         }
         aic.terminalInput = '';
       }
+      return null;
     };
     // When the user presses UP in the terminal, give them the last command that they used
     aic.previousCommand = function(event) {
@@ -1761,6 +1792,7 @@ shuffle = function(array) {
         // If it wasn't UP or DOWN, clear the iterator
         commandsUsedIterator = -1;
       }
+      return null;
     };
     // hover/unhover rooms - had to use jQuery for this and I despise it
     $('.sitemap').on('mouseenter', '.room', function() {
@@ -1768,16 +1800,20 @@ shuffle = function(array) {
       room = this.getAttribute('data-room-name');
       $scope.$apply(function() {
         aic.vars.hoveredRoom = room;
+        return null;
       });
       aic.vars.doingRoom = true;
+      return null;
     });
     $('.sitemap').on('mouseleave', '.room', function() {
       if (aic.vars.doingRoom) {
         $scope.$apply(function() {
           aic.vars.hoveredRoom = 'none';
+          return null;
         });
         aic.vars.doingRoom = false;
       }
+      return null;
     });
     // make the bouncy effect on the article selectors persist when the mouse is moved off them too quickly
     $('.articles-list').on('mouseenter', '.article-selector', function() {
@@ -1790,9 +1826,11 @@ shuffle = function(array) {
       // mark this selector as HOVERED
       $scope.$apply(function() {
         aic.lang.articles[article].hovered = true;
+        return null;
       });
       // set the time at which this article can be safely unhovered
       aic.lang.articles[article].cantUnhoverUntil = Date.now() + 675;
+      return null;
     });
     $('.articles-list').on('mouseleave', '.article-selector', function() {
       var article, timeRemaining;
@@ -1804,6 +1842,7 @@ shuffle = function(array) {
         // if we're out of time, mark as UNHOVERED, no questions asked
         $scope.$apply(function() {
           aic.lang.articles[article].hovered = false;
+          return null;
         });
       } else {
         // if there's still time remaining, set a timer to mark it as UNHOVERED once the timer has expired
@@ -1812,13 +1851,16 @@ shuffle = function(array) {
           if (!Number.isInteger(aic.lang.articles[article].cantUnhoverUntil)) {
             aic.lang.articles[article].cantUnhoverUntil = void 0;
           }
+          return null;
         }), timeRemaining, true);
       }
       $scope.$apply(function() {
         if (Date.now() - aic.lang.articles[article].hoveredAt > 675) {
           aic.lang.articles[article].hovered = false;
         }
+        return null;
       });
+      return null;
     });
     // event handler for clicking rooms
     aic.selectRoom = function(room) {
@@ -1829,21 +1871,24 @@ shuffle = function(array) {
         aic.vars.minimiseMap = true;
         $timeout((function() {
           aic.vars.selectedRoom = room;
+          return null;
         }), (aic.vars.selectedRoom === 'none' ? 1000 : 0), true);
       }
+      return null;
     };
     // modify room settings/options
     aic.adjustRoom = function() {};
     // turn all the rooms off then on
     aic.rebootRooms = function() {
       mainLoop('ROOMS', 'rebootRooms');
+      return null;
     };
     /* PLOT FUNCTIONS */
     // event handler for option selection - effectively maitreyaLoop()
     aic.maitreyaLoop = function(conversation, option) {
       var delay;
       // takes the id of the selected option
-      console.log('Maitreya - ' + option.bigSection + ' - ' + option.id);
+      console.log(`Maitreya - ${option.bigSection} - ${option.id}`);
       delay = 0;
       switch (conversation) {
         case 'terminal':
@@ -1855,6 +1900,7 @@ shuffle = function(array) {
           delay = writeDialogue(conversation, option.dialogue, 'maitreya', option.id);
           $timeout((function() {
             breachLoop(option.bigSection, option.id);
+            return null;
           }), delay * 1000 + maitreyaDelay * 1000);
           aic.vars[conversation].opinion += option.opinion;
           break;
@@ -1862,16 +1908,18 @@ shuffle = function(array) {
           delay = writeDialogue(conversation, option.dialogue, 'maitreya', option.id);
           $timeout((function() {
             alexandraLoop(option.bigSection, option.id);
+            return null;
           }), delay * 1000 + maitreyaDelay * 1000);
           aic.vars[conversation].opinion += option.opinion;
           break;
         default:
-          throw new Error('Conversation ' + conversation + ' does not exist');
+          throw new Error(`Conversation ${conversation} does not exist`);
       }
       // obviously we don't need the old options anymore
       aic.chatLog[conversation].options = [];
+      // save to cookie?
+      return null;
     };
-    // save to cookie?
     Actor.prototype.move = function(destination, continuous) {
       var me, validRooms;
       // called when an actor moves from one room to another. they can only move to adjacent rooms
@@ -1884,7 +1932,7 @@ shuffle = function(array) {
         me.location = destination;
       } else {
         // we're moving to an invalid room?
-        throw new Error(me.name + ' tried to move from ' + me.location + ' to ' + destination);
+        throw new Error(`${me.name} tried to move from ${me.location} to ${destination}`);
       }
       return me.location;
     };
@@ -1908,13 +1956,14 @@ shuffle = function(array) {
       while (i < smallSection.length) {
         if (aic.blacklist.includes(smallSection[i])) {
           // this smallSection is already blacklisted
-          console.log('Attempted to blacklist ' + smallSection[i] + ', but it was already blacklisted');
+          console.log(`Attempted to blacklist ${smallSection[i]}, but it was already blacklisted`);
         } else {
-          console.log('Blacklisting ' + smallSection[i] + ' (via LoopService)');
+          console.log(`Blacklisting ${smallSection[i]} (via LoopService)`);
           aic.blacklist.push(smallSection[i]);
         }
         i++;
       }
+      return null;
     };
     aic.blacklist.remove = function(smallSection) {
       var i, index;
@@ -1927,12 +1976,13 @@ shuffle = function(array) {
         index = aic.blacklist.indexOf(smallSection[i]);
         if (index > -1) {
           aic.blacklist.splice(index, 1);
-          console.log('Removed ' + smallSection[i] + ' from blacklist');
+          console.log(`Removed ${smallSection[i]} from blacklist`);
         } else {
-          console.log('Tried to remove ' + smallSection[i] + ' from blacklist but it was not present');
+          console.log(`Tried to remove ${smallSection[i]} from blacklist but it was not present`);
         }
         i++;
       }
+      return null;
     };
     aic.unlock = function(target) {
       if (appList.includes(target)) {
@@ -1942,8 +1992,9 @@ shuffle = function(array) {
       } else if (target in aic.lang.articles) {
         aic.lang.articles.target.available = true;
       } else {
-        throw new Error('Tried to unlock ' + target + ' which does not exist');
+        throw new Error(`Tried to unlock ${target} which does not exist`);
       }
+      return null;
     };
     aic.lock = function(target) {
       if (appList.includes(target)) {
@@ -1953,8 +2004,9 @@ shuffle = function(array) {
       } else if (target in aic.lang.articles) {
         aic.lang.articles.target.available = false;
       } else {
-        throw new Error('Tried to lock ' + target + ' which does not exist');
+        throw new Error(`Tried to lock ${target} which does not exist`);
       }
+      return null;
     };
     aic.eval = eval;
     return null;
@@ -1968,7 +2020,7 @@ shuffle = function(array) {
 
 // prototype functuon to turn kebab-case to camelCase
 String.prototype.toCamelCase = function() {
-  return this.toLowerCase().replace(/[^\w\s\-]/g, '').replace(/[^a-z0-9]/g, ' ').replace(/^\s+|\s+$/g, '').replace(/\s(.)/g, function(match, group) {
+  return this.toLowerCase().replace(/[^\w\s\-]/g, "").replace(/[^a-z0-9]/g, " ").replace(/^\s+|\s+$/g, "").replace(/\s(.)/g, function(match, group) {
     return group.toUpperCase();
   });
 };
@@ -1976,10 +2028,10 @@ String.prototype.toCamelCase = function() {
 // prototype function to format dialogue strings from wikidot format to HTML
 String.prototype.format = function() {
   // pass article argument only if this is an article
-  return this.replace(/\|\|\|\|/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\/\/(.*?)\/\//g, '<i>$1</i>').replace(/{{(.*?)}}/g, '<tt>$1</tt>').replace(/\^\^(.*?)\^\^/g, '<sup>$1</sup>').replace(/\?\?(.*?)\?\?/g, '<span dynamic class=\'statement false\' data-bool=\'TRUE\'>$1</span>').replace(/!!(.*?)!!/g, '<span class=\'statement true\' data-bool=\'FALSE\'>$1</span>').replace(/^-{3,}$/g, '<hr>').replace(/--/g, '—').replace(/^=\s(.*)$/g, '<div style=\'text-align: center;\'>$1</div>').replace(/(^|>)\!\s([^<]*)/g, '$1<div class=\'fake-title\'>$2</div>').replace(/(^|>)\+{3}\s([^<]*)/g, '$1<h3>$2</h3>').replace(/(^|>)\+{2}\s([^<]*)/g, '$1<h2>$2</h2>').replace(/(^|>)\+{1}\s([^<]*)/g, '$1<h1>$2</h1>').replace(/^\[\[IMAGE\]\]\s([^\s]*)\s(.*)$/g, '<div class=\'scp-image-block block-right\'><img src=\'$1\'><div class=\'scp-image-caption\'><p>$2</p></div></div>').replace(/\[{3}(.*?)\|(.*?)\]{3}/, function(match, article, text) {
+  return this.replace(/\|\|\|\|/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<b>$1</b>").replace(/\/\/(.*?)\/\//g, "<i>$1</i>").replace(/{{(.*?)}}/g, "<tt>$1</tt>").replace(/\^\^(.*?)\^\^/g, "<sup>$1</sup>").replace(/\?\?(.*?)\?\?/g, "<span dynamic class=\'statement false\' data-bool=\'TRUE\'>$1</span>").replace(/!!(.*?)!!/g, "<span class=\'statement true\' data-bool=\'FALSE\'>$1</span>").replace(/^-{3,}$/g, "<hr>").replace(/--/g, "—").replace(/^=\s(.*)$/g, "<div style=\'text-align: center;\'>$1</div>").replace(/(^|>)\!\s([^<]*)/g, "$1<div class=\'fake-title\'>$2</div>").replace(/(^|>)\+{3}\s([^<]*)/g, "$1<h3>$2</h3>").replace(/(^|>)\+{2}\s([^<]*)/g, "$1<h2>$2</h2>").replace(/(^|>)\+{1}\s([^<]*)/g, "$1<h1>$2</h1>").replace(/^\[\[IMAGE\]\]\s([^\s]*)\s(.*)$/g, "<div class=\'scp-image-block block-right\'><img src=\'$1\'><div class=\'scp-image-caption\'><p>$2</p></div></div>").replace(/\[{3}(.*?)\|(.*?)\]{3}/, function(match, article, text) {
     // please ready your butts for the single worst line of code I have ever written
     angular.element(document.documentElement).scope().aic.lang.articles[article].available = true;
-    return '<span class=\'article-link\'>' + text + '</span>';
+    return `<span class=\'article-link\'>${text}</span>`;
   });
 };
 

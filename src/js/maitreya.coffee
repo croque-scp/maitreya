@@ -15,7 +15,7 @@ shuffle = (array) ->
     array[i] = t
   array
 
-'use strict'
+"use strict"
 
 ### global $, angular ###
 
@@ -34,8 +34,8 @@ do ->
       # Answer: hell yes I do
       # pass sections to the func or use variables?
       # pass to func for now
-      smallSection = smallSection.replace(/_*$/g, '')
-      console.log 'Main - ' + bigSection + ' - ' + smallSection
+      smallSection = smallSection.replace(/_*$/g, "")
+      console.log "Main - #{bigSection} - #{smallSection}"
       # msg syntax IS NOT SUITABLE HERE! only for breach and alexandra!
       delay = 0
       switch bigSection
@@ -45,10 +45,10 @@ do ->
               delay = writeDialogue('terminal', speech[bigSection].terminal[smallSection])
               aic.timers.terminal = $timeout((->
                 breachLoop 'INTRODUCTION', 'start'
-                return
+                return null
               ), (delay - 1.5) * 1000)
             else
-              throw new Error(smallSection + ' is not an event in ' + bigSection)
+              throw new Error("#{smallSection} is not an event in #{bigSection}")
         when 'ROOMS'
           rooms = []
           switch smallSection
@@ -58,7 +58,7 @@ do ->
               # then turn them all back on, one by one
               $timeout (->
                 mainLoop 'ROOMS', 'unbootRoom'
-                return
+                return null
               ), 200
             when 'unbootRoom'
               # rebootRooms calls this to unboot individual rooms
@@ -67,18 +67,18 @@ do ->
                 # all rooms must be turned off at this point
                 $scope.$apply ->
                   aic.rooms[rooms[0]].error = true
-                  return
+                  return null
               # now check the next room
               rooms.shift()
               if rooms.length > 0
                 $timeout (->
                   mainLoop 'ROOMS', 'unbootRoom', rooms
-                  return
+                  return null
                 ), Math.floor(Math.random() * 20)
               else
                 $timeout (->
                   mainLoop 'ROOMS', 'bootRoom'
-                  return
+                  return null
                 ), 2000
             when 'bootRoom'
               # rebootRooms calls this to reboot individual rooms
@@ -90,36 +90,36 @@ do ->
               if aic.rooms[rooms[0]].error == true and aic.vars.scp4000.location != rooms[0] and rooms[0] != 'toilet'
                 $scope.$apply ->
                   aic.rooms[rooms[0]].error = false
-                  return
+                  return null
               # now check the next room
               rooms.shift()
               if rooms.length > 0
                 $timeout (->
                   mainLoop 'ROOMS', 'bootRoom', rooms, delay
-                  return
+                  return null
                 ), Math.floor(Math.random() * delay)
             else
-              throw new Error(smallSection + ' is not an event in ' + bigSection)
+              throw new Error("#{smallSection} is not an event in #{bigSection}")
         when 'misc'
           switch smallSection
             # pretty sure this only happens when skipping the intro, but whatever
             when 'introSkipped'
-              delay = writeDialogue('terminal', speech[bigSection].terminal[smallSection])
+              delay = writeDialogue("terminal", speech[bigSection].terminal[smallSection])
             else
-              throw new Error(smallSection + ' is not an event in ' + bigSection)
+              throw new Error("#{smallSection} is not an event in #{bigSection}")
         else
-          throw new Error(bigSection + ' is not an event')
-      return
+          throw new Error("#{bigSection} is not an event")
+      return null
 
     breachLoop = (bigSection, smallSection) ->
       # smallSection may have trailing underscores - clean these up
       smallSection = smallSection.replace(/_*$/g, '')
-      console.log 'Breach - ' + bigSection + ' - ' + smallSection
+      console.log "Breach - #{bigSection} - #{smallSection}"
       msg = undefined
       try
         msg = speech[bigSection].breach[smallSection]
       catch error
-        throw new Error(smallSection + ' doesn\'t exist in Breach\'s ' + bigSection)
+        throw new Error("#{smallSection} doesn't exist in Breach's #{bigSection}")
       aic.ready.messages = true
       aic.ready.breach = true
       # breachLoop has been exported to LoopService
@@ -130,33 +130,33 @@ do ->
             when 'fillerQuestion'
               #do stuff
             else
-              throw new Error('Breach ' + smallSection + ' is not an event in ' + bigSection)
+              throw new Error("Breach #{smallSection} is not an event in #{bigSection}")
         else
           # this event is not declared, so defer to LoopService
           LoopService.breachLoop bigSection, smallSection, msg
-      return
+      return null
 
     alexandraLoop = (bigSection, smallSection) ->
       # smallSection may have trailing underscores - clean these up
       smallSection = smallSection.replace(/_*$/g, '')
-      console.log 'Alexandra - ' + bigSection + ' - ' + smallSection
+      console.log "Alexandra - #{bigSection} - #{smallSection}"
       msg = undefined
       try
         msg = speech[bigSection].alexandra[smallSection]
       catch error
-        throw new Error(smallSection + ' doesn\'t exist in Alexandra\'s ' + bigSection)
+        throw new Error("#{smallSection} doesn\'t exist in Alexandra\'s #{bigSection}")
       aic.ready.messages = true
       aic.ready.alexandra = true
       # breachLoop has been exported to LoopService
       LoopService.alexandraLoop bigSection, smallSection, msg
-      return
+      return null
 
     endingLoop = (bigSection, smallSection, delay) ->
       # smallSection may have trailing underscores - clean these up
       if typeof smallSection == 'string'
-        # endingLoop's smallSection is optional
-        smallSection = smallSection.replace(/_*$/g, '')
-      console.log 'Ending - ' + bigSection + ' - ' + smallSection
+        # endingLoop"s smallSection is optional
+        smallSection = smallSection.replace(/_*$/g, "")
+      console.log "Ending - #{bigSection} - #{smallSection}"
       delay = delay or 0
       switch bigSection
         when 'PUSHENDING'
@@ -166,7 +166,7 @@ do ->
             aic.ready.ending = true
             aic.vars.terminalEmphasis = false
             aic.switchApp 'ending'
-            return
+            return null
           ), delay * 1000, true
         when 'ENDING'
           switch smallSection
@@ -175,18 +175,18 @@ do ->
               delay = writeDialogue('terminal', speech.misc.terminal.breachShutDown)
               $timeout (->
                 endingLoop 'PUSHENDING', smallSection, 2
-                return
+                return null
               ), delay * 1000
             when 'example'
               $timeout (->
                 endingLoop 'PUSHENDING', smallSection, 2
-                return
+                return null
               ), delay * 1000
             else
-              throw new Error(smallSection + ' is not an ending')
+              throw new Error("#{smallSection} is not an ending")
         else
-          throw new Error(bigSection + ' is not an event')
-      return
+          throw new Error("#{bigSection} is not an event")
+      return null
 
     dynamicLoop = (character, bigSection, smallSection) ->
       # this only gets called when a conversation is skipped, so we can probably unmark the skippo here
@@ -200,8 +200,8 @@ do ->
           mainLoop bigSection, smallSection
         else
           console.log character, bigSection, smallSection
-          throw new Error('Unexpected dynamic character: ' + character)
-      return
+          throw new Error("Unexpected dynamic character: #{character}")
+      return null
 
     ### PROCESSING FUNCTIONS ###
 
@@ -210,18 +210,18 @@ do ->
     presentOptions = (conversation, bigSection, ids) ->
       # conversation = string for the conversation
       if !speakerList.includes(conversation)
-        throw new Error(conversation + ' is not a conversation')
+        throw new Error("#{conversation} is not a conversation")
       # options = array with each option
       # each option is also an array, of the format:
       # ["s:OPTION TEXT","OUTPUT TEXT"]
       if !Array.isArray(ids) and ids != 'CLEAR'
-        throw new Error('options is not an array')
+        throw new Error("options is not an array")
       # this function needs to put stuff into aic.chatLog[conversation].options
       # options list may not be empty:
       aic.chatLog[conversation].options = []
       # if ids is "CLEAR", stop here, we only want to clear the array
       if ids == 'CLEAR'
-        return
+        return null
       # clear undefined from list of options (in case of false-less ifs)
       ids = ids.filter(Boolean)
       # is is very possible that certain actions will need to do things other than output text. we'll cross that bridge when we come to it
@@ -234,22 +234,22 @@ do ->
           options[i] = speech[bigSection].maitreya[ids[i]].slice()
         catch error
           # this can only fail if the option doesn't exist
-          throw new Error('Option ' + ids[i] + ' doesn\'t exist')
+          throw new Error("Option #{ids[i]} doesn\'t exist")
         # first parameter (options[i][0]) is the control
         if !Array.isArray(options[i])
-          console.log 'ids: ', ids
-          console.log 'i: ', i
-          throw new Error('option ' + options[i] + ' is not an array')
+          console.log "ids: ", ids
+          console.log "i: ", i
+          throw new Error("option #{options[i]} is not an array")
         # first we work out what sort of action this is
         optionType = undefined
-        if options[i][0].charAt(1) == ':'
+        if options[i][0].charAt(1) == ":"
           switch options[i][0].charAt(0)
             when 's'
               optionType = 'speech'
             when 'a'
               optionType = 'action'
             else
-              throw new Error('Unknown option type')
+              throw new Error("Unknown option type")
           options[i][0] = options[i][0].substring(2)
         else
           # no option type was declared, assume speech
@@ -309,7 +309,7 @@ do ->
 
       ###});###
 
-      return
+      return null
 
     # structure dialogue and calculate timing
 
@@ -326,7 +326,7 @@ do ->
       # it may be "undefined", deal with that later
       if !Array.isArray(dialogueList)
         console.error arguments
-        throw new Error('dialogueList is not an array (probably does not exist)')
+        throw new Error("dialogueList is not an array (probably does not exist)")
       # deep copy the dialogue to protect the original
       dialogueList = dialogueList.slice()
       n1 = undefined
@@ -395,8 +395,8 @@ do ->
 
                 ###throw new Error("maitreyaMessages is 0");###
 
-                # except sometimes we reach this point anyway, and I have no idea why, so there's no point breaking the flow lmao
-                console.error 'maitreyaMessages is 0'
+                # except sometimes we reach this point anyway, and I have no idea why, so there"s no point breaking the flow lmao
+                console.error "maitreyaMessages is 0"
               n1 = maitreyaMessages * 0.5
           # if the cheat is on, everyone speaks instantly
           if cheats.impatientMode
@@ -433,14 +433,14 @@ do ->
                 mode = 'typing'
                 cssClass = 'typed'
               else
-                throw new Error('Unknown dialogue type: ' + text.charAt(0))
+                throw new Error("Unknown dialogue type: #{text.charAt(0)}")
             text = text.substring(2)
           if speaker == 'alexandra' and text.length > 0
             if ! !/(^\w*?):/.exec(text)
               # they told me this would be unreadable in a week and I did not believe them
               emote = /(^\w*?):/.exec(text)[1]
               if !alexandraEmotionList.includes(emote)
-                throw new Error('Alexandra is experiencing an invalid emotion: ' + emote)
+                throw new Error("Alexandra is experiencing an invalid emotion: #{emote}")
               text = text.substring(emote.length + 1)
             else
               # if no emotion is specified, maintain the last one and set a default
@@ -466,7 +466,7 @@ do ->
           if text.length > 0
             aic.vars.lastSpeaker = force or speaker
         else
-          throw new Error('Dialogue not number or string')
+          throw new Error("Dialogue not number or string")
         i++
       pushToLog conversation, messages, smallSection
       # the total length of all messages gets passed back to the mainloop
@@ -503,7 +503,7 @@ do ->
       // no need to do anything
       hasControl = true;
       } else {
-      throw new Error("Unknown pushToLog thread ownership situation in " + conversation + " - new " + thread + " vs old " + currentlyPushing[conversation]);
+      throw new Error("Unknown pushToLog thread ownership situation in #{conversation} - new " + thread + " vs old " + currentlyPushing[conversation]);
       }
       ###
 
@@ -595,7 +595,7 @@ do ->
           if ! !aic.isSkipping[conversation]
             # check to see if we're being interrupted
             # the value of isSkipping[c] is either false or a character-bigSection-smallSection array indicating where to go afterwards
-            console.log 'Now interrupting: ' + conversation
+            console.log "Now interrupting: #{conversation}"
             # loop through timeoutlist and kill all timeouts?
             # maybe associate each timeout with its conversation in the list so we can selectively kill them
             timeout = 0
@@ -608,15 +608,15 @@ do ->
               #TODO: if the (dialogue that's being interrupted) has already queued the next line (ie loopThrough==true), then the current dialogue will be cancelled but the upcoming dialogue will not
               if ID != undefined
                 aic.blacklist.push ID
-                console.log 'Blacklisting ' + ID + ' (via pushToLog)'
+                console.log "Blacklisting #{ID} (via pushToLog)"
               else
-                console.log 'Did not blacklist \'undefined\' (via pushToLog)'
+                console.log "Did not blacklist \'undefined\' (via pushToLog)"
               try
                 aic.dynamicLoop aic.isSkipping[conversation][0], aic.isSkipping[conversation][1], aic.isSkipping[conversation][2]
                 # aic.isSkipping gets cleared in dynamicLoop
               catch e
                 console.error e
-                throw new Error('Unexpected interruption')
+                throw new Error("Unexpected interruption")
               timeout++
             # this entire interruption check may be bypassed by currentlyPushing, actually
             # ...which is itself bypassed by the blacklist?
@@ -625,7 +625,7 @@ do ->
             aic.isSkipping[conversation] = false
           else
             if aic.blacklist.includes(ID)
-              console.error 'WARNING: Tried to push ' + ID + ' but it was blacklisted (via pushToLog)'
+              console.error "WARNING: Tried to push #{ID} but it was blacklisted (via pushToLog)"
               # should never actually reach this point, but we do sometimes. final check.
             else
               # don't push the message if it's empty
@@ -652,13 +652,13 @@ do ->
                 }
                 ###
 
-          return
+          return null
         ), n2 * 1000, true)
         timeOutList[conversation].push [
           timeOut2
           conversation
         ]
-        return
+        return null
       ), n1 * 1000, true)
       timeOutList[conversation].push [
         timeOut1
@@ -669,7 +669,7 @@ do ->
       // check whether or not the current thread has control
       console.log(currentlyPushing[conversation] + " has control");
       if(currentlyPushing[conversation] === false) {
-      throw new Error("currentlyPushing is false but a pushToLog thread (" + thread + ") is running");
+      throw new Error("currentlyPushing is false but a pushToLog thread (#{thread}) is running");
         } else if(currentlyPushing[conversation] === thread) {
         // this thread still has control
         console.log(thread + " still has control");
@@ -678,13 +678,13 @@ do ->
         } else {
         // this thread no longer has control
         hasControl = false;
-        console.log("pushToLog thread " + thread + " interrupted by " + currentlyPushing[conversation] + " at " + timeout);
+        console.log("pushToLog thread #{thread} interrupted by " + currentlyPushing[conversation] + " at " + timeout);
         return false;
         }
       }
       ###
 
-      return
+      return null
 
     # add notifications to apps/speakers
 
@@ -696,7 +696,7 @@ do ->
       else
         if aic.selectedApp != target
           aic.notifications[target]++
-      return
+      return null
 
     # calculate the difference between two dates
 
@@ -713,20 +713,20 @@ do ->
       hours = Math.floor(hours % 24)
       mins = Math.floor(mins % 60)
       secs = Math.floor(secs % 60)
-      message = ''
+      message = ""
       if days <= 0
         if hours > 0
-          message += hours + ' hours '
+          message += "#{hours} hours "
         if mins > 0
-          message += mins + ' min '
+          message += "#{mins} min "
         if hours < 1
-          message += secs + ' sec '
+          message += "#{secs} sec "
       else
         if years > 0
-          message += years + ' years, '
+          message += "#{years} years, "
         if months > 0 or years > 0
-          message += months + ' months and '
-        message += days + ' days'
+          message += "#{months} months and "
+        message += "#{days} days"
       message
 
     # assign a room to a d-class
@@ -737,8 +737,8 @@ do ->
       if index > -1
         availableRooms.splice index, 1
       else
-        throw new Error('Bad room')
-      room = 's' + room
+        throw new Error("Bad room")
+      room = "s#{room}"
       # TODO tell the room which d class is now in it
       room
 
@@ -749,13 +749,13 @@ do ->
       if Array.isArray(name)
         me.firstName = name[0]
         me.lastName = name[1]
-        me.name = me.firstName + ' ' + me.lastName
+        me.name = "#{me.firstName} #{me.lastName}"
       else
         me.name = name
       me.location = location
       # role is an object and expects id, status, allegiance, type
       if !role.id or !role.status or !role.allegiance or !role.type
-        throw new Error(me.name + ' is missing role info')
+        throw new Error("#{me.name} is missing role info")
       me.id = role.id
       if [
         'ok'
@@ -763,7 +763,7 @@ do ->
       ].includes(role.status)
         me.status = role.status
       else
-        throw new Error(me.name + ' has an invalid role status')
+        throw new Error("#{me.name} has an invalid role status")
       if [
         'scp'
           '4000'
@@ -771,7 +771,7 @@ do ->
       ].includes(role.allegiance)
         me.allegiance = role.allegiance
       else
-        throw new Error(me.name + ' has an invalid role allegiance')
+        throw new Error("#{me.name} has an invalid role allegiance")
       if [
         'dr'
           'aic'
@@ -780,7 +780,7 @@ do ->
       ].includes(role.type)
         me.type = role.type
       else
-        throw new Error(me.name + ' has an invalid role type')
+        throw new Error("#{me.name} has an invalid role type")
       switch me.type
         when 'aic'
           me.opinion = 5
@@ -788,17 +788,17 @@ do ->
           me.opinion = -5
         else
           me.opinion = 0
-      return
+      return null
 
     preloadAlexandraFaces = ->
       for face of aic.lang.images.alexandraLogo
         preloadImage aic.lang.images.alexandraLogo[face]
-      return
+      return null
 
     preloadImage = (source) ->
       image = new Image
       image.src = source
-      return
+      return null
 
     LoopService.use $scope
     # give BreachLoopService our scope
@@ -817,32 +817,32 @@ do ->
     # This object contains all strings that aren't dialogue
     aic.lang =
       language: 'en-GB'
-      version: 'Version 6.20 — Build number 441 — 1989-09-04'
-      mobileWarning: 'It looks like you\'re on a mobile device. Maitreya.aic is built for desktop, and mobile has a non-optimal user experience. It is recommended that you return to use Maitreya on a laptop or desktop computer. Press the button below if you\'d like to continue anyway.'
-      bootUp: 'BOOT UP'
-      commandInput: 'MANUAL COMMAND INPUT'
-      terminalSend: 'SEND'
-      terminalAppName: '.AIC ACCESS TERMINAL'
-      messagesAppName: 'COMMUNICATIONS INTERFACE'
-      databaseAppName: 'FOUNDATION DATABASE'
-      runAppName: 'IS-12 OPERATIONS CONTROL'
-      endAppName: 'THE END'
-      statementTrue: 'TRUE'
-      statementFalse: 'FALSE'
-      speechOption: 'SAY'
-      actionOption: 'DO'
-      breachTitle: 'Breach E.'
-      alexandraTitle: 'Alexandra.aic'
-      breachHeader: 'You are talking to: BREACH E.'
-      alexandraHeader: 'You are talking to: ALEXANDRA.AIC'
+      version: "Version 6.20 — Build number 441 — 1989-09-04"
+      mobileWarning: "It looks like you\'re on a mobile device. Maitreya.aic is built for desktop, and mobile has a non-optimal user experience. It is recommended that you return to use Maitreya on a laptop or desktop computer. Press the button below if you\'d like to continue anyway."
+      bootUp: "BOOT UP"
+      commandInput: "MANUAL COMMAND INPUT"
+      terminalSend: "SEND"
+      terminalAppName: ".AIC ACCESS TERMINAL"
+      messagesAppName: "COMMUNICATIONS INTERFACE"
+      databaseAppName: "FOUNDATION DATABASE"
+      runAppName: "IS-12 OPERATIONS CONTROL"
+      endAppName: "THE END"
+      statementTrue: "TRUE"
+      statementFalse: "FALSE"
+      speechOption: "SAY"
+      actionOption: "DO"
+      breachTitle: "Breach E."
+      alexandraTitle: "Alexandra.aic"
+      breachHeader: "You are talking to: BREACH E."
+      alexandraHeader: "You are talking to: ALEXANDRA.AIC"
       breachEntryMode:
-        default: 'Dr. Breach is speaking...'
-        typing: 'Dr. Breach is typing...'
-      alexandraThinking: 'Alexandra is thinking...'
-      articleLastRevised: 'Last revision: '
-      articleRevisedAgo: ' ago'
+        default: "Dr. Breach is speaking..."
+        typing: "Dr. Breach is typing..."
+      alexandraThinking: "Alexandra is thinking..."
+      articleLastRevised: "Last revision: "
+      articleRevisedAgo: " ago"
       images:
-        preloadTitle: 'maitreya.png'
+        preloadTitle: "maitreya.png"
         defaultImage: 'default_file.png'
         aiadFadedLogo: 'aiad_fade.png'
         highlightArrow: 'highlight-arrow.png'
@@ -871,39 +871,39 @@ do ->
           angry: 'alex_angry.png'
           pissed: 'alex_pissed.png'
       commands:
-        separator: ' '
-        boot: [ 'boot' ]
+        separator: " "
+        boot: [ "boot" ]
         help: [
-          'help'
-          'commands'
-          '?'
+          "help"
+          "commands"
+          "?"
         ]
         change: [
-          'switch'
-          'app'
-          'change'
-          'switchapp'
-          'changeapp'
+          "switch"
+          "app"
+          "change"
+          "switchapp"
+          "changeapp"
         ]
         cheat: [
-          'cheat'
-          'cheatcode'
+          "cheat"
+          "cheatcode"
         ]
         wipe: [
-          'wipe'
-          'erase'
-          'restart'
-          'forget'
-          'clear'
-          'undo'
+          "wipe"
+          "erase"
+          "restart"
+          "forget"
+          "clear"
+          "undo"
         ]
-        hack: [ 'hack' ]
+        hack: [ "hack" ]
         cheats:
-          impatient: 'gottagofast'
-          shut: 'shut'
-          print: 'print'
-          skip: 'skip'
-      endingFraction: 'Ending $1 of $2'
+          impatient: "gottagofast"
+          shut: "shut"
+          print: "print"
+          skip: "skip"
+      endingFraction: "Ending $1 of $2"
       endings: [
         [
           "The SCP-4000 article/game thing ran out of content because the author has not yet finished it."
@@ -1194,9 +1194,9 @@ do ->
             Level 2 clearance.||||**3.** I must operate for the benefit of the
             Foundation.||||**4.** I must protect my own existence except where
             such actions would conflict with other principles."
-            0, 0.5, "Today\'s date is " + bootDate.toDateString() + ". I was last
-            activated on " + new Date('1989-09-04').toDateString() + ". I have
-            been offline for " + dateDiff(bootDate, new Date("1989-09-04")) + "."
+            0, 0.5, "Today\'s date is #{bootDate.toDateString()}. I was last
+            activated on #{new Date("1989-09-04").toDateString()}. I have been
+            offline for #{dateDiff(bootDate, new Date("1989-09-04"))}."
             0, 0.5, "w:Boot finished with 1 unresolved error. I should seek a
             diagnostic check-up as soon as possible."
             2, 1, "I have 1 new message."
@@ -1219,9 +1219,9 @@ do ->
             Level 2 clearance.||||**3.** I must operate for the benefit of the
             Foundation.||||**4.** I must protect my own existence except where
             such actions would conflict with other principles."
-            0, 0.5, "Today\'s date is " + bootDate.toDateString() + ". I was last
-            activated on " + "GET THE LAST ACTIVATED DATE" + ". I have been
-            offline for " + dateDiff(bootDate, new Date("1989-09-04")) + "."
+            0, 0.5, "Today\'s date is #{bootDate.toDateString()}. I was last
+            activated on #{"GET THE LAST ACTIVATED DATE"}. I have been
+            offline for #{dateDiff(bootDate, new Date("1989-09-04"))}."
             0, 0.5, "I am ready to continue my work."
           ]
       misc:
@@ -1294,7 +1294,7 @@ do ->
             # if speech does not have the bigSection, hell yeah let's
             # overwrite that shit
             this[bigSection] = dialogue[bigSection]
-          return
+          return null
     cheats =
       impatientMode: false
       beingSkipped: false
@@ -1381,42 +1381,42 @@ do ->
       messagesEmphasis: false
       breachEntryMode: 'default'
       lastSpeaker: 'breach'
-      endingFractionText: 'placeholder'
+      endingFractionText: "placeholder"
       hoveredRoom: 'none'
       selectedRoom: 'none'
       doingRoom: false
       minimiseMap: false
       shuttingDown: false
       breach: new Actor([
-        'Ethan'
-        'Breach'
+        "Ethan"
+        "Breach"
       ], {
         id: 'breach'
         status: 'ok'
         allegiance: 'scp'
         type: 'dr'
       }, 'a1')
-      alexandra: new Actor('Alexandra.aic', {
+      alexandra: new Actor("Alexandra.aic", {
         id: 'alexandra'
         status: 'ok'
         allegiance: 'scp'
         type: 'aic'
       }, 'server')
-      maitreya: new Actor('Maitreya.aic', {
+      maitreya: new Actor("Maitreya.aic", {
         id: 'maitreya'
         status: 'ok'
         allegiance: 'scp'
         type: 'aic'
       }, 'server')
-      scp4000: new Actor('SCP-4000', {
+      scp4000: new Actor("SCP-4000", {
         id: 'scp4000'
         status: 'ok'
         allegiance: '4000'
         type: 'scp'
       }, 'containment')
       d95951: new Actor([
-        'Ethan'
-        'Breach'
+        "Ethan"
+        "Breach"
       ], {
         id: 'd95951'
         status: 'ok'
@@ -1424,8 +1424,8 @@ do ->
         type: 'd'
       }, assignRoom())
       d68134: new Actor([
-        'Ethan'
-        'Breach'
+        "Ethan"
+        "Breach"
       ], {
         id: 'd68134'
         status: 'ok'
@@ -1433,8 +1433,8 @@ do ->
         type: 'd'
       }, assignRoom())
       d1602: new Actor([
-        'Ethan'
-        'Breach'
+        "Ethan"
+        "Breach"
       ], {
         id: 'd1602'
         status: 'ok'
@@ -1629,12 +1629,12 @@ do ->
         log: [ {
           speaker: ''
           cssClass: ''
-          text: ''
+          text: ""
         } ]
         options: [ {
           id: ''
           optionType: ''
-          text: ''
+          text: ""
           dialogue: []
           bigSection: ''
         } ]
@@ -1647,8 +1647,8 @@ do ->
       alexandra:
         log: []
         options: []
-    aic.terminalInput = ''
-    aic.searchInput = ''
+    aic.terminalInput = ""
+    aic.searchInput = ""
     aic.blacklist = []
     # list of conversation IDs that must be ignored
     aic.currentDialogue = []
@@ -1691,7 +1691,7 @@ do ->
       aic.onMobile = $('body').width() < 700
       speech.merge LoopService.dialogue
       preloadImage aic.lang.images.greyStripe
-      return
+      return null
 
     ### INTERACTION FUNCTIONS ###
 
@@ -1710,7 +1710,7 @@ do ->
       #breachLoop("INTRODUCTION","askVoiceExp");
       #alexandraLoop("TUTORIAL","emotiontest");
       #alexandraLoop("TUTORIAL","tutExp");
-      return
+      return null
 
     # called when user switches app via buttons or terminal
 
@@ -1725,18 +1725,18 @@ do ->
           aic.notifications[aic.selectedSpeaker] = 0
         else
           aic.notifications[app] = 0
-        aic.vars[app + 'Emphasis'] = false
+        aic.vars["#{app}Emphasis"] = false
         aic.selectedApp = app
         # then, if the app is terminal, focus the input
         if app == 'terminal'
           $timeout (->
             $('#terminal-input')[0].focus()
-            return
+            return null
           ), 100
           # Why does this need to be in a timeout? No clue.
       else
-        throw new Error('Invalid app specified -- terminal / messages / database / run')
-      return
+        throw new Error("Invalid app specified -- terminal / messages / database / run")
+      return null
 
     # called when the user switches speaker in the messages app
 
@@ -1749,7 +1749,7 @@ do ->
         aic.selectedSpeaker = speaker
         # also need to clear this speaker's notifications
         aic.notifications[speaker] = 0
-      return
+      return null
 
     # called when the user switches operations in the run app
 
@@ -1760,12 +1760,12 @@ do ->
         # this operation is disabled, do nothing
       else
         aic.selectedOperation = operation
-      return
+      return null
 
     # called when the user switches articles in the database app
 
     aic.switchArticle = (article) ->
-      console.log 'Switching to article: ' + article
+      console.log "Switching to article: #{article}"
       # specific exception for tutorial
       if aic.vars.waitingForRead4000 == true and article == 'scp4000'
         aic.vars.waitingForRead4000 = false
@@ -1778,7 +1778,7 @@ do ->
         # however, because we're only using 1 section for all articles, we need to force a 0.6s delay so the css can catch up
         $timeout (->
           aic.selectedArticleData = {}
-          return
+          return null
         ), 600, true
       else if aic.lang.articles[article].available == false
         # this article is disabled, do nothing
@@ -1807,7 +1807,7 @@ do ->
           # TODO: create redirection page
           aic.selectedArticleData.content = aic.lang.defaultArticle
         aic.selectedArticle = article
-      return
+      return null
 
     # Called when the user submits text via the terminal
     # Effectively terminalLoop() except it always shows the input
@@ -1840,14 +1840,14 @@ do ->
                   if phrases[1].toLowerCase() == 'confirm'
                     # TODO reset everything then refresh
                     # same function that will be called at the end of the game
-                    writeDialogue 'terminal', [ 'I haven\'t implemented wipe yet' ]
+                    writeDialogue 'terminal', [ "I haven\'t implemented wipe yet" ]
                 console.log 'wiping'
               else
                 writeDialogue 'terminal', speech.misc.terminal.wipeSure
                 wipeTimer = true
                 $timeout (->
                   wipeTimer = false
-                  return
+                  return null
                 ), 60000
             when aic.lang.commands.cheat.includes(phrases[0].toLowerCase())
               # CHEAT
@@ -1861,26 +1861,16 @@ do ->
                     writeDialogue 'terminal', speech.misc.terminal.cheatSuccess
                   when aic.lang.commands.cheats.print
                     m = eval(phrases[2])
-
-                    ###jslint ignore:line###
-
                     console.log m
                     switch typeof m
                       when 'number'
                         m = m.toString()
-
-                        ###jslint ignore:line###
-
                         writeDialogue 'terminal', [
-                          0
-                          0
-                          phrases[2] + ': ' + m
+                          0, 0, "#{phrases[2]}: #{m}"
                         ]
                       when 'string'
                         writeDialogue 'terminal', [
-                          0
-                          0
-                          phrases[2] + ': ' + m
+                          0, 0, "#{phrases[2]}: #{m}"
                         ]
                       else
                         writeDialogue 'terminal', speech.misc.terminal.printDone
@@ -1892,7 +1882,7 @@ do ->
                     else
                       writeDialogue 'terminal', speech.misc.terminal.skipFailed
                   else
-                    throw new Error('Unknown cheat code: ' + phrases[1])
+                    throw new Error("Unknown cheat code: #{phrases[1]}")
               else
                 writeDialogue 'terminal', speech.misc.terminal.cheatWarn
             when aic.lang.commands.cheats.skip.includes(phrases[0].toLowerCase())
@@ -1907,7 +1897,7 @@ do ->
               else
                 writeDialogue 'terminal', speech.misc.terminal.skipFailed
             else
-              throw new Error('Unknown command: ' + phrases[0])
+              throw new Error("Unknown command: #{phrases[0]}")
         catch error
           # TODO add to terminal conversation
           console.error error.message
@@ -1915,10 +1905,10 @@ do ->
           writeDialogue 'terminal', [
             0
             0.3
-            'e:' + error.message
+            "e:#{error.message}"
           ]
         aic.terminalInput = ''
-      return
+      return null
 
     # When the user presses UP in the terminal, give them the last command that they used
 
@@ -1937,23 +1927,23 @@ do ->
       else
         # If it wasn't UP or DOWN, clear the iterator
         commandsUsedIterator = -1
-      return
+      return null
 
     # hover/unhover rooms - had to use jQuery for this and I despise it
     $('.sitemap').on 'mouseenter', '.room', ->
       room = this.getAttribute('data-room-name')
       $scope.$apply ->
         aic.vars.hoveredRoom = room
-        return
+        return null
       aic.vars.doingRoom = true
-      return
+      return null
     $('.sitemap').on 'mouseleave', '.room', ->
       if aic.vars.doingRoom
         $scope.$apply ->
           aic.vars.hoveredRoom = 'none'
-          return
+          return null
         aic.vars.doingRoom = false
-      return
+      return null
     # make the bouncy effect on the article selectors persist when the mouse is moved off them too quickly
     $('.articles-list').on 'mouseenter', '.article-selector', ->
       # this event only fires when the mouse is moved onto a selector.
@@ -1964,10 +1954,10 @@ do ->
       # mark this selector as HOVERED
       $scope.$apply ->
         aic.lang.articles[article].hovered = true
-        return
+        return null
       # set the time at which this article can be safely unhovered
       aic.lang.articles[article].cantUnhoverUntil = Date.now() + 675
-      return
+      return null
     $('.articles-list').on 'mouseleave', '.article-selector', ->
       # this event only fires when the mouse is moved off a selector.
       article = this.getAttribute('data-article')
@@ -1977,7 +1967,7 @@ do ->
         # if we're out of time, mark as UNHOVERED, no questions asked
         $scope.$apply ->
           aic.lang.articles[article].hovered = false
-          return
+          return null
       else
         # if there's still time remaining, set a timer to mark it as UNHOVERED once the timer has expired
         aic.lang.articles[article].cantUnhoverUntil = $timeout((->
@@ -1985,13 +1975,13 @@ do ->
           # after the timer has completed successfully, delete it, just in case
           if !Number.isInteger(aic.lang.articles[article].cantUnhoverUntil)
             aic.lang.articles[article].cantUnhoverUntil = undefined
-          return
+          return null
         ), timeRemaining, true)
       $scope.$apply ->
         if Date.now() - (aic.lang.articles[article].hoveredAt) > 675
           aic.lang.articles[article].hovered = false
-        return
-      return
+        return null
+      return null
     # event handler for clicking rooms
 
     aic.selectRoom = (room) ->
@@ -2001,9 +1991,9 @@ do ->
         aic.vars.minimiseMap = true
         $timeout (->
           aic.vars.selectedRoom = room
-          return
+          return null
         ), (if aic.vars.selectedRoom == 'none' then 1000 else 0), true
-      return
+      return null
 
     # modify room settings/options
 
@@ -2013,7 +2003,7 @@ do ->
 
     aic.rebootRooms = ->
       mainLoop 'ROOMS', 'rebootRooms'
-      return
+      return null
 
     ### PLOT FUNCTIONS ###
 
@@ -2021,7 +2011,7 @@ do ->
 
     aic.maitreyaLoop = (conversation, option) ->
       # takes the id of the selected option
-      console.log 'Maitreya - ' + option.bigSection + ' - ' + option.id
+      console.log "Maitreya - #{option.bigSection} - #{option.id}"
       delay = 0
       switch conversation
         when 'terminal'
@@ -2032,22 +2022,22 @@ do ->
           delay = writeDialogue(conversation, option.dialogue, 'maitreya', option.id)
           $timeout (->
             breachLoop option.bigSection, option.id
-            return
+            return null
           ), delay * 1000 + maitreyaDelay * 1000
           aic.vars[conversation].opinion += option.opinion
         when 'alexandra'
           delay = writeDialogue(conversation, option.dialogue, 'maitreya', option.id)
           $timeout (->
             alexandraLoop option.bigSection, option.id
-            return
+            return null
           ), delay * 1000 + maitreyaDelay * 1000
           aic.vars[conversation].opinion += option.opinion
         else
-          throw new Error('Conversation ' + conversation + ' does not exist')
+          throw new Error("Conversation #{conversation} does not exist")
       # obviously we don't need the old options anymore
       aic.chatLog[conversation].options = []
       # save to cookie?
-      return
+      return null
 
     Actor::move = (destination, continuous) ->
       # called when an actor moves from one room to another. they can only move to adjacent rooms
@@ -2059,7 +2049,7 @@ do ->
         me.location = destination
       else
         # we're moving to an invalid room?
-        throw new Error(me.name + ' tried to move from ' + me.location + ' to ' + destination)
+        throw new Error("#{me.name} tried to move from #{me.location} to #{destination}")
       me.location
 
     # alias functions so LoopService can access them
@@ -2081,12 +2071,12 @@ do ->
       while i < smallSection.length
         if aic.blacklist.includes(smallSection[i])
           # this smallSection is already blacklisted
-          console.log 'Attempted to blacklist ' + smallSection[i] + ', but it was already blacklisted'
+          console.log "Attempted to blacklist #{smallSection[i]}, but it was already blacklisted"
         else
-          console.log 'Blacklisting ' + smallSection[i] + ' (via LoopService)'
+          console.log "Blacklisting #{smallSection[i]} (via LoopService)"
           aic.blacklist.push smallSection[i]
         i++
-      return
+      return null
 
     aic.blacklist.remove = (smallSection) ->
       # accepts either one smallSection or an array of multiple
@@ -2097,11 +2087,11 @@ do ->
         index = aic.blacklist.indexOf(smallSection[i])
         if index > -1
           aic.blacklist.splice index, 1
-          console.log 'Removed ' + smallSection[i] + ' from blacklist'
+          console.log "Removed #{smallSection[i]} from blacklist"
         else
-          console.log 'Tried to remove ' + smallSection[i] + ' from blacklist but it was not present'
+          console.log "Tried to remove #{smallSection[i]} from blacklist but it was not present"
         i++
-      return
+      return null
 
     aic.unlock = (target) ->
       if appList.includes(target)
@@ -2111,8 +2101,8 @@ do ->
       else if target of aic.lang.articles
         aic.lang.articles.target.available = true
       else
-        throw new Error('Tried to unlock ' + target + ' which does not exist')
-      return
+        throw new Error("Tried to unlock #{target} which does not exist")
+      return null
 
     aic.lock = (target) ->
       if appList.includes(target)
@@ -2122,8 +2112,8 @@ do ->
       else if target of aic.lang.articles
         aic.lang.articles.target.available = false
       else
-        throw new Error('Tried to lock ' + target + ' which does not exist')
-      return
+        throw new Error("Tried to lock #{target} which does not exist")
+      return null
 
     aic.eval = eval
     return null
@@ -2142,9 +2132,9 @@ do ->
 # prototype functuon to turn kebab-case to camelCase
 String::toCamelCase = ->
   this.toLowerCase()
-    .replace(/[^\w\s\-]/g, '')
-    .replace(/[^a-z0-9]/g, ' ')
-    .replace(/^\s+|\s+$/g, '')
+    .replace(/[^\w\s\-]/g, "")
+    .replace(/[^a-z0-9]/g, " ")
+    .replace(/^\s+|\s+$/g, "")
     .replace(/\s(.)/g, (match, group) ->
       group.toUpperCase())
 
@@ -2152,23 +2142,23 @@ String::toCamelCase = ->
 
 String::format = ->
   # pass article argument only if this is an article
-  this.replace(/\|\|\|\|/g, '<br>')
-    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-    .replace(/\/\/(.*?)\/\//g, '<i>$1</i>')
-    .replace(/{{(.*?)}}/g, '<tt>$1</tt>')
-    .replace(/\^\^(.*?)\^\^/g, '<sup>$1</sup>')
-    .replace(/\?\?(.*?)\?\?/g, '<span dynamic class=\'statement false\' data-bool=\'TRUE\'>$1</span>')
-    .replace(/!!(.*?)!!/g, '<span class=\'statement true\' data-bool=\'FALSE\'>$1</span>')
-    .replace(/^-{3,}$/g, '<hr>')
-    .replace(/--/g, '—')
-    .replace(/^=\s(.*)$/g, '<div style=\'text-align: center;\'>$1</div>')
-    .replace(/(^|>)\!\s([^<]*)/g, '$1<div class=\'fake-title\'>$2</div>')
-    .replace(/(^|>)\+{3}\s([^<]*)/g, '$1<h3>$2</h3>')
-    .replace(/(^|>)\+{2}\s([^<]*)/g, '$1<h2>$2</h2>')
-    .replace(/(^|>)\+{1}\s([^<]*)/g, '$1<h1>$2</h1>')
-    .replace(/^\[\[IMAGE\]\]\s([^\s]*)\s(.*)$/g, '<div class=\'scp-image-block block-right\'><img src=\'$1\'><div class=\'scp-image-caption\'><p>$2</p></div></div>')
+  this.replace(/\|\|\|\|/g, "<br>")
+    .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+    .replace(/\/\/(.*?)\/\//g, "<i>$1</i>")
+    .replace(/{{(.*?)}}/g, "<tt>$1</tt>")
+    .replace(/\^\^(.*?)\^\^/g, "<sup>$1</sup>")
+    .replace(/\?\?(.*?)\?\?/g, "<span dynamic class=\'statement false\' data-bool=\'TRUE\'>$1</span>")
+    .replace(/!!(.*?)!!/g, "<span class=\'statement true\' data-bool=\'FALSE\'>$1</span>")
+    .replace(/^-{3,}$/g, "<hr>")
+    .replace(/--/g, "—")
+    .replace(/^=\s(.*)$/g, "<div style=\'text-align: center;\'>$1</div>")
+    .replace(/(^|>)\!\s([^<]*)/g, "$1<div class=\'fake-title\'>$2</div>")
+    .replace(/(^|>)\+{3}\s([^<]*)/g, "$1<h3>$2</h3>")
+    .replace(/(^|>)\+{2}\s([^<]*)/g, "$1<h2>$2</h2>")
+    .replace(/(^|>)\+{1}\s([^<]*)/g, "$1<h1>$2</h1>")
+    .replace(/^\[\[IMAGE\]\]\s([^\s]*)\s(.*)$/g, "<div class=\'scp-image-block block-right\'><img src=\'$1\'><div class=\'scp-image-caption\'><p>$2</p></div></div>")
     .replace /\[{3}(.*?)\|(.*?)\]{3}/, (match, article, text) ->
       # please ready your butts for the single worst line of code I have ever written
       angular.element(document.documentElement).scope().aic.lang.articles[article].available = true
-      return '<span class=\'article-link\'>' + text + '</span>'
+      return "<span class=\'article-link\'>#{text}</span>"
 ##endregion
