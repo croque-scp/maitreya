@@ -17,8 +17,14 @@
     "url": "https://github.com/rossjrw/maitreya/issues"
   },
   "homepage": "https://github.com/rossjrw/maitreya",
+  "browserslist": "cover 99.5%",
   "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "babel-preset-env": "^1.7.0",
+    "fancy-log": "^1.3.3",
     "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
     "gulp-coffee": "^3.0.3"
   }
 }

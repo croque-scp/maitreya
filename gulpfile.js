@@ -7,15 +7,22 @@
 
 var gulp = require('gulp');
 var coffee = require('gulp-coffee');
+var babel = require('gulp-babel');
+var log = require('fancy-log');
 
 gulp.task('default', function(done) {
     // Pipe any js files (should be none in final build)
     gulp.src('./src/js/*.js')
-        .pipe(gulp.dest('./dist/'));
+        .pipe(gulp.dest('./dist/'))
+        .on('end', function(){ log("Moved js file to dist") });
     // Convert coffee files
     gulp.src('./src/js/*.coffee')
         .pipe(coffee({bare: true}))
-        .pipe(gulp.dest('./dist/'));
+        .on('end', function(){ log("Converted coffee to js") })
+        .pipe(babel({presets: ['env']}))
+        .on('end', function(){ log("Piped coffee through Babel") })
+        .pipe(gulp.dest('./dist/'))
+        .on('end', function(){ log("Moved coffee to dist") });
     // Pipe images, css, html
     gulp.src('./src/images/*.*')
         .pipe(gulp.dest('./dist/'));
