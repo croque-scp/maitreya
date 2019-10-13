@@ -25,8 +25,6 @@ shuffle = function(array) {
 (function() {  /* global $, angular */
   // and here begins AngularJS
   var EncodeURIComponentFilter, MaitreyaController, maitreya;
-  maitreya = angular.module('maitreya', ['ngSanitize', 'ngAnimate']).controller('MaitreyaController', MaitreyaController).filter('encode', EncodeURIComponentFilter);
-  MaitreyaController.$inject = ['$scope', '$timeout', 'LoopService', '$sce'];
   MaitreyaController = function($scope, $timeout, LoopService, $sce) {
     var Actor, addNotification, aic, alexandraEmotionList, alexandraLoop, appList, assignRoom, auto, availableRooms, bootDate, breachLoop, cheats, commandsUsedIterator, currentlyPushing, dateDiff, dynamicLoop, endingLoop, mainLoop, maitreyaDelay, operationList, preloadAlexandraFaces, preloadImage, presentOptions, pushToLog, speakerList, speech, timeOutList, typingDelay, typingSpeed, wipeTimer, writeDialogue;
     aic = this;
@@ -1958,10 +1956,19 @@ shuffle = function(array) {
       }
     };
     aic.eval = eval;
+    return null;
   };
   EncodeURIComponentFilter = function() {
     return window.encodeURIComponent;
   };
+  maitreya = angular.module("maitreya", ['ngSanitize', 'ngAnimate']).controller("MaitreyaController", ['$scope', '$timeout', 'LoopService', '$sce', MaitreyaController]).filter("encode", [EncodeURIComponentFilter]);
+  // MaitreyaController.$inject = [
+  //   '$scope'
+  //   '$timeout'
+  //   'LoopService'
+  //   '$sce'
+  // ]
+  return null;
 })();
 
 //#region prototype functions

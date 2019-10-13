@@ -21,10 +21,6 @@ shuffle = (array) ->
 
 # and here begins AngularJS
 do ->
-  maitreya = angular.module('maitreya', [
-    'ngSanitize'
-    'ngAnimate'
-  ]).controller('MaitreyaController', MaitreyaController).filter('encode', EncodeURIComponentFilter)
 
   MaitreyaController = ($scope, $timeout, LoopService, $sce) ->
     aic = this
@@ -2212,18 +2208,25 @@ do ->
       return
 
     aic.eval = eval
-    return
+    return null
 
   EncodeURIComponentFilter = ->
-    window.encodeURIComponent
+    return window.encodeURIComponent
 
-  MaitreyaController.$inject = [
-    '$scope'
-    '$timeout'
-    'LoopService'
-    '$sce'
-  ]
-  return
+  maitreya = angular
+      .module("maitreya", ['ngSanitize', 'ngAnimate'])
+      .controller("MaitreyaController",
+                  ['$scope', '$timeout', 'LoopService', '$sce', MaitreyaController])
+      .filter("encode", [EncodeURIComponentFilter])
+
+  # MaitreyaController.$inject = [
+  #   '$scope'
+  #   '$timeout'
+  #   'LoopService'
+  #   '$sce'
+  # ]
+
+  return null
 ##region prototype functions
 # prototype functuon to turn whatever-this-is to whateverThisIs
 
