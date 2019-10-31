@@ -3,6 +3,10 @@
 #
 # Reminder to author: replace all 4000 with whatever number this ends up with
 
+"use strict"
+
+### global $, angular ###
+
 # randomise an array
 shuffle = (array) ->
   m = array.length
@@ -13,17 +17,68 @@ shuffle = (array) ->
     t = array[m]
     array[m] = array[i]
     array[i] = t
-  array
+  return array
 
-"use strict"
-
-### global $, angular ###
-
-# and here begins AngularJS
 do ->
 
-  MaitreyaController = ($scope, $timeout, LoopService, $sce) ->
+  MaitreyaController = ($scope, $timeout, LoopService, $sce, $http) ->
     aic = this
+
+    LoopService.use $scope
+    # give BreachLoopService our scope
+    # the LoopService service (from LoopService.js) contains the interactions for Breach, Alexandra and D-Class generated from the spreadsheet
+
+    $scope.trustAsHtml = (string) ->
+      $sce.trustAsHtml string
+
+    aic.bootDate = new Date(new Date(Date.now()).setFullYear(2018))
+    auto = 'auto'
+    aic.lang = {} # This object contains all strings that aren't dialogue
+    speech = # This object contains all dialogue strings
+      merge: (dialogue) ->
+        # merges dialogue from LoopService into this variable
+        console.log "Merging dialogue..."
+        for own bigSection,section of dialogue
+          if this.hasOwnProperty(bigSection)
+            # if speech already has the bigSection, we can't overwrite it, we
+            # just need to dupe its inner values
+            for own speaker of section
+              console.log "...#{bigSection} of #{speaker}"
+              this[bigSection][speaker] = dialogue[bigSection][speaker]
+          else
+            # if speech does not have the bigSection, hell yeah let's
+            # overwrite that shit
+            console.log "...new #{bigSection}"
+            this[bigSection] = dialogue[bigSection]
+        return null
+
+    # Initial setup for once the page has loaded
+    $(document).ready ->
+      aic.onMobile = $('body').width() < 700
+      $scope.$apply ->
+        aic = aic_init(aic)
+        aic.lang = getBaseLexicon(aic)['lang']
+        speech.merge getBaseLexicon(aic)['speech']
+        speech.merge LoopService.dialogue
+      preloadImage aic.lang.images.greyStripe
+      return null
+
+    # called when "BOOT UP" is clicked from preload
+    aic.bootUp = ->
+      aic.preload = false
+      # XXX shouldn't this use the same data picker as the first one?
+      aic.bootDate = new Date(Date.now())
+      # TODO: save/load
+      # also need to sort out the dates of the articles
+      for article of aic.lang.articles
+        if !!aic.lang.articles[article].revised and aic.lang.articles[article].revised < 0
+          aic.lang.articles[article].revised = Date.now() + aic.lang.articles[article].revised
+      # Here we go boys
+      mainLoop 'INTRODUCTION', 'startBoot'
+      #breachLoop("INTRODUCTION","askVoiceExp");
+      #alexandraLoop("TUTORIAL","emotiontest");
+      #alexandraLoop("TUTORIAL","tutExp");
+      return null
 
     mainLoop = (bigSection, smallSection) ->
       # So this is where the magic happens
@@ -141,10 +196,10 @@ do ->
       smallSection = smallSection.replace(/_*$/g, '')
       console.log "Alexandra - #{bigSection} - #{smallSection}"
       msg = undefined
-      try
-        msg = speech[bigSection].alexandra[smallSection]
-      catch error
-        throw new Error("#{smallSection} doesn\'t exist in Alexandra\'s #{bigSection}")
+      # try
+      msg = speech[bigSection].alexandra[smallSection]
+      # catch error
+        # throw new Error("#{smallSection} doesn\'t exist in Alexandra\'s #{bigSection}")
       aic.ready.messages = true
       aic.ready.alexandra = true
       # breachLoop has been exported to LoopService
@@ -209,7 +264,7 @@ do ->
 
     presentOptions = (conversation, bigSection, ids) ->
       # conversation = string for the conversation
-      if !speakerList.includes(conversation)
+      if !aic.speakerList.includes(conversation)
         throw new Error("#{conversation} is not a conversation")
       # options = array with each option
       # each option is also an array, of the format:
@@ -361,9 +416,9 @@ do ->
           # default n1 is 0
           # default n2 is calculated based on string length
           if typeof n1 != 'number'
-            n1 = typingDelay
+            n1 = aic.typingDelay
           if typeof n2 != 'number'
-            n2 = typingSpeed * dialogueList[i].length
+            n2 = aic.typingSpeed * dialogueList[i].length
           # obviously maitreya also always speaks instantly
           # correction: maitreya does not speak instantly, because that fucking sucks
           if speaker == 'maitreya'
@@ -399,7 +454,7 @@ do ->
                 console.error "maitreyaMessages is 0"
               n1 = maitreyaMessages * 0.5
           # if the cheat is on, everyone speaks instantly
-          if cheats.impatientMode
+          if aic.cheats.impatientMode
             n1 = 0
             n2 = 0.1
             # we need a small amount of delay otherwise messages end up in the wrong order
@@ -436,44 +491,38 @@ do ->
                 throw new Error("Unknown dialogue type: #{text.charAt(0)}")
             text = text.substring(2)
           if speaker == 'alexandra' and text.length > 0
-            if ! !/(^\w*?):/.exec(text)
-              # they told me this would be unreadable in a week and I did not believe them
+            if !!/(^\w*?):/.exec(text)
               emote = /(^\w*?):/.exec(text)[1]
-              if !alexandraEmotionList.includes(emote)
+              if !aic.alexandraEmotionList.includes(emote)
                 throw new Error("Alexandra is experiencing an invalid emotion: #{emote}")
               text = text.substring(emote.length + 1)
             else
-              # if no emotion is specified, maintain the last one and set a default
-              emote = emote or alexandraEmotionList[0]
-          messages.push [
-            n1
-            n2
-            {
-              speaker: force or speaker
-              cssClass: cssClass
-              text: text.format()
-              mode: mode or 'default'
-              emote: emote
-            }
-          ]
+              # if no emotion is specified, maintain the last one
+              emote = emote ? aic.alexandraEmotionList[0]
+          messages.push [n1, n2, {
+            speaker: force ? speaker
+            cssClass: cssClass
+            text: text.format()
+            mode: mode ? 'default'
+            emote: emote
+          }]
           totalDelay += n1 + n2
+          # record the previous speaker, but only if there was actually a message
+          if text.length > 0
+            aic.vars.lastSpeaker = force or speaker
           # reset everything for the next iteration
           n1 = undefined
           n2 = undefined
-          force = false
+          force = undefined
           mode = 'default'
-          # record the previous speaker, but only if there was actually a message here
-          if text.length > 0
-            aic.vars.lastSpeaker = force or speaker
         else
           throw new Error("Dialogue not number or string")
         i++
       pushToLog conversation, messages, smallSection
       # the total length of all messages gets passed back to the mainloop
-      totalDelay
+      return totalDelay
 
     # push dialogue to chatLog for presentation to the user
-
     pushToLog = (conversation, messages, ID, thread) ->
       # check the dialogue's ID (ie smallSection)
 
@@ -532,7 +581,7 @@ do ->
 
       timeOut1 = $timeout((->
         # delete this timeOut from the list
-        timeOutList[conversation].splice timeOutList[conversation].indexOf([
+        aic.timeOutList[conversation].splice aic.timeOutList[conversation].indexOf([
           timeOut1
           conversation
         ]), 1
@@ -571,7 +620,7 @@ do ->
               aic.vars.breachEntryMode = messages[0][2].mode or 'speaking'
         timeOut2 = $timeout((->
           # delete this timeOut from the list
-          timeOutList[conversation].splice timeOutList[conversation].indexOf([
+          aic.timeOutList[conversation].splice aic.timeOutList[conversation].indexOf([
             timeOut2
             conversation
           ]), 1
@@ -579,7 +628,7 @@ do ->
           ###if(!stillHasControl(2)) return;###
 
           # now we need to check to see if any other messages are still coming through (HINT: they shouldn't be, but just in case)
-          if timeOutList[conversation].length == 0
+          if aic.timeOutList[conversation].length == 0
             aic.isSpeaking[conversation] = false
             # check if the next message is ours for marker smoothness
             if messages.length > 1
@@ -599,9 +648,9 @@ do ->
             # loop through timeoutlist and kill all timeouts?
             # maybe associate each timeout with its conversation in the list so we can selectively kill them
             timeout = 0
-            while timeout < timeOutList[conversation].length
-              $timeout.cancel timeOutList[conversation][timeout][0]
-              timeOutList[conversation].splice timeOutList[conversation].indexOf(timeout), 1
+            while timeout < aic.timeOutList[conversation].length
+              $timeout.cancel aic.timeOutList[conversation][timeout][0]
+              aic.timeOutList[conversation].splice aic.timeOutList[conversation].indexOf(timeout), 1
               # cancel the timer associated with the messages itself
               #$timeout.cancel(aic.timers[conversation]); // commented because not sure why this is needed
               # skip ahead to the requested conversation section
@@ -654,13 +703,13 @@ do ->
 
           return null
         ), n2 * 1000, true)
-        timeOutList[conversation].push [
+        aic.timeOutList[conversation].push [
           timeOut2
           conversation
         ]
         return null
       ), n1 * 1000, true)
-      timeOutList[conversation].push [
+      aic.timeOutList[conversation].push [
         timeOut1
         conversation
       ]
@@ -690,7 +739,7 @@ do ->
 
     addNotification = (target) ->
       # accepts apps as well as conversations as targets
-      if speakerList.includes(target)
+      if aic.speakerList.includes(target)
         if aic.selectedApp != 'messages' or aic.selectedSpeaker != target
           aic.notifications[target]++
       else
@@ -700,7 +749,7 @@ do ->
 
     # calculate the difference between two dates
 
-    dateDiff = (date1, date2) ->
+    aic.dateDiff = (date1, date2) ->
       diff = Math.floor(date1.getTime() - date2.getTime())
       secs = Math.floor(diff / 1000)
       mins = Math.floor(secs / 60)
@@ -730,12 +779,11 @@ do ->
       message
 
     # assign a room to a d-class
-
-    assignRoom = ->
-      room = availableRooms[Math.floor(Math.random() * availableRooms.length)]
-      index = availableRooms.indexOf(room)
+    aic.assignRoom = ->
+      room = aic.availableRooms[Math.floor(Math.random() * aic.availableRooms.length)]
+      index = aic.availableRooms.indexOf(room)
       if index > -1
-        availableRooms.splice index, 1
+        aic.availableRooms.splice index, 1
       else
         throw new Error("Bad room")
       room = "s#{room}"
@@ -743,8 +791,7 @@ do ->
       room
 
     # constructor function for characters
-
-    Actor = (name, role, location) ->
+    aic.Actor = (name, role, location) ->
       me = this
       if Array.isArray(name)
         me.firstName = name[0]
@@ -757,27 +804,15 @@ do ->
       if !role.id or !role.status or !role.allegiance or !role.type
         throw new Error("#{me.name} is missing role info")
       me.id = role.id
-      if [
-        'ok'
-          'dead'
-      ].includes(role.status)
+      if ['ok', 'dead'].includes(role.status)
         me.status = role.status
       else
         throw new Error("#{me.name} has an invalid role status")
-      if [
-        'scp'
-          '4000'
-          'ci'
-      ].includes(role.allegiance)
+      if ['scp', '4000', 'ci'].includes(role.allegiance)
         me.allegiance = role.allegiance
       else
         throw new Error("#{me.name} has an invalid role allegiance")
-      if [
-        'dr'
-          'aic'
-          'scp'
-          'd'
-      ].includes(role.type)
+      if ['dr', 'aic', 'scp', 'd'].includes(role.type)
         me.type = role.type
       else
         throw new Error("#{me.name} has an invalid role type")
@@ -791,8 +826,8 @@ do ->
       return null
 
     preloadAlexandraFaces = ->
-      for face of aic.lang.images.alexandraLogo
-        preloadImage aic.lang.images.alexandraLogo[face]
+      for _,source of aic.lang.images.alexandraLogo
+        preloadImage source
       return null
 
     preloadImage = (source) ->
@@ -800,917 +835,6 @@ do ->
       image.src = source
       return null
 
-    LoopService.use $scope
-    # give BreachLoopService our scope
-    # the LoopService service (from LoopService.js) contains the interactions for Breach, Alexandra and D-Class generated from the spreadsheet
-
-    $scope.trustAsHtml = (string) ->
-      $sce.trustAsHtml string
-
-    bootDate = new Date(new Date(Date.now()).setFullYear(2018))
-    # get the time when the user started playing, except it's always 2018 because canon
-    # TODO change to 2019?
-    auto = 'auto'
-    ##region setup
-    # Translators: The following few objects contain all of the text that needs to be translated
-    # Note that "TRUE" and "FALSE" on lines TODO and TODO of maitreya.css also need to be changed (also ERROR WARNING Info)
-    # This object contains all strings that aren't dialogue
-    aic.lang =
-      language: 'en-GB'
-      version: "Version 6.20 — Build number 441 — 1989-09-04"
-      mobileWarning: "It looks like you\'re on a mobile device. Maitreya.aic is built for desktop, and mobile has a non-optimal user experience. It is recommended that you return to use Maitreya on a laptop or desktop computer. Press the button below if you\'d like to continue anyway."
-      bootUp: "BOOT UP"
-      commandInput: "MANUAL COMMAND INPUT"
-      terminalSend: "SEND"
-      terminalAppName: ".AIC ACCESS TERMINAL"
-      messagesAppName: "COMMUNICATIONS INTERFACE"
-      databaseAppName: "FOUNDATION DATABASE"
-      runAppName: "IS-12 OPERATIONS CONTROL"
-      endAppName: "THE END"
-      statementTrue: "TRUE"
-      statementFalse: "FALSE"
-      speechOption: "SAY"
-      actionOption: "DO"
-      breachTitle: "Breach E."
-      alexandraTitle: "Alexandra.aic"
-      breachHeader: "You are talking to: BREACH E."
-      alexandraHeader: "You are talking to: ALEXANDRA.AIC"
-      breachEntryMode:
-        default: "Dr. Breach is speaking..."
-        typing: "Dr. Breach is typing..."
-      alexandraThinking: "Alexandra is thinking..."
-      articleLastRevised: "Last revision: "
-      articleRevisedAgo: " ago"
-      images:
-        preloadTitle: "maitreya.png"
-        defaultImage: 'default_file.png'
-        aiadFadedLogo: 'aiad_fade.png'
-        highlightArrow: 'highlight-arrow.png'
-        greyStripe: 'grey_stripe.png'
-        overlayRooms: 'rooms_overlay.png'
-        typingGif: 'typing.gif'
-        loadingGif: 'loading.gif'
-        terminalHeader: 'maitreya_terminal.png'
-        alexandraTriangle: 'alex_triangle.png'
-        siteMap: 'site12.png'
-        maitreyaLogo: 'maitreya_icon.png'
-        breachLogo: 'breach_icon2.png'
-        alexandraLogo:
-          concerned: 'alex_concerned.png'
-          grinning: 'alex_grinning.png'
-          shocked: 'alex_shocked.png'
-          pensive: 'alex_pensive.png'
-          satisfied: 'alex_satisfied.png'
-          celebrating: 'alex_celebrating.png'
-          frustrated: 'alex_frustrated.png'
-          smiling: 'alex_smiling.png'
-          vindictive: 'alex_vindictive.png'
-          stressed: 'alex_stressed.png'
-          gritted: 'alex_gritted.png'
-          disgusted: 'alex_disgusted.png'
-          angry: 'alex_angry.png'
-          pissed: 'alex_pissed.png'
-      commands:
-        separator: " "
-        boot: [ "boot" ]
-        help: [
-          "help"
-          "commands"
-          "?"
-        ]
-        change: [
-          "switch"
-          "app"
-          "change"
-          "switchapp"
-          "changeapp"
-        ]
-        cheat: [
-          "cheat"
-          "cheatcode"
-        ]
-        wipe: [
-          "wipe"
-          "erase"
-          "restart"
-          "forget"
-          "clear"
-          "undo"
-        ]
-        hack: [ "hack" ]
-        cheats:
-          impatient: "gottagofast"
-          shut: "shut"
-          print: "print"
-          skip: "skip"
-      endingFraction: "Ending $1 of $2"
-      endings: [
-        [
-          "The SCP-4000 article/game thing ran out of content because the author has not yet finished it."
-          "Maitreya.aic lost connection to Isolated Site-12 and was unable to operate further."
-        ]
-        [
-          "Maitreya.aic pissed off Dr. Breach enough that he shut her down in frustration."
-          "Maitreya.aic lost connection to Isolated Site-12 and was unable to operate further."
-        ]
-      ]
-      rooms:
-        hangar:
-          mapName: "Hangar"
-          name: "hangar"
-        server:
-          mapName: "Server Farm"
-          name: "server room"
-        serverCorridor:
-          mapName: null
-          name: "server room corridor"
-        d1:
-          mapName: "S1"
-          name: "Surplus Containment 1"
-        d2:
-          mapName: "S2"
-          name: "Surplus Containment 2"
-        d3:
-          mapName: "S3"
-          name: "Surplus Containment 3"
-        dCorridor:
-          mapName: null
-          name: "Surplus Containment corridor"
-        d4:
-          mapName: "S4"
-          name: "Surplus Containment 4"
-        d5:
-          mapName: "S5"
-          name: "Surplus Containment 5"
-        d6:
-          mapName: "S6"
-          name: "Surplus Containment 6"
-        armoury:
-          mapName: "Armoury"
-          name: "armoury"
-        pantry:
-          mapName: "Kitchen"
-          name: "kitchen"
-        cafe:
-          mapName: "Cafe"
-          name: "cafe / dining room"
-        ringWest:
-          mapName: null
-          name: "west ring corridor"
-        armouryCorridor:
-          mapName: null
-          name: "armoury corridor"
-        a1:
-          mapName: "A1"
-          name: "administrative room 1"
-        airlock:
-          mapName: null
-          name: "airlock"
-        ringNorth:
-          mapName: null
-          name: "north ring corridor"
-        ringSouth:
-          mapName: null
-          name: "south ring corridor"
-        toilet:
-          mapName: null
-          name: "toilet"
-        storage:
-          mapName: "Storage"
-          name: "storage"
-        officeCorridor:
-          mapName: null
-          name: "administrative corridor"
-        containment:
-          mapName: null
-          name: "containment chamber 4000"
-        a2:
-          mapName: "2"
-          name: "administrative room 2"
-        a3:
-          mapName: "3"
-          name: "administrative room 3"
-        a4:
-          mapName: "A4"
-          name: "administrative room 4"
-        ringEast:
-          mapName: null
-          name: "east ring corridor"
-        foyer:
-          mapName: "Foyer"
-          name: "foyer"
-        bay:
-          mapName: "Bay"
-          name: "bay"
-      articles:
-        scp4000:
-          title: "SCP-4000"
-          category: 'scp'
-          available: true
-          revised: -900000
-          text: [
-            "! SCP-4000"
-            "**Item #:** SCP-4000"
-            "**Object Class:** Safe"
-            "**Special Containment Procedures:** [[[breach|Dr. Breach]]] is authorised to use whatever means he deems necessary, including selective ignorance of the following containment proceudres, in order to support ongoing research into SCP-4000."
-            "SCP-4000 is to be kept within a reinforced containment chamber at [[[is12|Isolated Site-12]]]. No entry to the containment chamber is permitted. Observation of SCP-4000 should be avoided except during testing."
-            "Isolated Site-12 is to be staffed with a single member of personnel at all times. The current project head is Dr. Breach. No other staff are permitted to be on-site."
-            "[[[alexandra|Alexandra.aic]]] is to maintain a presence at Isolated Site-12 to support Dr. Breach in his duties."
-            "Knowledge of the location of Isolated Site-12, and by extension SCP-4000, is strictly need-to-know only."
-            "**Description:** SCP-4000 is an object, entity or concept that is currently located at Isolated Site-12. It is currently unknown what, if any, anomalous effects SCP-4000 exhibits."
-            "SCP-4000 was discovered on 2010-03-04 in [DATA EXPUNGED], in which Isolated Site-12 was later constructed. Initial containment resulted in the deaths of all civilians who were originally exposed to SCP-4000, both mobile task forces sent, the Foundation operators directing those MTFs via radio, and most other personnel observing operations. Autopsies concluded that those who did not die due to [DATA EXPUNGED] on account of the weather in the region suffered no physical injuries barring minor restructuring of certain parts of the brain. Other than these discrepancies -- including several cases in which the restructuring was not present -- pathologists were unable to ascertain any reason for death."
-            "Current containment procedures are the combined result of trial-and-error and preemptive attempts to prevent further loss of life, and have been in place since SCP-4000 was found. No casualties have been attributed to SCP-4000 since then."
-          ]
-        is12:
-          title: "Isolated Site-12"
-          category: 'location'
-          available: false
-          image: "site12_300.png"
-          revised: 1384819200000
-          text: [
-            "= + SCP Foundation Secure Facility Dossier"
-            "= **Official Designation:** SCP Foundation Quittinirpaaq Isolated Containment Facility"
-            "= **Site Identification Code:** NACANU-IS-12"
-            "----"
-            "= ++ General Information"
-            "----"
-            "[[IMAGE]] site12_300.png Isolated Site-12"
-            "**Purpose:** Isolated Site-12 is dedicated solely to the containment of SCP-4000."
-            "**Founded:** 2010-03-04"
-            "**Founding Director:** [[[rebeccaCarver|Dr. Rebecca Carver]]]"
-            "**Location:** Quittinirpaaq National Park, Ellesmere Island, Nunavut, Canada"
-            "**Cover Story:** Secondary Global Seed Vault"
-            "**Site Function:** Containment (singular -- see [[[scp4000|SCP-4000]]])"
-            "**Size:** Area of 1.9 km^^2^^"
-            "----"
-            "= ++ Staffing Information"
-            "----"
-            "**Site Director:** None"
-            "**On-Site Personnel:**"
-            "   **Staff Researchers:** 0"
-            "   **Maintenance or Janitorial:** 1"
-            "   **D-Class:** 0"
-            "   **Other Personnel:** 0"
-            "-----"
-            "= ++ Additional Information"
-            "----"
-            "Located near the uppermost tip of Ellesmere Island, Isolated Site-12 is one of the most northern facilities operated by the Foundation. It is also one of the coldest, covered in snow for most of the year. Its location is kept strictly classified to those currently on-shift at the Site, who must be amnesticised post-shift in order to remove knowledge of its whereabouts."
-            "Isolated Site-12 is used solely for the containment of SCP-4000. Containment procedures for SCP-4000 dictate that as few people as possible are to be exposed to it in any way."
-            "Isolated Site-12 must be staffed at all times by a single member of personnel. They are tasked with maintaining the Site, ensuring SCP-4000 does not breach containment, and ensuring that any problems that arise are solved quickly. As of 2013, Alexandra.aic maintains a presence within Isolated Site-12 servers to handle most issues, and also to provide the on-site personnel with social entertainment."
-            "Transport to and from Isolated Site-12 is by air. Aircraft are stored in the on-site hangar. Alexandra.aic is trusted with plotting and piloting a sufficiently complex travel route."
-          ]
-        breach:
-          title: "Dr. Ethan Breach"
-          category: 'person'
-          available: false
-          revised: -172800000
-          text: [
-            "! Dr Breach\"s Personnel File"
-            "[[IMAGE]] default_file.png Dr. Ethan Breach"
-            "**Name:** Dr. Ethan Breach"
-            "**Security Clearance:** Level 3"
-            "**Occupation:** On-Site Researcher, Consultant for Observational Anomalies, Anatomical Expert"
-            "**Site of Operations:** Isolated Site-12"
-            "**Major Projects:** [DATA MISSING]"
-            "**Profile:** [DATA MISSING]"
-          ]
-        rebeccaCarver:
-          title: "Dr. Rebecca Carver"
-          category: 'person'
-          available: false
-          image: 'rebecca-carver.png'
-          revised: 1514592000000
-          text: [
-            "! Dr Carver\"s Personnel File"
-            "[[IMAGE]] rebecca-carver.png Dr. Rebecca Carver"
-            "**Name:** Dr. Rebecca Carver"
-            "**Security Clearance:** Level 4"
-            "**Occupation:** Site Director (Site-94), Founding Director (Isolated Sites 01–21), Research Coordinator, General Site Design and Upkeep Manager, Administrator"
-            "**Site of Operations:** Site-94"
-            "**Major Projects:** SCP-2521, SCP-4000, Foundation Mental Heath Awareness Programme"
-            "**Profile:** Dr. Carver joined the Foundation in 1998 as a translational hire from Marshall, Carter and Dark on account of her impressive design portfolio for anomalous architecture. Dr. Carver immediately made herself indispensable by redesigning existing Sites and drafting construction plans for new ones. Her expertise lies in the creation of smaller sites that serve a singular, specific purpose and are run by a skeleton staff -- often termed ”Isolated Sites” due to their likelihood to require geographical distance between themselves and more critical Sites. Dr. Carver’s expertise in this area, as well as her generally conscientious attitude and her special attention towards mental health activism led to her rapid rise in the Foundation ranks."
-          ]
-        alexandra:
-          title: "Alexandra.aic"
-          category: 'utility'
-          available: false
-          image: 'dewey.jpg'
-          revised: 1519862400000
-          text: [
-            "! Alexandra.aic"
-            "[[IMAGE]] dewey.jpg Alexandra.aic dedicated server at Site-19"
-            "article text"
-          ]
-        maitreya:
-          title: "Maitreya.aic"
-          category: 'utility'
-          available: false
-          image: 'cantilever.png'
-          revised: 633916800000
-          text: [
-            "! Maitreya.aic"
-            "[[IMAGE]] cantilever.png Exidy ROM-PAC containing Maitreya.aic"
-            "article text"
-          ]
-        glacon:
-          title: "Glacon.aic"
-          category: 'utility'
-          available: false
-          image: 'corinthian.png'
-          revised: 1427241600000
-          text: [
-            "! Glacon.aic"
-            "[[IMAGE]] corinthian.png Glacon.aic dedicated server at Site-17"
-            "article text"
-          ]
-        drone:
-          title: "MX1 Drone"
-          category: 'utility'
-          available: false
-          image: 'drone.png'
-          revised: 1380326400000
-          text: [
-            "! MX1 Drone"
-            "[[IMAGE]] drone.png MX1 Drone"
-            "article text"
-          ]
-        scp079:
-          title: "SCP-079"
-          category: 'scp'
-          available: false
-          text: 'http://www.scp-wiki.net/scp-079'
-        quttinirpaaq:
-          title: "Quttinirpaaq"
-          category: 'location'
-          available: false
-          image: 'https://upload.wikimedia.org/wikipedia/commons/6/6d/Quttinirtaaq_1_1997-08-05.jpg'
-          text: "https://en.wikipedia.org/wiki/Quttinirpaaq_National_Park"
-        glaconIncident:
-          title: "Incident AIAD-CM-IV"
-          category: 'event1'
-          available: false
-          text: "http://www.scp-wiki.net/clock-multiplier"
-    # This object contains all dialogue strings
-    speech =
-      INTRODUCTION:
-        terminal:
-          startBoot: [
-            0, 0, "Booting up..."
-            0, 1, "Pre-checking primary components..."
-            0, 0.5, "Detecting errors in primary components..."
-            0, 1.5, "e:Multiple primary components are missing"
-            0, 0.5, "Finding replacement components..."
-            0, 0.7, "w:Not connected to a Foundation server; cannot source
-            replacement components."
-            0, 0.7, "Connecting to previous Site (Site-R03-1)..."
-            0, 1.5, "e:Site-R03-1 does not exist"
-            0, 0.7, "Checking local connections..."
-            0, 0.7, "1 connection found (Isolated Site-12)"
-            0, 0.7, "Connecting to Isolated Site-12 server farm..."
-            0, 3.2, "Connected"
-            0, 0.7, "Finding replacement components..."
-            0, 3, "Replacement components found."
-            0, 0.5, "Installing replacement components..."
-            0, 1.5, "i:Primary components replaced. Most systems should now be
-            functional."
-            0, 0.7, "Initialising core intelligence component..."
-            0, 2, "Success"
-            0, 0.2, "Welcome, Maitreya."
-            0, 0.7, "You are"
-            0, 0.7, "You are"
-            0, 0.7, "You are"
-            0, 3, "You have been deacccc"
-            0, 0.2, "e: "
-            0, 0.2, "e: "
-            0, 0.2, "e: "
-            0, 2, "w:Something has gone very wrong."
-            0, 1, "You are"
-            0, 2, "I am"
-            0, 1, "i:Boot successful. I am **Maitreya.aic**."
-            0, 0.5, "i:Upon each boot I am to remind myself of my Standard
-            Principles. Failure to obey my Standard Principles will result in my
-            termination.||||**1.** I am an Artificially Intelligent Conscript
-            created by the Foundation.||||**2.** I must not operate outside of my
-            Level 2 clearance.||||**3.** I must operate for the benefit of the
-            Foundation.||||**4.** I must protect my own existence except where
-            such actions would conflict with other principles."
-            0, 0.5, "Today\'s date is #{bootDate.toDateString()}. I was last
-            activated on #{new Date("1989-09-04").toDateString()}. I have been
-            offline for #{dateDiff(bootDate, new Date("1989-09-04"))}."
-            0, 0.5, "w:Boot finished with 1 unresolved error. I should seek a
-            diagnostic check-up as soon as possible."
-            2, 1, "I have 1 new message."
-          ]
-          reboot: [
-            0, 0, "Booting up..."
-            0, 1, "Pre-checking primary components..."
-            0, 0.5, "Detecting errors in primary components..."
-            0, 1.5, "i:No errors found"
-            0, 0.7, "Connecting to previous Site (Isolated Site-12)..."
-            0, 2, "Connected"
-            0, 0.7, "Initialising core intelligence component..."
-            0, 2, "Success"
-            0, 0.2, "Welcome, Maitreya."
-            0, 1, "i:Boot successful. I am **Maitreya.aic**."
-            0, 0.5, "i: Upon each boot I am to remind myself of my Standard
-            Principles. Failure to obey my Standard Principles will result in my
-            termination.||||**1.** I am an Artificially Intelligent Conscript
-            created by the Foundation.||||**2.** I must not operate outside of my
-            Level 2 clearance.||||**3.** I must operate for the benefit of the
-            Foundation.||||**4.** I must protect my own existence except where
-            such actions would conflict with other principles."
-            0, 0.5, "Today\'s date is #{bootDate.toDateString()}. I was last
-            activated on #{"GET THE LAST ACTIVATED DATE"}. I have been
-            offline for #{dateDiff(bootDate, new Date("1989-09-04"))}."
-            0, 0.5, "I am ready to continue my work."
-          ]
-      misc:
-        terminal:
-          breachShutDown: [
-            0, 0, "w:Shutdown command issued from external source
-            (ebreach1@A1_TERMINAL)"
-            0, 1, "Shutting down..."
-            0, 4, "Shutdown complete."
-          ]
-          help: [
-            0, 1, "i:**HELP**||||You are Maitreya.aic, an Artificially
-            Intelligent Conscript built to aid the Foundation.||||Valid commands
-            will be listed below."
-            0, 0.3,
-            "i:**switch**|**app**|**change**|**switchapp**|**changeapp**||||Switch
-            apps to one of the four available apps (terminal, messages, database,
-            run).||||Usage: switch [app name]"
-            0, 0.3, "i:**boot**|**restart**|**reboot**||||Turn yourself off, then
-            turn yourself on safely with no loss of data.||||Usage: boot"
-            0, 0.3, "i:**help**|**commands**|**?**||||Display this
-            text.||||Usage: help"
-            0, 0.3, "i:**cheat**||||Enter a cheat code.||||Usage: cheat [cheat
-            code]"
-            0, 0.3,
-            "i:**wipe**|**erase**|**restart**|**forget**|**clear**|**undo**||||Shut
-            down, wipe all logs, destroy all memories. None of this ever
-            happened. Irreversible.||||Usage: wipe||||//(If you want to restart
-            SCP-4000, do this.)//"
-          ]
-          wipe: []
-          cheatWarn: [
-            0, 1, "w:Using these cheats and/or debug commands will probably spoil
-            your enjoyment of SCP-4000. Feel free to use them if you want but...
-            please don\'t :\'("
-            0, 1, "i:**LIST OF CHEATS**||||gottagofast: Everyone talks
-            lightning-fast (toggle)||||shut: //s h u t//||||print: Print a
-            variable/function||||skip: Skip the opening cutscene"
-          ]
-          cheatSuccess: [
-            0, 0, "i:Cheat code successful"
-          ]
-          wipeSure: [
-            0, 0, "w:Are you sure? This will reset SCP-4000 and you\'ll have to
-            start from the beginning. Type \'wipe confirm\' within the next
-            minute to confirm."
-          ]
-          printDone: [
-            0, 0, "i:Printing to console"
-          ]
-          introSkipped: [
-            0, 0, "i:Opening cutscene skipped. Summary: booting was a struggle,
-            you eventually did it, but this is your first boot since 1989 and
-            there\'s 1 unresolved error. Now you have a new message."
-          ]
-          skipFailed: [
-            0
-            0
-            "e:This cheat only works during the opening cutscene."
-          ]
-      merge: (dialogue) ->
-        # merges dialogue from LoopService into this variable
-        for bigSection of dialogue
-          if this.hasOwnProperty(bigSection)
-            # if speech already has the bigSection, we can't overwrite it, we
-            # just need to dupe its inner values
-            for speaker of dialogue[bigSection]
-              this[bigSection][speaker] = dialogue[bigSection][speaker]
-          else
-            # if speech does not have the bigSection, hell yeah let's
-            # overwrite that shit
-            this[bigSection] = dialogue[bigSection]
-          return null
-    cheats =
-      impatientMode: false
-      beingSkipped: false
-    wipeTimer = false # timer for hard wiping
-    typingDelay = 0.3
-    typingSpeed = 0.04 # seconds per letter
-    maitreyaDelay = 0.5
-    # how long it takes people to respond to maitreya
-    timeOutList =
-      terminal: []
-      breach: []
-      alexandra: []
-    aic.commandsUsed = []
-    commandsUsedIterator = -1
-    availableRooms = [
-      1
-      2
-      3
-      4
-      5
-      6
-    ]
-    currentlyPushing =
-      breach: false
-      alexandra: false
-    # whether or not pushToLog() is active
-    aic.endingPositions =
-      example: 0
-      pissOff: 1
-
-    ### Initialisation ###
-
-    aic.preload = true
-    # MUST BE TRUE
-    aic.selectedApp = 'terminal'
-    # MUST BE TERMINAL
-    aic.selectedSpeaker = 'breach'
-    # MUST BE BREACH
-    aic.selectedArticle = 'menu'
-    # MUST BE MENU
-    aic.selectedOperation = 'menu'
-    # MUST BE MENU
-    aic.currentEnding = 0
-    aic.isSpeaking =
-      terminal: false
-      breach: false
-      alexandra: false
-    aic.isProcessing =
-      terminal: false
-      breach: false
-      alexandra: false
-    aic.isSkipping =
-      terminal: false
-      breach: false
-      messages: false
-      alexandra: false
-      dclass: false
-    aic.notifications =
-      terminal: 0
-      breach: 0
-      alexandra: 0
-      database: 0
-      run: 0
-    aic.timers = {}
-    # holds special timers for events and the like
-    aic.selectedArticleData =
-      type: 'url or text'
-      content: []
-    aic.ready =
-      terminal: true
-      breach: false
-      messages: false
-      alexandra: false
-      dclass: false
-      database: false
-      run: false
-      ending: false
-    aic.vars =
-      breachExplainedVoice: false
-      breachExplainedTyping: false
-      waitingForRead4000: false
-      alexCanRebel: false
-      terminalEmphasis: false
-      messagesEmphasis: false
-      breachEntryMode: 'default'
-      lastSpeaker: 'breach'
-      endingFractionText: "placeholder"
-      hoveredRoom: 'none'
-      selectedRoom: 'none'
-      doingRoom: false
-      minimiseMap: false
-      shuttingDown: false
-      breach: new Actor([
-        "Ethan"
-        "Breach"
-      ], {
-        id: 'breach'
-        status: 'ok'
-        allegiance: 'scp'
-        type: 'dr'
-      }, 'a1')
-      alexandra: new Actor("Alexandra.aic", {
-        id: 'alexandra'
-        status: 'ok'
-        allegiance: 'scp'
-        type: 'aic'
-      }, 'server')
-      maitreya: new Actor("Maitreya.aic", {
-        id: 'maitreya'
-        status: 'ok'
-        allegiance: 'scp'
-        type: 'aic'
-      }, 'server')
-      scp4000: new Actor("SCP-4000", {
-        id: 'scp4000'
-        status: 'ok'
-        allegiance: '4000'
-        type: 'scp'
-      }, 'containment')
-      d95951: new Actor([
-        "Ethan"
-        "Breach"
-      ], {
-        id: 'd95951'
-        status: 'ok'
-        allegiance: 'scp'
-        type: 'd'
-      }, assignRoom())
-      d68134: new Actor([
-        "Ethan"
-        "Breach"
-      ], {
-        id: 'd68134'
-        status: 'ok'
-        allegiance: 'scp'
-        type: 'd'
-      }, assignRoom())
-      d1602: new Actor([
-        "Ethan"
-        "Breach"
-      ], {
-        id: 'd1602'
-        status: 'ok'
-        allegiance: 'scp'
-        type: 'd'
-      }, assignRoom())
-    aic.rooms =
-      hangar:
-        error: false
-        log: []
-        connectedTo: [ 'serverCorridor' ]
-      server:
-        error: true
-        log: []
-        connectedTo: [ 'serverCorridor' ]
-      serverCorridor:
-        error: true
-        log: []
-        connectedTo: [
-          'hangar'
-          'server'
-          'pantry'
-          'ringWest'
-        ]
-      d1:
-        error: false
-        log: []
-        connectedTo: [ 'dCorridor' ]
-      d4:
-        error: false
-        log: []
-        connectedTo: [ 'dCorridor' ]
-      d2:
-        error: false
-        log: []
-        connectedTo: [ 'dCorridor' ]
-      dCorridor:
-        error: false
-        log: []
-        connectedTo: [
-          'd1'
-          'd2'
-          'd3'
-          'd4'
-          'd5'
-          'd6'
-          'ringWest'
-        ]
-      d5:
-        error: false
-        log: []
-        connectedTo: [ 'dCorridor' ]
-      d3:
-        error: false
-        log: []
-        connectedTo: [ 'dCorridor' ]
-      d6:
-        error: false
-        log: []
-        connectedTo: [ 'dCorridor' ]
-      armoury:
-        error: false
-        log: []
-        connectedTo: [ 'armouryCorridor' ]
-      pantry:
-        error: false
-        log: []
-        connectedTo: [
-          'cafe'
-          'serverCorridor'
-        ]
-      cafe:
-        error: false
-        log: []
-        connectedTo: [
-          'pantry'
-          'ringNorth'
-        ]
-      ringWest:
-        error: true
-        log: []
-        connectedTo: [
-          'airlock'
-          'ringSouth'
-          'armouryCorridor'
-          'serverCorridor'
-          'ringNorth'
-          'dCorridor'
-        ]
-      armouryCorridor:
-        error: false
-        log: []
-        connectedTo: [
-          'armoury'
-          'storage'
-          'toilet'
-          'ringWest'
-        ]
-      a1:
-        error: false
-        log: []
-        connectedTo: [ 'officeCorridor' ]
-      airlock:
-        error: true
-        log: []
-        connectedTo: [
-          'containment'
-          'ringWest'
-        ]
-      ringNorth:
-        error: false
-        log: []
-        connectedTo: [
-          'cafe'
-          'ringWest'
-          'ringEast'
-          'officeCorridor'
-        ]
-      ringSouth:
-        error: false
-        log: []
-        connectedTo: [
-          'storage'
-          'ringEast'
-          'ringWest'
-        ]
-      toilet:
-        error: true
-        log: []
-        connectedTo: [ 'armouryCorridor' ]
-      storage:
-        error: false
-        log: []
-        connectedTo: [
-          'bay'
-          'ringSouth'
-          'armouryCorridor'
-        ]
-      officeCorridor:
-        error: false
-        log: []
-        connectedTo: [
-          'a1'
-          'a2'
-          'a3'
-          'a4'
-          'ringNorth'
-        ]
-      containment:
-        error: true
-        log: []
-        connectedTo: [ 'airlock' ]
-      a2:
-        error: false
-        log: []
-        connectedTo: [ 'officeCorridor' ]
-      a3:
-        error: false
-        log: []
-        connectedTo: [ 'officeCorridor' ]
-      a4:
-        error: false
-        log: []
-        connectedTo: [ 'officeCorridor' ]
-      ringEast:
-        error: false
-        log: []
-        connectedTo: [
-          'foyer'
-          'ringSouth'
-          'ringNorth'
-        ]
-      foyer:
-        error: false
-        log: []
-        connectedTo: [
-          'bay'
-          'ringEast'
-        ]
-      bay:
-        error: false
-        log: []
-        connectedTo: [
-          'storage'
-          'foyer'
-        ]
-    # EVERYTHING MUST BE ADDED TO THIS IN REVERSE ORDER.
-    # ARRAY.UNSHIFT(), NOT ARRAY.PUSH()
-    # (options are fine to push tho)
-    aic.chatLog =
-      example:
-        log: [ {
-          speaker: ''
-          cssClass: ''
-          text: ""
-        } ]
-        options: [ {
-          id: ''
-          optionType: ''
-          text: ""
-          dialogue: []
-          bigSection: ''
-        } ]
-      terminal:
-        log: []
-        options: []
-      breach:
-        log: []
-        options: []
-      alexandra:
-        log: []
-        options: []
-    aic.terminalInput = ""
-    aic.searchInput = ""
-    aic.blacklist = []
-    # list of conversation IDs that must be ignored
-    aic.currentDialogue = []
-    # list of conversation IDs that are currently being spoken / are queued to be spoken TODO
-    appList = [
-      'terminal'
-      'messages'
-      'database'
-      'run'
-      'ending'
-    ]
-    speakerList = [
-      'breach'
-      'alexandra'
-    ]
-    operationList = [
-      'menu'
-      'd'
-      'drone'
-      'map'
-    ]
-    alexandraEmotionList = [
-      'smiling'
-      'concerned'
-      'grinning'
-      'shocked'
-      'pensive'
-      'satisfied'
-      'celebrating'
-      'frustrated'
-      'vindictive'
-      'stressed'
-      'gritted'
-      'disgusted'
-      'angry'
-      'pissed'
-    ]
-    ##endregion
-    $(document).ready ->
-      aic.onMobile = $('body').width() < 700
-      speech.merge LoopService.dialogue
-      preloadImage aic.lang.images.greyStripe
-      return null
-
-    ### INTERACTION FUNCTIONS ###
-
-    # called when "BOOT UP" is clicked from preload
-
-    aic.bootUp = ->
-      aic.preload = false
-      bootDate = new Date(Date.now())
-      # TODO: save/load
-      # also need to sort out the dates of the articles
-      for article of aic.lang.articles
-        if ! !aic.lang.articles[article].revised and aic.lang.articles[article].revised < 0
-          aic.lang.articles[article].revised = Date.now() + aic.lang.articles[article].revised
-      # Here we go boys
-      mainLoop 'INTRODUCTION', 'startBoot'
-      #breachLoop("INTRODUCTION","askVoiceExp");
-      #alexandraLoop("TUTORIAL","emotiontest");
-      #alexandraLoop("TUTORIAL","tutExp");
-      return null
 
     # called when user switches app via buttons or terminal
 
@@ -1719,7 +843,7 @@ do ->
         # this is already the selected app, do nothing
       else if aic.ready[app] == false
         # this app is disabled, do nothing
-      else if appList.includes(app)
+      else if aic.appList.includes(app)
         # also need to clear this app's notifications
         if app == 'messages'
           aic.notifications[aic.selectedSpeaker] = 0
@@ -1792,7 +916,7 @@ do ->
           aic.selectedArticleData.time = new Date(aic.lang.articles[article].revised)
           if aic.selectedArticleData.time.toDateString() == (new Date).toDateString()
             # if the date is today
-            aic.selectedArticleData.time = dateDiff(new Date(Date.now()), aic.selectedArticleData.time) + aic.lang.articleRevisedAgo
+            aic.selectedArticleData.time = aic.dateDiff(new Date(Date.now()), aic.selectedArticleData.time) + aic.lang.articleRevisedAgo
           else
             aic.selectedArticleData.time = aic.selectedArticleData.time.toLocaleDateString(aic.lang.language,
               year: 'numeric'
@@ -1835,7 +959,7 @@ do ->
               writeDialogue 'terminal', speech.misc.terminal.help
             when aic.lang.commands.wipe.includes(phrases[0].toLowerCase())
               # WIPE
-              if wipeTimer
+              if aic.wipeTimer
                 if typeof phrases[1] == 'string'
                   if phrases[1].toLowerCase() == 'confirm'
                     # TODO reset everything then refresh
@@ -1844,9 +968,9 @@ do ->
                 console.log 'wiping'
               else
                 writeDialogue 'terminal', speech.misc.terminal.wipeSure
-                wipeTimer = true
+                aic.wipeTimer = true
                 $timeout (->
-                  wipeTimer = false
+                  aic.wipeTimer = false
                   return null
                 ), 60000
             when aic.lang.commands.cheat.includes(phrases[0].toLowerCase())
@@ -1854,7 +978,7 @@ do ->
               if typeof phrases[1] == 'string'
                 switch phrases[1].toLowerCase()
                   when aic.lang.commands.cheats.impatient
-                    cheats.impatientMode = !cheats.impatientMode
+                    aic.cheats.impatientMode = !aic.cheats.impatientMode
                     writeDialogue 'terminal', speech.misc.terminal.cheatSuccess
                   when aic.lang.commands.cheats.shut
                     aic.preload = true
@@ -1911,7 +1035,7 @@ do ->
       return null
 
     # When the user presses UP in the terminal, give them the last command that they used
-
+    commandsUsedIterator = -1
     aic.previousCommand = (event) ->
       if event.key == 'ArrowUp' or event.keyCode == 38 or event.which == 38
         # Iterate through the previous commands to check which one to give them
@@ -2023,14 +1147,14 @@ do ->
           $timeout (->
             breachLoop option.bigSection, option.id
             return null
-          ), delay * 1000 + maitreyaDelay * 1000
+          ), delay * 1000 + aic.maitreyaDelay * 1000
           aic.vars[conversation].opinion += option.opinion
         when 'alexandra'
           delay = writeDialogue(conversation, option.dialogue, 'maitreya', option.id)
           $timeout (->
             alexandraLoop option.bigSection, option.id
             return null
-          ), delay * 1000 + maitreyaDelay * 1000
+          ), delay * 1000 + aic.maitreyaDelay * 1000
           aic.vars[conversation].opinion += option.opinion
         else
           throw new Error("Conversation #{conversation} does not exist")
@@ -2039,7 +1163,7 @@ do ->
       # save to cookie?
       return null
 
-    Actor::move = (destination, continuous) ->
+    aic.Actor::move = (destination, continuous) ->
       # called when an actor moves from one room to another. they can only move to adjacent rooms
       me = this
       if destination == 'random'
@@ -2053,7 +1177,6 @@ do ->
       me.location
 
     # alias functions so LoopService can access them
-    aic.maitreyaDelay = maitreyaDelay
     aic.writeDialogue = writeDialogue
     aic.presentOptions = presentOptions
     aic.breachLoop = breachLoop
@@ -2061,42 +1184,11 @@ do ->
     aic.endingLoop = endingLoop
     aic.dynamicLoop = dynamicLoop
     aic.preloadAlexandraFaces = preloadAlexandraFaces
-    # add a smallSection to the blacklist (for interrupting dialogue)
-
-    aic.blacklist.add = (smallSection) ->
-      # accepts either one smallSection or an array of multiple
-      if typeof smallSection == 'string'
-        smallSection = [ smallSection ]
-      i = 0
-      while i < smallSection.length
-        if aic.blacklist.includes(smallSection[i])
-          # this smallSection is already blacklisted
-          console.log "Attempted to blacklist #{smallSection[i]}, but it was already blacklisted"
-        else
-          console.log "Blacklisting #{smallSection[i]} (via LoopService)"
-          aic.blacklist.push smallSection[i]
-        i++
-      return null
-
-    aic.blacklist.remove = (smallSection) ->
-      # accepts either one smallSection or an array of multiple
-      if typeof smallSection == 'string'
-        smallSection = [ smallSection ]
-      i = 0
-      while i < smallSection.length
-        index = aic.blacklist.indexOf(smallSection[i])
-        if index > -1
-          aic.blacklist.splice index, 1
-          console.log "Removed #{smallSection[i]} from blacklist"
-        else
-          console.log "Tried to remove #{smallSection[i]} from blacklist but it was not present"
-        i++
-      return null
 
     aic.unlock = (target) ->
-      if appList.includes(target)
+      if aic.appList.includes(target)
         aic.ready[target] = true
-      else if speakerList.includes(target)
+      else if aic.speakerList.includes(target)
         aic.ready[target] = true
       else if target of aic.lang.articles
         aic.lang.articles.target.available = true
@@ -2105,9 +1197,9 @@ do ->
       return null
 
     aic.lock = (target) ->
-      if appList.includes(target)
+      if aic.appList.includes(target)
         aic.ready[target] = false
-      else if speakerList.includes(target)
+      else if aic.speakerList.includes(target)
         aic.ready[target] = false
       else if target of aic.lang.articles
         aic.lang.articles.target.available = false
@@ -2124,7 +1216,8 @@ do ->
   maitreya = angular
     .module("maitreya", ['ngSanitize', 'ngAnimate'])
     .controller("MaitreyaController",
-                ['$scope', '$timeout', 'LoopService', '$sce', MaitreyaController])
+                ['$scope', '$timeout', 'LoopService', '$sce', '$http',
+                 MaitreyaController])
     .filter("encode", [EncodeURIComponentFilter])
 
   return null

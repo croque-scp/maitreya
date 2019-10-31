@@ -1,0 +1,48 @@
+/*     ____            __                __
+ *    / __ \________  / /___  ____ _____/ /
+ *   / /_/ / ___/ _ \/ / __ \/ __ `/ __  /
+ *  / ____/ /  /  __/ / /_/ / /_/ / /_/ /
+ * /_/   /_/   \___/_/\____/\__,_/\__,_/
+ */
+
+.preload #app-body {
+    display: none;
+}
+.preload #app-selector {
+    height: 100%;
+}
+.preload #app-selector .title {
+    top: 45%;
+    transform: translate(0,-50%);
+    height: 8.75rem;
+}
+#app-selector .title .title-info {
+    display: none;
+}
+.preload #app-selector .title .title-info {
+    display: block;
+    position: absolute;
+    top: 85%;
+    width: 100%;
+}
+.preload #app-selector .title .title-info p {
+    text-align: center;
+}
+.preload #app-selector .title .title-info button {
+    margin: 0 auto;
+}
+.preload #app-selector .title .title-image {
+    left: 50%;
+    transform: translate(-50%,0);
+    background-position: center;
+}
+.preload #app-selector ul {
+    opacity: 0;
+    top: -999rem;
+}
+.preload .app-title p {
+    opacity: 0;
+}
+.preload *:not(button) {
+    transition: all 0s !important;
+}
