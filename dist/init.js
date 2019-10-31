@@ -5,36 +5,7 @@ var aic_init,
 
 aic_init = function aic_init(aic) {
   var currentlyPushing;
-  console.log("Initialising variables");
-  aic.cheats = {
-    impatientMode: false,
-    beingSkipped: false
-  };
-  aic.wipeTimer = false; // timer for hard wiping
-
-  aic.typingDelay = 0.3;
-  aic.typingSpeed = 0.04; // seconds per letter
-
-  aic.maitreyaDelay = 0.5; // how long it takes people to respond to maitreya
-
-  aic.timeOutList = {
-    terminal: [],
-    breach: [],
-    alexandra: []
-  };
-  aic.commandsUsed = [];
-  aic.availableRooms = [1, 2, 3, 4, 5, 6];
-  currentlyPushing = {
-    // this isn't even used?
-    breach: false,
-    alexandra: false
-  }; // whether or not pushToLog() is active
-
-  aic.endingPositions = {
-    example: 0,
-    pissOff: 1
-  };
-  /* Initialisation */
+  console.log("Initialising variables"); // The following variables can be modified for testing, but must be reset
 
   aic.preload = true; // MUST BE TRUE
 
@@ -46,47 +17,35 @@ aic_init = function aic_init(aic) {
 
   aic.selectedOperation = 'menu'; // MUST BE MENU
 
-  aic.currentEnding = 0;
-  aic.isSpeaking = {
-    terminal: false,
-    breach: false,
-    alexandra: false
-  };
-  aic.isProcessing = {
-    terminal: false,
-    breach: false,
-    alexandra: false
-  };
-  aic.isSkipping = {
-    terminal: false,
-    breach: false,
-    messages: false,
-    alexandra: false,
-    dclass: false
-  };
-  aic.notifications = {
-    terminal: 0,
-    breach: 0,
-    alexandra: 0,
-    database: 0,
-    run: 0
-  };
-  aic.timers = {}; // holds special timers for events and the like
-
-  aic.selectedArticleData = {
-    type: 'url or text',
-    content: []
-  };
   aic.ready = {
     terminal: true,
+    // MUST BE TRUE
     breach: false,
+    // MUST BE FALSE
     messages: false,
+    // MUST BE FALSE
     alexandra: false,
+    // MUST BE FALSE
     dclass: false,
+    // MUST BE FALSE
     database: false,
+    // MUST BE FALSE
     run: false,
-    ending: false
-  };
+    // MUST BE FALSE
+    ending: false // MUST BE FALSE
+
+  }; // The following variables can be changed to make adjustments
+
+  aic.typingDelay = 0.3;
+  aic.typingSpeed = 0.04; // seconds per letter
+
+  aic.maitreyaDelay = 0.5; // how long it takes people to respond to maitreya
+
+  aic.endingPositions = {
+    example: 0,
+    pissOff: 1
+  }; // The following variables will be preserved on save/load
+
   aic.vars = {
     breachExplainedVoice: false,
     breachExplainedTyping: false,
@@ -102,6 +61,9 @@ aic_init = function aic_init(aic) {
     doingRoom: false,
     minimiseMap: false,
     shuttingDown: false,
+    availableRooms: [1, 2, 3, 4, 5, 6]
+  };
+  aic.vars.people = {
     breach: new aic.Actor(["Ethan", "Breach"], {
       id: 'breach',
       status: 'ok',
@@ -144,6 +106,55 @@ aic_init = function aic_init(aic) {
       allegiance: 'scp',
       type: 'd'
     }, aic.assignRoom())
+  }; // The following variables should never be changed
+
+  aic.cheats = {
+    impatientMode: false,
+    beingSkipped: false
+  };
+  aic.wipeTimer = false; // timer for hard wiping
+
+  aic.timeOutList = {
+    terminal: [],
+    breach: [],
+    alexandra: []
+  };
+  aic.commandsUsed = [];
+  currentlyPushing = {
+    // this isn't even used?
+    breach: false,
+    alexandra: false
+  };
+  aic.currentEnding = 0;
+  aic.isSpeaking = {
+    terminal: false,
+    breach: false,
+    alexandra: false
+  };
+  aic.isProcessing = {
+    terminal: false,
+    breach: false,
+    alexandra: false
+  };
+  aic.isSkipping = {
+    terminal: false,
+    breach: false,
+    messages: false,
+    alexandra: false,
+    dclass: false
+  };
+  aic.notifications = {
+    terminal: 0,
+    breach: 0,
+    alexandra: 0,
+    database: 0,
+    run: 0
+  };
+  aic.timers = {}; // holds special timers for events and the like
+
+  aic.selectedArticleData = {
+    type: 'url or text',
+    content: []
   };
   aic.rooms = {
     hangar: {

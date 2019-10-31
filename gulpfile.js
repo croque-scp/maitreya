@@ -19,7 +19,7 @@ gulp.task('default', function(done) {
         .pipe(gulp.dest('./dist/'))
         .on('end', function(){ log("Moved js file to dist") });
     // Convert coffee files
-    gulp.src('./src/js/*.coffee')
+    gulp.src('./src/js/*.coffee', {sourcemaps: true})
         .pipe(coffee({bare: true}))
         .on('end', function(){ log("Converted coffee to js") })
         .pipe(babel({presets: ['env']}))

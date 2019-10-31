@@ -1001,11 +1001,11 @@ shuffle = function shuffle(array) {
 
     aic.assignRoom = function () {
       var index, room;
-      room = aic.availableRooms[Math.floor(Math.random() * aic.availableRooms.length)];
-      index = aic.availableRooms.indexOf(room);
+      room = aic.vars.availableRooms[Math.floor(Math.random() * aic.vars.availableRooms.length)];
+      index = aic.vars.availableRooms.indexOf(room);
 
       if (index > -1) {
-        aic.availableRooms.splice(index, 1);
+        aic.vars.availableRooms.splice(index, 1);
       } else {
         throw new Error("Bad room");
       }
