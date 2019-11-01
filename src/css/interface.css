@@ -244,9 +244,9 @@
     overflow: hidden;
     background-color: white;
 }
-#app-body .app-main {
-    height: calc(100% - 1.875rem);
-}
+/* #app-body .app-main { */
+/*     height: calc(100% - 1.875rem); */
+/* } */
 #app-body .container {
     position: absolute;
     height: 100%;

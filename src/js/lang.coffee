@@ -18,8 +18,10 @@ getBaseLexicon = (aic) ->
       actionOption: "DO",
       breachTitle: "Breach E.",
       alexandraTitle: "Alexandra.aic",
-      breachHeader: "You are talking to: BREACH E.",
-      alexandraHeader: "You are talking to: ALEXANDRA.AIC",
+      header: {
+        breach: "You are talking to: BREACH E.",
+        alexandra: "You are talking to: ALEXANDRA.AIC",
+      },
       breachEntryMode: {
         default: "Dr. Breach is speaking...",
         typing: "Dr. Breach is typing..."

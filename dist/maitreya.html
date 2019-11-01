@@ -173,46 +173,44 @@ Many thanks to the following:
                     <div class="notification" ng-show="aic.notifications.alexandra > 0"><p>{{aic.notifications.alexandra}}</p></div>
                   </li>
 
-                  <!-- REMOVE THESE -->
-                  <!--<li id="breach-msg" class="selector" ng-click="aic.switchSpeaker('breach')" ng-class="[aic.selectedSpeaker == 'breach' ? 'selected' : null, aic.ready.breach ? null : 'disabled']">
-                    <a>{{::aic.lang.breachTitle}}</a>
-                    <div class="notification" ng-show="aic.notifications.breach > 0"><p>{{aic.notifications.breach}}</p></div>
-                  </li>
-                  <li id="breach-msg" class="selector" ng-click="aic.switchSpeaker('breach')" ng-class="[aic.selectedSpeaker == 'breach' ? 'selected' : null, aic.ready.breach ? null : 'disabled']">
-                    <a>{{::aic.lang.breachTitle}}</a>
-                    <div class="notification" ng-show="aic.notifications.breach > 0"><p>{{aic.notifications.breach}}</p></div>
-                  </li>-->
                 </ul>
               </div>
 
               <div class="messages-body">
 
-                <div id="breach-conversation" ng-show="aic.selectedSpeaker == 'breach'" class="conversation-wrapper">
-                  <div class="conversation-container">
-                    <div class="conversation">
-                      <div class="speaking-markers">
-                        <div ng-class="aic.isSpeaking.breach ? null : 'notSpeaking'" class="speaking">
-                          <p><img ng-src="{{::aic.lang.images.typingGif}}">{{aic.lang.breachEntryMode[aic.vars.breachEntryMode]}}</p>
-                        </div>
-                        <div ng-class="aic.isProcessing.breach ? null : 'notProcessing'" class="processing">
-                          <img ng-src="{{::aic.lang.images.loadingGif}}">
-                        </div>
+                <!-- #################### START NEW ####################### -->
+                <!-- Have a single container, and the individual sections
+                  change for each speaker -->
+                <div id="breach-conversation" class="conversation-wrapper">
+
+                <div class="conversation-container"> <!-- holds the conversation -->
+                  <div class="conversation" ng-class="aic.selectedSpeaker + '-conversation'"> <!-- reverses the order of the conversation -->
+                    <div class="speaking-markers"> <!-- "...is speaking", etc - pseudo-1st message -->
+                      <div ng-class="aic.isSpeaking[aic.selectedSpeaker] ? null : 'notSpeaking'" class="speaking">
+                        <p><img
+                        ng-src="{{aic.lang.images.typingGif}}">{{aic.lang.breachEntryMode[aic.vars.breachEntryMode]}}</p> <!-- XXX -->
                       </div>
-                      <div class="wrapper" ng-repeat="line in aic.chatLog.breach.log" ng-class="[line.speaker, aic.chatLog.breach.log[$index-1].speaker == line.speaker ? 'collapsed' : null]">
-                        <img ng-show="aic.chatLog.breach.log[$index-1].speaker !== line.speaker" ng-src="{{line.speaker == 'breach' ? aic.lang.images.breachLogo : (line.speaker == 'maitreya' ? aic.lang.images.maitreyaLogo : null)}}" ng-class="line.speaker" class="logo">
-                        <div ng-class="[line.speaker, line.cssClass]">
-                          <div class="hex-left" ng-if="line.cssClass === 'typed'">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
-                          </div>
-                          <p><span ng-bind-html="line.text"></span></p>
-                          <div class="hex-right" ng-if="line.cssClass === 'typed'">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
-                          </div>
-                        </div>
+                      <div ng-class="aic.isProcessing[aic.selectedSpeaker] ? null : 'notProcessing'" class="processing">
+                        <img ng-src="{{aic.lang.images.loadingGif}}">
                       </div>
-                      <p class="title">{{::aic.lang.breachHeader}}</p>
                     </div>
+                    <div class="wrapper" ng-repeat="line in aic.chatLog[aic.selectedSpeaker].log" ng-class="[line.speaker, aic.chatLog[aic.selectedSpeaker].log[$index-1].speaker === line.speaker ? 'collapsed' : null]">
+                      <img ng-show="aic.selectedSpeaker === 'alexandra' && aic.chatLog.alexandra.log[$index-1].speaker !== line.speaker" ng-src="{{line.speaker == 'alexandra' ? aic.lang.images.alexandraLogo[line.emote] : (line.speaker == 'maitreya' ? aic.lang.images.maitreyaLogo : null)}}" ng-class="line.speaker" class="logo"> <!-- logo for alexandra -->
+                      <img ng-show="aic.selectedSpeaker !== 'alexandra' && aic.chatLog.breach.log[$index-1].speaker !== line.speaker" ng-src="{{line.speaker === 'breach' ? aic.lang.images.breachLogo : (line.speaker === 'maitreya' ? aic.lang.images.maitreyaLogo : null)}}" ng-class="line.speaker" class="logo"> <!-- logo for everyone else -->
+                      <img ng-show="aic.selectedSpeaker === 'alexandra' && aic.chatLog.alexandra.log[$index-1].speaker !== line.speaker" ng-src="{{line.speaker === 'alexandra' ? aic.lang.images.alexandraTriangle : null}}" ng-class="line.speaker" class="triangle"> <!-- speech triangle for alexandra -->
+                      <div ng-class="[line.speaker, line.cssClass]">
+                        <div class="hex-left" ng-if="line.cssClass === 'typed'">
+                          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+                        </div>
+                        <p><span ng-bind-html="line.text"></span></p>
+                        <div class="hex-right" ng-if="line.cssClass === 'typed'">
+                          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+                        </div>
+                      </div>
+                    </div>
+                    <p class="title">{{aic.lang.header[aic.selectedSpeaker]}}</p>
                   </div>
+                </div>
 
                   <div class="middle-bar">
                     <div class="top"></div>
@@ -220,13 +218,13 @@ Many thanks to the following:
                     <div class="bottom"></div>
                   </div>
 
-                  <div class="options-block" ng-class="[aic.chatLog.breach.options.length > 0 ? 'options-ready' : null, aic.vars.chatEmphasis ? 'emphasis' : null]" ng-style="{'background-image':'url(' + aic.lang.images.aiadFadedLogo + '), linear-gradient(to bottom, #f4f4f4, white)'}">
+                  <div class="options-block" ng-class="[aic.chatLog[aic.selectedSpeaker].options.length > 0 ? 'options-ready' : null, aic.vars.chatEmphasis ? 'emphasis' : null]" ng-style="{'background-image':'url(' + aic.lang.images.aiadFadedLogo + '), linear-gradient(to bottom, #f4f4f4, white)'}">
                     <!--<div class="disconnected-alert">DISCONNECTED</div> TODO -->
                     <div class="hint-arrow left" ng-class="aic.vars.noob ? 'noob-emphasis' : null" ng-style="{'background-image': 'url(' + aic.lang.images.highlightArrow + ')'}"></div>
                     <div class="hint-arrow right" ng-class="aic.vars.noob ? 'noob-emphasis' : null" ng-style="{'background-image': 'url(' + aic.lang.images.highlightArrow + ')'}"></div>
-                    <div class="options" ng-class="[5,6].includes(aic.chatLog.breach.options.length) ? 'balance' : null">
-                      <div class="option-wrapper" ng-repeat="option in aic.chatLog.breach.options" ng-animate-children="true">
-                        <button class="option" ng-class="option.optionType" ng-attr-data-action="{{::aic.lang[option.optionType + 'Option']}}" ng-click="aic.maitreyaLoop('breach',option,this)">{{option.text}}</button>
+                    <div class="options" ng-class="[5,6].includes(aic.chatLog[aic.selectedSpeaker].options.length) ? 'balance' : null">
+                      <div class="option-wrapper" ng-repeat="option in aic.chatLog[aic.selectedSpeaker].options" ng-animate-children="true">
+                        <button class="option" ng-class="option.optionType" ng-attr-data-action="{{aic.lang[option.optionType + 'Option']}}" ng-click="aic.maitreyaLoop(aic.selectedSpeaker,option,this)">{{option.text}}</button>
                       </div>
                     </div>
                   </div>
@@ -236,51 +234,102 @@ Many thanks to the following:
                     <div class="bottom"></div>
                   </div>
                 </div>
+                <!-- ##################### END NEW ######################## -->
 
-                <div id="alexandra-conversation" ng-show="aic.selectedSpeaker == 'alexandra'" class="conversation-wrapper">
-                  <div class="conversation-container">
-                    <div class="conversation">
-                      <div class="speaking-markers">
-                        <div ng-class="aic.isSpeaking.alexandra ? null : 'notSpeaking'" class="speaking">
-                          <p><img ng-src="{{::aic.lang.images.typingGif}}">{{::aic.lang.alexandraThinking}}</p>
-                        </div>
-                        <div ng-class="aic.isProcessing.alexandra ? null : 'notProcessing'" class="processing">
-                          <img ng-src="{{::aic.lang.images.loadingGif}}">
-                        </div>
-                      </div>
-                      <div class="wrapper" ng-repeat="line in aic.chatLog.alexandra.log" ng-class="[line.speaker, aic.chatLog.alexandra.log[$index-1].speaker == line.speaker ? 'collapsed' : null]">
-                        <img ng-show="aic.chatLog.alexandra.log[$index-1].speaker !== line.speaker" ng-src="{{::line.speaker == 'alexandra' ? aic.lang.images.alexandraLogo[line.emote] : (line.speaker == 'maitreya' ? aic.lang.images.maitreyaLogo : null)}}" ng-class="line.speaker" class="logo">
-                        <img ng-show="aic.chatLog.alexandra.log[$index-1].speaker !== line.speaker" ng-src="{{::line.speaker == 'alexandra' ? aic.lang.images.alexandraTriangle : null}}" ng-class="line.speaker" class="triangle">
-                        <div ng-class="[line.speaker, line.cssClass]">
-                          <p><span ng-bind-html="line.text"></span></p>
-                        </div>
-                      </div>
-                      <p class="title">{{::aic.lang.alexandraHeader}}</p>
-                    </div>
-                  </div>
+                <!--<div id="breach-conversation" ng-show="aic.selectedSpeaker == 'breach'" class="conversation-wrapper"> -->
+                <!--  <div class="conversation-container"> -->
+                <!--    <div class="conversation"> -->
+                <!--      <div class="speaking-markers"> -->
+                <!--        <div ng-class="aic.isSpeaking.breach ? null : 'notSpeaking'" class="speaking"> -->
+                <!--          <p><img ng-src="{{::aic.lang.images.typingGif}}">{{aic.lang.breachEntryMode[aic.vars.breachEntryMode]}}</p> -->
+                <!--        </div> -->
+                <!--        <div ng-class="aic.isProcessing.breach ? null : 'notProcessing'" class="processing"> -->
+                <!--          <img ng-src="{{::aic.lang.images.loadingGif}}"> -->
+                <!--        </div> -->
+                <!--      </div> -->
+                <!--      <div class="wrapper" ng-repeat="line in aic.chatLog.breach.log" ng-class="[line.speaker, aic.chatLog.breach.log[$index-1].speaker == line.speaker ? 'collapsed' : null]"> -->
+                <!--        <img ng-show="aic.chatLog.breach.log[$index-1].speaker !== line.speaker" ng-src="{{line.speaker == 'breach' ? aic.lang.images.breachLogo : (line.speaker == 'maitreya' ? aic.lang.images.maitreyaLogo : null)}}" ng-class="line.speaker" class="logo"> -->
+                <!--        <div ng-class="[line.speaker, line.cssClass]"> -->
+                <!--          <div class="hex-left" ng-if="line.cssClass === 'typed'"> -->
+                <!--            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"> -->
+                <!--          </div> -->
+                <!--          <p><span ng-bind-html="line.text"></span></p> -->
+                <!--          <div class="hex-right" ng-if="line.cssClass === 'typed'"> -->
+                <!--            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"> -->
+                <!--          </div> -->
+                <!--        </div> -->
+                <!--      </div> -->
+                <!--      <p class="title">{{::aic.lang.breachHeader}}</p> -->
+                <!--    </div> -->
+                <!--  </div> -->
 
-                  <div class="middle-bar">
-                    <div class="top"></div>
-                    <div class="middle"></div>
-                    <div class="bottom"></div>
-                  </div>
+                <!--  <div class="middle-bar"> -->
+                <!--    <div class="top"></div> -->
+                <!--    <div class="middle"></div> -->
+                <!--    <div class="bottom"></div> -->
+                <!--  </div> -->
 
-                  <div class="options-block" ng-class="[aic.chatLog.alexandra.options.length > 0 ? 'options-ready' : null, aic.vars.chatEmphasis ? 'emphasis' : null]" ng-style="{'background-image':'url(' + aic.lang.images.aiadFadedLogo + '), linear-gradient(to bottom, #f4f4f4, white)'}">
-                    <!--<div class="disconnected-alert">DISCONNECTED</div> TODO -->
-                    <div class="hint-arrow left" ng-class="aic.vars.noob ? 'noob-emphasis' : null" ng-style="{'background-image': 'url(' + aic.lang.images.highlightArrow + ')'}"></div>
-                    <div class="hint-arrow right" ng-class="aic.vars.noob ? 'noob-emphasis' : null" ng-style="{'background-image': 'url(' + aic.lang.images.highlightArrow + ')'}"></div>
-                    <div class="options" ng-class="[5,6].includes(aic.chatLog.alexandra.options.length) ? 'balance' : null">
-                      <div class="option-wrapper" ng-repeat="option in aic.chatLog.alexandra.options" ng-animate-children="true">
-                        <button class="option" ng-class="option.optionType" ng-attr-data-action="{{::aic.lang[option.optionType + 'Option']}}" ng-click="aic.maitreyaLoop('alexandra',option,this)">{{option.text}}</button>
-                      </div>
-                    </div>
-                  </div>
+                <!--  <div class="options-block" ng-class="[aic.chatLog.breach.options.length > 0 ? 'options-ready' : null, aic.vars.chatEmphasis ? 'emphasis' : null]" ng-style="{'background-image':'url(' + aic.lang.images.aiadFadedLogo + '), linear-gradient(to bottom, #f4f4f4, white)'}"> -->
+                <!--    <1!--<div class="disconnected-alert">DISCONNECTED</div> TODO --1> -->
+                <!--    <div class="hint-arrow left" ng-class="aic.vars.noob ? 'noob-emphasis' : null" ng-style="{'background-image': 'url(' + aic.lang.images.highlightArrow + ')'}"></div> -->
+                <!--    <div class="hint-arrow right" ng-class="aic.vars.noob ? 'noob-emphasis' : null" ng-style="{'background-image': 'url(' + aic.lang.images.highlightArrow + ')'}"></div> -->
+                <!--    <div class="options" ng-class="[5,6].includes(aic.chatLog.breach.options.length) ? 'balance' : null"> -->
+                <!--      <div class="option-wrapper" ng-repeat="option in aic.chatLog.breach.options" ng-animate-children="true"> -->
+                <!--        <button class="option" ng-class="option.optionType" ng-attr-data-action="{{::aic.lang[option.optionType + 'Option']}}" ng-click="aic.maitreyaLoop('breach',option,this)">{{option.text}}</button> -->
+                <!--      </div> -->
+                <!--    </div> -->
+                <!--  </div> -->
 
-                  <div class="bottom-bar">
-                    <div class="top"></div>
-                    <div class="bottom"></div>
-                  </div>
-                </div>
+                <!--  <div class="bottom-bar"> -->
+                <!--    <div class="top"></div> -->
+                <!--    <div class="bottom"></div> -->
+                <!--  </div> -->
+                <!--</div> -->
+
+                <!--<div id="alexandra-conversation" ng-show="aic.selectedSpeaker == 'alexandra'" class="conversation-wrapper"> -->
+                <!--  <div class="conversation-container"> -->
+                <!--    <div class="conversation"> -->
+                <!--      <div class="speaking-markers"> -->
+                <!--        <div ng-class="aic.isSpeaking.alexandra ? null : 'notSpeaking'" class="speaking"> -->
+                <!--          <p><img ng-src="{{::aic.lang.images.typingGif}}">{{::aic.lang.alexandraThinking}}</p> -->
+                <!--        </div> -->
+                <!--        <div ng-class="aic.isProcessing.alexandra ? null : 'notProcessing'" class="processing"> -->
+                <!--          <img ng-src="{{::aic.lang.images.loadingGif}}"> -->
+                <!--        </div> -->
+                <!--      </div> -->
+                <!--      <div class="wrapper" ng-repeat="line in aic.chatLog.alexandra.log" ng-class="[line.speaker, aic.chatLog.alexandra.log[$index-1].speaker == line.speaker ? 'collapsed' : null]"> -->
+                <!--        <img ng-show="aic.chatLog.alexandra.log[$index-1].speaker !== line.speaker" ng-src="{{::line.speaker == 'alexandra' ? aic.lang.images.alexandraLogo[line.emote] : (line.speaker == 'maitreya' ? aic.lang.images.maitreyaLogo : null)}}" ng-class="line.speaker" class="logo"> -->
+                <!--        <img ng-show="aic.chatLog.alexandra.log[$index-1].speaker !== line.speaker" ng-src="{{::line.speaker == 'alexandra' ? aic.lang.images.alexandraTriangle : null}}" ng-class="line.speaker" class="triangle"> -->
+                <!--        <div ng-class="[line.speaker, line.cssClass]"> -->
+                <!--          <p><span ng-bind-html="line.text"></span></p> -->
+                <!--        </div> -->
+                <!--      </div> -->
+                <!--      <p class="title">{{::aic.lang.alexandraHeader}}</p> -->
+                <!--    </div> -->
+                <!--  </div> -->
+
+                <!--  <div class="middle-bar"> -->
+                <!--    <div class="top"></div> -->
+                <!--    <div class="middle"></div> -->
+                <!--    <div class="bottom"></div> -->
+                <!--  </div> -->
+
+                <!--  <div class="options-block" ng-class="[aic.chatLog.alexandra.options.length > 0 ? 'options-ready' : null, aic.vars.chatEmphasis ? 'emphasis' : null]" ng-style="{'background-image':'url(' + aic.lang.images.aiadFadedLogo + '), linear-gradient(to bottom, #f4f4f4, white)'}"> -->
+                <!--    <1!--<div class="disconnected-alert">DISCONNECTED</div> TODO --1> -->
+                <!--    <div class="hint-arrow left" ng-class="aic.vars.noob ? 'noob-emphasis' : null" ng-style="{'background-image': 'url(' + aic.lang.images.highlightArrow + ')'}"></div> -->
+                <!--    <div class="hint-arrow right" ng-class="aic.vars.noob ? 'noob-emphasis' : null" ng-style="{'background-image': 'url(' + aic.lang.images.highlightArrow + ')'}"></div> -->
+                <!--    <div class="options" ng-class="[5,6].includes(aic.chatLog.alexandra.options.length) ? 'balance' : null"> -->
+                <!--      <div class="option-wrapper" ng-repeat="option in aic.chatLog.alexandra.options" ng-animate-children="true"> -->
+                <!--        <button class="option" ng-class="option.optionType" ng-attr-data-action="{{::aic.lang[option.optionType + 'Option']}}" ng-click="aic.maitreyaLoop('alexandra',option,this)">{{option.text}}</button> -->
+                <!--      </div> -->
+                <!--    </div> -->
+                <!--  </div> -->
+
+                <!--  <div class="bottom-bar"> -->
+                <!--    <div class="top"></div> -->
+                <!--    <div class="bottom"></div> -->
+                <!--  </div> -->
+                <!--</div> -->
 
               </div>
 

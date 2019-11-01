@@ -7,7 +7,7 @@ aic_init = function aic_init(aic) {
   var currentlyPushing;
   console.log("Initialising variables"); // The following variables can be modified for testing, but must be reset
 
-  aic.preload = true; // MUST BE TRUE
+  aic.preload = false; // MUST BE TRUE
 
   aic.selectedApp = 'terminal'; // MUST BE TERMINAL
 
@@ -20,11 +20,11 @@ aic_init = function aic_init(aic) {
   aic.ready = {
     terminal: true,
     // MUST BE TRUE
-    breach: false,
+    breach: true,
     // MUST BE FALSE
-    messages: false,
+    messages: true,
     // MUST BE FALSE
-    alexandra: false,
+    alexandra: true,
     // MUST BE FALSE
     dclass: false,
     // MUST BE FALSE
@@ -33,6 +33,12 @@ aic_init = function aic_init(aic) {
     run: false,
     // MUST BE FALSE
     ending: false // MUST BE FALSE
+
+  };
+  aic.cheats = {
+    impatientMode: true,
+    // MUST BE FALSE
+    beingSkipped: false // MUST BE FALSE
 
   }; // The following variables can be changed to make adjustments
 
@@ -108,10 +114,6 @@ aic_init = function aic_init(aic) {
     }, aic.assignRoom())
   }; // The following variables should never be changed
 
-  aic.cheats = {
-    impatientMode: false,
-    beingSkipped: false
-  };
   aic.wipeTimer = false; // timer for hard wiping
 
   aic.timeOutList = {

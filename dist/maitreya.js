@@ -547,7 +547,7 @@ shuffle = function shuffle(array) {
 
 
           if (i + 1 === dialogueList.length) {
-            aic.vars[conversation].opinion += dialogueList[i];
+            aic.vars.people[conversation].opinion += dialogueList[i];
           }
 
           i++;
@@ -1488,7 +1488,7 @@ shuffle = function shuffle(array) {
             breachLoop(option.bigSection, option.id);
             return null;
           }, delay * 1000 + aic.maitreyaDelay * 1000);
-          aic.vars[conversation].opinion += option.opinion;
+          aic.vars.people[conversation].opinion += option.opinion;
           break;
 
         case 'alexandra':
@@ -1497,7 +1497,7 @@ shuffle = function shuffle(array) {
             alexandraLoop(option.bigSection, option.id);
             return null;
           }, delay * 1000 + aic.maitreyaDelay * 1000);
-          aic.vars[conversation].opinion += option.opinion;
+          aic.vars.people[conversation].opinion += option.opinion;
           break;
 
         default:

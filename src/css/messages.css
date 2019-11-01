@@ -5,6 +5,17 @@
  * /_/  /_/\___/____/____/\__,_/\__, /\___/____/
  *                             /____/          */
 
+#messages-app .app-main {
+  grid-kiss:
+  "+-----------------------------------------------+           "
+  "|             #messages-selector                | 3.4375rem "
+  "+-----------------------------------------------+           "
+  "                                                            "
+  "+-----------------------------------------------+           "
+  "|               .messages-body                  |   auto    "
+  "+-----------------------------------------------+           ";
+}
+
 #messages-app .conversation-container {
     height: calc(100vh - 22.1875rem);
     position: relative;
@@ -307,7 +318,7 @@
 }
 
 #messages-selector {
-    height: 3.4375rem;
+    /* height: 3.4375rem; */
     font-family: Nunito,Arial,Helvetica,sans-serif;
     position: relative;
     z-index: 5;

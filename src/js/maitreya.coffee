@@ -399,7 +399,7 @@ do ->
             n1 = dialogueList[i]
           # if the number is the last item, it's the opinion modifier
           if i + 1 == dialogueList.length
-            aic.vars[conversation].opinion += dialogueList[i]
+            aic.vars.people[conversation].opinion += dialogueList[i]
           i++
           continue
         else if typeof dialogueList[i] == 'string'
@@ -1148,14 +1148,14 @@ do ->
             breachLoop option.bigSection, option.id
             return null
           ), delay * 1000 + aic.maitreyaDelay * 1000
-          aic.vars[conversation].opinion += option.opinion
+          aic.vars.people[conversation].opinion += option.opinion
         when 'alexandra'
           delay = writeDialogue(conversation, option.dialogue, 'maitreya', option.id)
           $timeout (->
             alexandraLoop option.bigSection, option.id
             return null
           ), delay * 1000 + aic.maitreyaDelay * 1000
-          aic.vars[conversation].opinion += option.opinion
+          aic.vars.people[conversation].opinion += option.opinion
         else
           throw new Error("Conversation #{conversation} does not exist")
       # obviously we don't need the old options anymore

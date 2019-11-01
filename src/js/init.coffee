@@ -3,20 +3,23 @@ aic_init = (aic) ->
 
   # The following variables can be modified for testing, but must be reset
 
-  aic.preload = true # MUST BE TRUE
+  aic.preload = false # MUST BE TRUE
   aic.selectedApp = 'terminal' # MUST BE TERMINAL
   aic.selectedSpeaker = 'breach' # MUST BE BREACH
   aic.selectedArticle = 'menu' # MUST BE MENU
   aic.selectedOperation = 'menu' # MUST BE MENU
   aic.ready =
     terminal: true # MUST BE TRUE
-    breach: false # MUST BE FALSE
-    messages: false # MUST BE FALSE
-    alexandra: false # MUST BE FALSE
+    breach: true # MUST BE FALSE
+    messages: true # MUST BE FALSE
+    alexandra: true # MUST BE FALSE
     dclass: false # MUST BE FALSE
     database: false # MUST BE FALSE
     run: false # MUST BE FALSE
     ending: false # MUST BE FALSE
+  aic.cheats =
+    impatientMode: true # MUST BE FALSE
+    beingSkipped: false # MUST BE FALSE
 
   # The following variables can be changed to make adjustments
 
@@ -91,9 +94,6 @@ aic_init = (aic) ->
 
   # The following variables should never be changed
 
-  aic.cheats =
-    impatientMode: false
-    beingSkipped: false
   aic.wipeTimer = false # timer for hard wiping
   aic.timeOutList =
     terminal: []

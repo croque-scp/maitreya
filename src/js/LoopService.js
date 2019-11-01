@@ -6,7 +6,7 @@
 	angular
 		.module('maitreya')
 		.service('LoopService',LoopService);
-
+	
 	function LoopService($timeout) {
 		var aic = {}, $scope = {};
 		this.use = function(scope) {
@@ -15,7 +15,7 @@
 		};
 		const loop = this;
 		const auto = "auto";
-
+		
 		function reportBlacklisted(smallSection) {
 			console.log("Attempted to push " + smallSection + " but it was blacklisted");
 			var index = aic.blacklist.indexOf(smallSection);
@@ -765,8 +765,8 @@
 							$timeout(function() {
 								if(!aic.blacklist.includes(smallSection)) {
 									aic.presentOptions("breach",bigSection,[
-										aic.vars.breach.opinion<1 ? "letsGo4Dislike" : void 0,
-										aic.vars.breach.opinion>0 ? "letsGo4Like" : void 0
+										aic.vars.people.breach.opinion<1 ? "letsGo4Dislike" : void 0,
+										aic.vars.people.breach.opinion>0 ? "letsGo4Like" : void 0
 									]);
 								} else { reportBlacklisted(smallSection) }
 							},delay*1000 + aic.maitreyaDelay*1000, true);
@@ -820,7 +820,7 @@
 					}
 					break;
 
-
+				
 				default:
 					throw new Error(bigSection + " is not an event");
 			}
@@ -1337,7 +1337,7 @@
 					}
 					break;
 
-
+				
 				default:
 					throw new Error(bigSection + " is not an event");
 			}
@@ -1355,5 +1355,5 @@
 
 
 	}
-
+	
 })();
