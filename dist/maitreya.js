@@ -30,7 +30,7 @@ shuffle = function shuffle(array) {
   var EncodeURIComponentFilter, MaitreyaController, maitreya;
 
   MaitreyaController = function MaitreyaController($scope, $timeout, LoopService, $sce, $http) {
-    var addNotification, aic, alexandraLoop, auto, breachLoop, commandsUsedIterator, dynamicLoop, _endingLoop, _mainLoop, preloadAlexandraFaces, preloadImage, presentOptions, _pushToLog, speech, writeDialogue;
+    var addNotification, aic, alexandraLoop, auto, breachLoop, commandsUsedIterator, dynamicLoop, _endingLoop, preloadAlexandraFaces, preloadImage, presentOptions, _pushToLog, speech, writeDialogue;
 
     aic = this;
     LoopService.use($scope); // give BreachLoopService our scope
@@ -99,15 +99,14 @@ shuffle = function shuffle(array) {
       } // Here we go boys
 
 
-      _mainLoop('INTRODUCTION', 'startBoot'); //breachLoop("INTRODUCTION","askVoiceExp");
+      aic.start[0](aic.start[1], aic.start[2]); //breachLoop("INTRODUCTION","askVoiceExp");
       //alexandraLoop("TUTORIAL","emotiontest");
       //alexandraLoop("TUTORIAL","tutExp");
-
 
       return null;
     };
 
-    _mainLoop = function mainLoop(bigSection, smallSection) {
+    aic.mainLoop = function (bigSection, smallSection) {
       var delay, rooms; // So this is where the magic happens
       // So here's one idea: bigSection and smallSection
       // one big switch, many little switches
@@ -148,8 +147,7 @@ shuffle = function shuffle(array) {
               // first, turn them all off
               // then turn them all back on, one by one
               $timeout(function () {
-                _mainLoop('ROOMS', 'unbootRoom');
-
+                aic.mainLoop('ROOMS', 'unbootRoom');
                 return null;
               }, 200);
               break;
@@ -171,14 +169,12 @@ shuffle = function shuffle(array) {
 
               if (rooms.length > 0) {
                 $timeout(function () {
-                  _mainLoop('ROOMS', 'unbootRoom', rooms);
-
+                  aic.mainLoop('ROOMS', 'unbootRoom', rooms);
                   return null;
                 }, Math.floor(Math.random() * 20));
               } else {
                 $timeout(function () {
-                  _mainLoop('ROOMS', 'bootRoom');
-
+                  aic.mainLoop('ROOMS', 'bootRoom');
                   return null;
                 }, 2000);
               }
@@ -205,8 +201,7 @@ shuffle = function shuffle(array) {
 
               if (rooms.length > 0) {
                 $timeout(function () {
-                  _mainLoop('ROOMS', 'bootRoom', rooms, delay);
-
+                  aic.mainLoop('ROOMS', 'bootRoom', rooms, delay);
                   return null;
                 }, Math.floor(Math.random() * delay));
               }
@@ -364,8 +359,7 @@ shuffle = function shuffle(array) {
           break;
 
         case 'terminal':
-          _mainLoop(bigSection, smallSection);
-
+          aic.mainLoop(bigSection, smallSection);
           break;
 
         default:
@@ -1460,8 +1454,7 @@ shuffle = function shuffle(array) {
 
 
     aic.rebootRooms = function () {
-      _mainLoop('ROOMS', 'rebootRooms');
-
+      aic.mainLoop('ROOMS', 'rebootRooms');
       return null;
     };
     /* PLOT FUNCTIONS */
@@ -1477,8 +1470,7 @@ shuffle = function shuffle(array) {
       switch (conversation) {
         case 'terminal':
           // this shouldn't happen
-          _mainLoop(option.bigSection, option.id);
-
+          aic.mainLoop(option.bigSection, option.id);
           break;
         // I guess?
 
@@ -1529,6 +1521,7 @@ shuffle = function shuffle(array) {
 
       return me.location;
     }; // alias functions so LoopService can access them
+    // TODO make all these on aic anyway
 
 
     aic.writeDialogue = writeDialogue;

@@ -74,13 +74,13 @@ do ->
         if !!aic.lang.articles[article].revised and aic.lang.articles[article].revised < 0
           aic.lang.articles[article].revised = Date.now() + aic.lang.articles[article].revised
       # Here we go boys
-      mainLoop 'INTRODUCTION', 'startBoot'
+      aic.start[0] aic.start[1], aic.start[2]
       #breachLoop("INTRODUCTION","askVoiceExp");
       #alexandraLoop("TUTORIAL","emotiontest");
       #alexandraLoop("TUTORIAL","tutExp");
       return null
 
-    mainLoop = (bigSection, smallSection) ->
+    aic.mainLoop = (bigSection, smallSection) ->
       # So this is where the magic happens
       # So here's one idea: bigSection and smallSection
       # one big switch, many little switches
@@ -112,7 +112,7 @@ do ->
               # first, turn them all off
               # then turn them all back on, one by one
               $timeout (->
-                mainLoop 'ROOMS', 'unbootRoom'
+                aic.mainLoop 'ROOMS', 'unbootRoom'
                 return null
               ), 200
             when 'unbootRoom'
@@ -127,12 +127,12 @@ do ->
               rooms.shift()
               if rooms.length > 0
                 $timeout (->
-                  mainLoop 'ROOMS', 'unbootRoom', rooms
+                  aic.mainLoop 'ROOMS', 'unbootRoom', rooms
                   return null
                 ), Math.floor(Math.random() * 20)
               else
                 $timeout (->
-                  mainLoop 'ROOMS', 'bootRoom'
+                  aic.mainLoop 'ROOMS', 'bootRoom'
                   return null
                 ), 2000
             when 'bootRoom'
@@ -150,7 +150,7 @@ do ->
               rooms.shift()
               if rooms.length > 0
                 $timeout (->
-                  mainLoop 'ROOMS', 'bootRoom', rooms, delay
+                  aic.mainLoop 'ROOMS', 'bootRoom', rooms, delay
                   return null
                 ), Math.floor(Math.random() * delay)
             else
@@ -252,7 +252,7 @@ do ->
         when 'alexandra'
           alexandraLoop bigSection, smallSection
         when 'terminal'
-          mainLoop bigSection, smallSection
+          aic.mainLoop bigSection, smallSection
         else
           console.log character, bigSection, smallSection
           throw new Error("Unexpected dynamic character: #{character}")
@@ -1126,7 +1126,7 @@ do ->
     # turn all the rooms off then on
 
     aic.rebootRooms = ->
-      mainLoop 'ROOMS', 'rebootRooms'
+      aic.mainLoop 'ROOMS', 'rebootRooms'
       return null
 
     ### PLOT FUNCTIONS ###
@@ -1140,7 +1140,7 @@ do ->
       switch conversation
         when 'terminal'
           # this shouldn't happen
-          mainLoop option.bigSection, option.id
+          aic.mainLoop option.bigSection, option.id
           # I guess?
         when 'breach'
           delay = writeDialogue(conversation, option.dialogue, 'maitreya', option.id)
@@ -1177,6 +1177,7 @@ do ->
       me.location
 
     # alias functions so LoopService can access them
+    # TODO make all these on aic anyway
     aic.writeDialogue = writeDialogue
     aic.presentOptions = presentOptions
     aic.breachLoop = breachLoop

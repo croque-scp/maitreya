@@ -3,23 +3,32 @@ aic_init = (aic) ->
 
   # The following variables can be modified for testing, but must be reset
 
-  aic.preload = false # MUST BE TRUE
-  aic.selectedApp = 'terminal' # MUST BE TERMINAL
+  aic.preload = true # MUST BE TRUE
+  aic.selectedApp = 'messages' # MUST BE TERMINAL
   aic.selectedSpeaker = 'breach' # MUST BE BREACH
   aic.selectedArticle = 'menu' # MUST BE MENU
   aic.selectedOperation = 'menu' # MUST BE MENU
   aic.ready =
     terminal: true # MUST BE TRUE
-    breach: true # MUST BE FALSE
     messages: true # MUST BE FALSE
-    alexandra: true # MUST BE FALSE
-    dclass: false # MUST BE FALSE
     database: false # MUST BE FALSE
     run: false # MUST BE FALSE
     ending: false # MUST BE FALSE
+
+    breach: true # MUST BE FALSE
+    alexandra: true # MUST BE FALSE
+    d95951: false # MUST BE FALSE
+    d68134: false # MUST BE FALSE
+    d1602: false # MUST BE FALSE
+    wan: false # MUST BE FALSE
   aic.cheats =
     impatientMode: true # MUST BE FALSE
     beingSkipped: false # MUST BE FALSE
+
+  # The following variable determines what the initial interaction is
+
+  aic.start = [aic.mainLoop, 'INTRODUCTION', 'startBoot']
+  # aic.start = [aic.breachLoop, 'INTRODUCTION', 'letsGo3']
 
   # The following variables can be changed to make adjustments
 
@@ -299,7 +308,7 @@ aic_init = (aic) ->
   aic.currentDialogue = []
   # list of conversation IDs that are currently being spoken / are queued to be spoken TODO
   aic.appList = ['terminal','messages','database','run','ending']
-  aic.speakerList = ['breach','alexandra']
+  aic.speakerList = ['breach','alexandra','d95951','d68134','d1602','wan']
   aic.operationList = ['menu','d','drone','map']
   aic.alexandraEmotionList = ['smiling','concerned','grinning','shocked','pensive','satisfied','celebrating','frustrated','vindictive','stressed','gritted','disgusted','angry','pissed']
   console.log "Done initialising variables"
