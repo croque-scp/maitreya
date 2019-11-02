@@ -164,15 +164,10 @@ Many thanks to the following:
 
               <div id="messages-selector">
                 <ul>
-                  <li id="breach-msg" class="selector" ng-click="aic.switchSpeaker('breach')" ng-class="[aic.selectedSpeaker == 'breach' ? 'selected' : null, aic.ready.breach ? null : 'disabled']">
-                    <a>{{::aic.lang.breachTitle}}</a>
-                    <div class="notification" ng-show="aic.notifications.breach > 0"><p>{{aic.notifications.breach}}</p></div>
+                  <li ng-repeat="speaker in aic.speakerList" ng-id="speaker + '-msg'" class="selector" ng-click="aic.switchSpeaker(speaker)" ng-class="[aic.selectedSpeaker == speaker ? 'selected' : null, aic.ready[speaker] ? null : 'disabled']">
+                    <a>{{::aic.lang.title[speaker]}}</a>
+                    <div class="notification" ng-show="aic.notifications[speaker] > 0"><p>{{aic.notifications[speaker]}}</p></div>
                   </li>
-                  <li id="alexandra-msg" class="selector" ng-click="aic.switchSpeaker('alexandra')" ng-class="[aic.selectedSpeaker == 'alexandra' ? 'selected' : null, aic.ready.alexandra ? null : 'disabled']">
-                    <a>{{::aic.lang.alexandraTitle}}</a>
-                    <div class="notification" ng-show="aic.notifications.alexandra > 0"><p>{{aic.notifications.alexandra}}</p></div>
-                  </li>
-
                 </ul>
               </div>
 

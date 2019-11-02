@@ -20,8 +20,10 @@ getBaseLexicon = function getBaseLexicon(aic) {
       statementFalse: "FALSE",
       speechOption: "SAY",
       actionOption: "DO",
-      breachTitle: "Breach E.",
-      alexandraTitle: "Alexandra.aic",
+      title: {
+        breach: "Breach E.",
+        alexandra: "Alexandra.aic"
+      },
       header: {
         breach: "You are talking to: BREACH E.",
         alexandra: "You are talking to: ALEXANDRA.AIC"
