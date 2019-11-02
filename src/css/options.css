@@ -5,7 +5,7 @@
  * \____/ .___/\__/_/\____/_/ /_/____/
  *     /_/                           */
 
-.options-block {
+.options-box {
     width: calc(100% + 1.25rem);
     height: 9.0625rem;
     position: relative;
@@ -20,10 +20,10 @@
                 inset 0 0.125rem 0.125rem 0 rgba(0,0,0,0.14), inset 0 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), inset 0 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
     overflow: hidden;
 }
-.options-block.options-ready {
+.options-box.options-ready {
     /*background-position: 90% 50%;*/
 }
-.options-block .hint-arrow {
+.options-box .hint-arrow {
     height: 9.0625rem;
     width: 13.5625rem; /* width of image */
     /*background-image: url(highlight-arrow.png);*/
@@ -33,26 +33,26 @@
     transition: all 2s ease-in-out;
     transition: all 2s var(--ease-in-out);
 }
-.options-block .hint-arrow.left {
+.options-box .hint-arrow.left {
     left: 0;
     transform: translate(-10.3125rem,0);
 }
-.options-block .hint-arrow.right {
+.options-box .hint-arrow.right {
     right: 0;
     transform: translate(10.3125rem,0) scaleX(-1);
 }
-.options-block.options-ready .hint-arrow.left {
+.options-box.options-ready .hint-arrow.left {
     transition: all 2s ease-in-out;
     transform: translate(-5.75rem,0);
 }
-.options-block.options-ready .hint-arrow.right {
+.options-box.options-ready .hint-arrow.right {
     transition: all 2s ease-in-out;
     transform: translate(5.75rem,0) scaleX(-1);
 }
-/*.options-block.options-ready.emphasis .hint-arrow.left {
+/*.options-box.options-ready.emphasis .hint-arrow.left {
     animation: options-emphasis 3s ease-in 0s infinite alternate forwards;
 }
-.options-block.options-ready.emphasis .hint-arrow.right {
+.options-box.options-ready.emphasis .hint-arrow.right {
     animation: options-emphasis-reverse 3s ease-in 0s infinite alternate forwards;
 } how about we just don't? */
 .options {

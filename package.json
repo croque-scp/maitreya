@@ -31,12 +31,14 @@
     "gulp-postcss": "^8.0.0",
     "gulp-rename": "^1.4.0",
     "gulp-sourcemaps": "^2.6.5",
+    "postcss-css-variables": "^0.13.0",
     "postcss-grid-kiss": "^2.2.0"
   },
   "postcss": {
     "map": true,
     "plugins": {
       "postcss-grid-kiss": {},
+      "postcss-css-variables": {},
       "cssnano": {}
     }
   }

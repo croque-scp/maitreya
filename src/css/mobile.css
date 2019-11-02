@@ -87,10 +87,10 @@ font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [
     #terminal-app .bottom-bar .middle {
         height: 0;
     }
-    #messages-app .conversation-container {
+    #messages-app .conversation-box {
         height: 19.125rem;
     }
-    .options-block {
+    .options-box {
         background-position: center;
     }
     #terminal-app .terminal-log {

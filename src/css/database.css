@@ -398,14 +398,14 @@
     width: 100%;
     height: 0.3125rem;
 }
-#database-app .options-block {
+#database-app .options-box {
     transform: translate(0,0);
     width: 100%;
 }
-#database-app .options-block .hint-arrow.left {
+#database-app .options-box .hint-arrow.left {
     left: -0.625rem;
 }
-#database-app .options-block .hint-arrow.right {
+#database-app .options-box .hint-arrow.right {
     right: -0.625rem;
 }
 
