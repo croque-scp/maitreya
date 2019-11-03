@@ -7,7 +7,7 @@ aic_init = function aic_init(aic) {
   var currentlyPushing;
   console.log("Initialising variables"); // The following variables can be modified for testing, but must be reset
 
-  aic.preload = true; // MUST BE TRUE
+  aic.preload = false; // MUST BE TRUE
 
   aic.selectedApp = 'messages'; // MUST BE TERMINAL
 

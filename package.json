@@ -38,8 +38,7 @@
     "map": true,
     "plugins": {
       "postcss-grid-kiss": {},
-      "postcss-css-variables": {},
-      "cssnano": {}
+      "postcss-css-variables": {}
     }
   }
 }

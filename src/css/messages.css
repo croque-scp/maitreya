@@ -308,6 +308,7 @@
 }
 
 #messages-selector {
+  --message-selector-x-padding: 0.9375rem;
   /* height: 3.4375rem; */
   font-family: Nunito,Arial,Helvetica,sans-serif;
   position: relative;
@@ -341,29 +342,35 @@
 /*#messages-selector ul li.selector:not(.disabled) a {
   animation: bounce-without-x-translate-and-opacity 1s linear 1 both;
 }*/
-#messages-selector ul li.selector a {
+#messages-selector ul li.selector .selector-wrapper {
   border-radius: 1.25rem;
   background-color: white;
   display: inline-block;
-  color: #205dbf;
-  color: var(--middle-theme);
   border: 0.0625rem white solid;
+  padding: 0.3125rem var(--message-selector-x-padding);
   transition-duration: 0.2s;
   box-shadow: 0 0.125rem 0.125rem 0 rgba(0,0,0,0.14), 0 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), 0 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
-  text-decoration: none;
-  padding: 0.3125rem 0.9375rem;
   position: relative;
   top: 50%;
   transform: translate(0,-50%);
+}
+#messages-selector ul li.selector .selector-wrapper a {
+  transition-duration: 0.2s;
+  color: var(--middle-theme);
+  text-decoration: none;
   font-size: 1.4em;
+  top: 50%;
+  transform: translate(0,-50%);
 }
-#messages-selector ul li.selector.selected a {
+#messages-selector ul li.selector.selected .selector-wrapper {
   border-radius: 0;
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
   box-shadow: none;
+  padding: 1rem var(--message-selector-x-padding); /* large enough to hide edges */
 }
-#messages-selector ul li.selector:not(.selected):hover a {
+#messages-selector ul li.selector.selected .selector-wrapper a {
+  height: 100%;
+}
+#messages-selector ul li.selector:not(.selected):hover .selector-wrapper {
   /*background-color: var(--middle-theme);
   color: white;*/
   animation: bounce-without-x-translate 1s linear 1 both;
@@ -424,27 +431,27 @@
 /* standard layout */
 #messages-app .app-main {
   grid-kiss:
-  "+-----------------------------------------------+           "
-  "|               #messages-selector              | 3.4375rem "
-  "+-----------------------------------------------+           "
-  "                                                            "
-  "+-----------------------------------------------+           "
-  "|                                               |           "
-  "|               .conversation-box               |   auto    "
-  "|                                               |           "
-  "+-----------------------------------------------+           "
-  "                                                            "
-  "+-----------------------------------------------+           "
-  "|                  .middle-bar                  | 1.875rem  "
-  "+-----------------------------------------------+           "
-  "                                                            "
-  "+-----------------------------------------------+           "
-  "|                 .options-box                  | 9.0625rem "
-  "+-----------------------------------------------+           "
-  "                                                            "
-  "+-----------------------------------------------+           "
-  "|                  .bottom-bar                  | 1.5625rem "
-  "+-----------------------------------------------+           ";
+  "+-----------------------------------+           "
+  "|         #messages-selector        | 3.4375rem "
+  "+-----------------------------------+           "
+  "                                                "
+  "+-----------------------------------+           "
+  "|                                   |           "
+  "|         .conversation-box         |   auto    "
+  "|                                   |           "
+  "+-----------------------------------+           "
+  "                                                "
+  "+-----------------------------------+           "
+  "|            .middle-bar            | 1.875rem  "
+  "+-----------------------------------+           "
+  "                                                "
+  "+-----------------------------------+           "
+  "|           .options-box            | 9.0625rem "
+  "+-----------------------------------+           "
+  "                                                "
+  "+-----------------------------------+           "
+  "|            .bottom-bar            | 1.5625rem "
+  "+-----------------------------------+           ";
 }
 /* desktop layout */
 @media only screen and (min-aspect-ratio: 4/3) {
