@@ -82,11 +82,13 @@ shuffle = function shuffle(array) {
         return speech.merge(LoopService.dialogue);
       });
       preloadImage(aic.lang.images.greyStripe);
+      console.log("Ready to go");
       return null;
     }); // called when "BOOT UP" is clicked from preload
 
     aic.bootUp = function () {
       var article;
+      console.log("Booting up...");
       aic.preload = false; // XXX shouldn't this use the same data picker as the first one?
 
       aic.bootDate = new Date(Date.now()); // TODO: save/load
@@ -99,10 +101,7 @@ shuffle = function shuffle(array) {
       } // Here we go boys
 
 
-      aic.start[0](aic.start[1], aic.start[2]); //breachLoop("INTRODUCTION","askVoiceExp");
-      //alexandraLoop("TUTORIAL","emotiontest");
-      //alexandraLoop("TUTORIAL","tutExp");
-
+      aic.start[0](aic.start[1], aic.start[2]);
       return null;
     };
 
@@ -680,7 +679,7 @@ shuffle = function shuffle(array) {
 
               text = text.substring(emote.length + 1);
             } else {
-              // if no emotion is specified, maintain the last one
+              // if no emotion is specified, maintain the last one, or default
               emote = emote != null ? emote : aic.alexandraEmotionList[0];
             }
           }
@@ -718,7 +717,8 @@ shuffle = function shuffle(array) {
 
 
     _pushToLog = function pushToLog(conversation, messages, ID, thread) {
-      var n1, n2, timeOut1; // check the dialogue's ID (ie smallSection)
+      var n1, n2, timeOut1; // TODO document what the fuck is in messages argument
+      // check the dialogue's ID (ie smallSection)
 
       /*if(!ID && conversation !== "terminal") {
       throw new Error("ID was not passed to pushToLog");
@@ -883,7 +883,11 @@ shuffle = function shuffle(array) {
 
                 /*if(hasControl) {*/
                 aic.chatLog[conversation].log.unshift(messages[0][2]);
-                addNotification(conversation);
+                addNotification(conversation); // alex's pfp will change
+
+                if (messages[0][2].speaker === 'alexandra') {
+                  aic.vars.alexandraLastEmotion = messages[0][2].emote;
+                }
               }
               /*}*/
 

@@ -342,8 +342,15 @@
 /*#messages-selector ul li.selector:not(.disabled) a {
   animation: bounce-without-x-translate-and-opacity 1s linear 1 both;
 }*/
+#messages-selector ul li.selector .pfp {
+  display: none;
+  position: absolute;
+  height: 2rem;
+  width: 2rem;
+  z-index: 30;
+}
 #messages-selector ul li.selector .selector-wrapper {
-  border-radius: 1.25rem;
+  border-radius: 10rem;
   background-color: white;
   display: inline-block;
   border: 0.0625rem white solid;
@@ -364,15 +371,12 @@
 }
 #messages-selector ul li.selector.selected .selector-wrapper {
   border-radius: 0;
-  box-shadow: none;
   padding: 1rem var(--message-selector-x-padding); /* large enough to hide edges */
 }
 #messages-selector ul li.selector.selected .selector-wrapper a {
   height: 100%;
 }
 #messages-selector ul li.selector:not(.selected):hover .selector-wrapper {
-  /*background-color: var(--middle-theme);
-  color: white;*/
   animation: bounce-without-x-translate 1s linear 1 both;
 }
 #messages-selector ul li.selector.selected:hover a {
@@ -385,24 +389,6 @@
   /*background-color: white;*/
   transition: background-color 0.2s ease-in-out;
   transition: background-color 0.2s var(--ease-in-out);
-}
-#messages-selector ul li.selector.selected:before {
-  box-shadow: inset -0.1875rem 0 0.125rem -0.125rem rgba(0,0,0,0.28), inset -0.25rem 0 0.0625rem -0.125rem rgba(0,0,0,0.14), inset -0.125rem 0 0.3125rem -0.3125rem rgba(0,0,0,0.2);
-  content: "";
-  height: 100%;
-  left: -0.625rem;
-  position: absolute;
-  top: 0;
-  width: 0.625rem;
-}
-#messages-selector ul li.selector.selected:after {
-  box-shadow: inset 0.1875rem 0 0.125rem -0.125rem rgba(0,0,0,0.28), inset 0.25rem 0 0.0625rem -0.125rem rgba(0,0,0,0.14), inset 0.125rem 0 0.3125rem -0.3125rem rgba(0,0,0,0.2);
-  content: "";
-  height: 100%;
-  position: absolute;
-  right: -0.625rem;
-  top: 0;
-  width: 0.625rem;
 }
 #messages-selector ul li.selector .notification {
   z-index: 30;
@@ -459,9 +445,9 @@
     grid-kiss:
     "+--------------------+ +-------------------+ +--------------+           "
     "|                    | |                   | |              |           "
-    "| .messages-selector | | .conversation-box | | .options-box |   auto    "
+    "| #messages-selector | | .conversation-box | | .options-box |   auto    "
     "|                    | |                   | |              |           "
-    "+---------25%--------+ +-------------------+ +-----25%------+           "
+    "+--------18rem-------+ +-------------------+ +-----25%------+           "
     "                                                                        "
     "+-----------------------------------------------------------+           "
     "|                        .bottom-bar                        | 1.5625rem "
@@ -470,5 +456,23 @@
   #messages-selector ul {
     flex-direction: column;
     justify-content: center;
+  }
+  #messages-selector ul li.selector {
+    margin: 0.5rem 0;
+  }
+  #messages-selector ul li.selector .pfp {
+    display: block;
+  }
+  #messages-selector ul li.selector .selector-wrapper {
+    padding: 0.75rem 1.5625rem;
+    top: auto;
+    transform: none;
+  }
+  #messages-selector ul li.selector.selected .selector-wrapper {
+    padding: 0.75rem 1.5625rem;
+    width: calc(100% - 2 * 1.5625rem);
+  }
+  #messages-selector ul li.selector:not(.selected):hover .selector-wrapper {
+    animation: bounce-without-any-translate 1s linear 1 both;
   }
 }

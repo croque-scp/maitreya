@@ -27,8 +27,8 @@ aic_init = (aic) ->
 
   # The following variable determines what the initial interaction is
 
-  aic.start = [aic.mainLoop, 'INTRODUCTION', 'startBoot']
-  # aic.start = [aic.breachLoop, 'INTRODUCTION', 'letsGo3']
+  # aic.start = [aic.mainLoop, 'INTRODUCTION', 'startBoot']
+  aic.start = [aic.breachLoop, 'INTRODUCTION', 'letsGo3']
 
   # The following variables can be changed to make adjustments
 
@@ -42,15 +42,18 @@ aic_init = (aic) ->
   # The following variables will be preserved on save/load
 
   aic.vars =
+    # progression markers (do not need to be initialised necessarily)
     breachExplainedVoice: false
     breachExplainedTyping: false
     waitingForRead4000: false
     alexCanRebel: false
+    # everything else
     terminalEmphasis: false
     messagesEmphasis: false
     breachEntryMode: 'default'
     lastSpeaker: 'breach'
-    endingFractionText: "placeholder"
+    alexandraLastEmotion: 'stressed' # this'll fuck with them
+    endingFractionText: "placeholder, you shouldn't see this"
     hoveredRoom: 'none'
     selectedRoom: 'none'
     doingRoom: false
@@ -131,6 +134,10 @@ aic_init = (aic) ->
     terminal: 0
     breach: 0
     alexandra: 0
+    d95951: 0
+    d68134: 0
+    d1602: 0
+    wan: 0
     database: 0
     run: 0
   aic.timers = {} # holds special timers for events and the like
@@ -261,6 +268,7 @@ aic_init = (aic) ->
         speaker: ''
         cssClass: ''
         text: ""
+        emote: ''
       } ]
       options: [{
         id: ''

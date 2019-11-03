@@ -44,6 +44,14 @@ getBaseLexicon = (aic) ->
         alexandraTriangle: "alex_triangle.png",
         siteMap: "site12.png",
         maitreyaLogo: "maitreya_icon.png",
+        icon: {
+          breach: "breach_icon2.png",
+          alexandra: "alex_smiling.png",
+          d95951: "breach_icon2.png",
+          d68134: "breach_icon2.png",
+          d1602: "breach_icon2.png",
+          wan: "breach_icon2.png",
+        }
         breachLogo: "breach_icon2.png",
         alexandraLogo: {
           concerned: "alex_concerned.png",

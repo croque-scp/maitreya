@@ -61,10 +61,12 @@ do ->
         speech.merge getBaseLexicon(aic)['speech']
         speech.merge LoopService.dialogue
       preloadImage aic.lang.images.greyStripe
+      console.log "Ready to go"
       return null
 
     # called when "BOOT UP" is clicked from preload
     aic.bootUp = ->
+      console.log "Booting up..."
       aic.preload = false
       # XXX shouldn't this use the same data picker as the first one?
       aic.bootDate = new Date(Date.now())
@@ -75,9 +77,6 @@ do ->
           aic.lang.articles[article].revised = Date.now() + aic.lang.articles[article].revised
       # Here we go boys
       aic.start[0] aic.start[1], aic.start[2]
-      #breachLoop("INTRODUCTION","askVoiceExp");
-      #alexandraLoop("TUTORIAL","emotiontest");
-      #alexandraLoop("TUTORIAL","tutExp");
       return null
 
     aic.mainLoop = (bigSection, smallSection) ->
@@ -497,7 +496,7 @@ do ->
                 throw new Error("Alexandra is experiencing an invalid emotion: #{emote}")
               text = text.substring(emote.length + 1)
             else
-              # if no emotion is specified, maintain the last one
+              # if no emotion is specified, maintain the last one, or default
               emote = emote ? aic.alexandraEmotionList[0]
           messages.push [n1, n2, {
             speaker: force ? speaker
@@ -524,6 +523,7 @@ do ->
 
     # push dialogue to chatLog for presentation to the user
     pushToLog = (conversation, messages, ID, thread) ->
+      # TODO document what the fuck is in messages argument
       # check the dialogue's ID (ie smallSection)
 
       ###if(!ID && conversation !== "terminal") {
@@ -685,6 +685,10 @@ do ->
 
                 aic.chatLog[conversation].log.unshift messages[0][2]
                 addNotification conversation
+                
+                # alex's pfp will change
+                if messages[0][2].speaker == 'alexandra'
+                  aic.vars.alexandraLastEmotion = messages[0][2].emote
 
                 ###}###
 
