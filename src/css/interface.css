@@ -16,6 +16,7 @@
   /* fira code is objectively the best monospace font */
   --monospace-font: 'Fira Code','Cousine','Roboto Mono',monospace;
   --app-title-height: 1.875rem;
+  --selector-shadow: 0 0.125rem 0.125rem 0 rgba(0,0,0,0.14), 0 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), 0 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
 }
 #interface.ended {
   --light-theme: #ff1111;

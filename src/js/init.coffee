@@ -3,7 +3,7 @@ aic_init = (aic) ->
 
   # The following variables can be modified for testing, but must be reset
 
-  aic.preload = false # MUST BE TRUE
+  aic.preload = true # MUST BE TRUE
   aic.selectedApp = 'messages' # MUST BE TERMINAL
   aic.selectedSpeaker = 'breach' # MUST BE BREACH
   aic.selectedArticle = 'menu' # MUST BE MENU
