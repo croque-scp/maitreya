@@ -363,7 +363,6 @@
   border-radius: 10rem;
   background-color: white;
   display: inline-block;
-  border: 0.0625rem white solid;
   padding: 0.3125rem var(--message-selector-x-padding);
   transition-duration: 0.2s;
   box-shadow: var(--selector-shadow);
@@ -507,6 +506,9 @@
     width: calc(100% - 2 * 1.25rem);
     background-color: white;
     box-shadow: var(--selector-shadow);
+  }
+  #messages-selector ul li.selector:not(.selected) .selector-wrapper a {
+    color: rgba(0, 0, 0, 0.75);
   }
   #messages-selector ul li.selector:not(.selected):hover .selector-wrapper {
     animation: bounce-without-any-translate 1s linear 1 both;
