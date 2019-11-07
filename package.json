@@ -35,10 +35,6 @@
     "postcss-grid-kiss": "^2.2.0"
   },
   "postcss": {
-    "map": true,
-    "plugins": {
-      "postcss-grid-kiss": {},
-      "postcss-css-variables": {}
-    }
+    "map": true
   }
 }

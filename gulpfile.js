@@ -12,6 +12,9 @@ const log = require('fancy-log');
 const postcss = require('gulp-postcss');
 const rename = require('gulp-rename');
 const cssimport = require('gulp-cssimport');
+const postcssGridKiss = require('postcss-grid-kiss');
+const postcssCssVariables = require('postcss-css-variables');
+const cssnano = require('cssnano');
 
 gulp.task('default', function(done) {
     // Pipe any js files (should be none in final build)
@@ -37,7 +40,11 @@ gulp.task('default', function(done) {
     gulp.src('./src/css/root.css')
         .pipe(cssimport())
         .on('end', function(){ log("Resolving CSS imports") })
-        .pipe(postcss())
+        .pipe(postcss([
+          postcssCssVariables(),
+          postcssGridKiss(),
+          // cssnano(),
+        ]))
         .on('end', function(){ log("Post-processing CSS") })
         .pipe(rename("maitreya.css"))
         .pipe(gulp.dest('./dist/'))

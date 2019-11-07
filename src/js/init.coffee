@@ -22,7 +22,7 @@ aic_init = (aic) ->
     d1602: false # MUST BE FALSE
     wan: false # MUST BE FALSE
   aic.cheats =
-    impatientMode: true # MUST BE FALSE
+    impatientMode: false # MUST BE FALSE
     beingSkipped: false # MUST BE FALSE
 
   # The following variable determines what the initial interaction is

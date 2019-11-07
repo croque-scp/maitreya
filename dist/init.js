@@ -42,7 +42,7 @@ aic_init = function aic_init(aic) {
 
   };
   aic.cheats = {
-    impatientMode: true,
+    impatientMode: false,
     // MUST BE FALSE
     beingSkipped: false // MUST BE FALSE
 

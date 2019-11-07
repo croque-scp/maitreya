@@ -40,23 +40,21 @@ Many thanks to the following:
     <link href="https://fonts.googleapis.com/css?family=Cousine" rel="stylesheet">
 
         <!-- ONLINE USE ONLY -->
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-sanitize.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script> -->
-    <link href="http://d3g0gp89917ko0.cloudfront.net/v--edac79f846ba/common--theme/base/css/style.css" rel="stylesheet">
-    <link href="http://www.scp-wiki.net/component:theme/code/1" rel="stylesheet">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-sanitize.min.js"></script> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script> -->
+    <!-- <link href="http://d3g0gp89917ko0.cloudfront.net/v--edac79f846ba/common--theme/base/css/style.css" rel="stylesheet"> -->
+    <!-- <link href="http://www.scp-wiki.net/component:theme/code/1" rel="stylesheet"> -->
 
-    <!-- <script src="./../cdn/jquery-3.3.1.slim.min.js"></script> -->
-    <!-- <script src="./../cdn/angular.min.js"></script> -->
-    <!-- <script src="./../cdn/angular-sanitize.min.js"></script> -->
-    <!-- <script src="./../cdn/angular-animate.min.js"></script> -->
+    <script src="./../cdn/jquery-3.3.1.slim.min.js"></script>
+    <script src="./../cdn/angular.min.js"></script>
+    <script src="./../cdn/angular-sanitize.min.js"></script>
+    <script src="./../cdn/angular-animate.min.js"></script>
 
-    <!-- <link href="./../cdn/style.css" rel="stylesheet"> -->
-    <!-- <link href="./../cdn/1.css" rel="stylesheet"> -->
+    <link href="./../cdn/style.css" rel="stylesheet">
+    <link href="./../cdn/1.css" rel="stylesheet">
 
     <script src="lang.js" type="text/javascript"></script>
     <script src="init.js" type="text/javascript"></script>
@@ -171,7 +169,7 @@ Many thanks to the following:
                         <a>{{::aic.lang.title[speaker]}}</a>
                       </div>
                       <div class="last-message">
-                        <p ng-bind-html="aic.chatLog[speaker].log[0].text"></p>
+                        <p ng-bind-html="(aic.chatLog[speaker].log[0].speaker === 'maitreya' ? '<b>You: </b>' : '') + aic.chatLog[speaker].log[0].text"></p>
                       </div>
                       <div class="notification" ng-show="aic.notifications[speaker] > 0"><p>{{aic.notifications[speaker]}}</p></div>
                     </div>

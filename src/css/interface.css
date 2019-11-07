@@ -10,6 +10,15 @@
   --lightish-theme: #1a73c6;
   --middle-theme: #205dbf;
   --dark-theme: #2b32b2;
+
+  --plain-base: #fff;
+  --light-contrast: #eee;
+  --neutral-contrast: #ddd;
+  --heavy-contrast: #ccc;
+
+  --arrow-base: 14.875rem;
+  --arrow-difference: 4.6875rem;
+
   --ease-in-out: cubic-bezier(0.4, 0.0, 0.2, 1);
   transition: all 1s ease-in-out;
   transition: all 1s var(--ease-in-out);

@@ -39,7 +39,7 @@ getBaseLexicon = function getBaseLexicon(aic) {
         preloadTitle: "maitreya.png",
         defaultImage: "default_file.png",
         aiadFadedLogo: "aiad_fade.png",
-        highlightArrow: "highlight-arrow.png",
+        highlightArrow: "highlight-arrow-with-shadow.svg",
         greyStripe: "grey_stripe.png",
         overlayRooms: "rooms_overlay.png",
         typingGif: "typing.gif",
