@@ -214,8 +214,7 @@ Many thanks to the following:
 
               <div class="options-box" ng-class="[aic.chatLog[aic.selectedSpeaker].options.length > 0 ? 'options-ready' : null, aic.vars.chatEmphasis ? 'emphasis' : null]" ng-style="{'background-image':'url(' + aic.lang.images.aiadFadedLogo + '), linear-gradient(to bottom, #f4f4f4, white)'}">
                 <!--<div class="disconnected-alert">DISCONNECTED</div> TODO -->
-                <div class="hint-arrow left" ng-class="aic.vars.noob ? 'noob-emphasis' : null" ng-style="{'background-image': 'url(' + aic.lang.images.highlightArrow + ')'}"></div>
-                <div class="hint-arrow right" ng-class="aic.vars.noob ? 'noob-emphasis' : null" ng-style="{'background-image': 'url(' + aic.lang.images.highlightArrow + ')'}"></div>
+                <div class="hint-arrow" ng-repeat="direction in ['left','right','top','bottom']" ng-class="[direction, aic.vars.noob ? 'noob-emphasis' : null]" ng-style="{'background-image': 'url(' + aic.lang.images.highlightArrow[direction] + ')'}"></div>
                 <div class="options" ng-class="[5,6].includes(aic.chatLog[aic.selectedSpeaker].options.length) ? 'balance' : null">
                   <div class="option-wrapper" ng-repeat="option in aic.chatLog[aic.selectedSpeaker].options" ng-animate-children="true">
                     <button class="option" ng-class="option.optionType" ng-attr-data-action="{{aic.lang[option.optionType + 'Option']}}" ng-click="aic.maitreyaLoop(aic.selectedSpeaker,option,this)">{{option.text}}</button>

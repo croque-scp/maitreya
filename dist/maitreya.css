@@ -96,6 +96,9 @@ body {
  */
 
 :root {
+
+  /* --arrow-base: 14.875rem; */
+  /* --arrow-difference: 4.6875rem; */
   transition: all 1s ease-in-out;
   transition: all 1s cubic-bezier(0.4, 0.0, 0.2, 1);
   /* fira code is objectively the best monospace font */
@@ -365,41 +368,70 @@ body {
 .options-box.options-ready {
   /*background-position: 90% 50%;*/
 }
-.options-box .hint-arrow {
+.options-box .hint-arrow.left,
+.options-box .hint-arrow.right {
   height: 100%;
-  width: 18.75rem; /* width of image */
-  /*background-image: url(highlight-arrow.png);*/
+  width: 18.75rem;
+}
+.options-box .hint-arrow.top,
+.options-box .hint-arrow.bottom {
+  width: 100%;
+  height: 18.75rem;
+}
+.options-box .hint-arrow {
   background-size: 18.75rem 18.75rem;
   background-position: center;
   position: absolute;
   opacity: 1;
-  transition: all 2s ease-in-out;
   transition: all 2s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 .options-box .hint-arrow.left {
   left: 0;
-  transform: translate(calc(14.875rem * -1), 0);
+  transform: translate(calc(15.625rem * -1), 0);
 }
 .options-box .hint-arrow.right {
   right: 0;
-  transform: translate(14.875rem, 0) scaleX(-1);
+  transform: translate(15.625rem, 0);
+}
+.options-box .hint-arrow.top {
+  display: none;
+  top: 0;
+  transform: translate(0, calc(15.625rem * -1));
+}
+.options-box .hint-arrow.bottom {
+  display: none;
+  bottom: 0;
+  transform: translate(0, 15.625rem);
+}
+.options-box.options-ready .hint-arrow {
+  transition: all 2s ease-in-out;
 }
 .options-box.options-ready .hint-arrow.left {
-  transition: all 2s ease-in-out;
-  transform: translate(calc((14.875rem - 4.6875rem) * -1), 0);
+  transform: translate(calc((15.625rem - 4.6875rem) * -1), 0);
 }
 .options-box.options-ready .hint-arrow.right {
-  transition: all 2s ease-in-out;
-  transform: translate(calc(14.875rem - 4.6875rem), 0) scaleX(-1);
+  transform: translate(calc(15.625rem - 4.6875rem), 0);
+}
+.options-box.options-ready .hint-arrow.top {
+  transform: translate(0, calc((15.625rem - 4.6875rem) * -1));
+}
+.options-box.options-ready .hint-arrow.bottom {
+  transform: translate(0, calc(15.625rem - 4.6875rem));
 }
 @media only screen and (min-width: 999px) {
   .options-box.options-ready .hint-arrow.left {
-    transition: all 2s ease-in-out;
-    transform: translate(calc((14.875rem - (4.6875rem) * 2) * -1), 0);
+    transform: translate(calc((15.625rem - (4.6875rem) * 2) * -1), 0);
   }
   .options-box.options-ready .hint-arrow.right {
-    transition: all 2s ease-in-out;
-    transform: translate(calc(14.875rem - (4.6875rem) * 2), 0) scaleX(-1);
+    transform: translate(calc(15.625rem - (4.6875rem) * 2), 0);
+  }
+}
+@media only screen and (min-height: 800px) {
+  .options-box.options-ready .hint-arrow.top {
+    transform: translate(0, calc((15.625rem - (4.6875rem) * 2) * -1));
+  }
+  .options-box.options-ready .hint-arrow.bottom {
+    transform: translate(0, calc(15.625rem - 4.6875rem * 2));
   }
 }
 @media only screen and (min-aspect-ratio: 4/3) and (min-width: 1366px) {
@@ -408,31 +440,15 @@ body {
     background-size: 40rem 40rem, 100% 100%;
   }
   .options-box .hint-arrow {
-    height: 18.75rem;
-    width: 100%;
-    /*background-image: url(highlight-arrow.png);*/
-    background-size: 18.75rem 18.75rem;
-    background-position: center;
-    position: absolute;
-    opacity: 1;
-    transition: all 2s ease-in-out;
-    transition: all 2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    background-size: 100% 18.75rem;
   }
-  .options-box .hint-arrow.left {
-    left: 0;
-    transform: translate(calc(14.875rem * -1), 0);
-  }
+  .options-box .hint-arrow.left,
   .options-box .hint-arrow.right {
-    right: 0;
-    transform: translate(14.875rem, 0) scaleX(-1);
+    display: none;
   }
-  .options-box.options-ready .hint-arrow.left {
-    transition: all 2s ease-in-out;
-    transform: translate(calc((14.875rem - 4.6875rem) * -1), 0);
-  }
-  .options-box.options-ready .hint-arrow.right {
-    transition: all 2s ease-in-out;
-    transform: translate(calc(14.875rem - 4.6875rem), 0) scaleX(-1);
+  .options-box .hint-arrow.top,
+  .options-box .hint-arrow.bottom {
+    display: block;
   }
 }
 
