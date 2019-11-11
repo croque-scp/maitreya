@@ -264,14 +264,12 @@
 }
 #messages-app .conversation p.ng-enter {
   max-height: 0;
-  transition: all 0.5s ease-in-out;
   transition: all 0.5s var(--ease-in-out);
 }
 #messages-app .conversation p.ng-enter-active {
   max-height: 18.75rem;
 }
 #messages-app .middle-bar {
-  background: linear-gradient(to right,#1488cc,#2b32b2);
   background: linear-gradient(to right,var(--light-theme),var(--dark-theme));
   width: 100%;
   height: 1.875rem;
@@ -292,10 +290,11 @@
   height: 0.625rem;
 }
 #messages-app .bottom-bar {
-  background: linear-gradient(to right,#1488cc,#2b32b2);
   background: linear-gradient(to right,var(--light-theme),var(--dark-theme));
   width: 100%;
   height: 1.5625rem;
+  position: relative;
+  z-index: 10;
 }
 #messages-app .bottom-bar .top {
   background: white;
@@ -460,7 +459,7 @@
     "|                    | |                   | |              |           "
     "| #messages-selector | | .conversation-box | | .options-box |   auto    "
     "|                    | |                   | |              |           "
-    "+--------18rem-------+ +-------------------+ +-----25%------+           "
+    "+---------17%--------+ +-------------------+ +-----23%------+           "
     "                                                                        "
     "+-----------------------------------------------------------+           "
     "|                        .bottom-bar                        | 1.5625rem "
@@ -479,10 +478,16 @@
     "+----30%---+         +-----------------+     "
     "             0.75rem                         ";
   }
+  #messages-app .conversation .wrapper,
+  #messages-app .speaking-markers {
+    margin-left: 11rem;
+    margin-right: 11rem;
+  }
   #messages-selector ul {
     flex-direction: column;
     justify-content: center;
     background: linear-gradient(to bottom, #eee, #ccc);
+    box-shadow: none;
   }
   #messages-selector ul li.selector {
     margin: 0.5rem 0;
@@ -513,5 +518,11 @@
   }
   #messages-selector ul li.selector:not(.selected):hover .selector-wrapper {
     animation: bounce-without-any-translate 1s linear 1 both;
+  }
+  #messages-app .conversation-box {
+    box-shadow: 0 -0.125rem 0.125rem 0 rgba(0,0,0,0.14), 0 -0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), 0 -0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
+  }
+  #messages-app .bottom-bar {
+    box-shadow: 0 -0.125rem 0.125rem 0 rgba(0,0,0,0.07), 0 -0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
   }
 }

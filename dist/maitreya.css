@@ -438,6 +438,7 @@ body {
   .options-box {
     background-position: calc(100% + 15rem) calc(100% + 10rem), center;
     background-size: 40rem 40rem, 100% 100%;
+    box-shadow: none;
   }
   .options-box .hint-arrow {
     background-size: 100% 18.75rem;
@@ -1135,14 +1136,12 @@ body {
 }
 #messages-app .conversation p.ng-enter {
   max-height: 0;
-  transition: all 0.5s ease-in-out;
   transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 #messages-app .conversation p.ng-enter-active {
   max-height: 18.75rem;
 }
 #messages-app .middle-bar {
-  background: linear-gradient(to right,#1488cc,#2b32b2);
   background: linear-gradient(to right,#1488cc,#2b32b2);
   width: 100%;
   height: 1.875rem;
@@ -1164,9 +1163,10 @@ body {
 }
 #messages-app .bottom-bar {
   background: linear-gradient(to right,#1488cc,#2b32b2);
-  background: linear-gradient(to right,#1488cc,#2b32b2);
   width: 100%;
   height: 1.5625rem;
+  position: relative;
+  z-index: 10;
 }
 #messages-app .bottom-bar .top {
   background: white;
@@ -1534,7 +1534,7 @@ body {
   #messages-app .app-main {
 	display: grid;
 	align-content: space-between;
-    grid-template: "a b c" 1fr "d d d " 1.5625rem / 18rem 1fr 25%;
+    grid-template: "a b c" 1fr "d d d " 1.5625rem / 17% 1fr 23%;
   }
 
 #messages-app .app-main > #messages-selector {
@@ -1568,23 +1568,23 @@ body {
 
 	#messages-app .app-main > #messages-selector {
             height: calc(100% - 1.5625rem);
-            width: 18rem;
+            width: 17%;
             top: 0;
             left: 0;
 	}
 
 	#messages-app .app-main > .conversation-box {
             height: calc(100% - 1.5625rem);
-            width: calc(75% - 18rem);
+            width: 60%;
             top: 0;
-            left: 18rem;
+            left: 17%;
 	}
 
 	#messages-app .app-main > .options-box {
             height: calc(100% - 1.5625rem);
-            width: 25%;
+            width: 23%;
             top: 0;
-            left: 75%;
+            left: 77%;
 	}
 
 	#messages-app .app-main > .bottom-bar {
@@ -1610,23 +1610,23 @@ body {
 
 	#messages-app .app-main > #messages-selector {
             height: calc(100% - 1.5625rem);
-            width: 18rem;
+            width: 17%;
             top: 0;
             left: 0;
 	}
 
 	#messages-app .app-main > .conversation-box {
             height: calc(100% - 1.5625rem);
-            width: calc(75% - 18rem);
+            width: 60%;
             top: 0;
-            left: 18rem;
+            left: 17%;
 	}
 
 	#messages-app .app-main > .options-box {
             height: calc(100% - 1.5625rem);
-            width: 25%;
+            width: 23%;
             top: 0;
-            left: 75%;
+            left: 77%;
 	}
 
 	#messages-app .app-main > .bottom-bar {
@@ -1657,10 +1657,16 @@ body {
 	grid-area: d;
 	align-self: start;
 }
+  #messages-app .conversation .wrapper,
+  #messages-app .speaking-markers {
+    margin-left: 11rem;
+    margin-right: 11rem;
+  }
   #messages-selector ul {
     flex-direction: column;
     justify-content: center;
     background: linear-gradient(to bottom, #eee, #ccc);
+    box-shadow: none;
   }
   #messages-selector ul li.selector {
     margin: 0.5rem 0;
@@ -1691,6 +1697,12 @@ body {
   }
   #messages-selector ul li.selector:not(.selected):hover .selector-wrapper {
     animation: bounce-without-any-translate 1s linear 1 both;
+  }
+  #messages-app .conversation-box {
+    box-shadow: 0 -0.125rem 0.125rem 0 rgba(0,0,0,0.14), 0 -0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), 0 -0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
+  }
+  #messages-app .bottom-bar {
+    box-shadow: 0 -0.125rem 0.125rem 0 rgba(0,0,0,0.07), 0 -0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
   }
 }
 

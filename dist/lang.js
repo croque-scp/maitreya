@@ -50,12 +50,12 @@ getBaseLexicon = function getBaseLexicon(aic) {
         typingGif: "typing.gif",
         loadingGif: "loading.gif",
         terminalHeader: "maitreya_terminal.png",
-        alexandraTriangle: "alex_triangle.png",
+        alexandraTriangle: "alexandra_triangle.png",
         siteMap: "site12.png",
         maitreyaLogo: "maitreya_icon.png",
         icon: {
           breach: "breach_icon2.png",
-          alexandra: "alex_smiling.png",
+          alexandra: "alexandra_smiling.png",
           d95951: "breach_icon2.png",
           d68134: "breach_icon2.png",
           d1602: "breach_icon2.png",
@@ -63,20 +63,20 @@ getBaseLexicon = function getBaseLexicon(aic) {
         },
         breachLogo: "breach_icon2.png",
         alexandraLogo: {
-          concerned: "alex_concerned.png",
-          grinning: "alex_grinning.png",
-          shocked: "alex_shocked.png",
-          pensive: "alex_pensive.png",
-          satisfied: "alex_satisfied.png",
-          celebrating: "alex_celebrating.png",
-          frustrated: "alex_frustrated.png",
-          smiling: "alex_smiling.png",
-          vindictive: "alex_vindictive.png",
-          stressed: "alex_stressed.png",
-          gritted: "alex_gritted.png",
-          disgusted: "alex_disgusted.png",
-          angry: "alex_angry.png",
-          pissed: "alex_pissed.png"
+          concerned: "alexandra_concerned.png",
+          grinning: "alexandra_grinning.png",
+          shocked: "alexandra_shocked.png",
+          pensive: "alexandra_pensive.png",
+          satisfied: "alexandra_satisfied.png",
+          celebrating: "alexandra_celebrating.png",
+          frustrated: "alexandra_frustrated.png",
+          smiling: "alexandra_smiling.png",
+          vindictive: "alexandra_vindictive.png",
+          stressed: "alexandra_stressed.png",
+          gritted: "alexandra_gritted.png",
+          disgusted: "alexandra_disgusted.png",
+          angry: "alexandra_angry.png",
+          pissed: "alexandra_pissed.png"
         }
       },
       commands: {
@@ -228,7 +228,7 @@ getBaseLexicon = function getBaseLexicon(aic) {
           available: false,
           image: "site12_300.png",
           revised: 1384819200000,
-          text: ["= + SCP Foundation Secure Facility Dossier", "= **Official Designation:** SCP Foundation Quittinirpaaq Isolated Containment Facility", "= **Site Identification Code:** NACANU-IS-12", "----", "= ++ General Information", "----", "[[IMAGE]] site12_300.png Isolated Site-12", "**Purpose:** Isolated Site-12 is dedicated solely to the containment of SCP-4000.", "**Founded:** 2010-03-04", "**Founding Director:** [[[rebeccaCarver|Dr. Rebecca Carver]]]", "**Location:** Quittinirpaaq National Park, Ellesmere Island, Nunavut, Canada", "**Cover Story:** Secondary Global Seed Vault", "**Site Function:** Containment (singular -- see [[[scp4000|SCP-4000]]])", "**Size:** Area of 1.9 km^^2^^", "----", "= ++ Staffing Information", "----", "**Site Director:** None", "**On-Site Personnel:**", "   **Staff Researchers:** 0", "   **Maintenance or Janitorial:** 1", "   **D-Class:** 0", "   **Other Personnel:** 0", "-----", "= ++ Additional Information", "----", "Located near the uppermost tip of Ellesmere Island, Isolated Site-12 is one of the most northern facilities operated by the Foundation. It is also one of the coldest, covered in snow for most of the year. Its location is kept strictly classified to those currently on-shift at the Site, who must be amnesticised post-shift in order to remove knowledge of its whereabouts.", "Isolated Site-12 is used solely for the containment of SCP-4000. Containment procedures for SCP-4000 dictate that as few people as possible are to be exposed to it in any way.", "Isolated Site-12 must be staffed at all times by a single member of personnel. They are tasked with maintaining the Site, ensuring SCP-4000 does not breach containment, and ensuring that any problems that arise are solved quickly. As of 2013, Alexandra.aic maintains a presence within Isolated Site-12 servers to handle most issues, and also to provide the on-site personnel with social entertainment.", "Transport to and from Isolated Site-12 is by air. Aircraft are stored in the on-site hangar. Alexandra.aic is trusted with plotting and piloting a sufficiently complex travel route."]
+          text: ["= + SCP Foundation Secure Facility Dossier", "= **Official Designation:** SCP Foundation Quittinirpaaq Isolated Containment Facility", "= **Site Identification Code:** NACANU-IS-12", "----", "= ++ General Information", "----", "[[IMAGE]] site12_300.png Isolated Site-12", "**Purpose:** Isolated Site-12 is dedicated solely to the containment of SCP-4000.", "**Founded:** 2010-03-04", "**Founding Director:** [[[rebeccaHalberd|Dr. Rebecca Halberd]]]", "**Location:** Quittinirpaaq National Park, Ellesmere Island, Nunavut, Canada", "**Cover Story:** Secondary Global Seed Vault", "**Site Function:** Containment (singular -- see [[[scp4000|SCP-4000]]])", "**Size:** Area of 1.9 km^^2^^", "----", "= ++ Staffing Information", "----", "**Site Director:** None", "**On-Site Personnel:**", "   **Staff Researchers:** 0", "   **Maintenance or Janitorial:** 1", "   **D-Class:** 0", "   **Other Personnel:** 0", "-----", "= ++ Additional Information", "----", "Located near the uppermost tip of Ellesmere Island, Isolated Site-12 is one of the most northern facilities operated by the Foundation. It is also one of the coldest, covered in snow for most of the year. Its location is kept strictly classified to those currently on-shift at the Site, who must be amnesticised post-shift in order to remove knowledge of its whereabouts.", "Isolated Site-12 is used solely for the containment of SCP-4000. Containment procedures for SCP-4000 dictate that as few people as possible are to be exposed to it in any way.", "Isolated Site-12 must be staffed at all times by a single member of personnel. They are tasked with maintaining the Site, ensuring SCP-4000 does not breach containment, and ensuring that any problems that arise are solved quickly. As of 2013, Alexandra.aic maintains a presence within Isolated Site-12 servers to handle most issues, and also to provide the on-site personnel with social entertainment.", "Transport to and from Isolated Site-12 is by air. Aircraft are stored in the on-site hangar. Alexandra.aic is trusted with plotting and piloting a sufficiently complex travel route."]
         },
         breach: {
           title: "Dr. Ethan Breach",
@@ -237,13 +237,13 @@ getBaseLexicon = function getBaseLexicon(aic) {
           revised: 1572219648169,
           text: ["! Dr Breach\"s Personnel File", "[[IMAGE]] default_file.png Dr. Ethan Breach", "**Name:** Dr. Ethan Breach", "**Security Clearance:** Level 3", "**Occupation:** On-Site Researcher, Consultant for Observational Anomalies, Anatomical Expert", "**Site of Operations:** Isolated Site-12", "**Major Projects:** [DATA MISSING]", "**Profile:** [DATA MISSING]"]
         },
-        rebeccaCarver: {
-          title: "Dr. Rebecca Carver",
+        rebeccaHalberd: {
+          title: "Dr. Rebecca Halberd",
           category: "person",
           available: false,
           image: "rebecca-carver.png",
           revised: 1514592000000,
-          text: ["! Dr Carver\"s Personnel File", "[[IMAGE]] rebecca-carver.png Dr. Rebecca Carver", "**Name:** Dr. Rebecca Carver", "**Security Clearance:** Level 4", "**Occupation:** Site Director (Site-94), Founding Director (Isolated Sites 01–21), Research Coordinator, General Site Design and Upkeep Manager, Administrator", "**Site of Operations:** Site-94", "**Major Projects:** SCP-2521, SCP-4000, Foundation Mental Heath Awareness Programme", "**Profile:** Dr. Carver joined the Foundation in 1998 as a translational hire from Marshall, Carter and Dark on account of her impressive design portfolio for anomalous architecture. Dr. Carver immediately made herself indispensable by redesigning existing Sites and drafting construction plans for new ones. Her expertise lies in the creation of smaller sites that serve a singular, specific purpose and are run by a skeleton staff -- often termed ”Isolated Sites” due to their likelihood to require geographical distance between themselves and more critical Sites. Dr. Carver’s expertise in this area, as well as her generally conscientious attitude and her special attention towards mental health activism led to her rapid rise in the Foundation ranks."]
+          text: ["! Dr Halberd\"s Personnel File", "[[IMAGE]] rebecca-carver.png Dr. Rebecca Halberd", "**Name:** Dr. Rebecca Halberd", "**Security Clearance:** Level 4", "**Occupation:** Site Director (Site-94), Founding Director (Isolated Sites 01–21), Research Coordinator, General Site Design and Upkeep Manager, Administrator", "**Site of Operations:** Site-94", "**Major Projects:** SCP-2521, SCP-4000, Foundation Mental Heath Awareness Programme", "**Profile:** Dr. Halberd joined the Foundation in 1998 as a translational hire from Marshall, Carter and Dark on account of her impressive design portfolio for anomalous architecture. Dr. Halberd immediately made herself indispensable by redesigning existing Sites and drafting construction plans for new ones. Her expertise lies in the creation of smaller sites that serve a singular, specific purpose and are run by a skeleton staff -- often termed ”Isolated Sites” due to their likelihood to require geographical distance between themselves and more critical Sites. Dr. Halberd’s expertise in this area, as well as her generally conscientious attitude and her special attention towards mental health activism led to her rapid rise in the Foundation ranks."]
         },
         alexandra: {
           title: "Alexandra.aic",

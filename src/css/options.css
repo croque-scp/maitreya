@@ -91,6 +91,7 @@
   .options-box {
     background-position: calc(100% + 15rem) calc(100% + 10rem), center;
     background-size: 40rem 40rem, 100% 100%;
+    box-shadow: none;
   }
   .options-box .hint-arrow {
     background-size: 100% 18.75rem;

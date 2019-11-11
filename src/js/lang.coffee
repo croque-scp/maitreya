@@ -46,12 +46,12 @@ getBaseLexicon = (aic) ->
         typingGif: "typing.gif",
         loadingGif: "loading.gif",
         terminalHeader: "maitreya_terminal.png",
-        alexandraTriangle: "alex_triangle.png",
+        alexandraTriangle: "alexandra_triangle.png",
         siteMap: "site12.png",
         maitreyaLogo: "maitreya_icon.png",
         icon: {
           breach: "breach_icon2.png",
-          alexandra: "alex_smiling.png",
+          alexandra: "alexandra_smiling.png",
           d95951: "breach_icon2.png",
           d68134: "breach_icon2.png",
           d1602: "breach_icon2.png",
@@ -59,20 +59,20 @@ getBaseLexicon = (aic) ->
         }
         breachLogo: "breach_icon2.png",
         alexandraLogo: {
-          concerned: "alex_concerned.png",
-          grinning: "alex_grinning.png",
-          shocked: "alex_shocked.png",
-          pensive: "alex_pensive.png",
-          satisfied: "alex_satisfied.png",
-          celebrating: "alex_celebrating.png",
-          frustrated: "alex_frustrated.png",
-          smiling: "alex_smiling.png",
-          vindictive: "alex_vindictive.png",
-          stressed: "alex_stressed.png",
-          gritted: "alex_gritted.png",
-          disgusted: "alex_disgusted.png",
-          angry: "alex_angry.png",
-          pissed: "alex_pissed.png"
+          concerned: "alexandra_concerned.png",
+          grinning: "alexandra_grinning.png",
+          shocked: "alexandra_shocked.png",
+          pensive: "alexandra_pensive.png",
+          satisfied: "alexandra_satisfied.png",
+          celebrating: "alexandra_celebrating.png",
+          frustrated: "alexandra_frustrated.png",
+          smiling: "alexandra_smiling.png",
+          vindictive: "alexandra_vindictive.png",
+          stressed: "alexandra_stressed.png",
+          gritted: "alexandra_gritted.png",
+          disgusted: "alexandra_disgusted.png",
+          angry: "alexandra_angry.png",
+          pissed: "alexandra_pissed.png"
         }
       },
       commands: {
@@ -279,7 +279,7 @@ getBaseLexicon = (aic) ->
             "[[IMAGE]] site12_300.png Isolated Site-12",
             "**Purpose:** Isolated Site-12 is dedicated solely to the containment of SCP-4000.",
             "**Founded:** 2010-03-04",
-            "**Founding Director:** [[[rebeccaCarver|Dr. Rebecca Carver]]]",
+            "**Founding Director:** [[[rebeccaHalberd|Dr. Rebecca Halberd]]]",
             "**Location:** Quittinirpaaq National Park, Ellesmere Island, Nunavut, Canada",
             "**Cover Story:** Secondary Global Seed Vault",
             "**Site Function:** Containment (singular -- see [[[scp4000|SCP-4000]]])",
@@ -318,21 +318,21 @@ getBaseLexicon = (aic) ->
             "**Profile:** [DATA MISSING]"
           ]
         },
-        rebeccaCarver: {
-          title: "Dr. Rebecca Carver",
+        rebeccaHalberd: {
+          title: "Dr. Rebecca Halberd",
           category: "person",
           available: false,
           image: "rebecca-carver.png",
           revised: 1514592000000,
           text: [
-            "! Dr Carver\"s Personnel File",
-            "[[IMAGE]] rebecca-carver.png Dr. Rebecca Carver",
-            "**Name:** Dr. Rebecca Carver",
+            "! Dr Halberd\"s Personnel File",
+            "[[IMAGE]] rebecca-carver.png Dr. Rebecca Halberd",
+            "**Name:** Dr. Rebecca Halberd",
             "**Security Clearance:** Level 4",
             "**Occupation:** Site Director (Site-94), Founding Director (Isolated Sites 01–21), Research Coordinator, General Site Design and Upkeep Manager, Administrator",
             "**Site of Operations:** Site-94",
             "**Major Projects:** SCP-2521, SCP-4000, Foundation Mental Heath Awareness Programme",
-            "**Profile:** Dr. Carver joined the Foundation in 1998 as a translational hire from Marshall, Carter and Dark on account of her impressive design portfolio for anomalous architecture. Dr. Carver immediately made herself indispensable by redesigning existing Sites and drafting construction plans for new ones. Her expertise lies in the creation of smaller sites that serve a singular, specific purpose and are run by a skeleton staff -- often termed ”Isolated Sites” due to their likelihood to require geographical distance between themselves and more critical Sites. Dr. Carver’s expertise in this area, as well as her generally conscientious attitude and her special attention towards mental health activism led to her rapid rise in the Foundation ranks."
+            "**Profile:** Dr. Halberd joined the Foundation in 1998 as a translational hire from Marshall, Carter and Dark on account of her impressive design portfolio for anomalous architecture. Dr. Halberd immediately made herself indispensable by redesigning existing Sites and drafting construction plans for new ones. Her expertise lies in the creation of smaller sites that serve a singular, specific purpose and are run by a skeleton staff -- often termed ”Isolated Sites” due to their likelihood to require geographical distance between themselves and more critical Sites. Dr. Halberd’s expertise in this area, as well as her generally conscientious attitude and her special attention towards mental health activism led to her rapid rise in the Foundation ranks."
           ]
         },
         alexandra: {
