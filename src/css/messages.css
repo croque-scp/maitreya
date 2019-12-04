@@ -98,7 +98,7 @@
   margin-bottom: 0.1875rem;
 }
 #messages-app .conversation .wrapper.maitreya {
-  margin-left: 8.3125rem; /* Literally no one else but me will notice this or even care about it if they did. I spent like 10 minutes deciding between 132 and 133px. You know what? If I could, I'd go for 132.5. But no. You can't have half a pixel. Fuck */
+  margin-left: 8.3125rem;
 }
 #messages-app .conversation .wrapper.narrator {
   margin-left: 12.5rem;
@@ -482,6 +482,9 @@
   #messages-app .speaking-markers {
     margin-left: 11rem;
     margin-right: 11rem;
+  }
+  #messages-app .conversation::before {
+    display: none;
   }
   #messages-selector ul {
     flex-direction: column;
