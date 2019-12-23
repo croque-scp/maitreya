@@ -90,9 +90,6 @@ font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [
     #messages-app .conversation-box {
         height: 19.125rem;
     }
-    .options-box {
-        background-position: center;
-    }
     #terminal-app .terminal-log {
         margin-right: 1.5625rem;
         margin-left: 1.5625rem;

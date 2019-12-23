@@ -8,7 +8,8 @@
 .options-box {
   position: relative;
   /*background: url(aiad_fade.png), linear-gradient(to bottom, #f4f4f4, white);*/
-  background-size: 18.75rem 18.75rem, 100% 100%;
+  background: linear-gradient(to bottom, #f4f4f4, white);
+  background-size: 100% 100%;
   background-position: 90% 50%, center;
   background-repeat: no-repeat;
   transition: all 2s var(--ease-in-out);
@@ -18,8 +19,27 @@
   transform: translate(-0.625rem,0);
   overflow: hidden;
 }
-.options-box.options-ready {
-  /*background-position: 90% 50%;*/
+.options-box .logo-spinner {
+  --spinner-size: 18.75rem;
+  position: absolute;
+  pointer-events: none;
+  width: var(--spinner-size);
+  height: var(--spinner-size);
+  background-size: contain;
+  top: calc(-0.25 * var(--spinner-size));
+  right: calc(10vw + 0.1 * var(--spinner-size));
+  animation: ticktock 20s steps(20, start) 0s infinite;
+  animation-play-state: paused;
+}
+.options-box.options-ready .logo-spinner {
+  animation-play-state: running;
+}
+/* an animation that resembles a ticking clock
+ * takes 20 seconds to rotate 1/3rd (order 3 symmetry)
+ */
+@keyframes ticktock {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(120deg); }
 }
 .options-box .hint-arrow.left,
 .options-box .hint-arrow.right {
@@ -85,6 +105,11 @@
   }
   .options-box.options-ready .hint-arrow.bottom {
     transform: translate(0, calc(var(--arrow-base) - var(--arrow-difference) * 2));
+  }
+}
+@media only screen and (max-width: 43.6875rem) {
+  .options-box .logo-spinner {
+    right: calc(50vw - 0.5 * var(--spinner-size));
   }
 }
 @media only screen and (min-aspect-ratio: 4/3) and (min-width: 1366px) {
