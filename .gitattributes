@@ -1,2 +1,2 @@
-1.css linguist-vendored=true
-style.css linguist-vendored=true
+cdn/ linguist-vendored=true
+dist/ linguist-generated=true
