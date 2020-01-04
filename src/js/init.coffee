@@ -106,30 +106,8 @@ aic_init = (aic) ->
 
   # The following variables should never be changed
 
-  aic.wipeTimer = false # timer for hard wiping
-  aic.timeOutList =
-    terminal: []
-    breach: []
-    alexandra: []
   aic.commandsUsed = []
-  currentlyPushing = # this isn't even used?
-    breach: false
-    alexandra: false
   aic.currentEnding = 0
-  aic.isSpeaking =
-    terminal: false
-    breach: false
-    alexandra: false
-  aic.isProcessing =
-    terminal: false
-    breach: false
-    alexandra: false
-  aic.isSkipping =
-    terminal: false
-    breach: false
-    messages: false
-    alexandra: false
-    dclass: false
   aic.notifications =
     terminal: 0
     breach: 0
@@ -140,7 +118,6 @@ aic_init = (aic) ->
     wan: 0
     database: 0
     run: 0
-  aic.timers = {} # holds special timers for events and the like
   aic.selectedArticleData =
     type: 'url or text'
     content: []
@@ -261,60 +238,6 @@ aic_init = (aic) ->
       error: false
       log: []
       connectedTo: ['storage','foyer']
-  # logs must be added to this in reverse order
-  aic.chatLog =
-    example:
-      log: [{
-        speaker: ''
-        cssClass: ''
-        text: ""
-        emote: ''
-      } ]
-      options: [{
-        id: ''
-        optionType: ''
-        text: ""
-        dialogue: []
-        bigSection: ''
-      } ]
-    terminal:
-      log: []
-      options: []
-    breach:
-      log: []
-      options: []
-    alexandra:
-      log: []
-      options: []
-  aic.terminalInput = ""
-  aic.searchInput = ""
-  aic.blacklist = []
-  aic.blacklist.add = (smallSection) ->
-    # accepts either one smallSection or an array of multiple
-    if typeof smallSection == 'string'
-      smallSection = [smallSection]
-    for section in smallSection
-      if section in aic.blacklist
-        console.log "Attempted to blacklist #{section}, but it was already blacklisted"
-      else
-        console.log "Blacklisting #{section} (via LoopService)"
-        aic.blacklist.push section
-    return null
-  aic.blacklist.remove = (smallSection) ->
-    # accepts either one smallSection or an array of multiple
-    if typeof smallSection == 'string'
-      smallSection = [smallSection]
-    for section in smallSection
-      index = aic.blacklist.indexOf(section)
-      if index > -1
-        aic.blacklist.splice index, 1
-        console.log "Removed #{section} from blacklist"
-      else
-        console.log "Tried to remove #{section} from blacklist but it was not present"
-    return null
-  # list of conversation IDs that must be ignored
-  aic.currentDialogue = []
-  # list of conversation IDs that are currently being spoken / are queued to be spoken TODO
   aic.appList = ['terminal','messages','database','run','ending']
   aic.speakerList = ['breach','alexandra','d95951','d68134','d1602','wan']
   aic.operationList = ['menu','d','drone','map']

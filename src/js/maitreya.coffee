@@ -52,6 +52,20 @@ do ->
             this[bigSection] = dialogue[bigSection]
         return null
 
+    aic.typingDelay = 0.3
+    aic.typingSpeed = 0.04 # seconds per letter
+    aic.wipeTimer = false # timer for hard wiping
+    aic.timeOutList = {}
+    aic.isSpeaking = {}
+    aic.isProcessing = {}
+    aic.isSkipping = {}
+    aic.notifications = {}
+    aic.timers = {} # holds special timers for events and the like
+    aic.chatLog = {} # should be added to in reverse order
+    aic.blacklist = []
+    aic.currentDialogue = []
+    aic.vars = {}
+
     # Initial setup for once the page has loaded
     $(document).ready ->
       aic.onMobile = $('body').width() < 700
@@ -685,7 +699,7 @@ do ->
 
                 aic.chatLog[conversation].log.unshift messages[0][2]
                 addNotification conversation
-                
+
                 # alex's pfp will change
                 if messages[0][2].speaker == 'alexandra'
                   aic.vars.alexandraLastEmotion = messages[0][2].emote
@@ -1211,6 +1225,19 @@ do ->
       else
         throw new Error("Tried to lock #{target} which does not exist")
       return null
+
+    aic.blacklist.add = (event_name) ->
+      if event_name in aic.blacklist
+        console.log "#{event_name} is already blacklisted"
+      else
+        console.log "Blacklisting #{section}"
+        aic.blacklist.push section
+    aic.blacklist.remove = (event_name) ->
+      if event_name in aic.blacklist
+        aic.blacklist.remove event_name
+        console.log "Removed #{event_name} from blacklist"
+      else
+        console.log "#{event_name} is not in blacklist"
 
     aic.eval = eval
     return null
