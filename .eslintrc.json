@@ -1,0 +1,58 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:vue/essential",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    ],
+    "parser": "vue-eslint-parser",
+    "parserOptions": {
+        "ecmaVersion": 11,
+        "parser": "@typescript-eslint/parser",
+        "sourceType": "module",
+        "project": "./tsconfig.eslint.json"
+    },
+    "plugins": [ "vue", "@typescript-eslint/eslint-plugin" ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly",
+        "require": true
+    },
+    "rules": {
+        "@typescript-eslint/no-unused-vars": [
+            "error", { "argsIgnorePattern": "^_" }
+        ],
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "quotes": "off",
+        "prefer-template": "error",
+        "max-len": [
+            "error", {
+                "tabWidth": 2,
+                "ignoreUrls": true
+            }
+        ]
+    },
+    "overrides": [
+        {
+            "files": ["**/*.js"],
+            "parserOptions": {
+                "ecmaVersion": 11,
+                "parser": "@typescript-eslint/parser"
+            },
+            "rules": {
+                "@typescript-eslint/no-var-requires": "off",
+                "@typescript-eslint/no-unsafe-assignment": "off",
+                "@typescript-eslint/no-unsafe-call": "off",
+                "@typescript-eslint/no-unsafe-return": "off",
+                "@typescript-eslint/no-unsafe-member-access": "off",
+                "@typescript-eslint/restrict-template-expressions": "off"
+            }
+        }
+    ]
+}
