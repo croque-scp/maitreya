@@ -1,23 +1,21 @@
 {
   "name": "maitreya",
-  "version": "1.0.0",
-  "description": "## What is it? An interactive SCP story.",
-  "main": "index.js",
+  "version": "0.0.0",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "NODE_ENV=production gulp",
+    "dev": "NODE_ENV=development gulp",
+    "lint": "standardx src/**/*.ts",
+    "fix": "standardx --fix src/**/*.ts",
+    "tests": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rossjrw/maitreya.git"
+  "browserslist": "last 5 years",
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "ts"
+    ]
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rossjrw/maitreya/issues"
-  },
-  "homepage": "https://github.com/rossjrw/maitreya",
-  "browserslist": "cover 99.5%",
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
