@@ -1,8 +1,9 @@
 {
-    "extends": "./tsconfig.json",
-    "include": [
-        "./src/**/*.ts",
-        "./tests/**/*.ts",
-        "gulpfile.js"
-    ]
+  "extends": "./tsconfig.json",
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.vue",
+    "./tests/**/*.ts",
+    "./webpack.config.js"
+  ]
 }
