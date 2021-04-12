@@ -1,7 +1,12 @@
 <template>
-  <div>
-    <MainTitle></MainTitle>
-    <AppSelector></AppSelector>
+  <div id="interface"
+       ng-class="[aic.preload ? 'preload' : null, aic.ready.ending ? 'ended' : null]"
+       ng-cloak>
+    <div id="app-selector">
+      <MainTitle></MainTitle>
+      <AppSelector></AppSelector>
+    </div>
+    <TerminalApp></TerminalApp>
   </div>
 </template>
 
@@ -9,9 +14,13 @@
 import { defineComponent } from "vue"
 
 import AppSelector from "./AppSelector.vue"
+import TerminalApp from "./apps/TerminalApp.vue"
 
 export default defineComponent({
   name: "Interface",
-  components: { AppSelector }
+  components: {
+    TerminalApp,
+    AppSelector
+  }
 })
 </script>
