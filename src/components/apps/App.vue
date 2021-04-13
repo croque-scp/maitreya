@@ -1,5 +1,5 @@
 <template>
-  <div id="app-body">
+  <div class="app-body">
     <div class="container"
          ng-class="aic.selectedApp == '{{name}}' ? 'selected' : null">
       <AppSectionTop></AppSectionTop>
@@ -28,5 +28,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-
+#messages-app .app-main {
+  height: calc(100% - var(--app-title-height));
+}
 </style>

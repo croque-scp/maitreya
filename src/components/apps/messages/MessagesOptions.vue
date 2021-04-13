@@ -20,5 +20,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-
+.options-box {
+  grid-area: options;
+}
 </style>
