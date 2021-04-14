@@ -1,136 +1,81 @@
 <template>
   <App name="database">
     <DatabaseBackButton></DatabaseBackButton>
-    <div class="section menu-section"
-         ng-class="aic.selectedArticle === 'menu' ? 'selected' : null"
-         ng-attr-new-section="{{aic.selectedArticle}}">
-      <div class="menu-container">
-        <p class="heading">Database Search</p>
-
-        <p class="heading">SCPs</p>
-        <div class="articles-list">
-
-          <div class="article-selector"
-               ng-repeat="(id,article) in aic.lang.articles track by article.title"
-               ng-if="article.available && article.category === 'scp'"
-               ng-click="aic.switchArticle(id)" ng-attr-data-article="{{id}}"
-               ng-class="!!article.hovered ? 'HOVERED' : 'not-hovered'">
-            <div class="article-title">
-              <div class="article-title-icon-container"></div>
-              <div class="article-title-icon"><i
-                  class="material-icons">input</i></div>
-              <div class="article-title-title">
-                <p>{{ ::article.title }}</p>
-              </div>
-            </div>
-            <div class="article-image-wrapper">
-              <div class="article-image"
-                   style="background-image: url({{::article.image || aic.lang.images.defaultImage}});"></div>
-            </div>
-          </div>
-
-        </div>
-
-        <p class="heading">Personnel</p>
-        <div class="articles-list">
-
-          <div class="article-selector"
-               ng-repeat="(id,article) in aic.lang.articles track by article.title"
-               ng-if="article.available && article.category === 'person'"
-               ng-click="aic.switchArticle(id)" ng-attr-data-article="{{id}}"
-               ng-class="!!article.hovered ? 'HOVERED' : 'not-hovered'">
-            <div class="article-title">
-              <div class="article-title-icon-container"></div>
-              <div class="article-title-icon"><i
-                  class="material-icons">input</i></div>
-              <div class="article-title-title">
-                <p>{{ ::article.title }}</p>
-              </div>
-            </div>
-            <div class="article-image-wrapper">
-              <div class="article-image"
-                   style="background-image: url({{::article.image || aic.lang.images.defaultImage}});"></div>
-            </div>
-          </div>
-
-        </div>
-
-        <p class="heading">Utilities</p>
-        <div class="articles-list">
-
-          <div class="article-selector"
-               ng-repeat="(id,article) in aic.lang.articles track by article.title"
-               ng-if="article.available && article.category === 'utility'"
-               ng-click="aic.switchArticle(id)" ng-attr-data-article="{{id}}"
-               ng-class="!!article.hovered ? 'HOVERED' : 'not-hovered'">
-            <div class="article-title">
-              <div class="article-title-icon-container"></div>
-              <div class="article-title-icon"><i
-                  class="material-icons">input</i></div>
-              <div class="article-title-title">
-                <p>{{ ::article.title }}</p>
-              </div>
-            </div>
-            <div class="article-image-wrapper">
-              <div class="article-image"
-                   style="background-image: url({{::article.image || aic.lang.images.defaultImage}});"></div>
-            </div>
-          </div>
-
-        </div>
-
-        <p class="heading">Other</p>
-        <div class="articles-list">
-
-          <div class="article-selector"
-               ng-repeat="(id,article) in aic.lang.articles track by article.title"
-               ng-if="article.available && article.category !== 'scp' && article.category !== 'person' && article.category !== 'utility'"
-               ng-click="aic.switchArticle(id)" ng-attr-data-article="{{id}}"
-               ng-class="!!article.hovered ? 'HOVERED' : 'not-hovered'">
-            <div class="article-title">
-              <div class="article-title-icon-container"></div>
-              <div class="article-title-icon"><i
-                  class="material-icons">input</i></div>
-              <div class="article-title-title">
-                <p>{{ ::article.title }}</p>
-              </div>
-            </div>
-            <div class="article-image-wrapper">
-              <div class="article-image"
-                   style="background-image: url({{::article.image || aic.lang.images.defaultImage}});"></div>
-            </div>
-          </div>
-
-        </div>
-
-        <p>No articles found. <a
-            ng-href="http://www.scp-wiki.net/search:site/q/{{aic.searchInput | encode}}"
-            target="_blank">Search wider database?</a></p>
-      </div>
-    </div>
-    <div class="section article-section"
-         ng-class="aic.selectedArticle !== 'menu' ? 'selected' : null"
-         ng-attr-new-section="{{aic.selectedArticle}}">
-      <div class="article-content"
-           ng-class="aic.selectedArticleData.content.length > 0 ? 'active' : 'inactive'">
-        <p ng-repeat="line in aic.selectedArticleData.content track by $index"
-           ng-bind-html="trustAsHtml(line)"></p>
-      </div>
-      <!--TODO: replace unsafe with regular, because there are no local images in the final version-->
-    </div>
+    <DatabaseSelectorSection></DatabaseSelectorSection>
+    <DatabaseArticleSection></DatabaseArticleSection>
   </App>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue"
 import DatabaseBackButton from "./DatabaseBackButton.vue"
+import DatabaseSelectorSection from "./DatabaseSelectorSection.vue"
+import DatabaseArticleSection from "./DatabaseArticleSection.vue"
 
 export default defineComponent({
   name: "DatabaseApp",
-  components: { DatabaseBackButton }
+  components: {
+    DatabaseArticleSection,
+    DatabaseSelectorSection,
+    DatabaseBackButton
+  }
 })
 </script>
 
 <style lang="scss">
+.section {
+  transition: transform 0.4s ease-in-out,
+  transform 0.4s var(--ease-in-out),
+  height 0s ease-in-out 0s,
+  overflow 0s ease-in-out 0s,
+  opacity 0s ease-in-out 0s,
+  visibility 0s ease-in-out 0s;
+  transform: translate(0, 0);
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
 
+  &:not(.selected) {
+    transition: transform 0.4s ease-in-out,
+    transform 0.4s var(--ease-in-out),
+    height 0s ease-in-out 0.4s,
+    overflow 0s ease-in-out 0.4s,
+    opacity 0s ease-in-out 0.4s,
+    visibility 0s ease-in-out 0.4s;;
+    height: 0;
+    opacity: 0;
+    /*overflow: hidden;
+  visibility: hidden;*/
+  }
+
+  // Transitions between sections (note that the selector is a section)
+  &:not(.menu-section):not(.selected) {
+    transform: translate(100%, 0);
+  }
+
+  &:not(.menu-section).selected {
+    transform: translate(0, 0);
+  }
+
+  &:not([dest-section=menu]):not(.selected) {
+    transform: translate(-100%, 0);
+  }
+
+  &[dest-section=menu] {
+    transform: translate(0, 0);
+  }
+
+  &[dest-section=menu]:not(.selected) {
+    transform: translate(100%, 0);
+  }
+
+  &.menu-section:not(.selected) {
+    transform: translate(-100%, 0);
+  }
+
+  &.menu-section.selected {
+    transform: translate(0, 0);
+  }
+}
 </style>

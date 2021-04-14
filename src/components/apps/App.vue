@@ -31,4 +31,10 @@ export default defineComponent({
 #messages-app .app-main {
   height: calc(100% - var(--app-title-height));
 }
+
+#database-app .app-main {
+  background: linear-gradient(to bottom,#fff,#eee);
+  position: relative;
+  /*overflow-y: scroll;*/
+}
 </style>

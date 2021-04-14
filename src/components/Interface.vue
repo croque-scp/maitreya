@@ -7,6 +7,7 @@
       <AppSelector></AppSelector>
     </div>
     <TerminalApp></TerminalApp>
+    <DatabaseApp></DatabaseApp>
   </div>
 </template>
 
@@ -15,10 +16,12 @@ import { defineComponent } from "vue"
 
 import AppSelector from "./AppSelector.vue"
 import TerminalApp from "./apps/TerminalApp.vue"
+import DatabaseApp from "./apps/database/DatabaseApp.vue"
 
 export default defineComponent({
   name: "Interface",
   components: {
+    DatabaseApp,
     TerminalApp,
     AppSelector
   }
