@@ -1,7 +1,7 @@
 <template>
 <App name="run">
   <DatabaseBackButton></DatabaseBackButton>
-  <div class="section menu-section" ng-class="aic.selectedOperation === 'menu' ? 'selected' : null" ng-attr-new-section="{{aic.selectedOperation}}">
+  <div class="section menu-section" ng-class="aic.selectedOperation === 'menu' ? 'selected' : null" ng-attr-dest-section="{{aic.selectedOperation}}">
     <div class="menu-title">Isolated Site-12<br>Operations Control</div>
     <div class="operations">
       <ul>

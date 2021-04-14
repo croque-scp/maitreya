@@ -22,7 +22,7 @@
            ng-style="{'background-image': 'url(' + aic.lang.images.highlightArrow + ')'}"></div>
       <div class="hint-arrow right"
            ng-style="{'background-image': 'url(' + aic.lang.images.highlightArrow + ')'}"></div>
-      <form ng-submit="aic.processTerminalInput()" class="middle-bar">
+      <form ng-submit="aic.processTerminalInput()" class="section-divider">
         <input id="terminal-input" ng-model="aic.terminalInput"
                ng-keydown="aic.previousCommand($event)"
                placeholder="{{::aic.lang.commandInput}}">
