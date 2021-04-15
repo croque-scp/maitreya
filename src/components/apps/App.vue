@@ -1,7 +1,9 @@
 <template>
   <div class="app-body">
-    <div class="container"
-         ng-class="aic.selectedApp == '{{name}}' ? 'selected' : null">
+    <div
+      class="container"
+      ng-class="aic.selectedApp == '{{name}}' ? 'selected' : null"
+    >
       <AppSectionTop></AppSectionTop>
       <div class="app-main">
         <slot></slot>
@@ -9,7 +11,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script lang="ts">
@@ -19,11 +20,11 @@ import AppSectionTop from "./AppSectionTop.vue"
 
 export default defineComponent({
   name: "App",
-  props: ['name'],
+  props: ["name"],
   components: {
     AppSectionTop,
-    AppSectionBottom
-  }
+    AppSectionBottom,
+  },
 })
 </script>
 
@@ -33,7 +34,7 @@ export default defineComponent({
 }
 
 #database-app .app-main {
-  background: linear-gradient(to bottom,#fff,#eee);
+  background: linear-gradient(to bottom, #fff, #eee);
   position: relative;
   /*overflow-y: scroll;*/
 }

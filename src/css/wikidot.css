@@ -7,28 +7,33 @@
 
 /* TODO fonts and shit - no reliance on 1.css or style.css */
 
-a, button, li.selector, .article-selector {
-    cursor: pointer;
+a,
+button,
+li.selector,
+.article-selector {
+  cursor: pointer;
 }
-span, a {
-    word-break: normal;
+span,
+a {
+  word-break: normal;
 }
 
 /* TEMPORARY WIKIDOT SIMULATOR */
-html, body {
-    height: 100%;
+html,
+body {
+  height: 100%;
 }
 #container {
-    /*max-width: 700px;*/
-    margin: auto;
-    height: 100%;
+  /*max-width: 700px;*/
+  margin: auto;
+  height: 100%;
 }
 body {
-    padding: 20vh 0;
+  padding: 20vh 0;
 }
 
 #interface {
-    height: 100%;
-    overflow: hidden;
-    color: white;
+  height: 100%;
+  overflow: hidden;
+  color: white;
 }

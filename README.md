@@ -1,16 +1,19 @@
 # maitreya.aic
 
 ## What is it?
+
 An interactive SCP story.
 
 This repository contains compiled builds which are available here:
 
-* https://rossjrw.github.io/maitreya/dist
-* https://rossjrw.github.io/maitreya/dist/maitreya.html
+- https://rossjrw.github.io/maitreya/dist
+- https://rossjrw.github.io/maitreya/dist/maitreya.html
 
 ## Building
+
 In order to build Maitreya from source you will need Git, Node.js and Gulp.js
 installed.
+
 ```shell
 git clone https://github.com/rossjrw/maitreya.git
 cd maitreya
@@ -18,6 +21,7 @@ npm install
 gulp
 xdg-open dist/index.html
 ```
+
 This will compile and open Maitreya in a browser.
 
 index.html provides a resizable iframe for testing different screen sizes,
@@ -30,4 +34,5 @@ Sheets. Please contact me if you require access to this spreadsheet (it will be
 very useful for translations).
 
 ## License
+
 Code: GPL; content: CC-BY SA 3.0

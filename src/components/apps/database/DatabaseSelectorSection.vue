@@ -1,7 +1,9 @@
 <template>
-  <div class="section menu-section"
-       ng-class="aic.selectedArticle === 'menu' ? 'selected' : null"
-       ng-attr-dest-section="{{aic.selectedArticle}}">
+  <div
+    class="section menu-section"
+    ng-class="aic.selectedArticle === 'menu' ? 'selected' : null"
+    ng-attr-dest-section="{{aic.selectedArticle}}"
+  >
     <div class="menu-container">
       <p class="heading">Database Search</p>
 
@@ -17,9 +19,14 @@
       <p class="heading">Other</p>
       <DatabaseSelectorList category="TODO"></DatabaseSelectorList>
 
-      <p>No articles found. <a
+      <p>
+        No articles found.
+        <a
           ng-href="http://www.scp-wiki.net/search:site/q/{{aic.searchInput | encode}}"
-          target="_blank">Search wider database?</a></p>
+          target="_blank"
+          >Search wider database?</a
+        >
+      </p>
     </div>
   </div>
 </template>
@@ -31,8 +38,8 @@ import DatabaseSelectorList from "./DatabaseSelectorList.vue"
 export default defineComponent({
   name: "DatabaseSelectorSection",
   components: {
-    DatabaseSelectorList
-  }
+    DatabaseSelectorList,
+  },
 })
 </script>
 

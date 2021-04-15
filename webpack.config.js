@@ -10,49 +10,49 @@ module.exports = {
   mode: process.env.NODE_ENV,
   ...(dev ? { devtool: "eval-source-map" } : {}),
   entry: {
-    main: "./src/index.ts"
+    main: "./src/index.ts",
   },
   output: {
     filename: "bundle.[name].js",
     path: path.resolve(__dirname, "dist"),
-    assetModuleFilename: "[name][ext]"
+    assetModuleFilename: "[name][ext]",
   },
   module: {
     rules: [
       {
         test: /\.vue$/,
-        use: "vue-loader"
+        use: "vue-loader",
       },
       {
         test: /\.ts$/,
-        use: "babel-loader"
+        use: "babel-loader",
       },
       {
         test: /\.s[ac]ss$/,
-        use: ["vue-style-loader", "css-loader", "sass-loader"]
+        use: ["vue-style-loader", "css-loader", "sass-loader"],
       },
       {
         test: /\.css$/,
-        use: ["vue-style-loader", "css-loader"]
+        use: ["vue-style-loader", "css-loader"],
       },
       {
         test: /\.(woff2?|svg)$/,
-        type: "asset/resource"
-      }
-    ]
+        type: "asset/resource",
+      },
+    ],
   },
   optimization: {
     minimize: !dev,
     minimizer: [new TerserPlugin({ extractComments: false })],
     usedExports: true,
     splitChunks: {
-      chunks: "all"
-    }
+      chunks: "all",
+    },
   },
   plugins: [
     new webpack.DefinePlugin({
       __VUE_OPTIONS_API__: true,
-      __VUE_PROD_DEVTOOLS__: false
+      __VUE_PROD_DEVTOOLS__: false,
     }),
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
@@ -60,8 +60,8 @@ module.exports = {
       filename: "index.html",
       chunks: ["main"],
       meta: {
-        viewport: "width=device-width, initial-scale=1"
-      }
-    })
-  ]
+        viewport: "width=device-width, initial-scale=1",
+      },
+    }),
+  ],
 }

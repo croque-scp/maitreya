@@ -17,19 +17,16 @@ export default defineComponent({
   components: {
     DatabaseArticleSection,
     DatabaseSelectorSection,
-    DatabaseBackButton
-  }
+    DatabaseBackButton,
+  },
 })
 </script>
 
 <style lang="scss">
 .section {
-  transition: transform 0.4s ease-in-out,
-  transform 0.4s var(--ease-in-out),
-  height 0s ease-in-out 0s,
-  overflow 0s ease-in-out 0s,
-  opacity 0s ease-in-out 0s,
-  visibility 0s ease-in-out 0s;
+  transition: transform 0.4s ease-in-out, transform 0.4s var(--ease-in-out),
+    height 0s ease-in-out 0s, overflow 0s ease-in-out 0s,
+    opacity 0s ease-in-out 0s, visibility 0s ease-in-out 0s;
   transform: translate(0, 0);
   position: absolute;
   height: 100%;
@@ -37,12 +34,9 @@ export default defineComponent({
   overflow-y: scroll;
 
   &:not(.selected) {
-    transition: transform 0.4s ease-in-out,
-    transform 0.4s var(--ease-in-out),
-    height 0s ease-in-out 0.4s,
-    overflow 0s ease-in-out 0.4s,
-    opacity 0s ease-in-out 0.4s,
-    visibility 0s ease-in-out 0.4s;;
+    transition: transform 0.4s ease-in-out, transform 0.4s var(--ease-in-out),
+      height 0s ease-in-out 0.4s, overflow 0s ease-in-out 0.4s,
+      opacity 0s ease-in-out 0.4s, visibility 0s ease-in-out 0.4s;
     height: 0;
     opacity: 0;
     /*overflow: hidden;
@@ -58,15 +52,15 @@ export default defineComponent({
     transform: translate(0, 0);
   }
 
-  &:not([dest-section=menu]):not(.selected) {
+  &:not([dest-section="menu"]):not(.selected) {
     transform: translate(-100%, 0);
   }
 
-  &[dest-section=menu] {
+  &[dest-section="menu"] {
     transform: translate(0, 0);
   }
 
-  &[dest-section=menu]:not(.selected) {
+  &[dest-section="menu"]:not(.selected) {
     transform: translate(100%, 0);
   }
 

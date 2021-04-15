@@ -10,10 +10,8 @@
 import { defineComponent } from "vue"
 
 export default defineComponent({
-  name: "DatabaseBackButton"
+  name: "DatabaseBackButton",
 })
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

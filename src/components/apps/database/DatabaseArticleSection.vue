@@ -1,7 +1,9 @@
 <template>
-  <div class="section article-section"
-       ng-class="aic.selectedArticle !== 'menu' ? 'selected' : null"
-       ng-attr-dest-section="{{aic.selectedArticle}}">
+  <div
+    class="section article-section"
+    ng-class="aic.selectedArticle !== 'menu' ? 'selected' : null"
+    ng-attr-dest-section="{{aic.selectedArticle}}"
+  >
     <DatabaseArticle></DatabaseArticle>
     <!--TODO: replace unsafe with regular, because there are no local images in the final version-->
   </div>
@@ -13,7 +15,7 @@ import DatabaseArticle from "./DatabaseArticle.vue"
 
 export default defineComponent({
   name: "DatabaseArticleSection",
-  components: { DatabaseArticle }
+  components: { DatabaseArticle },
 })
 </script>
 

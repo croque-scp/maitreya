@@ -1,8 +1,9 @@
 <template>
   <div class="articles-list">
     <DatabaseSelectorLink
-        :category="category"
-        v-for="(id,article) in aic.lang.articles track by article.title">
+      :category="category"
+      v-for="(id,article) in aic.lang.articles track by article.title"
+    >
     </DatabaseSelectorLink>
   </div>
 </template>
@@ -14,7 +15,7 @@ import DatabaseSelectorLink from "./DatabaseSelectorLink.vue"
 export default defineComponent({
   name: "DatabaseSelectorList",
   components: { DatabaseSelectorLink },
-  props: ["category"]
+  props: ["category"],
 })
 </script>
 

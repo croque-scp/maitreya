@@ -1,6 +1,6 @@
 <template>
   <div class="app-title">
-    <p>{{::aic.lang.terminalAppName}}</p>
+    <p>{{ ::aic.lang.terminalAppName }}</p>
   </div>
 </template>
 
@@ -8,10 +8,8 @@
 import { defineComponent } from "vue"
 
 export default defineComponent({
-  name: "AppSectionTop"
+  name: "AppSectionTop",
 })
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

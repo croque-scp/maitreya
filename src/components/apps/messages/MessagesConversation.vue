@@ -2,21 +2,24 @@
   <!-- one set of messages (not options) per character -->
   <div class="speaking-markers">
     <!-- "...is speaking", etc - pseudo-1st message -->
-    <div ng-class="aic.isSpeaking[speaker] ? null : 'notSpeaking'"
-         class="speaking">
+    <div
+      ng-class="aic.isSpeaking[speaker] ? null : 'notSpeaking'"
+      class="speaking"
+    >
       <p>
-        <img ng-src="{{aic.lang.images.typingGif}}">
+        <img ng-src="{{aic.lang.images.typingGif}}" />
         {{ aic.lang.breachEntryMode[aic.vars.breachEntryMode] }}
-      </p> <!-- XXX -->
+      </p>
+      <!-- XXX -->
     </div>
-    <div ng-class="aic.isProcessing[speaker] ? null : 'notProcessing'"
-         class="processing">
-      <img ng-src="{{aic.lang.images.loadingGif}}">
+    <div
+      ng-class="aic.isProcessing[speaker] ? null : 'notProcessing'"
+      class="processing"
+    >
+      <img ng-src="{{aic.lang.images.loadingGif}}" />
     </div>
   </div>
-  <MessagesMessage
-      v-for="line in aic.chatLog[speaker].log">
-  </MessagesMessage>
+  <MessagesMessage v-for="line in aic.chatLog[speaker].log"> </MessagesMessage>
   <p class="title">{{ aic.lang.header[speaker] }}</p>
 </template>
 
@@ -26,7 +29,7 @@ import MessagesMessage from "./MessagesMessage.vue"
 
 export default defineComponent({
   name: "MessagesConversation",
-  components: { MessagesMessage }
+  components: { MessagesMessage },
 })
 </script>
 

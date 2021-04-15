@@ -1,8 +1,12 @@
 <template>
-  <div class="article-content"
-       ng-class="aic.selectedArticleData.content.length > 0 ? 'active' : 'inactive'">
-    <p ng-repeat="line in aic.selectedArticleData.content track by $index"
-       ng-bind-html="trustAsHtml(line)"></p>
+  <div
+    class="article-content"
+    ng-class="aic.selectedArticleData.content.length > 0 ? 'active' : 'inactive'"
+  >
+    <p
+      ng-repeat="line in aic.selectedArticleData.content track by $index"
+      ng-bind-html="trustAsHtml(line)"
+    ></p>
   </div>
 </template>
 
@@ -10,7 +14,7 @@
 import { defineComponent } from "vue"
 
 export default defineComponent({
-  name: "DatabaseArticle"
+  name: "DatabaseArticle",
 })
 </script>
 
@@ -20,7 +24,7 @@ export default defineComponent({
   padding: 1em 1.5em 1.5em 1.5em;
   background: linear-gradient(to bottom, white, #f4f4f4);
   box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.19),
-  0 0.375rem 0.375rem rgba(0, 0, 0, 0.23);
+    0 0.375rem 0.375rem rgba(0, 0, 0, 0.23);
 
   &.inactive {
     padding: 0;

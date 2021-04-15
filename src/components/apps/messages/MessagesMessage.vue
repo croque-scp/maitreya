@@ -1,30 +1,40 @@
 <template>
-  <div class="wrapper"
-       ng-class="[line.speaker, aic.chatLog[speaker].log[$index-1].speaker === line.speaker ? 'collapsed' : null]">
+  <div
+    class="wrapper"
+    ng-class="[line.speaker, aic.chatLog[speaker].log[$index-1].speaker === line.speaker ? 'collapsed' : null]"
+  >
     <img
-        ng-show="speaker === 'alexandra' && aic.chatLog.alexandra.log[$index-1].speaker !== line.speaker"
-        ng-src="{{line.speaker == 'alexandra' ? aic.lang.images.alexandraLogo[line.emote] : (line.speaker == 'maitreya' ? aic.lang.images.maitreyaLogo : null)}}"
-        ng-class="line.speaker" class="logo"> <!-- logo for alexandra -->
+      ng-show="speaker === 'alexandra' && aic.chatLog.alexandra.log[$index-1].speaker !== line.speaker"
+      ng-src="{{line.speaker == 'alexandra' ? aic.lang.images.alexandraLogo[line.emote] : (line.speaker == 'maitreya' ? aic.lang.images.maitreyaLogo : null)}}"
+      ng-class="line.speaker"
+      class="logo"
+    />
+    <!-- logo for alexandra -->
     <img
-        ng-show="speaker !== 'alexandra' && aic.chatLog.breach.log[$index-1].speaker !== line.speaker"
-        ng-src="{{line.speaker === 'breach' ? aic.lang.images.breachLogo : (line.speaker === 'maitreya' ? aic.lang.images.maitreyaLogo : null)}}"
-        ng-class="line.speaker" class="logo">
+      ng-show="speaker !== 'alexandra' && aic.chatLog.breach.log[$index-1].speaker !== line.speaker"
+      ng-src="{{line.speaker === 'breach' ? aic.lang.images.breachLogo : (line.speaker === 'maitreya' ? aic.lang.images.maitreyaLogo : null)}}"
+      ng-class="line.speaker"
+      class="logo"
+    />
     <!-- logo for everyone else -->
     <img
-        ng-show="speaker === 'alexandra' && aic.chatLog.alexandra.log[$index-1].speaker !== line.speaker"
-        ng-src="{{line.speaker === 'alexandra' ? aic.lang.images.alexandraTriangle : null}}"
-        ng-class="line.speaker" class="triangle">
+      ng-show="speaker === 'alexandra' && aic.chatLog.alexandra.log[$index-1].speaker !== line.speaker"
+      ng-src="{{line.speaker === 'alexandra' ? aic.lang.images.alexandraTriangle : null}}"
+      ng-class="line.speaker"
+      class="triangle"
+    />
     <!-- speech triangle for alexandra -->
-    <div ng-class="[line.speaker, line.cssClass]"
-         class="message">
+    <div ng-class="[line.speaker, line.cssClass]" class="message">
       <div class="hex-left" ng-if="line.cssClass === 'typed'">
         <img
-            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        />
       </div>
       <p><span ng-bind-html="line.text"></span></p>
       <div class="hex-right" ng-if="line.cssClass === 'typed'">
         <img
-            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        />
       </div>
     </div>
   </div>
@@ -34,7 +44,7 @@
 import { defineComponent } from "vue"
 
 export default defineComponent({
-  name: "MessagesMessage"
+  name: "MessagesMessage",
 })
 </script>
 
@@ -116,9 +126,9 @@ export default defineComponent({
 
     &.maitreya {
       background-image: linear-gradient(
-              to bottom,
-              var(--light-theme),
-              var(--lightish-theme)
+        to bottom,
+        var(--light-theme),
+        var(--lightish-theme)
       );
       float: right;
 
@@ -160,7 +170,8 @@ export default defineComponent({
         box-sizing: border-box;
       }
 
-      .hex-left, .hex-right {
+      .hex-left,
+      .hex-right {
         background: inherit;
       }
 

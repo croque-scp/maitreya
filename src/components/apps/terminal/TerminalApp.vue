@@ -1,9 +1,11 @@
 <template>
   <App name="terminal">
-    <div class="terminal-body"
-         ng-style="{'background-image': 'url(' + aic.lang.images.greyStripe + ')'}">
+    <div
+      class="terminal-body"
+      ng-style="{'background-image': 'url(' + aic.lang.images.greyStripe + ')'}"
+    >
       <div ng-show="aic.isSpeaking.terminal" class="working">
-        <img ng-src="{{::aic.lang.images.loadingGif}}">
+        <img ng-src="{{::aic.lang.images.loadingGif}}" />
       </div>
       <TerminalLog></TerminalLog>
     </div>
@@ -19,8 +21,8 @@ export default defineComponent({
   name: "TerminalApp",
   components: {
     TerminalLog,
-    App
-  }
+    App,
+  },
 })
 </script>
 

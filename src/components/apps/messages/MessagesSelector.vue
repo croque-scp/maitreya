@@ -1,20 +1,30 @@
 <template>
   <ul class="messages-selector">
-    <li ng-repeat="speaker in aic.speakerList" ng-id="speaker + '-msg'"
-        class="selector" ng-click="aic.switchSpeaker(speaker)"
-        ng-class="[aic.selectedSpeaker == speaker ? 'selected' : null, aic.ready[speaker] ? null : 'disabled']">
+    <li
+      ng-repeat="speaker in aic.speakerList"
+      ng-id="speaker + '-msg'"
+      class="selector"
+      ng-click="aic.switchSpeaker(speaker)"
+      ng-class="[aic.selectedSpeaker == speaker ? 'selected' : null, aic.ready[speaker] ? null : 'disabled']"
+    >
       <div class="selector-wrapper">
         <img
-            ng-src="{{speaker === 'alexandra' ? aic.lang.images.alexandraLogo[aic.vars.alexandraLastEmotion] : aic.lang.images.icon[speaker]}}"
-            class="pfp">
+          ng-src="{{speaker === 'alexandra' ? aic.lang.images.alexandraLogo[aic.vars.alexandraLastEmotion] : aic.lang.images.icon[speaker]}}"
+          class="pfp"
+        />
         <div class="title">
           <a>{{ ::aic.lang.title[speaker] }}</a>
         </div>
         <div class="last-message">
-          <p ng-bind-html="(aic.chatLog[speaker].log[0].speaker === 'maitreya' ? '<b>You: </b>' : '') + aic.chatLog[speaker].log[0].text"></p>
+          <p
+            ng-bind-html="(aic.chatLog[speaker].log[0].speaker === 'maitreya' ? '<b>You: </b>' : '') + aic.chatLog[speaker].log[0].text"
+          ></p>
         </div>
-        <div class="notification" ng-show="aic.notifications[speaker] > 0"><p>
-          {{ aic.notifications[speaker] }}</p></div>
+        <div class="notification" ng-show="aic.notifications[speaker] > 0">
+          <p>
+            {{ aic.notifications[speaker] }}
+          </p>
+        </div>
       </div>
     </li>
   </ul>
@@ -24,7 +34,7 @@
 import { defineComponent } from "vue"
 
 export default defineComponent({
-  name: "MessagesSelector"
+  name: "MessagesSelector",
 })
 </script>
 
@@ -47,7 +57,7 @@ export default defineComponent({
   opacity: 1;
   z-index: 20 !important; /* TODO this doesn't actually work */
   box-shadow: inset 0 -0.1875rem 0.0625rem -0.125rem rgba(0, 0, 0, 0.12),
-  inset 0 -0.0625rem 0.3125rem 0 rgba(0, 0, 0, 0.2);
+    inset 0 -0.0625rem 0.3125rem 0 rgba(0, 0, 0, 0.2);
   grid-area: selectors;
 
   @media (min-aspect-ratio: 4/3) {
@@ -109,8 +119,8 @@ export default defineComponent({
         grid-template-columns: 30% 0.75rem 1fr;
         grid-template-rows: 55% 45%;
         grid-template-areas:
-        "pfp . title"
-        "pfp . last-message";
+          "pfp . title"
+          "pfp . last-message";
       }
 
       a {
@@ -196,8 +206,8 @@ export default defineComponent({
       height: 1.41em;
       border-radius: 1.41em;
       box-shadow: 0 0.125rem 0.125rem 0 rgba(0, 0, 0, 0.14),
-      0 0.1875rem 0.0625rem -0.125rem rgba(0, 0, 0, 0.12),
-      0 0.0625rem 0.3125rem 0 rgba(0, 0, 0, 0.2);
+        0 0.1875rem 0.0625rem -0.125rem rgba(0, 0, 0, 0.12),
+        0 0.0625rem 0.3125rem 0 rgba(0, 0, 0, 0.2);
 
       p {
         text-align: center;

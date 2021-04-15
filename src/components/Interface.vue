@@ -1,7 +1,9 @@
 <template>
-  <div id="interface"
-       ng-class="[aic.preload ? 'preload' : null, aic.ready.ending ? 'ended' : null]"
-       ng-cloak>
+  <div
+    id="interface"
+    ng-class="[aic.preload ? 'preload' : null, aic.ready.ending ? 'ended' : null]"
+    ng-cloak
+  >
     <div id="app-selector">
       <MainTitle></MainTitle>
       <AppSelector></AppSelector>
@@ -23,7 +25,7 @@ export default defineComponent({
   components: {
     DatabaseApp,
     TerminalApp,
-    AppSelector
-  }
+    AppSelector,
+  },
 })
 </script>

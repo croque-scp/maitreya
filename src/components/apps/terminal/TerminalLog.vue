@@ -1,11 +1,12 @@
 <template>
   <div class="terminal-log">
-    <p ng-repeat="line in aic.chatLog.terminal.log"
-       ng-class="[line.speaker, line.cssClass]">
+    <p
+      ng-repeat="line in aic.chatLog.terminal.log"
+      ng-class="[line.speaker, line.cssClass]"
+    >
       <span ng-bind-html="line.text"></span>
     </p>
-    <p class="title"><img ng-src="{{::aic.lang.images.terminalHeader}}">
-    </p>
+    <p class="title"><img ng-src="{{::aic.lang.images.terminalHeader}}" /></p>
   </div>
 </template>
 
@@ -13,7 +14,7 @@
 import { defineComponent } from "vue"
 
 export default defineComponent({
-  name: "TerminalLog"
+  name: "TerminalLog",
 })
 </script>
 
@@ -22,9 +23,9 @@ export default defineComponent({
   height: 100%;
   margin: 0 6.25rem;
   box-shadow: 0.1875rem 0 0.0625rem -0.125rem rgba(0, 0, 0, 0.12),
-  0.0625rem 0 0.3125rem 0 rgba(0, 0, 0, 0.2),
-  -0.1875rem 0 0.0625rem -0.125rem rgba(0, 0, 0, 0.12),
-  -0.0625rem 0 0.3125rem rgba(0, 0, 0, 0.2);
+    0.0625rem 0 0.3125rem 0 rgba(0, 0, 0, 0.2),
+    -0.1875rem 0 0.0625rem -0.125rem rgba(0, 0, 0, 0.12),
+    -0.0625rem 0 0.3125rem rgba(0, 0, 0, 0.2);
   overflow: auto;
   display: flex;
   flex-direction: column-reverse;
@@ -57,7 +58,8 @@ export default defineComponent({
       margin-right: 0.25rem;
     }
 
-    &.error, &.warning {
+    &.error,
+    &.warning {
       margin: -0.0625rem 0;
       color: red;
       background-color: #fff0f0;
@@ -65,7 +67,9 @@ export default defineComponent({
       border-bottom: 0.125rem #ffd6d6 solid;
     }
 
-    &.error::before, &.warning::before, &.input::before {
+    &.error::before,
+    &.warning::before,
+    &.input::before {
       content: "ERROR";
       color: white;
       background-color: red;
@@ -83,9 +87,9 @@ export default defineComponent({
       content: ">";
       font-family: Nunito, Arial, Helvetica, sans-serif;
       background: linear-gradient(
-          to bottom,
-          var(--light-theme),
-          var(--middle-theme)
+        to bottom,
+        var(--light-theme),
+        var(--middle-theme)
       );
     }
 

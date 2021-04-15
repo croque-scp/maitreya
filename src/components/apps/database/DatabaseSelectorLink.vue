@@ -1,19 +1,22 @@
 <template>
-  <div class="selector"
-       ng-if="article.available && article.category === '{{category}}'"
-       ng-click="aic.switchArticle(id)"
-       ng-attr-data-article="{{id}}"
-       ng-class="!!article.hovered ? 'HOVERED' : 'not-hovered'">
+  <div
+    class="selector"
+    ng-if="article.available && article.category === '{{category}}'"
+    ng-click="aic.switchArticle(id)"
+    ng-attr-data-article="{{id}}"
+    ng-class="!!article.hovered ? 'HOVERED' : 'not-hovered'"
+  >
     <div class="title-wrapper">
-      <div class="icon"><i
-          class="material-icons">input</i></div>
+      <div class="icon"><i class="material-icons">input</i></div>
       <div class="title">
         <p>{{ ::article.title }}</p>
       </div>
     </div>
     <div class="article-image-wrapper">
-      <div class="article-image"
-           style="background-image: url({{::article.image || aic.lang.images.defaultImage}});"></div>
+      <div
+        class="article-image"
+        style="background-image: url({{::article.image || aic.lang.images.defaultImage}});"
+      ></div>
     </div>
   </div>
 </template>
@@ -23,7 +26,7 @@ import { defineComponent } from "vue"
 
 export default defineComponent({
   name: "DatabaseSelectorLink",
-  props: ["category"]
+  props: ["category"],
 })
 </script>
 
@@ -34,8 +37,8 @@ export default defineComponent({
   margin: 0.4em;
   color: var(--middle-theme);
   box-shadow: 0 0.125rem 0.125rem 0 rgba(0, 0, 0, 0.28),
-  0 0.1875rem 0.0625rem -0.125rem rgba(0, 0, 0, 0.24),
-  0 0.0625rem 0.3125rem 0 rgba(0, 0, 0, 0.2);
+    0 0.1875rem 0.0625rem -0.125rem rgba(0, 0, 0, 0.24),
+    0 0.0625rem 0.3125rem 0 rgba(0, 0, 0, 0.2);
   height: 8.5rem;
   width: 8.5rem;
   display: flex;

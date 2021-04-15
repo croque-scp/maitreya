@@ -13,10 +13,13 @@
   background-position: center;
   background-repeat: no-repeat;
   transition: all 2s var(--ease-in-out);
-  box-shadow: inset 0 -0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), inset 0 -0.0625rem 0.3125rem 0 rgba(0,0,0,0.2),
-              inset 0 0.125rem 0.125rem 0 rgba(0,0,0,0.14), inset 0 0.1875rem 0.0625rem -0.125rem rgba(0,0,0,0.12), inset 0 0.0625rem 0.3125rem 0 rgba(0,0,0,0.2);
+  box-shadow: inset 0 -0.1875rem 0.0625rem -0.125rem rgba(0, 0, 0, 0.12),
+    inset 0 -0.0625rem 0.3125rem 0 rgba(0, 0, 0, 0.2),
+    inset 0 0.125rem 0.125rem 0 rgba(0, 0, 0, 0.14),
+    inset 0 0.1875rem 0.0625rem -0.125rem rgba(0, 0, 0, 0.12),
+    inset 0 0.0625rem 0.3125rem 0 rgba(0, 0, 0, 0.2);
   width: calc(100% + 1.25rem);
-  transform: translate(-0.625rem,0);
+  transform: translate(-0.625rem, 0);
   overflow: hidden;
 }
 .options-box .logo-spinner {
@@ -38,8 +41,12 @@
  * takes 20 seconds to rotate 1/3rd (order 3 symmetry)
  */
 @keyframes ticktock {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(120deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(120deg);
+  }
 }
 .options-box .hint-arrow.left,
 .options-box .hint-arrow.right {
@@ -80,31 +87,49 @@
   transition: all 2s ease-in-out;
 }
 .options-box.options-ready .hint-arrow.left {
-  transform: translate(calc((var(--arrow-base) - var(--arrow-difference)) * -1), 0);
+  transform: translate(
+    calc((var(--arrow-base) - var(--arrow-difference)) * -1),
+    0
+  );
 }
 .options-box.options-ready .hint-arrow.right {
   transform: translate(calc(var(--arrow-base) - var(--arrow-difference)), 0);
 }
 .options-box.options-ready .hint-arrow.top {
-  transform: translate(0, calc((var(--arrow-base) - var(--arrow-difference)) * -1));
+  transform: translate(
+    0,
+    calc((var(--arrow-base) - var(--arrow-difference)) * -1)
+  );
 }
 .options-box.options-ready .hint-arrow.bottom {
   transform: translate(0, calc(var(--arrow-base) - var(--arrow-difference)));
 }
 @media only screen and (min-width: 999px) {
   .options-box.options-ready .hint-arrow.left {
-    transform: translate(calc((var(--arrow-base) - (var(--arrow-difference)) * 2) * -1), 0);
+    transform: translate(
+      calc((var(--arrow-base) - (var(--arrow-difference)) * 2) * -1),
+      0
+    );
   }
   .options-box.options-ready .hint-arrow.right {
-    transform: translate(calc(var(--arrow-base) - (var(--arrow-difference)) * 2), 0);
+    transform: translate(
+      calc(var(--arrow-base) - (var(--arrow-difference)) * 2),
+      0
+    );
   }
 }
 @media only screen and (min-height: 800px) {
   .options-box.options-ready .hint-arrow.top {
-    transform: translate(0, calc((var(--arrow-base) - (var(--arrow-difference)) * 2) * -1));
+    transform: translate(
+      0,
+      calc((var(--arrow-base) - (var(--arrow-difference)) * 2) * -1)
+    );
   }
   .options-box.options-ready .hint-arrow.bottom {
-    transform: translate(0, calc(var(--arrow-base) - var(--arrow-difference) * 2));
+    transform: translate(
+      0,
+      calc(var(--arrow-base) - var(--arrow-difference) * 2)
+    );
   }
 }
 @media only screen and (max-width: 43.6875rem) {
@@ -160,10 +185,10 @@
   display: block;
   margin: 0.25em 0;
   box-sizing: border-box;
-  font-family: Verdana,Arial,Helvetica,sans-serif;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: inherit;
   position: relative;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255, 255, 255, 0.7);
   text-align: left;
 }
 .option:focus {
@@ -223,16 +248,16 @@
   content: attr(data-action);
   position: absolute;
   font-weight: bold;
-  color: rgba(0,0,0,0.5);
+  color: rgba(0, 0, 0, 0.5);
   left: 0;
   top: 50%;
-  transform: translate(0,-50%);
+  transform: translate(0, -50%);
   transition-duration: 0.2s;
   z-index: 0;
   opacity: 0;
 }
 .option:hover::after {
-  transform: translate(calc(-100% - 0.3125rem),-50%);
+  transform: translate(calc(-100% - 0.3125rem), -50%);
   opacity: 1;
 }
 /*.option.action:hover::after {
@@ -250,7 +275,8 @@
   color: var(--middle-theme);
   background-color: white;
 }
-.option.speech#boot-up::after, .option.speech#boot-up:hover::after {
+.option.speech#boot-up::after,
+.option.speech#boot-up:hover::after {
   content: none;
 }
 .option.action#terminal-send {
@@ -266,7 +292,8 @@
   background-color: white;
   border-color: #555;
 }
-.option.action#terminal-send::after, .option.action#terminal-send:hover::after {
+.option.action#terminal-send::after,
+.option.action#terminal-send:hover::after {
   content: none;
 }
 .option.action#terminal-send:hover::before {
@@ -285,7 +312,8 @@
 .option.action#restart::before {
   border-color: #555;
 }
-.option.action#restart::after, .option.action#restart:hover::after {
+.option.action#restart::after,
+.option.action#restart:hover::after {
   content: none;
 }
 .option.action#restart:hover::before {
@@ -309,11 +337,11 @@
 .options .option-wrapper.ng-enter button {
   transition: inherit;
   opacity: 0;
-  transform: translate(-1.875rem,0);
+  transform: translate(-1.875rem, 0);
 }
 .options .option-wrapper.ng-enter-active button {
   opacity: 1;
-  transform: translate(0,0);
+  transform: translate(0, 0);
 }
 .options .option-wrapper.ng-leave {
   transition: opacity 0.4s ease-out 0s, transform 0.4s ease-out 0s;
@@ -323,18 +351,20 @@
 .options .option-wrapper.ng-leave button {
   transition: inherit;
   opacity: 1;
-  transform: translate(0,0);
+  transform: translate(0, 0);
 }
 .options .option-wrapper.ng-leave-active button {
   opacity: 0;
-  transform: translate(0,1.875rem);
+  transform: translate(0, 1.875rem);
 }
-.options .option-wrapper.ng-leave button:active, .options .option-wrapper.ng-leave button:focus {
+.options .option-wrapper.ng-leave button:active,
+.options .option-wrapper.ng-leave button:focus {
   transition: transform 0.5s linear 0s, opacity 0.5s linear 0s;
   opacity: 1;
-  transform: translate(0,0);
+  transform: translate(0, 0);
 }
-.options .option-wrapper.ng-leave-active button:active, .options .option-wrapper.ng-leave-active button:focus {
+.options .option-wrapper.ng-leave-active button:active,
+.options .option-wrapper.ng-leave-active button:focus {
   opacity: 0;
-  transform: translate(0,-0rem);
+  transform: translate(0, -0rem);
 }
