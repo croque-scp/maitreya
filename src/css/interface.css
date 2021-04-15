@@ -16,14 +16,7 @@
   --neutral-contrast: #ddd;
   --heavy-contrast: #ccc;
 
-  /* --arrow-base: 14.875rem; */
-  /* --arrow-difference: 4.6875rem; */
-  --arrow-base: 15.625rem;
-  --arrow-difference: 4.6875rem;
-
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  transition: all 1s ease-in-out;
-  transition: all 1s var(--ease-in-out);
   /* fira code is objectively the best monospace font */
   --monospace-font: "Fira Code", "Cousine", "Roboto Mono", monospace;
   --app-title-height: 1.875rem;

@@ -10,7 +10,7 @@
       </MessagesConversation>
     </div>
     <AppSectionDivider></AppSectionDivider>
-    <MessagesOptions></MessagesOptions>
+    <OptionsSelector></OptionsSelector>
   </App>
 </template>
 
@@ -19,12 +19,12 @@ import { defineComponent } from "vue"
 import MessagesSelector from "./MessagesSelector.vue"
 import MessagesConversation from "./MessagesConversation.vue"
 import AppSectionDivider from "../AppSectionDivider.vue"
-import MessagesOptions from "./MessagesOptions.vue"
+import OptionsSelector from "./OptionsSelector.vue"
 
 export default defineComponent({
   name: "MessagesApp",
   components: {
-    MessagesOptions,
+    OptionsSelector,
     AppSectionDivider,
     MessagesConversation,
     MessagesSelector,
