@@ -5,12 +5,12 @@
     "node": true
   },
   "extends": [
-    "standard",
     "eslint:recommended",
     "plugin:vue/essential",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier"
   ],
   "parser": "vue-eslint-parser",
   "parserOptions": {
