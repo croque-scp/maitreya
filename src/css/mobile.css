@@ -11,26 +11,26 @@ font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [
 
 @media only screen and (max-width: 43.6875rem) {
   /* at less than 43.75rem probably a mobile device */
-  #app-selector .title {
+  header .title {
     height: 3.125rem;
   }
-  #app-selector .title .title-image {
+  header .title .title-image {
     top: 0;
     left: 50%;
     transform: translate(-50%, 0);
     background-position: center;
   }
-  #app-selector {
+  header {
     height: 6.875rem;
   }
-  #app-selector ul {
+  header ul {
     height: 3.75rem;
     top: 3.125rem;
     left: 0;
     transform: translate(0, 0);
     justify-content: center;
   }
-  #app-selector li.selector.disabled {
+  header li.selector.disabled {
     display: none;
   }
   .app-title {

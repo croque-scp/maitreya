@@ -29,13 +29,37 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-#messages-app .app-main {
-  height: calc(100% - var(--app-title-height));
-}
+//#messages-app .app-main {
+//  height: calc(100% - var(--app-title-height));
+//}
+//
+//#database-app .app-main {
+//  background: linear-gradient(to bottom, #fff, #eee);
+//  position: relative;
+//}
 
-#database-app .app-main {
-  background: linear-gradient(to bottom, #fff, #eee);
+#app-body {
+  height: calc(100% - 4.375rem);
   position: relative;
-  /*overflow-y: scroll;*/
+  overflow: hidden;
+  background-color: white;
+
+  .container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 1;
+    transition: visibility 0s linear 0s, height 0s linear 0s,
+      opacity 0.2s var(--ease-in-out);
+
+    &:not(.selected) {
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s linear 0.2s, height 0s linear 0.2s,
+        opacity 0.2s var(--ease-in-out);
+    }
+  }
 }
 </style>
