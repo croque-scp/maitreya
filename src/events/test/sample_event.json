@@ -1,0 +1,42 @@
+{
+  "id": "testEvent",
+  "interactions": [
+    {
+      "id": "testInteraction",
+      "speaker": "breach",
+      "messages": [
+        {
+          "messages": [
+            "Hello, Maitreya."
+          ]
+        },
+        {
+          "messages": [
+            "Hi, Dr. Breach."
+          ],
+          "speaker": "maitreya"
+        }
+      ],
+      "options": [
+        {
+          "text": "How are you doing?"
+        },
+        {
+          "text": "Alright, fuck off now.",
+          "targetInteraction": ["breachFuckOff"]
+        }
+      ]
+    },
+    {
+      "id": "breachFuckOff",
+      "speaker": "breach",
+      "messages": [
+        {
+          "messages": [
+            "Well that's rude."
+          ]
+        }
+      ]
+    }
+  ]
+}
