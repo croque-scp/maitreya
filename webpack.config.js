@@ -10,7 +10,8 @@ module.exports = {
   mode: process.env.NODE_ENV,
   ...(dev ? { devtool: "eval-source-map" } : {}),
   entry: {
-    main: "./src/index.ts",
+    // main: "./src/index.ts",
+    editor: "./src/editor/index.ts",
   },
   output: {
     filename: "bundle.[name].js",
@@ -41,6 +42,9 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    extensions: [".ts"],
+  },
   optimization: {
     minimize: !dev,
     minimizer: [new TerserPlugin({ extractComments: false })],
@@ -55,10 +59,18 @@ module.exports = {
       __VUE_PROD_DEVTOOLS__: false,
     }),
     new VueLoaderPlugin(),
+    // new HtmlWebpackPlugin({
+    //   title: "Maitreya.aic",
+    //   filename: "index.html",
+    //   chunks: ["main"],
+    //   meta: {
+    //     viewport: "width=device-width, initial-scale=1",
+    //   },
+    // }),
     new HtmlWebpackPlugin({
-      title: "Maitreya.aic",
-      filename: "index.html",
-      chunks: ["main"],
+      title: "Events editor",
+      filename: "editor/index.html",
+      chunks: ["editor"],
       meta: {
         viewport: "width=device-width, initial-scale=1",
       },
