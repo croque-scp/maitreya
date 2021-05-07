@@ -37,7 +37,7 @@ export type CounterId = Identifier
  */
 export type MessageGroup = {
   // TODO This needs to be able to contain messages from multiple people
-  messages: (string | SingleMessage)[]
+  messages: (string | SingleMessage | Conditional<string | SingleMessage>)[]
 } & MessageSettings
 
 /**
@@ -48,8 +48,8 @@ export type MessageGroup = {
  * @property onDisplay - Actions to execute when this message appears.
  */
 export type SingleMessage = {
-  text: string
-  onDisplay?: Action[]
+  text: string | Conditional<string>
+  onDisplay?: (Action | Conditional<Action>)[]
 } & MessageSettings &
   MessageTimingControl
 
@@ -117,27 +117,10 @@ export type MessageTimingControl = {
  */
 export type Option = {
   text: string | false
-  targetInteraction?: InteractionId
+  targetInteraction?: InteractionId | Conditional<InteractionId>
   displayIf?: Condition[]
-  onSelect?: Action[]
-  messages?: MessageGroup[]
-}
-
-/**
- * A condition to be evaluated before something happens.
- *
- * Each condition contains several keys; if multiple keys are set on a
- * single condition, they are combined with OR. If multiple conditions are
- * passed to a single check, they are combined with AND.
- */
-export type Condition = {
-  assertFlag?: FlagId
-  assertNotFlag?: FlagId
-  assertCounterMoreThan?: [CounterId, number]
-  assertCounterLessThan?: [CounterId, number]
-  assertCounterEqualTo?: [CounterId, number]
-  assertValueIs?: [ValueId, string]
-  assertValueIsNot?: [ValueId, string]
+  onSelect?: (Action | Conditional<Action>)[]
+  messages?: (MessageGroup | Conditional<MessageGroup>)[]
 }
 
 /**
@@ -158,6 +141,50 @@ export type Action = {
   decreaseCounterBy?: [CounterId, number]
   setCounterTo?: [CounterId, number]
   setValueTo?: [ValueId, string]
+}
+
+/**
+ * A condition to be evaluated before something happens.
+ *
+ * Each condition contains several keys; if multiple keys are set on a
+ * single condition, they are combined with OR. If multiple conditions are
+ * passed to a single check, they are combined with AND.
+ */
+export type Condition = {
+  assertFlag?: FlagId
+  assertNotFlag?: FlagId
+  assertCounterMoreThan?: [CounterId, number]
+  assertCounterLessThan?: [CounterId, number]
+  assertCounterEqualTo?: [CounterId, number]
+  assertValueIs?: [ValueId, string]
+  assertValueIsNot?: [ValueId, string]
+}
+
+/**
+ * A set of if/elif/else conditions that resolve to a single result.
+ *
+ * A Conditional must always resolve to a single result, so it must
+ * always have 'if' and 'else' properties. There can be as many 'elif'
+ * properties as needed, otherwise an empty array.
+ *
+ * This is as opposed to simple conditions that may appear in other types,
+ * such as Action's executeIf, which may or may not resolve to a value in
+ * which case the outcome is ignored.
+ *
+ * @property if - Produce this result if the condition passes.
+ * @property elif - An array of conditions that are iterated in order.
+ * @property else - Produce this result if none of the above conditions passed.
+ */
+export type Conditional<R> = {
+  if: {
+    condition: Condition
+    result: R
+  }
+  elif: {
+    condition: Condition
+    result: R
+  }[]
+  else: R
 }
 
 /**
@@ -184,11 +211,11 @@ export type Delay = {
 export type Interaction = {
   id: string
   speaker: string
-  messages: MessageGroup[]
-  options?: Option[]
-  onStart?: Action[]
-  onMessagesEnd?: Action[]
-  onEnd?: Action[]
+  messages: (MessageGroup | Conditional<MessageGroup>)[]
+  options?: (Option | Conditional<Option>)[]
+  onStart?: (Action | Conditional<Action>)[]
+  onMessagesEnd?: (Action | Conditional<Action>)[]
+  onEnd?: (Action | Conditional<Action>)[]
 }
 
 /**
