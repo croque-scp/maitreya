@@ -32,30 +32,65 @@ export type FlagId = Identifier
 export type CounterId = Identifier
 
 /**
- * A single line of a message with manual timing control.
+ * A batch of messages, used to reduce duplication of settings that would
+ * have been applied to each of them individually.
  */
-export type Message = {
+export type MessageGroup = {
+  // TODO This needs to be able to contain messages from multiple people
+  messages: (string | SingleMessage)[]
+} & MessageSettings
+
+/**
+ * A single message that contains a single line of text. Can be by itself or
+ * as part of a message group.
+ *
+ * @property text - The content of the message.
+ * @property onDisplay - Actions to execute when this message appears.
+ */
+export type SingleMessage = {
   text: string
+  onDisplay?: Action[]
+} & MessageSettings &
+  MessageTimingControl
+
+/**
+ * Settings that can be applied either to a single message or to a group of
+ * messages. If applied to a group of messages, it determines the default
+ * value for each message, with the exception of displayIf and onDisplay
+ * which are executed for the message group but do not affect the messages
+ * it contains.
+ *
+ * @property speaker - The character who will be saying this message.
+ * @property speakerModifier - Some modifier to apply to the message. Each
+ * speaker is expected to have its own accepted set of modifiers.
+ * @property displayIf - The message or group will be ignored unless these
+ * conditions pass.
+ * @property modifier - General modifiers that are not character-specific.
+ * @property class - Straight-up just CSS class names to pass to the final
+ * message.
+ */
+export type MessageSettings = {
+  speakerModifier?: string[]
+  speaker?: string
+  displayIf?: Condition[]
+  modifier?: string[]
+}
+
+/**
+ * Timing controls to be applied to a single message.
+ *
+ * @property delay - A delay in seconds to prepend to the message,
+ * overriding any default delay.
+ * @property duration - The time in seconds to wait before sending the
+ * message, but after announcing that the message is going to be sent,
+ * overriding any default duration or duration calculations.
+ * @property durationMultiplier - A multiplier to be applied to the
+ * duration, applied after any default calculations or multipliers.
+ */
+export type MessageTimingControl = {
   delay?: number
   duration?: number
   durationMultiplier?: number
-} & StyledMessage
-
-/**
- * A batch of messages. Each message may either be of export type Message if it
- * needs special timing, or a string if the event's default timing is
- * acceptable.
- */
-export type MessageGroup = {
-  messages: (string | Message)[]
-  speaker?: string
-  displayIf?: Condition[]
-  onDisplay?: Action[]
-} & StyledMessage
-
-export type StyledMessage = {
-  mode?: "spoken" | "typed"
-  class?: string[]
 }
 
 /**
@@ -67,13 +102,25 @@ export type StyledMessage = {
  *
  * Otherwise, if an option's text is false, it is not presented, regardless
  * of its displayIf property.
+ *
+ * @property text - The text of the option, or false.
+ * @property targetInteraction - An identifier pointing to the interaction
+ * to jump to after selecting this option.
+ * @property displayIf - This option will not appear unless these conditions
+ * are met.
+ * @property onSelect - Actions to take (other than starting the target
+ * interaction) when this option is selected).
+ * @property messages - Messages to send before initiating the target
+ * interaction. This can be used to have the player character say things
+ * relating to their choice. The default speaker is the player. Prefer
+ * putting messages into their own interactions.
  */
 export type Option = {
   text: string | false
   targetInteraction?: InteractionId
   displayIf?: Condition[]
   onSelect?: Action[]
-  messages?: Message[]
+  messages?: MessageGroup[]
 }
 
 /**
@@ -93,6 +140,13 @@ export type Condition = {
   assertValueIsNot?: [ValueId, string]
 }
 
+/**
+ * An instruction to do something.
+ *
+ * @property executeIf - Only perform this action if these conditions are met.
+ * @property executeAfter - An amount of time to wait before executing this
+ * action.
+ */
 export type Action = {
   executeIf?: Condition[]
   executeAfter?: Delay
