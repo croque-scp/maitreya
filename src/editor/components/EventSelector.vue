@@ -1,8 +1,14 @@
 <template>
   <ul>
     <li v-for="event in events" :key="event.id">
-      <button v-if="!('interactions' in event)">{{ event.id }}</button>
+      <button
+        v-if="!('interactions' in event)"
+        @click="$emit('event-select', event.id)"
+      >
+        {{ event.id }}
+      </button>
       <EventSelector v-else :event-id="[...eventId, event.id]"></EventSelector>
+      <!-- TODO Create new sub-event -->
     </li>
   </ul>
 </template>
@@ -15,6 +21,7 @@ import { getEventWithIdentifier } from "../lib/identifier"
 
 export default defineComponent({
   name: "EventSelector",
+  emits: ["event-select"],
   props: {
     eventId: Object as PropType<Identifier>,
   },
