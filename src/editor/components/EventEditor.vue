@@ -1,20 +1,32 @@
-<template><FormFieldset :name="`Event: ${eventId}`"></FormFieldset></template>
+<template>
+  <FormFieldset :name="`Event: ${eventId}`">
+    <InteractionEditor
+      v-for="interaction in interactions"
+      :key="interaction.id"
+    ></InteractionEditor>
+    <!-- TODO Button for add new sub-event -->
+    <!-- TODO Button for add new interaction -->
+  </FormFieldset>
+</template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
 import FormFieldset from "./FormFieldset.vue"
-import { useStore } from "../store"
-import { Identifier } from "../types"
+import { Identifier, Event, eventOrInteractionIsEvent } from "../types"
+import InteractionEditor from "./InteractionEditor.vue"
 
 export default defineComponent({
   name: "EventEditor",
-  components: { FormFieldset },
+  components: { InteractionEditor, FormFieldset },
   props: {
     eventId: Array as PropType<Identifier>,
+    event: Object as PropType<Event>,
   },
-  setup() {
-    const store = useStore()
-    const events
+  setup(props) {
+    const interactions = props.event.interactions.filter(
+      (interaction) => !eventOrInteractionIsEvent(interaction)
+    )
+    return { interactions }
   },
 })
 </script>

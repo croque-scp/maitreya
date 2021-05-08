@@ -225,6 +225,7 @@ export type Interaction = {
  */
 export type Event = {
   id: string
+  summary: string
   interactions: (Event | Interaction)[]
 }
 

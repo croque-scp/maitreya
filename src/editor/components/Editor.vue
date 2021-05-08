@@ -8,7 +8,10 @@
       :event-id="[]"
       @event-select="changeSelectedEvent"
     ></EventSelector>
-    <EventEditor :event-id="selectedEvent"></EventEditor>
+    <EventEditor
+      :event-id="selectedEventId"
+      :event="getEventWithIdentifier(events, selectedEventId)"
+    ></EventEditor>
   </main>
 </template>
 
@@ -18,20 +21,21 @@ import EventSelector from "./EventSelector.vue"
 import EventEditor from "./EventEditor.vue"
 import { useStore } from "../store"
 import { Identifier } from "../types"
+import { getEventWithIdentifier } from "../lib/identifier"
 
 export default defineComponent({
   name: "Editor",
   components: { EventEditor, EventSelector },
   methods: {
     changeSelectedEvent(eventId: Identifier) {
-      this.selectedEvent = eventId
+      this.selectedEventId = eventId
     },
   },
   setup() {
     const store = useStore()
     const events = store.state.events
-    const selectedEvent = ref<Identifier>([events[Object.keys(events)[0]]])
-    return { selectedEvent, events }
+    const selectedEventId = ref<Identifier>([events[Object.keys(events)[0]]])
+    return { selectedEventId, events, getEventWithIdentifier }
   },
 })
 </script>
