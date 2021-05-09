@@ -1,13 +1,15 @@
 {
   "name": "maitreya",
+  "productName": "maitreya",
   "version": "0.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "start": "NODE_ENV=development webpack serve --config webpack.config.js --open --open-page webpack-dev-server/",
-    "editor": "NODE_ENV=development webpack serve --config webpack.config.js --open --open-page editor/",
-    "build": "NODE_ENV=production webpack --config webpack.config.js",
-    "lint": "standardx src/**/*.ts",
-    "fix": "standardx --fix src/**/*.ts"
+    "main:start": "NODE_ENV=development webpack serve --config webpack.config.js --open --open-page webpack-dev-server/",
+    "main:build": "NODE_ENV=production webpack --config webpack.config.js",
+    "editor:build": "NODE_ENV=development webpack --config webpack.config.js",
+    "editor:start": "npm run editor:build && electron ./dist/editorElectron.js",
+    "lint": "prettier --check .",
+    "fix": "prettier --write ."
   },
   "browserslist": [
     "last 5 years"
@@ -21,10 +23,45 @@
       "babel-preset-typescript-vue3"
     ]
   },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "maitreya"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.13.15",
     "@babel/preset-env": "^7.13.15",
     "@babel/preset-typescript": "^7.13.0",
+    "@electron-forge/cli": "^6.0.0-beta.54",
+    "@electron-forge/maker-deb": "^6.0.0-beta.54",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.54",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
+    "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "@fontsource/nunito": "^4.1.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
@@ -36,6 +73,7 @@
     "babel-loader": "^8.2.2",
     "babel-preset-typescript-vue3": "^2.0.11",
     "css-loader": "^5.2.1",
+    "electron": "^12.0.7",
     "eslint": "^7.24.0",
     "eslint-config-prettier": "^8.2.0",
     "eslint-plugin-vue": "^7.8.0",
@@ -50,6 +88,7 @@
     "vuex": "^4.0.0",
     "webpack": "^5.31.2",
     "webpack-cli": "^4.6.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.7.3"
   }
 }
