@@ -8,7 +8,7 @@ export const fileReadWriteApi = {
         params: [dirPath, dirName],
       })
     },
-    singleResponse: (callback: (files: Dirent[]) => void): void => {
+    singleResponse: (callback: (files: [Dirent, boolean][]) => void): void => {
       ipcRenderer.once("read-events-dir_response", (event, files) => {
         // Deliberately strip event as it includes `sender`
         callback(files)

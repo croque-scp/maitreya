@@ -30,11 +30,11 @@ export function createEventsDirProxy(
       {}
     )
     // Construct and bind this event's children
-    files.forEach((file) => {
+    files.forEach(([file, fileIsDirectory]) => {
       // TODO Are class methods (isDirectory()) able to pass through the context
       //  bridge? If not, will need to move that check to the main process and
       //  expose the result as a boolean
-      if (file.isDirectory()) {
+      if (fileIsDirectory) {
         return createEventsDirProxy(
           `${dirPath}/${dirName}`, // This should probably be path.join
           file.name,

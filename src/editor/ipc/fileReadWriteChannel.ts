@@ -19,7 +19,9 @@ export class ReadEventsDirChannel implements IpcChannelInterface {
     }
     const [dirPath, dirName] = request.params
     const dir = path.join(eventsPath, dirPath, dirName)
-    const files = fs.readdirSync(dir, { withFileTypes: true })
+    const files = fs
+      .readdirSync(dir, { withFileTypes: true })
+      .map((file) => [file, file.isDirectory()])
     event.sender.send(request.responseChannel, files)
   }
 }
