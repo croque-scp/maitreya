@@ -19,8 +19,14 @@ export default defineComponent({
   name: "EventEditor",
   components: { InteractionEditor, FormFieldset },
   props: {
-    eventId: Array as PropType<Identifier>,
-    event: Object as PropType<Event>,
+    eventId: {
+      type: Array as PropType<Identifier>,
+      required: true,
+    },
+    event: {
+      type: Object as PropType<Event>,
+      required: true,
+    },
   },
   setup(props) {
     const interactions = props.event.interactions.filter(

@@ -20,7 +20,14 @@ export function getEventWithIdentifier(
   event: Event,
   identifier: Identifier
 ): Event | null {
-  return getEventOrInteractionWithIdentifier(event, identifier, "event")
+  console.log("getting event with id", JSON.stringify(identifier), "in", event)
+  const foundEvent = getEventOrInteractionWithIdentifier(
+    event,
+    identifier,
+    "event"
+  )
+  console.log("result:", foundEvent)
+  return foundEvent
 }
 
 /**
@@ -69,6 +76,16 @@ export function getEventOrInteractionWithIdentifier(
     }
     return eventOrInteraction
   }
+  if (
+    identifier.length === 1 &&
+    eventOrInteraction.id === identifier[0] &&
+    eventOrInteractionIsEvent(eventOrInteraction) &&
+    searchType === "event"
+  ) {
+    // Special case for matching the top-level event
+    // Special cases are probably bad ideas generally but w/e
+    return eventOrInteraction
+  }
   // If the result is an interaction, any deeper searching would match
   // interaction internals
   if (!eventOrInteractionIsEvent(eventOrInteraction)) {
@@ -100,6 +117,34 @@ export function getEventOrInteractionWithIdentifier(
       searchType
     )
   }
-  // Execution should never reach here, but it is included for type safety
   return null
+}
+
+/**
+ * Creates a new event in the given event at the given identifier.
+ *
+ * @param rootEvent - The event in which to create a new event.
+ * @param identifier - The identifier pointing to the event in which to
+ * create the new event.
+ * @param event - The event to create.
+ */
+export function createEventAt(
+  rootEvent: Event,
+  identifier: Identifier,
+  event: Event
+): void {
+  if (identifier.length > 0) {
+    const targetEventId = identifier[0]
+    const targetEvent: Event = rootEvent.interactions.filter(
+      (eventOrInteraction): eventOrInteraction is Event => {
+        if (!eventOrInteractionIsEvent(eventOrInteraction)) {
+          throw new Error("Attempting to create a new event in an interaction")
+        }
+        return eventOrInteraction.id === targetEventId
+      }
+    )[0]
+    createEventAt(targetEvent, identifier.slice(1), event)
+  } else {
+    rootEvent.interactions.push(event)
+  }
 }

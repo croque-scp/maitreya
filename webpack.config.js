@@ -65,14 +65,14 @@ const mainWeb = merge(common, {
     mainWeb: "./src/index.ts",
   },
   plugins: [
-    // new HtmlWebpackPlugin({
-    //   title: "Maitreya.aic",
-    //   filename: "index.html",
-    //   chunks: ["main"],
-    //   meta: {
-    //     viewport: "width=device-width, initial-scale=1",
-    //   },
-    // }),
+    new HtmlWebpackPlugin({
+      title: "Maitreya.aic",
+      filename: "index.html",
+      chunks: ["main"],
+      meta: {
+        viewport: "width=device-width, initial-scale=1",
+      },
+    }),
   ],
 })
 
@@ -84,7 +84,16 @@ const editorElectronMain = merge(common, {
   output: {
     filename: "editorElectron.js",
   },
-  plugins: [],
+})
+
+const editorElectronPreload = merge(common, {
+  entry: {
+    editorElectronPreload: "./src/editor/preload.ts",
+  },
+  target: "electron-preload",
+  output: {
+    filename: "editorPreload.js",
+  },
 })
 
 const editorElectronRenderer = merge(common, {
@@ -103,5 +112,6 @@ const editorElectronRenderer = merge(common, {
 module.exports = [
   // mainWeb,
   editorElectronMain,
+  editorElectronPreload,
   editorElectronRenderer,
 ]
