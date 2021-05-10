@@ -5,6 +5,9 @@ import fs from "fs"
 
 const eventsPath = path.resolve("./src/events/")
 
+// The types in this IPC channel should be the same as those in preload.ts -
+// they are not automatically checked by TypeScript
+
 /**
  * IPC channel responsible for reading events directories.
  *

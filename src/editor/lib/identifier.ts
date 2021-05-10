@@ -20,13 +20,18 @@ export function getEventWithIdentifier(
   event: Event,
   identifier: Identifier
 ): Event | null {
-  console.log("getting event with id", JSON.stringify(identifier), "in", event)
+  console.log(
+    "getting event with id",
+    JSON.stringify(identifier),
+    "in",
+    event.id
+  )
   const foundEvent = getEventOrInteractionWithIdentifier(
     event,
     identifier,
     "event"
   )
-  console.log("result:", foundEvent)
+  console.log("result:", foundEvent?.id)
   return foundEvent
 }
 
@@ -127,11 +132,14 @@ export function getEventOrInteractionWithIdentifier(
  * @param identifier - The identifier pointing to the event in which to
  * create the new event.
  * @param event - The event to create.
+ * @param mutationCallback - A callback to fire to asynchronously update the
+ * data store.
  */
 export function createEventAt(
   rootEvent: Event,
   identifier: Identifier,
-  event: Event
+  event: Event,
+  mutationCallback?: () => void
 ): void {
   if (identifier.length > 0) {
     const targetEventId = identifier[0]
@@ -145,6 +153,10 @@ export function createEventAt(
     )[0]
     createEventAt(targetEvent, identifier.slice(1), event)
   } else {
+    console.log("Creating event", event.id, "in", rootEvent.id)
     rootEvent.interactions.push(event)
+    if (mutationCallback) {
+      mutationCallback(rootEvent)
+    }
   }
 }

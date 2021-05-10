@@ -33,6 +33,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
+    void store.dispatch("initEvents")
     const events = store.state.events
     const selectedEventId = ref<Identifier>([events[Object.keys(events)[0]]])
     return { selectedEventId, events, getEventWithIdentifier }
