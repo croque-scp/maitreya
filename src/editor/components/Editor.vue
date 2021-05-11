@@ -5,37 +5,58 @@
     </header>
     <p>Pick the event to edit:</p>
     <EventSelector
-      :event-id="[]"
+      :event-id="['rootEvent']"
+      :root-event="events"
+      :selected-event-id="selectedEventId"
       @event-select="changeSelectedEvent"
     ></EventSelector>
-    <EventEditor
-      :event-id="selectedEventId"
-      :event="getEventWithIdentifier(events, selectedEventId)"
-    ></EventEditor>
+    <EventEditor :event="activeEvent" :event-id="selectedEventId"></EventEditor>
   </main>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue"
+import { defineComponent, reactive } from "vue"
 import EventSelector from "./EventSelector.vue"
 import EventEditor from "./EventEditor.vue"
-import { useStore } from "../store"
 import { Identifier } from "../types"
 import { getEventWithIdentifier } from "../lib/identifier"
+import { createEventsDirProxy } from "../lib/eventsFilesystemProxy"
 
 export default defineComponent({
   name: "Editor",
-  components: { EventEditor, EventSelector },
+  components: {
+    EventEditor,
+    EventSelector,
+  },
+  data() {
+    return {
+      selectedEventId: <Identifier>["rootEvent"],
+    }
+  },
   methods: {
     changeSelectedEvent(eventId: Identifier) {
+      console.log("Changing selected event to", JSON.stringify(eventId))
       this.selectedEventId = eventId
     },
   },
+  computed: {
+    activeEvent() {
+      return getEventWithIdentifier(this.events, this.selectedEventId)
+    },
+  },
   setup() {
-    const store = useStore()
-    const events = store.state.events
-    const selectedEventId = ref<Identifier>([events[Object.keys(events)[0]]])
-    return { selectedEventId, events, getEventWithIdentifier }
+    console.log("Initialising events")
+    const events = reactive({
+      id: "rootEvent",
+      summary: "Root event",
+      interactions: [],
+    })
+    console.log("rootEvent", events)
+    createEventsDirProxy("", "", events)
+    return {
+      events,
+      getEventWithIdentifier,
+    }
   },
 })
 </script>
