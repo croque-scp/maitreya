@@ -41,7 +41,7 @@ export default defineComponent({
     })
     console.log("rootEvent", events)
     createEventsDirProxy("", "", events)
-    const selectedEventId = ref<Identifier>(["rootEvent"])
+    const selectedEventId = reactive<Identifier>(["rootEvent"])
     return { selectedEventId, events, getEventWithIdentifier }
   },
 })

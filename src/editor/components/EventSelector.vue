@@ -19,21 +19,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue"
-import { Identifier, Event } from "../types"
+import { defineComponent, PropType, computed } from "vue"
+import { Identifier, Event, eventOrInteractionIsEvent } from "../types"
 import { getEventWithIdentifier } from "../lib/identifier"
 
 export default defineComponent({
   name: "EventSelector",
   emits: ["event-select"],
   props: {
-    eventId: Object as PropType<Identifier>,
-    rootEvent: Object as PropType<Event>,
+    eventId: { type: Object as PropType<Identifier>, required: true },
+    rootEvent: { type: Object as PropType<Event>, required: true },
   },
   setup(props) {
-    const events =
-      getEventWithIdentifier(props.rootEvent, props.eventId)?.interactions ?? []
-    return { events }
+    // Get the root event of this component
+    const event = computed(() =>
+      getEventWithIdentifier(props.rootEvent, props.eventId)
+    )
+    // Get the children of this event, to display
+    const children = computed(() =>
+      event.value.interactions.filter(Boolean /*eventOrInteractionIsEvent*/)
+    )
+    console.log("EventSelector", props, children)
+    return { events: children }
   },
 })
 </script>
