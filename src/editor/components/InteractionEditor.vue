@@ -1,6 +1,7 @@
 <template>
   <FormFieldset :name="`Interaction: ${interactionId}`">
     <!-- TODO -->
+    {{ interactionId }}
   </FormFieldset>
 </template>
 

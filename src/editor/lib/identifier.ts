@@ -21,7 +21,7 @@ export function getEventWithIdentifier(
   identifier: Identifier
 ): Event | null {
   console.log(
-    "getting event with id",
+    "Getting event with id",
     JSON.stringify(identifier),
     "in",
     event.id
@@ -31,7 +31,7 @@ export function getEventWithIdentifier(
     identifier,
     "event"
   )
-  console.log("result:", foundEvent?.id)
+  console.log("result:", foundEvent?.id ?? "XXX Did not find an event")
   return foundEvent
 }
 
@@ -89,6 +89,7 @@ export function getEventOrInteractionWithIdentifier(
   ) {
     // Special case for matching the top-level event
     // Special cases are probably bad ideas generally but w/e
+    console.log("Special case identifier search return for", identifier[0])
     return eventOrInteraction
   }
   // If the result is an interaction, any deeper searching would match
@@ -97,6 +98,8 @@ export function getEventOrInteractionWithIdentifier(
     throw new Error("The identifier is too deep to match an interaction")
   }
   // Check each of this event's interactions and sub-events for matches
+  // TODO Why is this checking the children of this event? Shouldn't it
+  //  check the current event first?
   const match = eventOrInteraction.interactions.find(
     (event) => event.id === identifier[0]
   )
@@ -141,6 +144,14 @@ export function createEventAt(
   event: Event,
   mutationCallback?: () => void
 ): void {
+  console.log(
+    "Attempting to create event in root event",
+    rootEvent.id,
+    "at",
+    JSON.stringify(identifier),
+    "with id",
+    event.id
+  )
   if (identifier.length > 0) {
     const targetEventId = identifier[0]
     const targetEvent: Event = rootEvent.interactions.filter(
@@ -156,7 +167,7 @@ export function createEventAt(
     console.log("Creating event", event.id, "in", rootEvent.id)
     rootEvent.interactions.push(event)
     if (mutationCallback) {
-      mutationCallback(rootEvent)
+      mutationCallback()
     }
   }
 }

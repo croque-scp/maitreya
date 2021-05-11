@@ -5,7 +5,8 @@
     </header>
     <p>Pick the event to edit:</p>
     <EventSelector
-      :event-id="[]"
+      :event-id="['rootEvent']"
+      :root-event="events"
       @event-select="changeSelectedEvent"
     ></EventSelector>
     <EventEditor
@@ -16,12 +17,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue"
+import { defineComponent, ref, reactive, watch } from "vue"
 import EventSelector from "./EventSelector.vue"
 import EventEditor from "./EventEditor.vue"
-import { useStore } from "../store"
 import { Identifier } from "../types"
 import { getEventWithIdentifier } from "../lib/identifier"
+import { createEventsDirProxy } from "../lib/eventsFilesystemProxy"
 
 export default defineComponent({
   name: "Editor",
@@ -32,10 +33,15 @@ export default defineComponent({
     },
   },
   setup() {
-    const store = useStore()
-    void store.dispatch("initEvents")
-    const events = store.state.events
-    const selectedEventId = ref<Identifier>([events[Object.keys(events)[0]]])
+    console.log("Initialising events")
+    const events = reactive({
+      id: "rootEvent",
+      summary: "Root event",
+      interactions: [],
+    })
+    console.log("rootEvent", events)
+    createEventsDirProxy("", "", events)
+    const selectedEventId = ref<Identifier>(["rootEvent"])
     return { selectedEventId, events, getEventWithIdentifier }
   },
 })

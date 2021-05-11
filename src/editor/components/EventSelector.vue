@@ -1,5 +1,6 @@
 <template>
   <ul>
+    <li>EventSelector for {{ eventId }}</li>
     <li v-for="event in events" :key="event.id">
       <button
         v-if="!('interactions' in event)"
@@ -7,7 +8,11 @@
       >
         {{ event.id }}
       </button>
-      <EventSelector v-else :event-id="[...eventId, event.id]"></EventSelector>
+      <EventSelector
+        v-else
+        :event-id="[...eventId, event.id]"
+        :root-event="rootEvent"
+      ></EventSelector>
       <!-- TODO Create new sub-event -->
     </li>
   </ul>
@@ -15,8 +20,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
-import { Identifier } from "../types"
-import { useStore } from "../store"
+import { Identifier, Event } from "../types"
 import { getEventWithIdentifier } from "../lib/identifier"
 
 export default defineComponent({
@@ -24,14 +28,11 @@ export default defineComponent({
   emits: ["event-select"],
   props: {
     eventId: Object as PropType<Identifier>,
+    rootEvent: Object as PropType<Event>,
   },
   setup(props) {
-    const store = useStore()
-
     const events =
-      getEventWithIdentifier(store.state.events, props.eventId)?.interactions ??
-      []
-
+      getEventWithIdentifier(props.rootEvent, props.eventId)?.interactions ?? []
     return { events }
   },
 })
