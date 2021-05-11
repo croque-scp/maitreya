@@ -7,17 +7,15 @@
     <EventSelector
       :event-id="['rootEvent']"
       :root-event="events"
+      :selected-event-id="selectedEventId"
       @event-select="changeSelectedEvent"
     ></EventSelector>
-    <EventEditor
-      :event-id="selectedEventId"
-      :event="getEventWithIdentifier(events, selectedEventId)"
-    ></EventEditor>
+    <EventEditor :event="activeEvent" :event-id="selectedEventId"></EventEditor>
   </main>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, watch } from "vue"
+import { defineComponent, reactive } from "vue"
 import EventSelector from "./EventSelector.vue"
 import EventEditor from "./EventEditor.vue"
 import { Identifier } from "../types"
@@ -26,10 +24,24 @@ import { createEventsDirProxy } from "../lib/eventsFilesystemProxy"
 
 export default defineComponent({
   name: "Editor",
-  components: { EventEditor, EventSelector },
+  components: {
+    EventEditor,
+    EventSelector,
+  },
+  data() {
+    return {
+      selectedEventId: <Identifier>["rootEvent"],
+    }
+  },
   methods: {
     changeSelectedEvent(eventId: Identifier) {
+      console.log("Changing selected event to", JSON.stringify(eventId))
       this.selectedEventId = eventId
+    },
+  },
+  computed: {
+    activeEvent() {
+      return getEventWithIdentifier(this.events, this.selectedEventId)
     },
   },
   setup() {
@@ -41,8 +53,10 @@ export default defineComponent({
     })
     console.log("rootEvent", events)
     createEventsDirProxy("", "", events)
-    const selectedEventId = reactive<Identifier>(["rootEvent"])
-    return { selectedEventId, events, getEventWithIdentifier }
+    return {
+      events,
+      getEventWithIdentifier,
+    }
   },
 })
 </script>

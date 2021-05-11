@@ -1,5 +1,5 @@
 <template>
-  <FormFieldset :name="`Event: ${eventId}`">
+  <FormFieldset :name="`Event: ${eventId.join('.')}`">
     <InteractionEditor
       v-for="interaction in interactions"
       :key="interaction.id"
