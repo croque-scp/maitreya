@@ -1,5 +1,10 @@
 <template>
   <FormFieldset :name="`Event: ${eventId.join('.')}`">
+    <TextField
+      label="Summary"
+      :value="event.summary"
+      @update:value="(value) => updateEvent((e) => (e.summary = value))"
+    ></TextField>
     <InteractionEditor
       v-for="interaction in interactions"
       :key="interaction.id"
@@ -14,10 +19,11 @@ import { defineComponent, PropType } from "vue"
 import FormFieldset from "./FormFieldset.vue"
 import { Identifier, Event, eventOrInteractionIsEvent } from "../types"
 import InteractionEditor from "./InteractionEditor.vue"
+import TextField from "./TextField.vue"
 
 export default defineComponent({
   name: "EventEditor",
-  components: { InteractionEditor, FormFieldset },
+  components: { TextField, InteractionEditor, FormFieldset },
   props: {
     eventId: {
       type: Array as PropType<Identifier>,
