@@ -45,7 +45,6 @@ class Main {
       },
     })
     void this.mainWindow.loadFile(path.join(__dirname, "index.html"))
-    this.mainWindow.webContents.openDevTools()
   }
 
   private onWindowAllClosed = () => {
