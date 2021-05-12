@@ -53,7 +53,7 @@ export function createEventsDirProxy(
         JSON.stringify(parentEvent.id)
       )
       // Push this new event to the parent event
-      createEventAt(parentEvent, [], event)
+      createEventAt(parentEvent, [], event, "append")
       // Execute the parent's callback
       parentDoAfterCallback()
     }
@@ -125,7 +125,7 @@ function createEventFileProxy(
     console.log("Received file read for", `${filePath}/${fileName}`)
     const event = new Proxy(<Event>JSON.parse(eventFile), {})
     // TODO Intercept save requests
-    createEventAt(parentEvent, [], event)
+    createEventAt(parentEvent, [], event, "append")
     parentDoAfterCallback()
   })
   console.log(
