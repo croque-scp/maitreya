@@ -1,5 +1,6 @@
 {
   "id": "testEvent",
+  "summary": "Pointless test event",
   "interactions": [
     {
       "id": "testInteraction",
