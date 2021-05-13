@@ -26,7 +26,7 @@ export default defineComponent({
       required: true,
     },
     selectedEventId: {
-      type: Object as PropType<string | null>,
+      type: String as PropType<string | null>,
       required: true,
     },
   },
