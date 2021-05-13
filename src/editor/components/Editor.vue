@@ -5,15 +5,15 @@
     </header>
     <p>Pick the event to edit:</p>
     <EventSelector
-      :event-id="['rootEvent']"
-      :root-event="events"
+      :events="events"
       :selected-event-id="selectedEventId"
       @event-select="changeSelectedEvent"
     ></EventSelector>
     <EventEditor
+      v-if="selectedEventId !== null"
       :event="activeEvent"
-      @update:event="updateEvent"
       :event-id="selectedEventId"
+      @update:event="updateEvent"
     ></EventEditor>
   </main>
 </template>
@@ -22,8 +22,8 @@
 import { defineComponent, reactive } from "vue"
 import EventSelector from "./EventSelector.vue"
 import EventEditor from "./EventEditor.vue"
-import { Identifier, Event } from "../types"
-import { createEventAt, getEventWithIdentifier } from "../lib/identifier"
+import { Event, EventsList } from "../types"
+import { getEvent } from "../lib/identifier"
 import { createEventsDirProxy } from "../lib/eventsFilesystemProxy"
 
 export default defineComponent({
@@ -34,7 +34,7 @@ export default defineComponent({
   },
   data() {
     return {
-      selectedEventId: <Identifier>["rootEvent"],
+      selectedEventId: <string | null>null,
     }
   },
   methods: {
@@ -43,7 +43,7 @@ export default defineComponent({
      *
      * @param eventId - The identifier of the new event to be selected.
      */
-    changeSelectedEvent(eventId: Identifier) {
+    changeSelectedEvent(eventId: string) {
       console.log("Changing selected event to", JSON.stringify(eventId))
       this.selectedEventId = eventId
     },
@@ -61,26 +61,22 @@ export default defineComponent({
         "with",
         JSON.stringify(newEvent.id)
       )
-      createEventAt(this.events, this.selectedEventId, newEvent, "replace")
+      if (this.selectedEventId === null) return
+      this.events[this.selectedEventId] = newEvent
     },
   },
   computed: {
-    activeEvent(): Event {
-      return getEventWithIdentifier(this.events, this.selectedEventId)
+    activeEvent(): Event | null {
+      // If the current ID is null, just don't do anything for now
+      if (this.selectedEventId === null) return null
+      return getEvent(this.events, this.selectedEventId)
     },
   },
   setup() {
     console.log("Initialising events")
-    const events = reactive({
-      id: "rootEvent",
-      summary: "Root event",
-      interactions: [],
-    })
-    createEventsDirProxy("", "", events, () => null)
-    return {
-      events,
-      getEventWithIdentifier,
-    }
+    const events: EventsList = reactive({})
+    createEventsDirProxy(events)
+    return { events }
   },
 })
 </script>

@@ -43,14 +43,6 @@ const common = {
   resolve: {
     extensions: [".ts"],
   },
-  optimization: {
-    minimize: !dev,
-    minimizer: [new TerserPlugin({ extractComments: false })],
-    usedExports: true,
-    splitChunks: {
-      chunks: "all",
-    },
-  },
   plugins: [
     new webpack.DefinePlugin({
       __VUE_OPTIONS_API__: true,
@@ -63,6 +55,14 @@ const common = {
 const mainWeb = merge(common, {
   entry: {
     mainWeb: "./src/index.ts",
+  },
+  optimization: {
+    minimize: !dev,
+    minimizer: [new TerserPlugin({ extractComments: false })],
+    usedExports: true,
+    splitChunks: {
+      chunks: "all",
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({

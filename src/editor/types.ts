@@ -226,16 +226,12 @@ export type Interaction = {
 export type Event = {
   id: string
   summary: string
-  interactions: (Event | Interaction)[]
+  interactions: Interaction[]
 }
 
 /**
- * Checks whether or not a given event or interaction is an event.
- *
- * @param eventOrInteraction - The event or interaction to be checked.
+ * A list of events, keyed to the path of each event in the filesystem.
  */
-export function eventOrInteractionIsEvent(
-  eventOrInteraction: Event | Interaction
-): eventOrInteraction is Event {
-  return "interactions" in eventOrInteraction
+export type EventsList = {
+  [path: string]: Event
 }

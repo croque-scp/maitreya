@@ -1,4 +1,3 @@
-import type { Dirent } from "fs"
 import { contextBridge, ipcRenderer } from "electron"
 
 // The types in this API object should be the same as those in
@@ -6,27 +5,38 @@ import { contextBridge, ipcRenderer } from "electron"
 // TypeScript
 export const fileReadWriteApi = {
   readEventsDir: {
-    send: (dirPath: string, dirName: string): void => {
-      ipcRenderer.send("read-events-dir", {
-        params: [dirPath, dirName],
-      })
+    /**
+     * Reads the list of files in the events directory.
+     */
+    send: (): void => {
+      ipcRenderer.send("read-events-dir", {})
     },
-    singleResponse: (callback: (files: [Dirent, boolean][]) => void): void => {
-      ipcRenderer.once("read-events-dir_response", (event, files) => {
-        // Deliberately strip event as it includes `sender`
-        callback(files)
+    /**
+     * Subscribes to the next events directory read response.
+     */
+    singleResponse: (callback: (filePaths: string[]) => void): void => {
+      ipcRenderer.once("read-events-dir_response", (event, filePaths) => {
+        callback(filePaths)
       })
     },
   },
   readEventsFile: {
-    send: (filePath: string, fileName: string): void => {
+    /**
+     * Reads an individual events file.
+     *
+     * @param filePath - The path to the file, including the filename,
+     * relative to the events directory.
+     */
+    send: (filePath: string): void => {
       ipcRenderer.send("read-events-file", {
-        params: [filePath, fileName],
+        params: filePath,
       })
     },
+    /**
+     * Subscribes to the next events file read response.
+     */
     singleResponse: (callback: (eventFile: string) => void): void => {
       ipcRenderer.once("read-events-file_response", (event, eventFile) => {
-        // Deliberately strip event as it includes `sender`
         callback(eventFile)
       })
     },
