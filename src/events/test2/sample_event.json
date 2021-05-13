@@ -1,6 +1,6 @@
 {
-  "id": "testEvent",
-  "summary": "Pointless test event",
+  "id": "testEvent2",
+  "summary": "Pointlesser test event",
   "interactions": [
     {
       "id": "testInteraction",
@@ -29,12 +29,12 @@
       ]
     },
     {
-      "id": "breachSaysNoThanks",
+      "id": "breachFuckOff",
       "speaker": "breach",
       "messages": [
         {
           "messages": [
-            "No thanks!"
+            "Well that's rude."
           ]
         }
       ]

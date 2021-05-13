@@ -54,9 +54,7 @@ export default defineComponent({
      */
     updateEvent(newEvent: Event) {
       console.log(
-        "Updating event in",
-        JSON.stringify(this.events.id),
-        "at",
+        "Updating event with id",
         JSON.stringify(this.selectedEventId),
         "with",
         JSON.stringify(newEvent.id)

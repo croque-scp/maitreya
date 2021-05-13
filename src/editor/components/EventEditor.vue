@@ -1,15 +1,24 @@
 <template>
   <FormFieldset :name="`Event: ${eventId}`">
     <TextField
-      :value="event.summary"
+      label="ID"
+      :value="event.id"
+      @update:value="(value) => updateEvent((e) => (e.id = value))"
+    ></TextField>
+    <TextField
       label="Summary"
+      :value="event.summary"
       @update:value="(value) => updateEvent((e) => (e.summary = value))"
     ></TextField>
     <InteractionEditor
-      v-for="interaction in event.interactions"
+      v-for="(interaction, index) in event.interactions"
       :key="interaction.id"
+      :interaction="interaction"
+      @update:interaction="
+        (interaction) =>
+          updateEvent((e) => (e.interactions[index] = interaction))
+      "
     ></InteractionEditor>
-    <!-- TODO Button for add new sub-event -->
     <!-- TODO Button for add new interaction -->
   </FormFieldset>
 </template>
