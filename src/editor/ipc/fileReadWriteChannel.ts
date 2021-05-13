@@ -15,16 +15,18 @@ const eventsPath = path.resolve("./src/events/")
 export class ReadEventsDirChannel implements IpcChannelInterface {
   name = "read-events-dir"
 
-  async handle(event: IpcMainEvent, request: IpcRequest<never>): Promise<void> {
-    if (!request.responseChannel) {
-      request.responseChannel = `${this.name}_response`
-    }
-    const filePaths = (await recursiveReadDir(eventsPath)).map((filePath) =>
-      // Strip the constant part of the path from the list to make a list
-      // of paths relative to the events directory
-      filePath.slice(eventsPath.length)
-    )
-    event.sender.send(request.responseChannel, filePaths)
+  handle(event: IpcMainEvent, request: IpcRequest<never>): void {
+    recursiveReadDir(eventsPath, (_, filePaths) => {
+      filePaths = filePaths.map((filePath) =>
+        // Strip the constant part of the path from the list to make a list
+        // of paths relative to the events directory
+        filePath.slice(eventsPath.length)
+      )
+      if (!request.responseChannel) {
+        request.responseChannel = `${this.name}_response`
+      }
+      event.sender.send(request.responseChannel, filePaths)
+    })
   }
 }
 
