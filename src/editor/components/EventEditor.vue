@@ -16,10 +16,10 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
-import FormFieldset from "./FormFieldset.vue"
+import FormFieldset from "./fields/FormFieldset.vue"
 import { Event } from "../types"
 import InteractionEditor from "./InteractionEditor.vue"
-import TextField from "./TextField.vue"
+import TextField from "./fields/TextField.vue"
 
 export default defineComponent({
   name: "EventEditor",

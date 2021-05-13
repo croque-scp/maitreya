@@ -1,5 +1,5 @@
 <template>
-  <fieldset>
+  <fieldset style="margin: 1em 0">
     <legend>{{ name }}</legend>
     <slot></slot>
   </fieldset>

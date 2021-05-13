@@ -1,12 +1,14 @@
 <template>
-  <label>
-    {{ label }}
-    <input
-      type="text"
-      :value="value"
-      @input="$emit('update:value', $event.target.value)"
-    />
-  </label>
+  <p>
+    <label>
+      {{ label }}
+      <input
+        :value="value"
+        type="text"
+        @input="$emit('update:value', $event.target.value)"
+      />
+    </label>
+  </p>
 </template>
 
 <script lang="ts">
@@ -15,7 +17,10 @@ import { defineComponent } from "vue"
 export default defineComponent({
   name: "TextField",
   props: {
-    label: String,
+    label: {
+      type: String,
+      required: true,
+    },
     value: {
       type: String,
       required: true,

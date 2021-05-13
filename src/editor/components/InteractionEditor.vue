@@ -7,8 +7,10 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
-import FormFieldset from "./FormFieldset.vue"
-import { Identifier, Interaction } from "../types"
+import FormFieldset from "./fields/FormFieldset.vue"
+import TextField from "./fields/TextField.vue"
+import { Interaction } from "../types"
+import DropdownField from "./fields/DropdownField.vue"
 
 export default defineComponent({
   name: "InteractionEditor",

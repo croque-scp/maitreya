@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue"
-import FormFieldset from "./FormFieldset.vue"
+import FormFieldset from "./fields/FormFieldset.vue"
 
 export default defineComponent({
   name: "ConditionalEditor",
