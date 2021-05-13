@@ -1,12 +1,12 @@
 <template>
-  <FormFieldset :name="`Event: ${eventId.join('.')}`">
+  <FormFieldset :name="`Event: ${eventId}`">
     <TextField
-      label="Summary"
       :value="event.summary"
+      label="Summary"
       @update:value="(value) => updateEvent((e) => (e.summary = value))"
     ></TextField>
     <InteractionEditor
-      v-for="interaction in interactions"
+      v-for="interaction in event.interactions"
       :key="interaction.id"
     ></InteractionEditor>
     <!-- TODO Button for add new sub-event -->
@@ -17,16 +17,20 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
 import FormFieldset from "./FormFieldset.vue"
-import { Identifier, Event, eventOrInteractionIsEvent } from "../types"
+import { Event } from "../types"
 import InteractionEditor from "./InteractionEditor.vue"
 import TextField from "./TextField.vue"
 
 export default defineComponent({
   name: "EventEditor",
-  components: { TextField, InteractionEditor, FormFieldset },
+  components: {
+    TextField,
+    InteractionEditor,
+    FormFieldset,
+  },
   props: {
     eventId: {
-      type: Array as PropType<Identifier>,
+      type: String,
       required: true,
     },
     event: {
@@ -44,12 +48,6 @@ export default defineComponent({
       change(this.event)
       this.$emit("update:event", this.event)
     },
-  },
-  setup(props) {
-    const interactions = props.event.interactions.filter(
-      (interaction) => !eventOrInteractionIsEvent(interaction)
-    )
-    return { interactions }
   },
 })
 </script>
