@@ -35,10 +35,7 @@ export function createEventsDirProxy(events: EventsList): void {
  */
 function createEventFileProxy(filePath: string, events: EventsList): void {
   console.log("Creating events file proxy for", JSON.stringify(filePath))
-  window.fileReadWrite.readEventsFile.singleResponse((eventFile) => {
-    // TODO Are these responses guaranteed to happen in the right order?
-    //  Should I make the IPC channel names dependent on e.g. the path of
-    //  the file, so that each file has its own unique channel?
+  window.fileReadWrite.readEventsFile.singleResponse(filePath, (eventFile) => {
     events[filePath] = new Proxy(<Event>JSON.parse(eventFile), {})
     // TODO Intercept save requests
   })

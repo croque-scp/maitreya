@@ -30,13 +30,17 @@ export const fileReadWriteApi = {
     send: (filePath: string): void => {
       ipcRenderer.send("read-events-file", {
         params: filePath,
+        responseChannel: `read-events-file-${filePath}`,
       })
     },
     /**
      * Subscribes to the next events file read response.
      */
-    singleResponse: (callback: (eventFile: string) => void): void => {
-      ipcRenderer.once("read-events-file_response", (event, eventFile) => {
+    singleResponse: (
+      filePath: string,
+      callback: (eventFile: string) => void
+    ): void => {
+      ipcRenderer.once(`read-events-file-${filePath}`, (event, eventFile) => {
         callback(eventFile)
       })
     },
