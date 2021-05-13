@@ -9,7 +9,7 @@ export const fileReadWriteApi = {
      * Reads the list of files in the events directory.
      */
     send: (): void => {
-      ipcRenderer.send("read-events-dir")
+      ipcRenderer.send("read-events-dir", {})
     },
     /**
      * Subscribes to the next events directory read response.
