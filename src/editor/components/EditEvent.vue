@@ -1,16 +1,16 @@
 <template>
-  <FormFieldset :name="`Event: ${eventId}`">
-    <TextField
+  <FieldGroup :name="`Event: ${eventId}`">
+    <FieldText
       label="ID"
       :value="event.id"
       @update:value="(value) => updateEvent((e) => (e.id = value))"
-    ></TextField>
-    <TextField
+    ></FieldText>
+    <FieldText
       label="Summary"
       :value="event.summary"
       @update:value="(value) => updateEvent((e) => (e.summary = value))"
-    ></TextField>
-    <InteractionEditor
+    ></FieldText>
+    <EditInteraction
       v-for="(interaction, index) in event.interactions"
       :key="interaction.id"
       :interaction="interaction"
@@ -18,24 +18,24 @@
         (interaction) =>
           updateEvent((e) => (e.interactions[index] = interaction))
       "
-    ></InteractionEditor>
+    ></EditInteraction>
     <!-- TODO Button for add new interaction -->
-  </FormFieldset>
+  </FieldGroup>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
-import FormFieldset from "./fields/FormFieldset.vue"
+import FieldGroup from "./FieldGroup.vue"
 import { Event } from "../types"
-import InteractionEditor from "./InteractionEditor.vue"
-import TextField from "./fields/TextField.vue"
+import EditInteraction from "./EditInteraction.vue"
+import FieldText from "./FieldText.vue"
 
 export default defineComponent({
-  name: "EventEditor",
+  name: "EditEvent",
   components: {
-    TextField,
-    InteractionEditor,
-    FormFieldset,
+    FieldText,
+    EditInteraction,
+    FieldGroup,
   },
   props: {
     eventId: {

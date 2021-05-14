@@ -4,24 +4,24 @@
       <h1>Event Editor</h1>
     </header>
     <p>Pick the event to edit:</p>
-    <EventSelector
+    <EditEventSelect
       :events="events"
       :selected-event-id="selectedEventId"
       @event-select="changeSelectedEvent"
-    ></EventSelector>
-    <EventEditor
+    ></EditEventSelect>
+    <EditEvent
       v-if="selectedEventId !== null"
       :event="activeEvent"
       :event-id="selectedEventId"
       @update:event="updateEvent"
-    ></EventEditor>
+    ></EditEvent>
   </main>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue"
-import EventSelector from "./EventSelector.vue"
-import EventEditor from "./EventEditor.vue"
+import EditEventSelect from "./EditEventSelect.vue"
+import EditEvent from "./EditEvent.vue"
 import { Event, EventsList } from "../types"
 import { getEvent } from "../lib/identifier"
 import { createEventsDirProxy } from "../lib/eventsFilesystemProxy"
@@ -29,8 +29,8 @@ import { createEventsDirProxy } from "../lib/eventsFilesystemProxy"
 export default defineComponent({
   name: "Editor",
   components: {
-    EventEditor,
-    EventSelector,
+    EditEvent,
+    EditEventSelect,
   },
   data() {
     return {

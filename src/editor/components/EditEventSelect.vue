@@ -18,7 +18,7 @@ import { defineComponent, PropType } from "vue"
 import { EventsList } from "../types"
 
 export default defineComponent({
-  name: "EventSelector",
+  name: "EditEventSelect",
   emits: ["event-select"],
   props: {
     events: {

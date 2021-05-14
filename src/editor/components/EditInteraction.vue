@@ -1,32 +1,32 @@
 <template>
-  <FormFieldset :name="`Interaction: ${interaction.id}`">
-    <TextField
+  <FieldGroup :name="`Interaction: ${interaction.id}`">
+    <FieldText
       :value="interaction.id"
       label="ID"
       @update:value="(value) => updateInteraction((i) => (i.id = value))"
-    ></TextField>
-    <DropdownField
+    ></FieldText>
+    <FieldDropdown
       label="Speaker"
       :value="interaction.speaker"
       category="speakers"
       @update:value="(value) => updateInteraction((i) => (i.speaker = value))"
-    ></DropdownField>
-  </FormFieldset>
+    ></FieldDropdown>
+  </FieldGroup>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
-import FormFieldset from "./fields/FormFieldset.vue"
-import TextField from "./fields/TextField.vue"
+import FieldGroup from "./FieldGroup.vue"
+import FieldText from "./FieldText.vue"
 import { Interaction } from "../types"
-import DropdownField from "./fields/DropdownField.vue"
+import FieldDropdown from "./FieldDropdown.vue"
 
 export default defineComponent({
-  name: "InteractionEditor",
+  name: "EditInteraction",
   components: {
-    DropdownField,
-    FormFieldset,
-    TextField,
+    FieldDropdown,
+    FieldGroup,
+    FieldText,
   },
   props: {
     interaction: {

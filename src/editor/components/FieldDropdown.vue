@@ -17,10 +17,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue"
-import { speakers } from "../../lib/speakers"
+import { speakers } from "../lib/speakers"
 
 export default defineComponent({
-  name: "DropdownField",
+  name: "FieldDropdown",
   props: {
     label: {
       type: String,
