@@ -32,10 +32,23 @@ export default defineComponent({
     EditEvent,
     EditEventSelect,
   },
+  setup() {
+    console.log("Initialising events")
+    const events: EventsList = reactive({})
+    createEventsDirProxy(events)
+    return { events }
+  },
   data() {
     return {
       selectedEventId: <string | null>null,
     }
+  },
+  computed: {
+    activeEvent(): Event | null {
+      // If the current ID is null, just don't do anything for now
+      if (this.selectedEventId === null) return null
+      return getEvent(this.events, this.selectedEventId)
+    },
   },
   methods: {
     /**
@@ -62,19 +75,6 @@ export default defineComponent({
       if (this.selectedEventId === null) return
       this.events[this.selectedEventId] = newEvent
     },
-  },
-  computed: {
-    activeEvent(): Event | null {
-      // If the current ID is null, just don't do anything for now
-      if (this.selectedEventId === null) return null
-      return getEvent(this.events, this.selectedEventId)
-    },
-  },
-  setup() {
-    console.log("Initialising events")
-    const events: EventsList = reactive({})
-    createEventsDirProxy(events)
-    return { events }
   },
 })
 </script>

@@ -19,7 +19,6 @@ import { EventsList } from "../types"
 
 export default defineComponent({
   name: "EditEventSelect",
-  emits: ["event-select"],
   props: {
     events: {
       type: Object as PropType<EventsList>,
@@ -30,6 +29,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["event-select"],
 })
 </script>
 

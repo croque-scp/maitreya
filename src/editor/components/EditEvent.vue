@@ -1,13 +1,13 @@
 <template>
   <FieldGroup :name="`Event: ${eventId}`">
     <FieldText
-      label="ID"
       :value="event.id"
+      label="ID"
       @update:value="(value) => updateEvent((e) => (e.id = value))"
     ></FieldText>
     <FieldText
-      label="Summary"
       :value="event.summary"
+      label="Summary"
       @update:value="(value) => updateEvent((e) => (e.summary = value))"
     ></FieldText>
     <EditInteraction
@@ -15,8 +15,7 @@
       :key="interaction.id"
       :interaction="interaction"
       @update:interaction="
-        (interaction) =>
-          updateEvent((e) => (e.interactions[index] = interaction))
+        (i) => updateEvent((e) => (e.interactions[index] = i))
       "
     ></EditInteraction>
     <!-- TODO Button for add new interaction -->
@@ -47,6 +46,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["update:event"],
   methods: {
     /**
      * Updates the currently-displayed event.

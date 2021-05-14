@@ -34,6 +34,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["update:interaction"],
   methods: {
     /**
      * Updates the interaction.
