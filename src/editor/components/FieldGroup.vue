@@ -9,9 +9,12 @@
 import { defineComponent } from "vue"
 
 export default defineComponent({
-  name: "FormFieldset",
+  name: "FieldGroup",
   props: {
-    name: String,
+    name: {
+      type: String,
+      required: true,
+    },
   },
 })
 </script>

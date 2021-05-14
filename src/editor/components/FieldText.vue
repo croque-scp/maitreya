@@ -15,7 +15,7 @@
 import { defineComponent } from "vue"
 
 export default defineComponent({
-  name: "TextField",
+  name: "FieldText",
   props: {
     label: {
       type: String,
@@ -26,6 +26,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["update:value"],
 })
 </script>
 

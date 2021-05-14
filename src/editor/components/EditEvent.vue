@@ -1,41 +1,40 @@
 <template>
-  <FormFieldset :name="`Event: ${eventId}`">
-    <TextField
-      label="ID"
+  <FieldGroup :name="`Event: ${eventId}`">
+    <FieldText
       :value="event.id"
+      label="ID"
       @update:value="(value) => updateEvent((e) => (e.id = value))"
-    ></TextField>
-    <TextField
-      label="Summary"
+    ></FieldText>
+    <FieldText
       :value="event.summary"
+      label="Summary"
       @update:value="(value) => updateEvent((e) => (e.summary = value))"
-    ></TextField>
-    <InteractionEditor
+    ></FieldText>
+    <EditInteraction
       v-for="(interaction, index) in event.interactions"
       :key="interaction.id"
       :interaction="interaction"
       @update:interaction="
-        (interaction) =>
-          updateEvent((e) => (e.interactions[index] = interaction))
+        (i) => updateEvent((e) => (e.interactions[index] = i))
       "
-    ></InteractionEditor>
+    ></EditInteraction>
     <!-- TODO Button for add new interaction -->
-  </FormFieldset>
+  </FieldGroup>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
-import FormFieldset from "./fields/FormFieldset.vue"
+import FieldGroup from "./FieldGroup.vue"
 import { Event } from "../types"
-import InteractionEditor from "./InteractionEditor.vue"
-import TextField from "./fields/TextField.vue"
+import EditInteraction from "./EditInteraction.vue"
+import FieldText from "./FieldText.vue"
 
 export default defineComponent({
-  name: "EventEditor",
+  name: "EditEvent",
   components: {
-    TextField,
-    InteractionEditor,
-    FormFieldset,
+    FieldText,
+    EditInteraction,
+    FieldGroup,
   },
   props: {
     eventId: {
@@ -47,6 +46,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["update:event"],
   methods: {
     /**
      * Updates the currently-displayed event.

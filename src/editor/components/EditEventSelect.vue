@@ -18,8 +18,7 @@ import { defineComponent, PropType } from "vue"
 import { EventsList } from "../types"
 
 export default defineComponent({
-  name: "EventSelector",
-  emits: ["event-select"],
+  name: "EditEventSelect",
   props: {
     events: {
       type: Object as PropType<EventsList>,
@@ -30,6 +29,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["event-select"],
 })
 </script>
 
