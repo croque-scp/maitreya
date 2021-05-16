@@ -36,7 +36,6 @@ export type CounterId = Identifier
  * have been applied to each of them individually.
  */
 export type MessageGroup = {
-  // TODO This needs to be able to contain messages from multiple people
   messages: (string | SingleMessage | Conditional<string | SingleMessage>)[]
 } & MessageSettings
 
@@ -175,7 +174,7 @@ export type Condition = {
  * @property elif - An array of conditions that are iterated in order.
  * @property else - Produce this result if none of the above conditions passed.
  */
-export type Conditional<R> = {
+export type Conditional<R extends CanBeConditional> = {
   if: {
     condition: Condition
     result: R
@@ -186,6 +185,36 @@ export type Conditional<R> = {
   }[]
   else: R
 }
+
+/**
+ * Checks if an object of a type that is either known or a Conditional of
+ * that known, is a Conditional.
+ *
+ * @param obj - The object to check.
+ */
+export function isConditional<T>(
+  obj: T | Conditional<T>
+): obj is Conditional<T> {
+  return (
+    typeof obj === "object" &&
+    "if" in obj &&
+    "condition" in obj.if &&
+    "elif" in obj &&
+    Array.isArray(obj.elif) &&
+    "else" in obj
+  )
+}
+
+/**
+ * List of things that can be wrapped by Conditional.
+ */
+export type CanBeConditional =
+  | string
+  | SingleMessage
+  | Action
+  | InteractionId
+  | MessageGroup
+  | Option
 
 /**
  * A delay after which to execute an action.
@@ -211,6 +240,7 @@ export type Delay = {
 export type Interaction = {
   id: string
   speaker: string
+  // TODO Change 'messages' to 'messageGroups'
   messages: (MessageGroup | Conditional<MessageGroup>)[]
   options?: (Option | Conditional<Option>)[]
   onStart?: (Action | Conditional<Action>)[]

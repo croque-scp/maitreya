@@ -7,14 +7,10 @@
       "speaker": "breach",
       "messages": [
         {
-          "messages": [
-            "Hello, Maitreya."
-          ]
+          "messages": ["Hello, Maitreya."]
         },
         {
-          "messages": [
-            "Hi, Dr. Breach."
-          ],
+          "messages": ["Hi, Dr. Breach."],
           "speaker": "maitreya"
         }
       ],
@@ -34,7 +30,17 @@
       "messages": [
         {
           "messages": [
-            "Well that's rude."
+            "Well that's rude.",
+            {
+              "if": {
+                "condition": {
+                  "assertFlag": "weAreCurrentlyTesting"
+                },
+                "result": "We are currently testing!"
+              },
+              "elif": [],
+              "else": "We're not currently testing!"
+            }
           ]
         }
       ]
