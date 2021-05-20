@@ -14,6 +14,11 @@
 <script lang="ts">
 import { defineComponent } from "vue"
 
+export type FieldTextAttrs = {
+  label: string
+  value: string
+}
+
 export default defineComponent({
   name: "FieldText",
   props: {
