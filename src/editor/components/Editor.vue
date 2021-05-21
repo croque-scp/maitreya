@@ -13,7 +13,7 @@
       v-if="selectedEventId !== null"
       :event="activeEvent"
       :event-id="selectedEventId"
-      @update:event="updateEvent"
+      @update:value="update"
     ></EditEvent>
   </main>
 </template>
@@ -65,7 +65,7 @@ export default defineComponent({
      *
      * @param newEvent - The new event object to replace the existing one.
      */
-    updateEvent(newEvent: Event) {
+    update(newEvent: Event) {
       console.log(
         "Updating event with id",
         JSON.stringify(this.selectedEventId),

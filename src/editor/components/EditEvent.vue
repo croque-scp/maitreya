@@ -3,20 +3,18 @@
     <FieldText
       :value="event.id"
       label="ID"
-      @update:value="(value) => updateEvent((e) => (e.id = value))"
+      @update:value="(value) => update((e) => (e.id = value))"
     ></FieldText>
     <FieldText
       :value="event.summary"
       label="Summary"
-      @update:value="(value) => updateEvent((e) => (e.summary = value))"
+      @update:value="(value) => update((e) => (e.summary = value))"
     ></FieldText>
     <EditInteraction
       v-for="(interaction, index) in event.interactions"
       :key="interaction.id"
       :interaction="interaction"
-      @update:interaction="
-        (i) => updateEvent((e) => (e.interactions[index] = i))
-      "
+      @update:value="(i) => update((e) => (e.interactions[index] = i))"
     ></EditInteraction>
     <!-- TODO Button for add new interaction -->
   </FieldGroup>
@@ -46,16 +44,16 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["update:event"],
+  emits: ["update:value"],
   methods: {
     /**
      * Updates the currently-displayed event.
      *
      * @param change - The change to make to the event.
      */
-    updateEvent(change: (event: Event) => void) {
+    update(change: (event: Event) => void) {
       change(this.event)
-      this.$emit("update:event", this.event)
+      this.$emit("update:value", this.event)
     },
   },
 })

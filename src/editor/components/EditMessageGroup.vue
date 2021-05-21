@@ -38,7 +38,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["update:messageGroup"],
+  emits: ["update:value"],
   methods: {
     isConditional,
     /**
@@ -46,7 +46,7 @@ export default defineComponent({
      */
     update(change: (messageGroup: MessageGroup) => void) {
       change(this.messageGroup)
-      this.$emit("update:messageGroup", this.messageGroup)
+      this.$emit("update:value", this.messageGroup)
     },
     /**
      * For each message in the group, generate the component that represents

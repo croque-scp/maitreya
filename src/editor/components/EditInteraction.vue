@@ -51,7 +51,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["update:interaction"],
+  emits: ["update:value"],
   methods: {
     isConditional,
     /**
@@ -61,7 +61,7 @@ export default defineComponent({
      */
     update(change: (interaction: Interaction) => void) {
       change(this.interaction)
-      this.$emit("update:interaction", this.interaction)
+      this.$emit("update:value", this.interaction)
     },
     /**
      * For each immediate descendant of the interaction, generates the
