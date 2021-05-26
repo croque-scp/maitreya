@@ -28,7 +28,7 @@
         "argsIgnorePattern": "^_"
       }
     ],
-    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     "quotes": "off",
     "prefer-template": "error",
     "max-len": [

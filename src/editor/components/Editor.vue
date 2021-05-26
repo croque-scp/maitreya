@@ -10,10 +10,10 @@
       @event-select="changeSelectedEvent"
     ></EditEventSelect>
     <EditEvent
-      v-if="selectedEventId !== null"
+      v-if="selectedEventId !== null && activeEvent !== null"
       :event="activeEvent"
       :event-id="selectedEventId"
-      @update:value="update"
+      @update-value="update"
     ></EditEvent>
   </main>
 </template>

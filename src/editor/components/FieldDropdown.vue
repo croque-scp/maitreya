@@ -1,14 +1,8 @@
 <template>
   <label>
     {{ label }}
-    <select>
-      <option
-        v-for="speaker in speakers"
-        :key="speaker"
-        value="speaker"
-        :selected="value === speaker"
-        @change="$emit('update:value', $event.target.value)"
-      >
+    <select :value="value" @change="$emit('updateValue', $event.target.value)">
+      <option v-for="speaker in speakers" :key="speaker">
         {{ speaker }}
       </option>
     </select>
@@ -35,7 +29,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["update:value"],
+  emits: ["updateValue"],
   data() {
     return {
       speakers,

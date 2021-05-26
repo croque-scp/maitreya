@@ -3,13 +3,13 @@
     <FieldText
       :value="interaction.id"
       label="ID"
-      @update:value="(value) => update((i) => (i.id = value))"
+      @update-value="(value) => update((i) => (i.id = value))"
     ></FieldText>
     <FieldDropdown
       label="Speaker"
       :value="interaction.speaker"
       category="speakers"
-      @update:value="(value) => update((i) => (i.speaker = value))"
+      @update-value="(value) => update((i) => (i.speaker = value))"
     ></FieldDropdown>
     <FieldGroup name="Messages">
       <component
@@ -17,26 +17,20 @@
         v-for="(_messageGroup, index) in interaction.messages"
         :key="index"
         v-bind="makeComponent(index).attrs"
+        @update-value="makeComponent(index).update($event)"
       ></component>
     </FieldGroup>
   </FieldGroup>
 </template>
 
-<!--
-EditConditional and EditMessageGroup accept entirely different arguments -
-so I think I need to make a function that generates the right arguments for
-each one. I think this same function might as well generate which component
-to use, too, instead of declaring both in the template with v-if and v-else.
--->
-
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
 import FieldGroup from "./FieldGroup.vue"
 import FieldText from "./FieldText.vue"
-import { Interaction, isConditional } from "../types"
+import { Interaction, isConditional, MessageGroup } from "../types"
 import FieldDropdown from "./FieldDropdown.vue"
-import EditMessageGroup from "./EditMessageGroup.vue"
-import EditConditional from "./EditConditional.vue"
+import EditMessageGroup, { DynamicMessageGroup } from "./EditMessageGroup.vue"
+import EditConditional, { DynamicConditional } from "./EditConditional.vue"
 
 export default defineComponent({
   name: "EditInteraction",
@@ -51,7 +45,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["update:value"],
+  emits: ["updateValue"],
   methods: {
     isConditional,
     /**
@@ -61,7 +55,7 @@ export default defineComponent({
      */
     update(change: (interaction: Interaction) => void) {
       change(this.interaction)
-      this.$emit("update:value", this.interaction)
+      this.$emit("updateValue", this.interaction)
     },
     /**
      * For each immediate descendant of the interaction, generates the
@@ -69,14 +63,40 @@ export default defineComponent({
      *
      * @param index - The index of the descendant.
      */
-    makeComponent(index: number) {
+    makeComponent(
+      index: number
+    ):
+      | DynamicConditional<MessageGroup, DynamicMessageGroup>
+      | DynamicMessageGroup {
       const messageGroup = this.interaction.messages[index]
       if (isConditional(messageGroup)) {
         return {
           is: EditConditional,
           attrs: {
             conditional: messageGroup,
+            ifComponent: () => ({
+              is: EditMessageGroup,
+              attrs: {
+                messageGroup: messageGroup.if.result,
+              },
+              update: () => console.log("oh no! (EMG)"),
+            }),
+            elifComponent: (index: number) => ({
+              is: EditMessageGroup,
+              attrs: {
+                messageGroup: messageGroup.elif[index].result,
+              },
+              update: () => console.log("oh no! (EMG)"),
+            }),
+            elseComponent: () => ({
+              is: EditMessageGroup,
+              attrs: {
+                messageGroup: messageGroup.else,
+              },
+              update: () => console.log("oh no! (EMG)"),
+            }),
           },
+          update: () => console.log("oh no! (EI)"),
         }
       }
       return {
@@ -84,6 +104,7 @@ export default defineComponent({
         attrs: {
           messageGroup,
         },
+        update: () => console.log("oh no! (EI)"),
       }
     },
   },

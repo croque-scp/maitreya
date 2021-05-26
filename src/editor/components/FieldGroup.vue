@@ -1,5 +1,5 @@
 <template>
-  <fieldset style="margin: 1em 0">
+  <fieldset>
     <legend>{{ name }}</legend>
     <slot></slot>
   </fieldset>
@@ -19,4 +19,8 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss"></style>
+<style scoped lang="scss">
+fieldset {
+  margin: 1em 0;
+}
+</style>

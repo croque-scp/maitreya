@@ -6,6 +6,7 @@
       v-for="(_message, index) in messageGroup.messages"
       :key="index"
       v-bind="makeComponent(index).attrs"
+      @update-value="makeComponent(index).update($event)"
     ></component>
     <button>Add new message</button>
   </FieldGroup>
@@ -14,14 +15,28 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
 import FieldGroup from "./FieldGroup.vue"
-import FieldText, { FieldTextAttrs } from "./FieldText.vue"
+import FieldText, { DynamicFieldText } from "./FieldText.vue"
 import EditSingleMessage, {
-  EditSingleMessageAttrs,
+  DynamicSingleMessage,
 } from "./EditSingleMessage.vue"
-import EditConditional, { EditConditionalAttrs } from "./EditConditional.vue"
+import EditConditional, { DynamicConditional } from "./EditConditional.vue"
 import EditMessageSettings from "./EditMessageSettings.vue"
-import { Conditional, isConditional, MessageGroup } from "../types"
+import {
+  Conditional,
+  isConditional,
+  MessageGroup,
+  SingleMessage,
+} from "../types"
 import { DynamicComponent } from "./dynamicComponents"
+
+export type DynamicMessageGroup = DynamicComponent<
+  EditMessageGroupAttributes,
+  MessageGroup
+>
+
+export type EditMessageGroupAttributes = {
+  messageGroup: MessageGroup
+}
 
 export default defineComponent({
   name: "EditMessageGroup",
@@ -38,7 +53,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["update:value"],
+  emits: ["updateValue"],
   methods: {
     isConditional,
     /**
@@ -46,7 +61,7 @@ export default defineComponent({
      */
     update(change: (messageGroup: MessageGroup) => void) {
       change(this.messageGroup)
-      this.$emit("update:value", this.messageGroup)
+      this.$emit("updateValue", this.messageGroup)
     },
     /**
      * For each message in the group, generate the component that represents
@@ -55,16 +70,10 @@ export default defineComponent({
     makeComponent: function (
       index: number
     ):
-      | DynamicComponent<typeof FieldText, FieldTextAttrs>
-      | DynamicComponent<
-          typeof EditConditional,
-          EditConditionalAttrs<typeof FieldText, FieldTextAttrs>
-        >
-      | DynamicComponent<
-          typeof EditConditional,
-          EditConditionalAttrs<typeof EditSingleMessage, EditSingleMessageAttrs>
-        >
-      | DynamicComponent<typeof EditSingleMessage, EditSingleMessageAttrs> {
+      | DynamicFieldText
+      | DynamicConditional<string, DynamicFieldText>
+      | DynamicConditional<SingleMessage, DynamicSingleMessage>
+      | DynamicSingleMessage {
       const message = this.messageGroup.messages[index]
       if (typeof message === "string") {
         return {
@@ -73,6 +82,7 @@ export default defineComponent({
             label: "Edit message",
             value: message,
           },
+          update: () => console.log("oh no! (EMG)"),
         }
       }
       if (isConditional(message)) {
@@ -83,40 +93,61 @@ export default defineComponent({
             is: EditConditional,
             attrs: {
               conditional: msg,
-              childComponent: FieldText,
-              childAttrs: {
-                ifAttrs: () => ({
+              ifComponent: () => ({
+                is: FieldText,
+                attrs: {
                   label: "Edit message",
                   value: msg.if.result,
-                }),
-                elifAttrs: (index: number) => ({
+                },
+                update: () => console.log("test (FT)"),
+              }),
+              elifComponent: (index: number) => ({
+                is: FieldText,
+                attrs: {
                   label: "Edit message",
                   value: msg.elif[index].result,
-                }),
-                elseAttrs: () => ({
+                },
+                update: () => console.log("test (FT)"),
+              }),
+              elseComponent: () => ({
+                is: FieldText,
+                attrs: {
                   label: "Edit message",
                   value: msg.else,
-                }),
-              },
+                },
+                update: () => console.log("test (FT)"),
+              }),
             },
+            update: () => console.log("oh no! (EMG)"),
           }
         }
         return {
           is: EditConditional,
           attrs: {
             conditional: message,
-            childComponent: EditSingleMessage,
-            childAttrs: {
-              ifAttrs: () => ({}),
-              elifAttrs: (_index) => ({}),
-              elseAttrs: () => ({}),
-            },
+            ifComponent: () => ({
+              is: EditSingleMessage,
+              attrs: {},
+              update: () => console.log("test (ESM)"),
+            }),
+            elifComponent: (_index: number) => ({
+              is: EditSingleMessage,
+              attrs: {},
+              update: () => console.log("test (ESM)"),
+            }),
+            elseComponent: () => ({
+              is: EditSingleMessage,
+              attrs: {},
+              update: () => console.log("test (ESM)"),
+            }),
           },
+          update: () => console.log("oh no! (EMG)"),
         }
       }
       return {
         is: EditSingleMessage,
         attrs: {},
+        update: () => console.log("oh no! (EMG)"),
       }
     },
   },

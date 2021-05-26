@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain } from "electron"
 import path from "path"
+import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer"
 import { IpcChannelInterface } from "./ipc/ipcChannelInterface"
 import {
   ReadEventsDirChannel,
@@ -18,7 +19,10 @@ class Main {
     // This method will be called when Electron has finished
     // initialization and is ready to create browser windows.
     // Some APIs can only be used after this event occurs.
-    app.on("ready", this.createWindow)
+    app.on("ready", () => {
+      this.installDevtools()
+      this.createWindow()
+    })
     // Quit when all windows are closed, except on macOS. There, it's common
     // for applications and their menu bar to stay active until the user quits
     // explicitly with Cmd + Q.
@@ -45,6 +49,15 @@ class Main {
       },
     })
     void this.mainWindow.loadFile(path.join(__dirname, "index.html"))
+  }
+
+  private installDevtools = () => {
+    installExtension(VUEJS3_DEVTOOLS, {
+      loadExtensionOptions: { allowFileAccess: true },
+      forceDownload: false,
+    })
+      .then((name) => console.log(`Added Extension:  ${name}`))
+      .catch((err) => console.log("An error occurred: ", err))
   }
 
   private onWindowAllClosed = () => {

@@ -2,19 +2,18 @@
   <p>
     <label>
       {{ label }}
-      <input
-        :value="value"
-        type="text"
-        @input="$emit('update:value', $event.target.value)"
-      />
+      <input v-model="textValue" type="text" />
     </label>
   </p>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue"
+import { DynamicComponent } from "./dynamicComponents"
 
-export type FieldTextAttrs = {
+export type DynamicFieldText = DynamicComponent<FieldTextAttributes, string>
+
+type FieldTextAttributes = {
   label: string
   value: string
 }
@@ -31,7 +30,17 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["update:value"],
+  emits: ["updateValue"],
+  computed: {
+    textValue: {
+      get(): string {
+        return this.value
+      },
+      set(input: string) {
+        this.$emit("updateValue", input)
+      },
+    },
+  },
 })
 </script>
 
