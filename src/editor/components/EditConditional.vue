@@ -40,14 +40,21 @@ import { DynamicComponent } from "./dynamicComponents"
  * Type of an EditConditional component interface for use in dynamic
  * components.
  *
+ * The DynamicConditional does not have an update handler, unlike other
+ * dynamic components. Child components passed to the EditConditional are
+ * expected to handle their own update events and invoke their parent
+ * component's update handler directly.
+ *
  * @param <C> - The type of the interactions tree node that is represented
  * by this EditConditional component.
  * @param <DynamicChild> - The Vue component that will represent this type.
  */
 export type DynamicConditional<
-  C extends CanBeConditional,
   DynamicChild extends DynamicComponent<any, any>
-> = DynamicComponent<EditConditionalAttributes<DynamicChild>, Conditional<C>>
+> = Omit<
+  DynamicComponent<EditConditionalAttributes<DynamicChild>, never>,
+  "update"
+>
 
 /**
  * Attributes that must be applied to this component when generating it as

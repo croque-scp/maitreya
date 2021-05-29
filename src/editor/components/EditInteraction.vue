@@ -65,9 +65,7 @@ export default defineComponent({
      */
     makeComponent(
       index: number
-    ):
-      | DynamicConditional<MessageGroup, DynamicMessageGroup>
-      | DynamicMessageGroup {
+    ): DynamicConditional<DynamicMessageGroup> | DynamicMessageGroup {
       const messageGroup = this.interaction.messages[index]
       if (isConditional(messageGroup)) {
         return {
@@ -79,24 +77,38 @@ export default defineComponent({
               attrs: {
                 messageGroup: messageGroup.if.result,
               },
-              update: () => console.log("oh no! (EMG)"),
+              update: (value: MessageGroup) => {
+                messageGroup.if.result = value
+                this.update(
+                  (interaction) => (interaction.messages[index] = messageGroup)
+                )
+              },
             }),
-            elifComponent: (index: number) => ({
+            elifComponent: (elifIndex: number) => ({
               is: EditMessageGroup,
               attrs: {
-                messageGroup: messageGroup.elif[index].result,
+                messageGroup: messageGroup.elif[elifIndex].result,
               },
-              update: () => console.log("oh no! (EMG)"),
+              update: (value: MessageGroup) => {
+                messageGroup.elif[elifIndex].result = value
+                this.update(
+                  (interaction) => (interaction.messages[index] = messageGroup)
+                )
+              },
             }),
             elseComponent: () => ({
               is: EditMessageGroup,
               attrs: {
                 messageGroup: messageGroup.else,
               },
-              update: () => console.log("oh no! (EMG)"),
+              update: (value: MessageGroup) => {
+                messageGroup.else = value
+                this.update(
+                  (interaction) => (interaction.messages[index] = messageGroup)
+                )
+              },
             }),
           },
-          update: () => console.log("oh no! (EI)"),
         }
       }
       return {
@@ -104,7 +116,9 @@ export default defineComponent({
         attrs: {
           messageGroup,
         },
-        update: () => console.log("oh no! (EI)"),
+        update: (value: MessageGroup) => {
+          this.update((interaction) => (interaction.messages[index] = value))
+        },
       }
     },
   },

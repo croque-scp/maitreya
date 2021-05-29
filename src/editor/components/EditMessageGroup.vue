@@ -1,13 +1,20 @@
 <template>
   <FieldGroup name="MessageGroup">
     <EditMessageSettings purpose="messages group"></EditMessageSettings>
-    <component
-      :is="makeComponent(index).is"
-      v-for="(_message, index) in messageGroup.messages"
-      :key="index"
-      v-bind="makeComponent(index).attrs"
-      @update-value="makeComponent(index).update($event)"
-    ></component>
+    <template v-for="(_message, index) in messageGroup.messages" :key="index">
+      <template
+        v-for="(dynamicComponent, index_) in [makeComponent(index)]"
+        :key="index_"
+      >
+        <component
+          :is="dynamicComponent.is"
+          v-bind="dynamicComponent.attrs"
+          @update-value="
+            'update' in dynamicComponent && dynamicComponent.update($event)
+          "
+        ></component>
+      </template>
+    </template>
     <button>Add new message</button>
   </FieldGroup>
 </template>
@@ -53,7 +60,11 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["updateValue"],
+  emits: {
+    updateValue(_payload: MessageGroup) {
+      return true
+    },
+  },
   methods: {
     isConditional,
     /**
@@ -71,8 +82,8 @@ export default defineComponent({
       index: number
     ):
       | DynamicFieldText
-      | DynamicConditional<string, DynamicFieldText>
-      | DynamicConditional<SingleMessage, DynamicSingleMessage>
+      | DynamicConditional<DynamicFieldText>
+      | DynamicConditional<DynamicSingleMessage>
       | DynamicSingleMessage {
       const message = this.messageGroup.messages[index]
       if (typeof message === "string") {
@@ -82,7 +93,11 @@ export default defineComponent({
             label: "Edit message",
             value: message,
           },
-          update: () => console.log("oh no! (EMG)"),
+          update: (value: string) => {
+            this.update(
+              (messageGroup) => (messageGroup.messages[index] = value)
+            )
+          },
         }
       }
       if (isConditional(message)) {
@@ -99,15 +114,25 @@ export default defineComponent({
                   label: "Edit message",
                   value: msg.if.result,
                 },
-                update: () => console.log("test (FT)"),
+                update: (value: string) => {
+                  msg.if.result = value
+                  this.update(
+                    (messageGroup) => (messageGroup.messages[index] = msg)
+                  )
+                },
               }),
-              elifComponent: (index: number) => ({
+              elifComponent: (elifIndex: number) => ({
                 is: FieldText,
                 attrs: {
                   label: "Edit message",
-                  value: msg.elif[index].result,
+                  value: msg.elif[elifIndex].result,
                 },
-                update: () => console.log("test (FT)"),
+                update: (value: string) => {
+                  msg.elif[index].result = value
+                  this.update(
+                    (messageGroup) => (messageGroup.messages[index] = msg)
+                  )
+                },
               }),
               elseComponent: () => ({
                 is: FieldText,
@@ -115,10 +140,14 @@ export default defineComponent({
                   label: "Edit message",
                   value: msg.else,
                 },
-                update: () => console.log("test (FT)"),
+                update: (value: string) => {
+                  msg.else = value
+                  this.update(
+                    (messageGroup) => (messageGroup.messages[index] = msg)
+                  )
+                },
               }),
             },
-            update: () => console.log("oh no! (EMG)"),
           }
         }
         return {
@@ -128,26 +157,42 @@ export default defineComponent({
             ifComponent: () => ({
               is: EditSingleMessage,
               attrs: {},
-              update: () => console.log("test (ESM)"),
+              update: (value: SingleMessage) => {
+                message.if.result = value
+                this.update(
+                  (messageGroup) => (messageGroup.messages[index] = message)
+                )
+              },
             }),
-            elifComponent: (_index: number) => ({
+            elifComponent: (elifIndex: number) => ({
               is: EditSingleMessage,
               attrs: {},
-              update: () => console.log("test (ESM)"),
+              update: (value: SingleMessage) => {
+                message.elif[elifIndex].result = value
+                this.update(
+                  (messageGroup) => (messageGroup.messages[index] = message)
+                )
+              },
             }),
             elseComponent: () => ({
               is: EditSingleMessage,
               attrs: {},
-              update: () => console.log("test (ESM)"),
+              update: (value: SingleMessage) => {
+                message.else = value
+                this.update(
+                  (messageGroup) => (messageGroup.messages[index] = message)
+                )
+              },
             }),
           },
-          update: () => console.log("oh no! (EMG)"),
         }
       }
       return {
         is: EditSingleMessage,
         attrs: {},
-        update: () => console.log("oh no! (EMG)"),
+        update: (value: SingleMessage) => {
+          this.update((messageGroup) => (messageGroup.messages[index] = value))
+        },
       }
     },
   },
