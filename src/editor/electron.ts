@@ -5,6 +5,7 @@ import { IpcChannelInterface } from "./ipc/ipcChannelInterface"
 import {
   ReadEventsDirChannel,
   ReadEventsFileChannel,
+  WriteEventsFileChannel,
 } from "./ipc/fileReadWriteChannel"
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -81,4 +82,8 @@ class Main {
   }
 }
 
-new Main().init([new ReadEventsDirChannel(), new ReadEventsFileChannel()])
+new Main().init([
+  new ReadEventsDirChannel(),
+  new ReadEventsFileChannel(),
+  new WriteEventsFileChannel(),
+])

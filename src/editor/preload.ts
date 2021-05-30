@@ -15,7 +15,7 @@ export const fileReadWriteApi = {
      * Subscribes to the next events directory read response.
      */
     singleResponse: (callback: (filePaths: string[]) => void): void => {
-      ipcRenderer.once("read-events-dir_response", (event, filePaths) => {
+      ipcRenderer.once("read-events-dir_response", (ipcEvent, filePaths) => {
         callback(filePaths)
       })
     },
@@ -40,9 +40,36 @@ export const fileReadWriteApi = {
       filePath: string,
       callback: (eventFile: string) => void
     ): void => {
-      ipcRenderer.once(`read-events-file-${filePath}`, (event, eventFile) => {
-        callback(eventFile)
+      ipcRenderer.once(
+        `read-events-file-${filePath}`,
+        (ipcEvent, eventFile) => {
+          callback(eventFile)
+        }
+      )
+    },
+  },
+  writeEventsFile: {
+    /**
+     * Writes to an individual events file, backing up the old one.
+     *
+     * @param filePath - The path to the file, including the filename,
+     * relative to the events directory.
+     * @param textContent - The contents of the new events file.
+     */
+    send: (filePath: string, textContent: string): void => {
+      ipcRenderer.send("write-events-file", {
+        params: [filePath, textContent],
+        // No custom response channel is used because I don't expect to be
+        // saving multiple events that frequently when autosaving - would
+        // be worth implementing if there is a save button that saves
+        // multiple events, though
       })
+    },
+    /**
+     * Subscribes to the next events file write response.
+     */
+    singleResponse: (callback: () => void): void => {
+      ipcRenderer.once("write-events-file_response", callback)
     },
   },
 }

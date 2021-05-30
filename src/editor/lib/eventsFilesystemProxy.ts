@@ -16,9 +16,6 @@ export function createEventsDirProxy(events: EventsList): EventsList {
     filePaths.forEach((filePath) => {
       createEventFileProxy(filePath, events)
     })
-    // TODO The dir proxy probably will need to be responsible for correctly
-    //  handling outright event replacement events
-    //  e.g events[<string>] = <Event>
   })
   window.fileReadWrite.readEventsDir.send()
   return new Proxy(events, {
