@@ -50,8 +50,18 @@ export function createEventsDirProxy(events: EventsList): EventsList {
 function createEventFileProxy(filePath: string, events: EventsList): void {
   console.log("Creating events file proxy for", JSON.stringify(filePath))
   window.fileReadWrite.readEventsFile.singleResponse(filePath, (eventFile) => {
-    events[filePath] = new Proxy(<Event>JSON.parse(eventFile), {})
+    events[filePath] = new Proxy(<Event>JSON.parse(eventFile), {
+      set() {
+        console.error("this seemingly never gets called (1)")
+        return true
+      },
+      defineProperty() {
+        console.error("this seemingly never gets called (2)")
+        return true
+      },
+    })
     // TODO Intercept save requests
+    // The handlers don't seem to ever get called. Maybe no proxy is needed?
   })
   console.log("Requesting file read for path", JSON.stringify(filePath))
   window.fileReadWrite.readEventsFile.send(filePath)
