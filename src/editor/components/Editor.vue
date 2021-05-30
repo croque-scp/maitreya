@@ -34,8 +34,8 @@ export default defineComponent({
   },
   setup() {
     console.log("Initialising events")
-    const events: EventsList = reactive({})
-    createEventsDirProxy(events)
+    let events: EventsList = reactive({})
+    events = createEventsDirProxy(events)
     return { events }
   },
   data() {

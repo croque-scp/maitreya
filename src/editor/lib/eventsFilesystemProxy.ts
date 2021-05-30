@@ -9,7 +9,7 @@ import { Event, EventsList } from "../types"
  *
  * @param events - The events list to store the events in.
  */
-export function createEventsDirProxy(events: EventsList): void {
+export function createEventsDirProxy(events: EventsList): EventsList {
   console.log("Creating events dir proxy")
   window.fileReadWrite.readEventsDir.singleResponse((filePaths) => {
     // Construct and bind this event's children
@@ -21,7 +21,21 @@ export function createEventsDirProxy(events: EventsList): void {
     //  e.g events[<string>] = <Event>
   })
   window.fileReadWrite.readEventsDir.send()
-  // return new Proxy?
+  return new Proxy(events, {
+    set(events, eventId: string, event: Event) {
+      console.log("Applying update to event", JSON.stringify(eventId))
+      window.fileReadWrite.writeEventsFile.singleResponse(() => {
+        console.log("Backup successful for", JSON.stringify(eventId))
+      })
+      // Make a backup of the old file
+      window.fileReadWrite.writeEventsFile.send(
+        eventId,
+        JSON.stringify(event, null, 2)
+      )
+      // Make the actual changes to the object
+      return Reflect.set(events, eventId, event)
+    },
+  })
 }
 
 /**
