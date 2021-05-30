@@ -11,15 +11,24 @@
       category="speakers"
       @update-value="(value) => update((i) => (i.speaker = value))"
     ></FieldDropdown>
-    <FieldGroup name="Messages">
-      <component
-        :is="makeComponent(index).is"
-        v-for="(_messageGroup, index) in interaction.messages"
-        :key="index"
-        v-bind="makeComponent(index).attrs"
-        @update-value="makeComponent(index).update($event)"
-      ></component>
-    </FieldGroup>
+    <template
+      v-for="(_messageGroup, index) in interaction.messages"
+      :key="index"
+    >
+      <template
+        v-for="(dynamicComponent, index_) in [makeComponent(index)]"
+        :key="index_"
+      >
+        <component
+          :is="dynamicComponent.is"
+          v-bind="dynamicComponent.attrs"
+          @update-value="
+            'update' in dynamicComponent && dynamicComponent.update($event)
+          "
+        ></component
+      ></template>
+    </template>
+    <FieldGroup name="Messages"> </FieldGroup>
   </FieldGroup>
 </template>
 
