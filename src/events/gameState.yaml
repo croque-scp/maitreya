@@ -1,0 +1,46 @@
+# The game state tracks all the variables throughout the course of the
+# game.
+
+# State variables must be one of the following:
+
+# A flag (flag). Used to track if a certain thing has happened.
+# A counter (integer). Use to track how many times a certain thing has
+# happened.
+# A key (string). Used to track which of a set of things is currently
+# happening.
+# A value (float). Used to track values which accept changes of varying
+# magnitudes. Imprecise.
+
+# Player states persist forever; saved to local/remote storage
+player:
+  loops: [counter, 0]
+  preferences:
+    reducedMotionOverride: [flag, false]
+  documentationFor:
+    scpXXXX:
+      isAvailable: [flag, false]
+      hasBeenSeen: [flag, false]
+  maitreya:
+    knowsAbout:
+      theTimeLoop: [flag, false]
+    opinionOf:
+      alexandra: [value, 0]
+      breach: [value, 0]
+    hasDiscussedCaseStudy:
+      scpXXXX: [flag, false]
+
+# Session states persist for a single play session; not saved
+session:
+  loops: [counter, 0]
+
+# World states persist for a single in-game loop; wiped at the next one
+world:
+  maitreya:
+    locationX: [value, 0]
+    locationY: [value, 0]
+    isTravellingTo: [flag, false]
+
+# UI states describe what is happening right now
+ui:
+  currentApp: [key, messages]
+  music: [key, silence]
