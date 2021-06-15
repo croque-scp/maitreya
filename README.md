@@ -5,8 +5,8 @@ An interactive SCP story.
 
 This repository contains compiled builds which are available here:
 
-* https://rossjrw.github.io/maitreya/dist
-* https://rossjrw.github.io/maitreya/dist/maitreya.html
+* [Windowed](https://croque-scp.github.io/maitreya/dist/)
+* [Fullscreen](https://croque-scp.github.io/maitreya/dist/maitreya.html)
 
 ## Building
 In order to build Maitreya from source you will need Git, Node.js and Gulp.js
