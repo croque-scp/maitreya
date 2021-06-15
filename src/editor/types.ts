@@ -17,9 +17,9 @@ export type Identifier = string[]
 export type InteractionId = Identifier
 
 /**
- * An identifier that points to a string value in the persistent variables.
+ * An identifier that points to a string key in the persistent variables.
  */
-export type ValueId = Identifier
+export type KeyId = Identifier
 
 /**
  * An identifier that points to a boolean flag in the persistent variables.
@@ -30,6 +30,11 @@ export type FlagId = Identifier
  * An identifier that points to a numeric counter in the persistent variables.
  */
 export type CounterId = Identifier
+
+/**
+ * An identifier that points to a numeric value in the persistent variables.
+ */
+export type ValueId = Identifier
 
 /**
  * A batch of messages, used to reduce duplication of settings that would
@@ -134,12 +139,17 @@ export type Action = {
   executeAfter?: Delay
   toggleFlag?: FlagId
   setFlagTo?: [FlagId, true | false]
+  setCounterTo?: [CounterId, number]
   incrementCounter?: CounterId
   decrementCounter?: CounterId
   increaseCounterBy?: [CounterId, number]
   decreaseCounterBy?: [CounterId, number]
-  setCounterTo?: [CounterId, number]
-  setValueTo?: [ValueId, string]
+  setValueTo?: [ValueId, number]
+  increaseValueBy?: [ValueId, number]
+  decreaseValueBy?: [ValueId, number]
+  multiplyValueBy?: [ValueId, number]
+  divideValueBy?: [ValueId, number]
+  setKeyTo?: [KeyId, string]
 }
 
 /**
@@ -152,11 +162,13 @@ export type Action = {
 export type Condition = {
   assertFlag?: FlagId
   assertNotFlag?: FlagId
+  assertCounterEqualTo?: [CounterId, number]
   assertCounterMoreThan?: [CounterId, number]
   assertCounterLessThan?: [CounterId, number]
-  assertCounterEqualTo?: [CounterId, number]
-  assertValueIs?: [ValueId, string]
-  assertValueIsNot?: [ValueId, string]
+  assertValueMoreThan?: [ValueId, number]
+  assertValueLessThan?: [ValueId, number]
+  assertKeyIs?: [KeyId, string]
+  assertKeyIsNot?: [KeyId, string]
 }
 
 /**
