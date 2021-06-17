@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --font-sans: "Libre Franklin", sans-serif;
+        --font-mono: "Cascadia", monospace;
+
+        --theme-accent-light: hsl(202, 82%, 44%);
+        --theme-accent-lightish: hsl(209, 77%, 44%);
+        --theme-accent-middle: hsl(217, 71%, 44%);
+        --theme-accent-dark: hsl(237, 61%, 44%);
+
+        --theme-base: hsl(0, 0%, 95%);
+        --theme-base-text: hsl(0, 0%, 13%);
+        --theme-base-text-lighter: hsl(0, 0%, 40%);
+
+        --theme-action-speech: hsl(217, 71%, 44%);
+        --theme-action-lie: hsl(217, 71%, 30%);
+
+        --theme-shadow: hsla(0, 0%, 0%, 0.3);
+        --theme-depth-lower: hsla(0, 0%, 0%, 0.05);
+        --theme-depth-higher: hsla(0, 0%, 100%, 0.05);
+      }
+
+      html {
+        background-color: white;
+      }
+
+      body {
+        padding: 0;
+        margin: 0;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(
+          to right,
+          var(--theme-accent-light),
+          var(--theme-accent-dark)
+        );
+        display: flex;
+        color: var(--theme-base-text);
+        font-family: var(--font-sans);
+      }
+
+      main {
+        flex-grow: 1;
+        margin: 1em;
+        border-radius: 1.75em;
+        background-color: var(--theme-base);
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        flex: none;
+        height: 5rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      header img {
+        max-height: 100%;
+        filter: brightness(0) saturate(100%) invert(32%) sepia(98%)
+          saturate(4445%) hue-rotate(197deg) brightness(94%) contrast(80%);
+      }
+
+      #sections {
+        flex: 1;
+        display: flex;
+      }
+
+      #sections section {
+        flex: 1;
+        border-radius: 1rem;
+        margin: 1rem;
+      }
+
+      #options {
+        min-width: 25rem; /* Temporary for preview pane */
+      }
+
+      #options .option {
+        border-radius: 0.5em;
+        margin: 1rem;
+        background: linear-gradient(
+          to bottom,
+          var(--theme-base),
+          hsl(0, 0%, 92%)
+        );
+        display: flex;
+        overflow: hidden;
+      }
+
+      .option p {
+        margin: 0;
+      }
+
+      .option .type-decorator {
+        width: 3rem;
+        flex: none;
+        background-repeat: no-repeat;
+        background-position: center 0.5rem;
+        background-size: 1.5rem;
+      }
+
+      .option .details {
+        flex: 1;
+        margin: 0.5rem;
+        margin-left: 1rem;
+        display: grid;
+        grid-template-areas:
+          "type timing"
+          "title title"
+          "history history";
+        justify-content: space-between;
+      }
+
+      .action-type {
+        font-weight: 900;
+        grid-area: type;
+      }
+      .action-timing {
+        grid-area: timing;
+        color: var(--theme-base-text-lighter);
+        text-align: right;
+      }
+      .action-timing span {
+        font-family: var(--font-mono);
+        border-radius: 0.25rem;
+        background-color: var(--theme-depth-lower);
+      }
+      .action-title {
+        font-weight: 500;
+        font-size: 1.5em;
+        grid-area: title;
+      }
+      .action-history {
+        font-style: italic;
+        color: var(--theme-base-text-lighter);
+        grid-area: history;
+      }
+
+      .speech {
+        --theme-action: var(--theme-action-speech);
+        --icon-action: url("https://api.iconify.design/bx-bxs-message-alt-detail.svg?color=%23ddd");
+      }
+      .lie {
+        --theme-action: var(--theme-action-lie);
+        --icon-action: url("https://api.iconify.design/bx-bxs-message-alt-x.svg?color=%23ddd");
+      }
+      .action {
+        --theme-action: var(--theme-action-action);
+        --icon-action: url("https://api.iconify.design/bx-bxs-zap.svg?color=%23ddd");
+      }
+
+      .action-type {
+        color: var(--theme-action);
+      }
+      .type-decorator {
+        background-image: var(--icon-action);
+        background-color: var(--theme-action);
+      }
+
+      .hard.higher {
+        box-shadow: var(--theme-shadow) 0px 4px 16px;
+      }
+
+      .hard.lower {
+        box-shadow: inset 0 4px 16px var(--theme-shadow);
+        background-color: var(--theme-depth-lower);
+      }
+
+      .soft.lower {
+        box-shadow: 0 -4px 16px #bababa, inset 0 4px 16px #bababa,
+          inset 0 -8px 16px #fff0;
+        box-shadow: 0px -4px 0px #bababa22, 0px -8px 22px #bababa,
+          0px 8px 22px #ffffff, inset 0px 8px 22px #bababa,
+          inset -8px -8px 22px #ffffff;
+        /*background-color: var(--theme-depth-lower);*/
+        background-color: var(--theme-depth-lower);
+        border-radius: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="hard higher">
+      <header>
+        <img src="../../assets/maitreya.png" />
+      </header>
+      <div id="sections">
+        <section id="conversations" class="soft lower"></section>
+        <section id="messages"></section>
+        <section id="options" class="hard lower">
+          <article class="option hard higher speech">
+            <div class="type-decorator"></div>
+            <div class="details">
+              <p class="action-type">SAY</p>
+              <p class="action-timing"><span>~00:21</span></p>
+              <p class="action-title">Sure, Dr. Breach.</p>
+              <p class="action-history">I've tried this 12 times.</p>
+            </div>
+          </article>
+          <article class="option hard higher speech">
+            <div class="type-decorator"></div>
+            <div class="details">
+              <p class="action-type">SAY</p>
+              <p class="action-timing"><span>??:??</span></p>
+              <p class="action-title">Please leave me alone.</p>
+              <p class="action-history">I've never tried this before.</p>
+            </div>
+          </article>
+          <article class="option hard higher action">
+            <div class="type-decorator"></div>
+            <div class="details">
+              <p class="action-type">DO</p>
+              <p class="action-timing"><span>??:??</span></p>
+              <p class="action-title">
+                Refuse to invite him to your birthday party.
+              </p>
+              <p class="action-history">I've never tried this before.</p>
+            </div>
+          </article>
+          <article class="option hard higher lie">
+            <div class="type-decorator"></div>
+            <div class="details">
+              <p class="action-type">LIE</p>
+              <p class="action-timing"><span>??:??</span></p>
+              <p class="action-title">There's not going to be a party.</p>
+              <p class="action-history">I've tried this once before.</p>
+            </div>
+          </article>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>
